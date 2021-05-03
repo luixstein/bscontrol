@@ -2024,9 +2024,10 @@ Buscar:
                     End If
                 End If
 
+                Dim bVentaTimbrada As Boolean = False
                 If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
                     Me.oVenta = New Class_Ventas_Global(Me.txtFolio.Text) 'Refrescar documento para evitar algún error por dato no cargado.
-                    Me.oVenta.GeneraFacturaElectronica(False, True)
+                    bVentaTimbrada = Me.oVenta.GeneraFacturaElectronica(False, True)
                 End If
 
                 If bVentaAutorizadaPorRegla = True Then
@@ -2083,17 +2084,21 @@ Buscar:
                     If txtLEN(sFolioVentaAnticipo) = True Then
                         'Grabar nota de crédito por anticipo automática.
                         If .GrabaNotaCreditoPorAnticipo(sFolioVentaAnticipo) = True Then
-
                             If Empresa_Sistema.FELECTRONICA_ACTIVA = True AndAlso Me.oDocumento.TIMBRA_DOCUMENTO = True Then
-                                Dim oDescuentosCXC As New Class_CXC_Descuento(.FOLIO_DESCUENTO_ANTICIPO)
-                                oDescuentosCXC.GeneraNotaCreditoElectronica(True, True)
+                                If bVentaTimbrada = True Then
+                                    Dim oDescuentosCXC As New Class_CXC_Descuento(.FOLIO_DESCUENTO_ANTICIPO)
+                                    If oDescuentosCXC.GeneraNotaCreditoElectronica(True, True) = True Then
+                                        'MsgBox("FALTA ofrecer mecanismo de impresión, quizás llamar a pantalla de descuentos precargada o abrir pdf")
+                                        'Dim f As New Frm_CXC_Descuentos()
+                                        oDescuentosCXC = New Class_CXC_Descuento(.FOLIO_DESCUENTO_ANTICIPO) 'Inicializamos nuevamente luego del timbrado.
+                                        oDescuentosCXC.Imprimir()
+                                    End If
+                                Else
+                                    MsgBox("Esta venta no fue timbrada por lo que tampoco fue timbrada la nota de crédito " & .FOLIO_DESCUENTO_ANTICIPO, MsgBoxStyle.Exclamation, sProcedure)
+                                End If
                             End If
-
-                            MsgBox("FALTA timbrar la nota de crédito por anticipo y ofrecer mecanismo de impresión, quizás llamar a pantalla de descuentos precargada")
-
                         End If
                     End If
-
                 End If
 
             End With
