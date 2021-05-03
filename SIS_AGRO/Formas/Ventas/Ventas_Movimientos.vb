@@ -2076,7 +2076,7 @@ Buscar:
                         If txtLEN(Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolio).Text) = True Then
                             iVentasRelacionadas += 1
                             sFolioVentaAnticipo = Me.GridCFDIsRelacionados.Cell(i, iGyGRFolio).Text
-                            Continue For 'De momento sólo se permite relacionar una sóla factura de anticipo.
+                            Exit For 'De momento sólo se permite relacionar una sóla factura de anticipo.
                         End If
                     Next
 
@@ -2085,7 +2085,7 @@ Buscar:
                         If .GrabaNotaCreditoPorAnticipo(sFolioVentaAnticipo) = True Then
 
                             If Empresa_Sistema.FELECTRONICA_ACTIVA = True AndAlso Me.oDocumento.TIMBRA_DOCUMENTO = True Then
-                                Dim oDescuentosCXC As New Class_CXC_Descuento(oVenta.FOLIO_DESCUENTO_ANTICIPO)
+                                Dim oDescuentosCXC As New Class_CXC_Descuento(.FOLIO_DESCUENTO_ANTICIPO)
                                 oDescuentosCXC.GeneraNotaCreditoElectronica(True, True)
                             End If
 
@@ -2674,7 +2674,7 @@ CANCELAR:
 
                 Dim oFind As New Class_find(sSQL)
                 If txtLEN(oFind.Result1) = True Then
-                    MsgBox("La factura de anticipo " + sFolioVentaAnticipo + " ya fue utilizada en la factura " + oFind.Result1 + " que actualmente esta activa.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("La factura de anticipo " + sFolioVentaAnticipo + " ya fue utilizada en la factura " + oFind.Result1 + " que actualmente esta activa, no puede volver a relacionarse el mismo anticipo.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
 
