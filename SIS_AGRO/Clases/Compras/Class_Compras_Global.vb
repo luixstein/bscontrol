@@ -881,7 +881,7 @@ Public Class Class_Compras_Global
             sqlParametro = .Parameters.Add("@CONCEPTO", SqlDbType.NVarChar, 1000) : sqlParametro.Value = Me._CONCEPTO.ToUpper
             sqlParametro = .Parameters.Add("@FECHA_PROGRAMACION", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_PROGRAMACION
             sqlParametro = .Parameters.Add("@FOLIO_EMBARQUE", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_EMBARQUE
-            sqlParametro = .Parameters.Add("@LISTA_CENTROS_COSTOS", SqlDbType.NVarChar, 4000) : sqlParametro.Value = sListaCentrosCostos
+            sqlParametro = .Parameters.Add("@LISTA_CENTROS_COSTOS", SqlDbType.NVarChar) : sqlParametro.Value = sListaCentrosCostos
             sqlParametro = .Parameters.Add("@LISTA_ACTIVOS", SqlDbType.NVarChar, 4000) : sqlParametro.Value = sListaActivos
             sqlParametro = .Parameters.Add("@ES_FISCAL", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._ES_FISCAL)
             sqlParametro = .Parameters.Add("@ID_NOMINA_TEMPORADA", SqlDbType.SmallInt) : sqlParametro.Value = Me._ID_NOMINA_TEMPORADA
