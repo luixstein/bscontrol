@@ -27,6 +27,10 @@ Public Class Class_CXP_Afecta_Documentos
     Private _FOLIO_BANCO As String
     Private _CODIGO_MONEDA As Integer = 1
     Private _TOTAL_USD As Double
+    Private _PAGO_MXN_BANCOS As Decimal
+    Private _SUBTOTAL_PAGADO As Decimal
+    Private _DIFERENCIA_CAMBIARIA As Decimal
+    Private _IMPUESTO_PAGADO As Decimal
 #End Region
 
 #Region "Campos de control"
@@ -188,6 +192,42 @@ Public Class Class_CXP_Afecta_Documentos
         End Set
     End Property
 
+    Public Property PAGO_MXN_BANCOS() As Decimal
+        Get
+            Return Me._PAGO_MXN_BANCOS
+        End Get
+        Set(ByVal value As Decimal)
+            Me._PAGO_MXN_BANCOS = value
+        End Set
+    End Property
+
+    Public Property SUBTOTAL_PAGADO() As Decimal
+        Get
+            Return Me._SUBTOTAL_PAGADO
+        End Get
+        Set(ByVal value As Decimal)
+            Me._SUBTOTAL_PAGADO = value
+        End Set
+    End Property
+
+    Public Property DIFERENCIA_CAMBIARIA() As Decimal
+        Get
+            Return Me._DIFERENCIA_CAMBIARIA
+        End Get
+        Set(ByVal value As Decimal)
+            Me._DIFERENCIA_CAMBIARIA = value
+        End Set
+    End Property
+
+    Public Property IMPUESTO_PAGADO() As Decimal
+        Get
+            Return Me._IMPUESTO_PAGADO
+        End Get
+        Set(ByVal value As Decimal)
+            Me._IMPUESTO_PAGADO = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedad Nombre de Clase"
@@ -241,7 +281,12 @@ Public Class Class_CXP_Afecta_Documentos
             sqlParametro = .Parameters.Add("@ES_PROVEEDOR", SqlDbType.Char, 1) : sqlParametro.Value = IIf(Me.ModoPago = enumModoPago.PROVEEDOR, "1", "0")
             sqlParametro = .Parameters.Add("@CODIGO_MONEDA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_MONEDA
             sqlParametro = .Parameters.Add("@TOTAL_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_USD
+            sqlParametro = .Parameters.Add("@DIFERENCIA_CAMBIARIA", SqlDbType.Decimal) : sqlParametro.Value = Me._DIFERENCIA_CAMBIARIA
+            sqlParametro = .Parameters.Add("@PAGO_MXN_BANCOS", SqlDbType.Decimal) : sqlParametro.Value = Me._PAGO_MXN_BANCOS
+            sqlParametro = .Parameters.Add("@SUBTOTAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL
+            sqlParametro = .Parameters.Add("@SUBTOTAL_PAGADO", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL_PAGADO
             sqlParametro = .Parameters.Add("@IMPUESTO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO
+            sqlParametro = .Parameters.Add("@IMPUESTO_PAGADO", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PAGADO
 
             Try
                 Me._Conexion.Open()
