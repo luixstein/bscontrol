@@ -27,10 +27,10 @@ Public Class Class_CXP_Afecta_Documentos
     Private _FOLIO_BANCO As String
     Private _CODIGO_MONEDA As Integer = 1
     Private _TOTAL_USD As Double
-    Private _PAGO_MXN_BANCOS As Decimal
-    Private _SUBTOTAL_PAGADO As Decimal
-    Private _DIFERENCIA_CAMBIARIA As Decimal
-    Private _IMPUESTO_PAGADO As Decimal
+    Private _PAGO_MXN_BANCOS As Decimal = 0
+    Private _SUBTOTAL_PAGADO As Decimal = 0
+    Private _DIFERENCIA_CAMBIARIA As Decimal = 0
+    Private _IMPUESTO_PAGADO As Decimal = 0
 #End Region
 
 #Region "Campos de control"
