@@ -53,27 +53,35 @@ Public Class Frm_CXP_Pagos_Acreedores
 #End Region
 
 #Region "Columnas Grid pagos"
-    Private iGyFacturaProveedor As Integer = 1
-    Private iGyFecha As Integer = 2
-    Private iGyFolio As Integer = 3
-    Private iGyMoneda As Integer = 4
-    Private iGyTipoCambio As Integer = 5
-    Private iGyImpuestoUSD As Integer = 6
-    Private iGyTotalUSD As Integer = 7
-    Private iGySaldoUSD As Integer = 8
-    Private iGyConcepto As Integer = 9
-    Private iGyImpuestoMXN As Integer = 10
-    Private iGyTotalMXN As Integer = 11
-    Private iGySaldoMXN As Integer = 12
+    Private iGyComFacturaProveedor As Integer = 1
+    Private iGyComFecha As Integer = 2
+    Private iGyComFolio As Integer = 3
+    Private iGyComMoneda As Integer = 4
+    Private iGyComTipoCambio As Integer = 5
+    'Private iGyComSubtotalUSD
+    Private iGyComImpuestoUSD As Integer = 6
+    Private iGyComTotalUSD As Integer = 7
+    Private iGyComSaldoUSD As Integer = 8
+    Private iGyComConcepto As Integer = 9
+    Private iGyComImpuestoMXN As Integer = 10
+    Private iGyComTotalMXN As Integer = 11
+    Private iGyComSaldoMXN_TpPago As Integer = 12
+    'Private iGyComSaldoMXN_CXP
     Private iGySaldoImpuesto As Integer = 13
-    Private iGyRetencion As Integer = 14
-    Private iGyIVAPagado As Integer = 15
+    Private iGyCxpRetencion As Integer = 14
+    Private iGyCxpIvaPagado As Integer = 15
+    'Private iGyCxpIvaPendientePago
+    'Private iGyCxpPagoMXNCapturado
+    Private iGyCxpTotal As Integer = 16
+    Private iGyCxpPagoUSDCapturado As Integer = 17
+    Private iGyPagoPagoSeleccion As Integer = 18
+    Private iGyComCodigoDocumento As Integer = 19
+    Private iGyPagoAutorizado As Integer = 20
+    'iGyCxpPagoSubtotaMXNViejos
+    'iGyCxpPagoSubtotaMXNNuevos
+    'iGyCxpDiferenciaCambiaria
+
     'Private iGyIEPSPagado As Integer =16
-    Private iGyPagoMXN As Integer = 16
-    Private iGyPagoUSD As Integer = 17
-    Private iGySeleccion As Integer = 18
-    Private iGyCodigoDocumento As Integer = 19
-    Private iGyAutorizado As Integer = 20
     'No se sabe para que se crearon estas columnas
     'Private iGyAbonarCXP1 As Integer = 15
     'Private iGyDiferencia1 As Integer = 15
@@ -496,7 +504,7 @@ buscar_acreedor:
         Try
             If Me.ModoPago = enumModoPago.PROVEEDOR Then
                 If e.KeyCode = Keys.Return Then
-                    Me.Grid1.Cell(1, Me.iGyPagoMXN).SetFocus()
+                    Me.Grid1.Cell(1, Me.iGyCxpTotal).SetFocus()
                 End If
             Else
                 If e.KeyCode = Keys.Return Then
@@ -526,12 +534,12 @@ buscar_acreedor:
             Dim dPago As Double, dPagoImpuesto As Double, dTipoCambioCO As Double, dImpuesto As Decimal, dTotalMXN As Decimal
 
             If Me.ModoPago = enumModoPago.PROVEEDOR Then
-                If e.Col = Me.iGySeleccion And e.Row > 0 Then
-                    If Me.Grid1.Cell(Renglon, Me.iGySeleccion).Text = "1" And Me.ClickSinEjecutar = False Then
-                        dPago = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGySaldoMXN).Text)
+                If e.Col = Me.iGyPagoPagoSeleccion And e.Row > 0 Then
+                    If Me.Grid1.Cell(Renglon, Me.iGyPagoPagoSeleccion).Text = "1" And Me.ClickSinEjecutar = False Then
+                        dPago = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyComSaldoMXN_TpPago).Text)
                         'dPagoImpuesto = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGySaldoImpuesto).Text)
-                        dImpuesto = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyImpuestoMXN).Text)
-                        dTotalMXN = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyTotalMXN).Text)
+                        dImpuesto = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyComImpuestoMXN).Text)
+                        dTotalMXN = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyComTotalMXN).Text)
                         If dPago > 0 Then
                             Me.ClickSinEjecutar = True
 
@@ -545,21 +553,21 @@ buscar_acreedor:
 
                             dPagoImpuesto = RedondearD((dPago / dTotalMXN) * dImpuesto, 2)
 
-                            Me.Grid1.Cell(Renglon, Me.iGyPagoMXN).Text = dPago.ToString
-                            Me.Grid1.Cell(Renglon, Me.iGyIVAPagado).Text = dPagoImpuesto
+                            Me.Grid1.Cell(Renglon, Me.iGyCxpTotal).Text = dPago.ToString
+                            Me.Grid1.Cell(Renglon, Me.iGyCxpIvaPagado).Text = dPagoImpuesto
 
-                            dTipoCambioCO = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyTipoCambio).Text)
+                            dTipoCambioCO = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyComTipoCambio).Text)
 
                             If dTipoCambioCO > 0 Then
-                                Me.Grid1.Cell(Renglon, Me.iGyPagoUSD).Text = Redondear(dPago / dTipoCambioCO, 2) 'En base al tipo de cambio de la compra
+                                Me.Grid1.Cell(Renglon, Me.iGyCxpPagoUSDCapturado).Text = Redondear(dPago / dTipoCambioCO, 2) 'En base al tipo de cambio de la compra
                             End If
 
                             Me.ClickSinEjecutar = False
                         End If
                     Else
-                        Me.Grid1.Cell(Renglon, Me.iGyPagoMXN).Text = "0"
-                        Me.Grid1.Cell(Renglon, Me.iGyPagoUSD).Text = "0"
-                        Me.Grid1.Cell(Renglon, Me.iGyIVAPagado).Text = "0"
+                        Me.Grid1.Cell(Renglon, Me.iGyCxpTotal).Text = "0"
+                        Me.Grid1.Cell(Renglon, Me.iGyCxpPagoUSDCapturado).Text = "0"
+                        Me.Grid1.Cell(Renglon, Me.iGyCxpIvaPagado).Text = "0"
                     End If
                 End If
 
@@ -603,45 +611,45 @@ buscar_acreedor:
                         'Case 6
                         '    Me.Grid1.Cell(Renglon, 6).SetFocus()
 
-                        Case Me.iGyPagoMXN
-                            dImpuestoMXN = valorNumericoD(Me.Grid1.Cell(Renglon, Me.iGyImpuestoMXN).Text)
-                            dTotalMXN = valorNumericoD(Me.Grid1.Cell(Renglon, Me.iGyTotalMXN).Text)
-                            dPagoMXN = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyPagoMXN).Text)
-                            dTipoCambioCO = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyTipoCambio).Text)
+                        Case Me.iGyCxpTotal
+                            dImpuestoMXN = valorNumericoD(Me.Grid1.Cell(Renglon, Me.iGyComImpuestoMXN).Text)
+                            dTotalMXN = valorNumericoD(Me.Grid1.Cell(Renglon, Me.iGyComTotalMXN).Text)
+                            dPagoMXN = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyCxpTotal).Text)
+                            dTipoCambioCO = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyComTipoCambio).Text)
 
                             If dPagoMXN = 0 Then
-                                Me.Grid1.Cell(Renglon, Me.iGyPagoUSD).Text = "0"
-                            ElseIf dPagoMXN > 0 And txtLEN(Me.Grid1.Cell(Renglon, Me.iGyFolio).Text) = True Then
-                                If dPagoMXN > valorNumerico(Me.Grid1.Cell(Renglon, Me.iGySaldoMXN).Text) And Me.Grid1.Locked = False Then
+                                Me.Grid1.Cell(Renglon, Me.iGyCxpPagoUSDCapturado).Text = "0"
+                            ElseIf dPagoMXN > 0 And txtLEN(Me.Grid1.Cell(Renglon, Me.iGyComFolio).Text) = True Then
+                                If dPagoMXN > valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyComSaldoMXN_TpPago).Text) And Me.Grid1.Locked = False Then
                                     MsgBox("El pago en el renglón: " & Renglon & " es mayor al saldo del documento favor de revisar.", MsgBoxStyle.Exclamation, "Validación de Importes de CXP")
-                                    Me.Grid1.Cell(Renglon, Me.iGyPagoMXN).SetFocus()
+                                    Me.Grid1.Cell(Renglon, Me.iGyCxpTotal).SetFocus()
                                     Return
                                 End If
 
                                 dIvaPagoMXN = RedondearD((dPagoMXN / dTotalMXN) * dImpuestoMXN, 2) 'Proporción de iva
-                                Me.Grid1.Cell(Renglon, Me.iGyIVAPagado).Text = dIvaPagoMXN.ToString
+                                Me.Grid1.Cell(Renglon, Me.iGyCxpIvaPagado).Text = dIvaPagoMXN.ToString
 
                                 If dTipoCambioCO > 0 Then
-                                    Me.Grid1.Cell(Renglon, Me.iGyPagoUSD).Text = Redondear(dPagoMXN / dTipoCambioCO, 2) 'En base al tipo de cambio de la compra
+                                    Me.Grid1.Cell(Renglon, Me.iGyCxpPagoUSDCapturado).Text = Redondear(dPagoMXN / dTipoCambioCO, 2) 'En base al tipo de cambio de la compra
                                 End If
 
                             ElseIf dPagoMXN > 0 And Me.Grid1.Rows = Renglon Then
                                 Me.Grid1.Rows = Me.Grid1.Rows + 1
                             End If
 
-                        Case Me.iGyPagoUSD
-                            sMonedaCompra = Me.Grid1.Cell(Renglon, Me.iGyMoneda).Text
-                            dImpuestoUSD = valorNumericoD(Me.Grid1.Cell(Renglon, Me.iGyImpuestoUSD).Text)
-                            dTotalUSD = valorNumericoD(Me.Grid1.Cell(Renglon, Me.iGyTotalUSD).Text)
-                            dTipoCambioCO = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyTipoCambio).Text)
-                            dPagoUSD = valorNumericoD(Me.Grid1.Cell(Renglon, Me.iGyPagoUSD).Text)
+                        Case Me.iGyCxpPagoUSDCapturado
+                            sMonedaCompra = Me.Grid1.Cell(Renglon, Me.iGyComMoneda).Text
+                            dImpuestoUSD = valorNumericoD(Me.Grid1.Cell(Renglon, Me.iGyComImpuestoUSD).Text)
+                            dTotalUSD = valorNumericoD(Me.Grid1.Cell(Renglon, Me.iGyComTotalUSD).Text)
+                            dTipoCambioCO = valorNumerico(Me.Grid1.Cell(Renglon, Me.iGyComTipoCambio).Text)
+                            dPagoUSD = valorNumericoD(Me.Grid1.Cell(Renglon, Me.iGyCxpPagoUSDCapturado).Text)
 
                             'Sólo si están pagando usd y tecleando usd hacemos el cálculo sugerido(el usuario podrá editarlo)
                             'Si estuvieran pagando el pesos el cálculo ya se hizo al teclear los MXN y dar enter.
                             If Me.cboMoneda.Text = "DOLARES" Then
                                 If sMonedaCompra = "USD" Then
                                     dIvaPagoMXN = RedondearD((dPagoUSD / dTotalUSD) * dImpuestoUSD, 2) * dTipoCambioPago
-                                    Me.Grid1.Cell(Renglon, Me.iGyIVAPagado).Text = dIvaPagoMXN.ToString
+                                    Me.Grid1.Cell(Renglon, Me.iGyCxpIvaPagado).Text = dIvaPagoMXN.ToString
                                 Else
                                     MsgBox("Esta pagando en USD una venta en MXN, de momento usted calcule y capture manualmente el IVA a pagar en MXN por favor y comuníque a sistemas cómo hace el cálculo.", MsgBoxStyle.Exclamation, Me.Text)
                                 End If
@@ -850,7 +858,7 @@ enter:
 
             'Creamos el Grid
             Me.Grid1.Rows = 2
-            Me.Grid1.Cols = 21
+            Me.Grid1.Cols = 28
             Me.Grid1.DisplayRowNumber = True
 
             Me.FormateaGrid()
@@ -883,126 +891,126 @@ enter:
             With Me.Grid1
                 .AutoRedraw = False
 
-                .Column(Me.iGyFacturaProveedor).Width = 60
-                .Column(Me.iGyFecha).Width = 70
-                .Column(Me.iGyFolio).Width = 70
-                .Column(Me.iGyMoneda).Width = 30
-                .Column(Me.iGyTipoCambio).Width = 50
-                .Column(Me.iGyTotalUSD).Width = 70
-                .Column(Me.iGySaldoUSD).Width = 70
-                .Column(Me.iGyImpuestoUSD).Width = 70
-                .Column(Me.iGyConcepto).Width = 100 '200
-                .Column(Me.iGyTotalMXN).Width = 80
-                .Column(Me.iGySaldoMXN).Width = 80
+                .Column(Me.iGyComFacturaProveedor).Width = 60
+                .Column(Me.iGyComFecha).Width = 70
+                .Column(Me.iGyComFolio).Width = 70
+                .Column(Me.iGyComMoneda).Width = 30
+                .Column(Me.iGyComTipoCambio).Width = 50
+                .Column(Me.iGyComTotalUSD).Width = 70
+                .Column(Me.iGyComSaldoUSD).Width = 70
+                .Column(Me.iGyComImpuestoUSD).Width = 70
+                .Column(Me.iGyComConcepto).Width = 100 '200
+                .Column(Me.iGyComTotalMXN).Width = 80
+                .Column(Me.iGyComSaldoMXN_TpPago).Width = 80
                 .Column(Me.iGySaldoImpuesto).Visible = False '.Column(Me.iGySaldoImpuesto).Width = 60
-                .Column(Me.iGyImpuestoMXN).Width = 70
-                .Column(Me.iGyRetencion).Width = 60
-                .Column(Me.iGyIVAPagado).Width = 80
-                .Column(Me.iGyPagoMXN).Width = 80
-                .Column(Me.iGyPagoUSD).Width = 70
-                .Column(Me.iGySeleccion).Width = 55
-                .Column(Me.iGyCodigoDocumento).Visible = False
-                .Column(Me.iGyAutorizado).Width = 60
+                .Column(Me.iGyComImpuestoMXN).Width = 70
+                .Column(Me.iGyCxpRetencion).Width = 60
+                .Column(Me.iGyCxpIvaPagado).Width = 80
+                .Column(Me.iGyCxpTotal).Width = 80
+                .Column(Me.iGyCxpPagoUSDCapturado).Width = 70
+                .Column(Me.iGyPagoPagoSeleccion).Width = 55
+                .Column(Me.iGyComCodigoDocumento).Visible = False
+                .Column(Me.iGyPagoAutorizado).Width = 60
 
                 '.Column(Me.iGyPagoDlls).Width = 70
                 '.Column(Me.iGyTotalDlls).Width = 80
                 '.Column(Me.iGySaldoDlls).Width = 80
                 '.Column(Me.iGyDiferencia).Width = 80
 
-                .Cell(0, Me.iGyFacturaProveedor).Text = "Fac. Prov."
-                .Cell(0, Me.iGyFecha).Text = "Fecha"
-                .Cell(0, Me.iGyFolio).Text = "Folio"
-                .Cell(0, Me.iGyMoneda).Text = "Mon"
-                .Cell(0, Me.iGyTipoCambio).Text = "TpCam"
-                .Cell(0, Me.iGyTotalUSD).Text = "Total USD"
-                .Cell(0, Me.iGySaldoUSD).Text = "Saldo USD"
-                .Cell(0, Me.iGyImpuestoUSD).Text = "IVA USD"
-                .Cell(0, Me.iGyConcepto).Text = "Concepto"
-                .Cell(0, Me.iGyTotalMXN).Text = "Total MXN"
-                .Cell(0, Me.iGySaldoMXN).Text = "Saldo MXN"
+                .Cell(0, Me.iGyComFacturaProveedor).Text = "Fac. Prov."
+                .Cell(0, Me.iGyComFecha).Text = "Fecha"
+                .Cell(0, Me.iGyComFolio).Text = "Folio"
+                .Cell(0, Me.iGyComMoneda).Text = "Mon"
+                .Cell(0, Me.iGyComTipoCambio).Text = "TpCam"
+                .Cell(0, Me.iGyComTotalUSD).Text = "Total USD"
+                .Cell(0, Me.iGyComSaldoUSD).Text = "Saldo USD"
+                .Cell(0, Me.iGyComImpuestoUSD).Text = "IVA USD"
+                .Cell(0, Me.iGyComConcepto).Text = "Concepto"
+                .Cell(0, Me.iGyComTotalMXN).Text = "Total MXN"
+                .Cell(0, Me.iGyComSaldoMXN_TpPago).Text = "Saldo MXN"
                 .Cell(0, Me.iGySaldoImpuesto).Text = "Saldo Imp."
-                .Cell(0, Me.iGyImpuestoMXN).Text = "IVA MXN"
-                .Cell(0, Me.iGyRetencion).Text = "Retencion"
-                .Cell(0, Me.iGyIVAPagado).Text = "IVA Pagar MXN"
-                .Cell(0, Me.iGyPagoMXN).Text = "Pagar MXN"
-                .Cell(0, Me.iGyPagoUSD).Text = "Pagar USD"
-                .Cell(0, Me.iGySeleccion).Text = "Selección"
-                .Cell(0, Me.iGyCodigoDocumento).Text = "CodigoDocumento "
-                .Cell(0, Me.iGyAutorizado).Text = "Autorizado"
+                .Cell(0, Me.iGyComImpuestoMXN).Text = "IVA MXN"
+                .Cell(0, Me.iGyCxpRetencion).Text = "Retencion"
+                .Cell(0, Me.iGyCxpIvaPagado).Text = "IVA Pagar MXN"
+                .Cell(0, Me.iGyCxpTotal).Text = "Pagar MXN"
+                .Cell(0, Me.iGyCxpPagoUSDCapturado).Text = "Pagar USD"
+                .Cell(0, Me.iGyPagoPagoSeleccion).Text = "Selección"
+                .Cell(0, Me.iGyComCodigoDocumento).Text = "CodigoDocumento "
+                .Cell(0, Me.iGyPagoAutorizado).Text = "Autorizado"
 
                 '.Cell(0, Me.iGyTotalDlls).Text = "Total Dlls"
                 '.Cell(0, Me.iGySaldoDlls).Text = "Saldo Dlls"
                 '.Cell(0, Me.iGyPagoDlls).Text = "Pagar Dlls"
                 '.Cell(0, Me.iGyDiferencia).Text = "Diferencia"
 
-                .Column(Me.iGyFecha).CellType = FlexCell.CellTypeEnum.DateTime
-                .Column(Me.iGyFecha).FormatString = "dd-MMM-yy"
+                .Column(Me.iGyComFecha).CellType = FlexCell.CellTypeEnum.DateTime
+                .Column(Me.iGyComFecha).FormatString = "dd-MMM-yy"
 
-                .Column(Me.iGyTipoCambio).FormatString = "###,###,##0.0000"
-                .Column(Me.iGyTipoCambio).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyTipoCambio).DecimalLength = 4
-                .Column(Me.iGyTipoCambio).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyComTipoCambio).FormatString = "###,###,##0.0000"
+                .Column(Me.iGyComTipoCambio).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyComTipoCambio).DecimalLength = 4
+                .Column(Me.iGyComTipoCambio).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyTotalUSD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                .Column(Me.iGyTotalUSD).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyTotalUSD).DecimalLength = 2
-                .Column(Me.iGyTotalUSD).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyComTotalUSD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyComTotalUSD).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyComTotalUSD).DecimalLength = 2
+                .Column(Me.iGyComTotalUSD).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGySaldoUSD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                .Column(Me.iGySaldoUSD).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGySaldoUSD).DecimalLength = 2
-                .Column(Me.iGySaldoUSD).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyComSaldoUSD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyComSaldoUSD).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyComSaldoUSD).DecimalLength = 2
+                .Column(Me.iGyComSaldoUSD).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyImpuestoUSD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                .Column(Me.iGyImpuestoUSD).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyImpuestoUSD).DecimalLength = 2
-                .Column(Me.iGyImpuestoUSD).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyComImpuestoUSD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyComImpuestoUSD).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyComImpuestoUSD).DecimalLength = 2
+                .Column(Me.iGyComImpuestoUSD).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyTotalMXN).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                .Column(Me.iGyTotalMXN).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyTotalMXN).DecimalLength = 2
-                .Column(Me.iGyTotalMXN).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyComTotalMXN).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyComTotalMXN).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyComTotalMXN).DecimalLength = 2
+                .Column(Me.iGyComTotalMXN).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGySaldoMXN).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                .Column(Me.iGySaldoMXN).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGySaldoMXN).DecimalLength = 2
-                .Column(Me.iGySaldoMXN).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyComSaldoMXN_TpPago).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyComSaldoMXN_TpPago).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyComSaldoMXN_TpPago).DecimalLength = 2
+                .Column(Me.iGyComSaldoMXN_TpPago).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Column(Me.iGySaldoImpuesto).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 .Column(Me.iGySaldoImpuesto).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGySaldoImpuesto).DecimalLength = 2
                 .Column(Me.iGySaldoImpuesto).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyImpuestoMXN).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                .Column(Me.iGyImpuestoMXN).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyImpuestoMXN).DecimalLength = 2
-                .Column(Me.iGyImpuestoMXN).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyComImpuestoMXN).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyComImpuestoMXN).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyComImpuestoMXN).DecimalLength = 2
+                .Column(Me.iGyComImpuestoMXN).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyRetencion).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                .Column(Me.iGyRetencion).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyRetencion).DecimalLength = 2
-                .Column(Me.iGyRetencion).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyCxpRetencion).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyCxpRetencion).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyCxpRetencion).DecimalLength = 2
+                .Column(Me.iGyCxpRetencion).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyIVAPagado).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                .Column(Me.iGyIVAPagado).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyIVAPagado).DecimalLength = 2
-                .Column(Me.iGyIVAPagado).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyCxpIvaPagado).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyCxpIvaPagado).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyCxpIvaPagado).DecimalLength = 2
+                .Column(Me.iGyCxpIvaPagado).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyPagoMXN).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                .Column(Me.iGyPagoMXN).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyPagoMXN).DecimalLength = 2
-                .Column(Me.iGyPagoMXN).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyCxpTotal).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyCxpTotal).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyCxpTotal).DecimalLength = 2
+                .Column(Me.iGyCxpTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyPagoUSD).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-                .Column(Me.iGyPagoUSD).Mask = FlexCell.MaskEnum.Numeric
-                .Column(Me.iGyPagoUSD).DecimalLength = 2
-                .Column(Me.iGyPagoUSD).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.iGyCxpPagoUSDCapturado).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyCxpPagoUSDCapturado).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyCxpPagoUSDCapturado).DecimalLength = 2
+                .Column(Me.iGyCxpPagoUSDCapturado).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyAutorizado).CellType = FlexCell.CellTypeEnum.DateTime
-                .Column(Me.iGyAutorizado).FormatString = "dd-MMM-yy"
-                .Column(Me.iGyAutorizado).Visible = False
+                .Column(Me.iGyPagoAutorizado).CellType = FlexCell.CellTypeEnum.DateTime
+                .Column(Me.iGyPagoAutorizado).FormatString = "dd-MMM-yy"
+                .Column(Me.iGyPagoAutorizado).Visible = False
 
-                .Column(Me.iGySeleccion).CellType = FlexCell.CellTypeEnum.CheckBox
+                .Column(Me.iGyPagoPagoSeleccion).CellType = FlexCell.CellTypeEnum.CheckBox
 
                 '.Column(Me.iGyPagoDlls).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
                 '.Column(Me.iGyPagoDlls).Mask = FlexCell.MaskEnum.Numeric
@@ -1024,19 +1032,19 @@ enter:
                 '.Column(Me.iGyDiferencia).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
                 '.Column(Me.iGyDiferencia).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.iGyFacturaProveedor).Locked = True
-                .Column(Me.iGyFecha).Locked = True
-                .Column(Me.iGyFolio).Locked = True
-                .Column(Me.iGyMoneda).Locked = True
-                .Column(Me.iGyTipoCambio).Locked = True
-                .Column(Me.iGyTotalUSD).Locked = True
-                .Column(Me.iGySaldoUSD).Locked = True
-                .Column(Me.iGyImpuestoUSD).Locked = True
-                .Column(Me.iGyConcepto).Locked = True
-                .Column(Me.iGyTotalMXN).Locked = True
-                .Column(Me.iGySaldoMXN).Locked = True
+                .Column(Me.iGyComFacturaProveedor).Locked = True
+                .Column(Me.iGyComFecha).Locked = True
+                .Column(Me.iGyComFolio).Locked = True
+                .Column(Me.iGyComMoneda).Locked = True
+                .Column(Me.iGyComTipoCambio).Locked = True
+                .Column(Me.iGyComTotalUSD).Locked = True
+                .Column(Me.iGyComSaldoUSD).Locked = True
+                .Column(Me.iGyComImpuestoUSD).Locked = True
+                .Column(Me.iGyComConcepto).Locked = True
+                .Column(Me.iGyComTotalMXN).Locked = True
+                .Column(Me.iGyComSaldoMXN_TpPago).Locked = True
                 .Column(Me.iGySaldoImpuesto).Locked = True
-                .Column(Me.iGyImpuestoMXN).Locked = True
+                .Column(Me.iGyComImpuestoMXN).Locked = True
 
                 '.Column(Me.iGyPagoDlls).Locked = True
                 '.Column(Me.iGyTotalDlls).Locked = True
@@ -1136,14 +1144,14 @@ enter:
             If Me.LblStatus.Text = "NUEVO" And Me.ModoPago = enumModoPago.ACREEDOR Then ' And Me.CkbPagoFleteEmbarques.Checked = False Then
                 Exit Sub
             ElseIf Me.ModoPago = enumModoPago.PROVEEDOR Then
-                Me.TxtImporte.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyPagoMXN))) 'Esté total ya consideró la retención en Gastos
+                Me.TxtImporte.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyCxpTotal))) 'Esté total ya consideró la retención en Gastos
             End If
 
             If Me.LblStatus.Text = "NUEVO" And Me.CkbPagoFleteEmbarques.Checked = True Then
                 If Me.ModoPago = enumModoPago.ACREEDOR Then
                     Me.TxtImporte.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid2, CShort(Me.iGyPagoFlete)))
                 Else
-                    Me.TxtImporte.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyPagoMXN)))
+                    Me.TxtImporte.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyCxpTotal)))
                 End If
             End If
 
@@ -1170,15 +1178,15 @@ enter:
             dTipoCambio = Redondear(valorNumerico(Me.txtTipoCambio.Text), 4).ToString()
             Select Case Me.ModoPago
                 Case enumModoPago.PROVEEDOR
-                    dTotalMXN = FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyPagoMXN))
+                    dTotalMXN = FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyCxpTotal))
                     If Me.lblNombreMonedaOrigen.Text = "PESOS" Then
-                        dTotalUSD = FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyPagoUSD))
+                        dTotalUSD = FG_Grid_SumaCol(Me.Grid1, CShort(Me.iGyCxpPagoUSDCapturado))
                         If dTotalUSD <> 0 Then
                             dDiferenciaCambiaria = Redondear(Redondear(dTotalUSD * dTipoCambio) - dTotalMXN)
                         End If
                     Else
                         ' si la moneda origen no es pesos el total de lo pagado en cualquier moneda en el grid saldra en usd
-                        dTotalUSD = FG_Grid_Suma_Calculo_Usd(Me.Grid1, iGyPagoMXN, iGyPagoUSD, dTipoCambio)
+                        dTotalUSD = FG_Grid_Suma_Calculo_Usd(Me.Grid1, iGyCxpTotal, iGyCxpPagoUSDCapturado, dTipoCambio)
                         dDiferenciaCambiaria = Redondear(Redondear(dTotalUSD * dTipoCambio) - dTotalMXN)
                     End If
 
@@ -1318,24 +1326,24 @@ enter:
             Me.oCxpAfectaDocumentos = New Class_CXP_Afecta_Documentos
             If Me.ModoPago = enumModoPago.PROVEEDOR Then
                 For i = 1 To Me.Grid1.Rows - 1
-                    If valorNumerico(Me.Grid1.Cell(i, Me.iGyPagoMXN).Text) > 0 Then
+                    If valorNumerico(Me.Grid1.Cell(i, Me.iGyCxpTotal).Text) > 0 Then
                         With oCxpAfectaDocumentos
                             .FOLIO_CXP = "" 'Me.TxtFolio.Text
                             .CODIGO_PROVEEDOR = Me.TxtCodigoProveedor.Text
                             .FECHA = Me.dtFecha.Value
-                            .FOLIO_REFERENCIA = Me.Grid1.Cell(i, Me.iGyFolio).Text 'folio de la compra
-                            .FOLIO_REFERENCIA_USUARIO = Me.Grid1.Cell(i, Me.iGyFacturaProveedor).Text 'Folio factura proveedor de la compra, no tenemos
+                            .FOLIO_REFERENCIA = Me.Grid1.Cell(i, Me.iGyComFolio).Text 'folio de la compra
+                            .FOLIO_REFERENCIA_USUARIO = Me.Grid1.Cell(i, Me.iGyComFacturaProveedor).Text 'Folio factura proveedor de la compra, no tenemos
                             .CONCEPTO1 = Me.TxtConcepto.Text
                             .CONCEPTO2 = ""
                             .CODIGO_PLAZA = Usuario.Codigo_Plaza
-                            .TOTAL = valorNumerico(Me.Grid1.Cell(i, Me.iGyPagoMXN).Text)
-                            .RETENCION_IVA = valorNumerico(Me.Grid1.Cell(i, Me.iGyRetencion).Text)
+                            .TOTAL = valorNumerico(Me.Grid1.Cell(i, Me.iGyCxpTotal).Text)
+                            .RETENCION_IVA = valorNumerico(Me.Grid1.Cell(i, Me.iGyCxpRetencion).Text)
                             .TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
                             .FOLIO_BANCO = Me.TxtFolio.Text 'Se tiene que poner el del texbox porque se regreso el folio al Inserta_Global
                             .MODULO = "CXP"
                             .CODIGO_MONEDA = oCuentaBancaria.CODIGO_MONEDA
-                            .TOTAL_USD = valorNumerico(Me.Grid1.Cell(i, Me.iGyPagoUSD).Text)
-                            .IMPUESTO = valorNumerico(Me.Grid1.Cell(i, Me.iGyIVAPagado).Text)
+                            .TOTAL_USD = valorNumerico(Me.Grid1.Cell(i, Me.iGyCxpPagoUSDCapturado).Text)
+                            .IMPUESTO = valorNumerico(Me.Grid1.Cell(i, Me.iGyCxpIvaPagado).Text)
 
                             bResultadoParcial = .InsertarPagosProveedoresAcreedores(Class_CXP_Afecta_Documentos.enumModoPago.PROVEEDOR)
                         End With
@@ -1490,19 +1498,19 @@ enter:
 
                 Dim i As Integer, oCompra As Class_Compras_Global
                 For i = 1 To Grid1.Rows - 1
-                    If valorNumerico(Me.Grid1.Cell(i, Me.iGyPagoMXN).Text) > 0 And txtLEN(Me.Grid1.Cell(i, Me.iGyFolio).Text) = True Then
-                        If valorNumerico(Me.Grid1.Cell(i, Me.iGyPagoMXN).Text) > valorNumerico(Me.Grid1.Cell(i, Me.iGySaldoMXN).Text) Then
+                    If valorNumerico(Me.Grid1.Cell(i, Me.iGyCxpTotal).Text) > 0 And txtLEN(Me.Grid1.Cell(i, Me.iGyComFolio).Text) = True Then
+                        If valorNumerico(Me.Grid1.Cell(i, Me.iGyCxpTotal).Text) > valorNumerico(Me.Grid1.Cell(i, Me.iGyComSaldoMXN_TpPago).Text) Then
                             MsgBox("El pago en el renglón: " & i & " es mayor al saldo del documento favor de revisar.", MsgBoxStyle.Exclamation, "Validación de Importes de CXP")
                             Return False
                         End If
 
                         'Nota aunque sabemos que el nombre correcto de la moneda en pesos es MXN, en el sistema en la tabla se graba como MXP
-                        If Me.Grid1.Cell(i, Me.iGyMoneda).Text <> "MXP" AndAlso txtLEN(oProveedor.CUENTA_CONTABLE_DOLARES) = False Then
+                        If Me.Grid1.Cell(i, Me.iGyComMoneda).Text <> "MXP" AndAlso txtLEN(oProveedor.CUENTA_CONTABLE_DOLARES) = False Then
                             MsgBox("El proveedor/cuenta destino no tiene cuenta contable en moneda extranjera.", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
 
-                        oCompra = New Class_Compras_Global(Me.Grid1.Cell(i, Me.iGyFolio).Text, Me.Grid1.Cell(i, Me.iGyCodigoDocumento).Text)
+                        oCompra = New Class_Compras_Global(Me.Grid1.Cell(i, Me.iGyComFolio).Text, Me.Grid1.Cell(i, Me.iGyComCodigoDocumento).Text)
 
                         If oCuentaOrigen.ES_CUENTA_FISCAL <> oCompra.ES_FISCAL Then
                             If oCuentaOrigen.ES_CUENTA_FISCAL = True Then
@@ -2384,7 +2392,7 @@ enter:
                     Me.CkbPagoFleteEmbarques.Enabled = False
                     If Me.ModoPago = enumModoPago.PROVEEDOR Then
                         'Me.Grid1.Cell(0, Me.iGyPagoMXP).Text = "Pagado"
-                        Me.Grid1.Column(Me.iGySeleccion).Visible = False
+                        Me.Grid1.Column(Me.iGyPagoPagoSeleccion).Visible = False
                     End If
                     Me.tsbImprimir.Select()
                     Me.Grid2.Locked = True
@@ -2415,8 +2423,8 @@ enter:
                     Me.ckbAbonoCuentaBeneficiario.Enabled = False
                     Me.CkbPagoFleteEmbarques.Enabled = False
                     If Me.ModoPago = enumModoPago.PROVEEDOR Then
-                        Me.Grid1.Cell(0, Me.iGyPagoMXN).Text = "Pagado"
-                        Me.Grid1.Column(Me.iGySeleccion).Visible = False
+                        Me.Grid1.Cell(0, Me.iGyCxpTotal).Text = "Pagado"
+                        Me.Grid1.Column(Me.iGyPagoPagoSeleccion).Visible = False
                     End If
                     Me.tsbImprimir.Select()
                     Me.Grid2.Locked = True
