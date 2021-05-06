@@ -58,28 +58,28 @@ Public Class Frm_CXP_Pagos_Acreedores
     Private iGyComFolio As Integer = 3
     Private iGyComMoneda As Integer = 4
     Private iGyComTipoCambio As Integer = 5
-    'Private iGyComSubtotalUSD
-    Private iGyComImpuestoUSD As Integer = 6
-    Private iGyComTotalUSD As Integer = 7
-    Private iGyComSaldoUSD As Integer = 8
-    Private iGyComConcepto As Integer = 9
-    Private iGyComImpuestoMXN As Integer = 10
-    Private iGyComTotalMXN As Integer = 11
-    Private iGyComSaldoMXN_TpPago As Integer = 12
-    'Private iGyComSaldoMXN_CXP
-    Private iGySaldoImpuesto As Integer = 13
-    Private iGyCxpRetencion As Integer = 14
-    Private iGyCxpIvaPagado As Integer = 15
-    'Private iGyCxpIvaPendientePago
-    'Private iGyCxpPagoMXNCapturado
-    Private iGyCxpTotal As Integer = 16
-    Private iGyCxpPagoUSDCapturado As Integer = 17
-    Private iGyPagoPagoSeleccion As Integer = 18
-    Private iGyComCodigoDocumento As Integer = 19
-    Private iGyPagoAutorizado As Integer = 20
-    'iGyCxpPagoSubtotaMXNViejos
-    'iGyCxpPagoSubtotaMXNNuevos
-    'iGyCxpDiferenciaCambiaria
+    Private iGyComSubtotalUSD As Integer = 6 'New
+    Private iGyComImpuestoUSD As Integer = 7
+    Private iGyComTotalUSD As Integer = 8
+    Private iGyComSaldoUSD As Integer = 9
+    Private iGyComConcepto As Integer = 10
+    Private iGyComImpuestoMXN As Integer = 11
+    Private iGyComTotalMXN As Integer = 12
+    Private iGyComSaldoMXN_TpPago As Integer = 13
+    Private iGyComSaldoMXN_CXP As Integer = 14 'New
+    Private iGySaldoImpuesto As Integer = 15
+    Private iGyCxpRetencion As Integer = 16
+    Private iGyCxpIvaPagado As Integer = 17
+    Private iGyCxpIvaPendientePago As Integer = 18 'New
+    Private iGyCxpPagoMXNCapturado As Integer = 19 'New
+    Private iGyCxpTotal As Integer = 20
+    Private iGyCxpPagoUSDCapturado As Integer = 21
+    Private iGyPagoPagoSeleccion As Integer = 22
+    Private iGyComCodigoDocumento As Integer = 23
+    Private iGyPagoAutorizado As Integer = 24
+    Private iGyCxpPagoSubtotaMXNViejos As Integer = 25 'New
+    Private iGyCxpPagoSubtotaMXNNuevos As Integer = 26 'New
+    Private iGyCxpDiferenciaCambiaria As Integer = 27 'New
 
     'Private iGyIEPSPagado As Integer =16
     'No se sabe para que se crearon estas columnas
@@ -896,47 +896,62 @@ enter:
                 .Column(Me.iGyComFolio).Width = 70
                 .Column(Me.iGyComMoneda).Width = 30
                 .Column(Me.iGyComTipoCambio).Width = 50
+                .Column(Me.iGyComSubtotalUSD).Width = 70  'New
                 .Column(Me.iGyComTotalUSD).Width = 70
                 .Column(Me.iGyComSaldoUSD).Width = 70
                 .Column(Me.iGyComImpuestoUSD).Width = 70
                 .Column(Me.iGyComConcepto).Width = 100 '200
                 .Column(Me.iGyComTotalMXN).Width = 80
                 .Column(Me.iGyComSaldoMXN_TpPago).Width = 80
+                .Column(Me.iGyComSaldoMXN_CXP).Width = 80 'New
                 .Column(Me.iGySaldoImpuesto).Visible = False '.Column(Me.iGySaldoImpuesto).Width = 60
                 .Column(Me.iGyComImpuestoMXN).Width = 70
                 .Column(Me.iGyCxpRetencion).Width = 60
                 .Column(Me.iGyCxpIvaPagado).Width = 80
+                .Column(Me.iGyCxpIvaPendientePago).Width = 80  'New
+                .Column(Me.iGyCxpPagoMXNCapturado).Width = 80  'New
                 .Column(Me.iGyCxpTotal).Width = 80
                 .Column(Me.iGyCxpPagoUSDCapturado).Width = 70
                 .Column(Me.iGyPagoPagoSeleccion).Width = 55
                 .Column(Me.iGyComCodigoDocumento).Visible = False
                 .Column(Me.iGyPagoAutorizado).Width = 60
+                .Column(Me.iGyCxpPagoSubtotaMXNViejos).Width = 60 'New
+                .Column(Me.iGyCxpPagoSubtotaMXNNuevos).Width = 60 'New
+                .Column(Me.iGyCxpDiferenciaCambiaria).Width = 60 'New
 
                 '.Column(Me.iGyPagoDlls).Width = 70
                 '.Column(Me.iGyTotalDlls).Width = 80
                 '.Column(Me.iGySaldoDlls).Width = 80
                 '.Column(Me.iGyDiferencia).Width = 80
 
-                .Cell(0, Me.iGyComFacturaProveedor).Text = "Fac. Prov."
-                .Cell(0, Me.iGyComFecha).Text = "Fecha"
-                .Cell(0, Me.iGyComFolio).Text = "Folio"
-                .Cell(0, Me.iGyComMoneda).Text = "Mon"
-                .Cell(0, Me.iGyComTipoCambio).Text = "TpCam"
-                .Cell(0, Me.iGyComTotalUSD).Text = "Total USD"
-                .Cell(0, Me.iGyComSaldoUSD).Text = "Saldo USD"
-                .Cell(0, Me.iGyComImpuestoUSD).Text = "IVA USD"
+                .Cell(0, Me.iGyComFacturaProveedor).Text = "C.Fac. Prov."
+                .Cell(0, Me.iGyComFecha).Text = "C.Fecha"
+                .Cell(0, Me.iGyComFolio).Text = "C.Folio"
+                .Cell(0, Me.iGyComMoneda).Text = "C.Mon"
+                .Cell(0, Me.iGyComTipoCambio).Text = "C.TpCam"
+                .Cell(0, Me.iGyComSubtotalUSD).Text = "C.SubUSD" 'New
+                .Cell(0, Me.iGyComImpuestoUSD).Text = "C.IVAUSD"
+                .Cell(0, Me.iGyComTotalUSD).Text = "C.TotalUSD"
+                .Cell(0, Me.iGyComSaldoUSD).Text = "C.SaldoUSD"
                 .Cell(0, Me.iGyComConcepto).Text = "Concepto"
-                .Cell(0, Me.iGyComTotalMXN).Text = "Total MXN"
-                .Cell(0, Me.iGyComSaldoMXN_TpPago).Text = "Saldo MXN"
+                .Cell(0, Me.iGyComImpuestoMXN).Text = "C.IVAMXN"
+                .Cell(0, Me.iGyComTotalMXN).Text = "C.TotalMXN"
+                .Cell(0, Me.iGyComSaldoMXN_TpPago).Text = "C. SaldoMXN TpP"
+                .Cell(0, Me.iGyComSaldoMXN_CXP).Text = "C.SaldoCXP" 'New
                 .Cell(0, Me.iGySaldoImpuesto).Text = "Saldo Imp."
-                .Cell(0, Me.iGyComImpuestoMXN).Text = "IVA MXN"
                 .Cell(0, Me.iGyCxpRetencion).Text = "Retencion"
-                .Cell(0, Me.iGyCxpIvaPagado).Text = "IVA Pagar MXN"
-                .Cell(0, Me.iGyCxpTotal).Text = "Pagar MXN"
-                .Cell(0, Me.iGyCxpPagoUSDCapturado).Text = "Pagar USD"
+                .Cell(0, Me.iGyCxpIvaPagado).Text = "IVAPagado"
+                .Cell(0, Me.iGyCxpIvaPendientePago).Text = "IVAPendPago" 'New
+                .Cell(0, Me.iGyCxpPagoMXNCapturado).Text = "Pago MXN" 'New
+                .Cell(0, Me.iGyCxpTotal).Text = "CXPTotal"
+                .Cell(0, Me.iGyCxpPagoUSDCapturado).Text = "Pago USD"
                 .Cell(0, Me.iGyPagoPagoSeleccion).Text = "Selección"
                 .Cell(0, Me.iGyComCodigoDocumento).Text = "CodigoDocumento "
                 .Cell(0, Me.iGyPagoAutorizado).Text = "Autorizado"
+                .Cell(0, Me.iGyCxpPagoSubtotaMXNViejos).Text = "CXPSubTotal" 'New
+                .Cell(0, Me.iGyCxpPagoSubtotaMXNNuevos).Text = "CXPSubTotalMXNNuevos" 'New
+                .Cell(0, Me.iGyCxpDiferenciaCambiaria).Text = "Diferen.camb." 'New
+
 
                 '.Cell(0, Me.iGyTotalDlls).Text = "Total Dlls"
                 '.Cell(0, Me.iGySaldoDlls).Text = "Saldo Dlls"
