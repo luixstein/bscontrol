@@ -2070,6 +2070,9 @@ Buscar:
 
                 EsFacturaVariasRemisiones = False
 
+                'Todo este código tiene que ver con la generación de la nota de crédito por aplicación de anticipo.
+                'En el ValidarVenta nos aseguramos que en caso de ser tipo de relación 07 , sólo permita una factura de tipo anticipo de modo que al llegar aquí eso ya es un hecho.
+                '(Revolver una de anticipo y una normal no es válido y el ValidarVenta no deja avanzar)
                 If Me.cboTipoRelacionCFDI.SelectedIndex <> -1 AndAlso Me.cboTipoRelacionCFDI.SelectedValue.ToString = "07" Then '07=CFDI por aplicación de anticipo
                     Dim sFolioVentaAnticipo As String = "", iVentasRelacionadas As Integer = 0
 
@@ -2077,7 +2080,22 @@ Buscar:
                         If txtLEN(Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolio).Text) = True Then
                             iVentasRelacionadas += 1
                             sFolioVentaAnticipo = Me.GridCFDIsRelacionados.Cell(i, iGyGRFolio).Text
-                            Exit For 'De momento sólo se permite relacionar una sóla factura de anticipo.
+
+                            Dim sSQL As String =
+                            "SELECT * INTO #VW_SIS_CAT_DOCUMENTOS_EXTENDIDO FROM VW_SIS_CAT_DOCUMENTOS_EXTENDIDO " +
+                            "SELECT DOC.ES_FACTURA_ANTICIPO " +
+                            "FROM VENTA_GLOBAL ANT " +
+                            "INNER JOIN #VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(ANT.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " +
+                            "WHERE ANT.FOLIO_VENTA='" + sFolioVentaAnticipo + "' "
+
+                            Dim tFind As New Class_find(sSQL)
+
+                            If tFind.Result1 = "1" Then 'Si DOC.ES_FACTURA_ANTICIPO='1' es decir que es una factura de tipo anticipo.
+                                'bTieneFacturasTipoAnticipo = True
+                                Exit For 'De momento sólo se permite relacionar una sóla factura de anticipo.
+                            Else
+                                sFolioVentaAnticipo = "" 'No es de tipo anticipo por eso se pierde el dato para no grabar por error la nota de crédito.
+                            End If
                         End If
                     Next
 
@@ -2592,18 +2610,53 @@ CANCELAR:
 
             End If
 
+            Dim bTieneFacturasTipoAnticipo As Boolean = False, iVentasRelacionadas As Integer = 0, iVentasAnticipos As Integer = 0
+
+            'Detectar si es anticipo de los viejos(permiten relacionar varias y no deben ser fact. anticipo), o de los nuevos(sólo permiten relacionar uno y de tipo factura de anticipo)
             If Me.cboTipoRelacionCFDI.SelectedIndex <> -1 AndAlso Me.cboTipoRelacionCFDI.SelectedValue.ToString = "07" Then '07=CFDI por aplicación de anticipo
-                Dim sFolioVentaAnticipo As String = "", iVentasRelacionadas As Integer = 0
+                Dim sFolioVentaRelacionada As String = ""
 
                 For i = 1 To Me.GridCFDIsRelacionados.Rows - 1
                     If txtLEN(Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolio).Text) = True Then
                         iVentasRelacionadas += 1
+                        sFolioVentaRelacionada = Me.GridCFDIsRelacionados.Cell(i, iGyGRFolio).Text
+
+                        Dim sSQL As String =
+                        "SELECT * INTO #VW_SIS_CAT_DOCUMENTOS_EXTENDIDO FROM VW_SIS_CAT_DOCUMENTOS_EXTENDIDO " +
+                        "SELECT DOC.ES_FACTURA_ANTICIPO " +
+                        "FROM VENTA_GLOBAL ANT " +
+                        "INNER JOIN #VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(ANT.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " +
+                        "WHERE ANT.FOLIO_VENTA='" + sFolioVentaRelacionada + "' "
+
+                        Dim tFind As New Class_find(sSQL)
+
+                        If tFind.Result1 = "1" Then 'Si DOC.ES_FACTURA_ANTICIPO='1' es decir que es una factura de tipo anticipo.
+                            bTieneFacturasTipoAnticipo = True
+                            Exit For
+                        End If
+
+                    End If
+                Next
+            End If
+
+            'Notas
+            'Aunque el código de arriba se asemeja(no es igual) a este debajo no tratar de unificar ya que el objetivo de arriba es saber si hay al menos una factura de anticipo.
+            'No se pregunta por  bTieneFacturasTipoAnticipo = False porque entonces se ocupa anidar mas hacia dentro el if donde si sea de anticipo
+            'En cambio por eso sl siguiente if empieza con If bTieneFacturasTipoAnticipo = True AndAlso
+            'Si bTieneFacturasTipoAnticipo = True y el tipo de relación fuera otra<>07, no se limita su uso, y claro no va generar nota de crédito.
+
+            If bTieneFacturasTipoAnticipo = True AndAlso Me.cboTipoRelacionCFDI.SelectedIndex <> -1 AndAlso Me.cboTipoRelacionCFDI.SelectedValue.ToString = "07" Then '07=CFDI por aplicación de anticipo
+                Dim sFolioVentaAnticipo As String = ""
+
+                For i = 1 To Me.GridCFDIsRelacionados.Rows - 1
+                    If txtLEN(Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolio).Text) = True Then
+                        iVentasAnticipos += 1
                         sFolioVentaAnticipo = Me.GridCFDIsRelacionados.Cell(i, iGyGRFolio).Text
                     End If
                 Next
 
-                If iVentasRelacionadas > 1 Then
-                    MsgBox("De momento sólo puede relacionarse una sola factura por anticipo.", MsgBoxStyle.Exclamation, sProcedure)
+                If iVentasAnticipos > 1 Then
+                    MsgBox("De momento sólo puede relacionarse una sola factura de tipo anticipo.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
 
