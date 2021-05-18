@@ -1789,4 +1789,12 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub CalificasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CalificasToolStripMenuItem.Click
+        Dim Child As New Rpt_Ventas_Calificas
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class

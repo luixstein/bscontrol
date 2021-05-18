@@ -252,8 +252,7 @@ Buscar:
 
     Private Sub Consultar()
         Dim FormatoDeReporte As String = ""
-        Dim Rpt As ReportDocument
-        Rpt = New ReportDocument
+        Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
         Try
             If Me.ValidarPeriodo = False Then

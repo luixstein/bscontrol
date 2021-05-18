@@ -145,6 +145,7 @@ Partial Public Class AppMenu
         Me.VentaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LotesCostosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ComisionesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EmbarquesPorSocioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EnvioDeFacturasElectronicasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CapturaVentassemanalesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ModificaCostoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -255,7 +256,7 @@ Partial Public Class AppMenu
         Me.EstadoFinancieroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuSalir2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
-        Me.EmbarquesPorSocioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CalificasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.MenuStrip2.SuspendLayout()
@@ -982,7 +983,7 @@ Partial Public Class AppMenu
         '
         'ConsultaToolStripMenuItem1
         '
-        Me.ConsultaToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GlobalToolStripMenuItem, Me.ProductosVendidosToolStripMenuItem, Me.TopTenClientesToolStripMenuItem, Me.TopTenProductosToolStripMenuItem, Me.ComparativoToolStripMenuItem, Me.LotesCostosToolStripMenuItem, Me.ComisionesToolStripMenuItem, Me.EmbarquesPorSocioToolStripMenuItem})
+        Me.ConsultaToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GlobalToolStripMenuItem, Me.ProductosVendidosToolStripMenuItem, Me.TopTenClientesToolStripMenuItem, Me.TopTenProductosToolStripMenuItem, Me.ComparativoToolStripMenuItem, Me.LotesCostosToolStripMenuItem, Me.ComisionesToolStripMenuItem, Me.EmbarquesPorSocioToolStripMenuItem, Me.CalificasToolStripMenuItem})
         Me.ConsultaToolStripMenuItem1.Name = "ConsultaToolStripMenuItem1"
         Me.ConsultaToolStripMenuItem1.Size = New System.Drawing.Size(230, 22)
         Me.ConsultaToolStripMenuItem1.Text = "Consultas"
@@ -1047,6 +1048,12 @@ Partial Public Class AppMenu
         Me.ComisionesToolStripMenuItem.Name = "ComisionesToolStripMenuItem"
         Me.ComisionesToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
         Me.ComisionesToolStripMenuItem.Text = "Comisiones"
+        '
+        'EmbarquesPorSocioToolStripMenuItem
+        '
+        Me.EmbarquesPorSocioToolStripMenuItem.Name = "EmbarquesPorSocioToolStripMenuItem"
+        Me.EmbarquesPorSocioToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
+        Me.EmbarquesPorSocioToolStripMenuItem.Text = "Embarques por socio"
         '
         'EnvioDeFacturasElectronicasToolStripMenuItem
         '
@@ -1747,11 +1754,11 @@ Partial Public Class AppMenu
         Me.pbLogo.TabStop = False
         Me.pbLogo.Visible = False
         '
-        'EmbarquesPorSocioToolStripMenuItem
+        'CalificasToolStripMenuItem
         '
-        Me.EmbarquesPorSocioToolStripMenuItem.Name = "EmbarquesPorSocioToolStripMenuItem"
-        Me.EmbarquesPorSocioToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
-        Me.EmbarquesPorSocioToolStripMenuItem.Text = "Embarques por socio"
+        Me.CalificasToolStripMenuItem.Name = "CalificasToolStripMenuItem"
+        Me.CalificasToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
+        Me.CalificasToolStripMenuItem.Text = "Calificas"
         '
         'AppMenu
         '
@@ -2014,4 +2021,5 @@ Partial Public Class AppMenu
     Friend WithEvents AlimentaciónAnteriorToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents EmbarquesToolStripMenuItem2 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents EmbarquesPorSocioToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents CalificasToolStripMenuItem As ToolStripMenuItem
 End Class
