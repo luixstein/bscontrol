@@ -7,101 +7,155 @@ Public Class Rpt_Ventas_ProductosVendidos
     Private oArticulos As New Class_CatArticulos
     Private oClientes As New Class_CatClientes
 
+#Region "Opciones"
+    Private Sub tsbConsultar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbConsultar.Click
+        Me.Consultar()
+    End Sub
+
+    Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
+        Me.Close()
+    End Sub
+#End Region
+
+#Region "Eventos de objetos"
+    Private Sub Rpt_Embarques_Empaque_Y_Embarque_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Try
+            Me.DesplegarTiposDocumentos()
+            Me.DesplegarZonas()
+            Me.DesplegarAlmacen()
+            Me.DesplegarMercados()
+            Me.DesplegarLineas()
+            Me.DesplegarFamilias()
+            Me.DesplegarCultivos()
+            Me.DesplegarVendedores()
+
+            Me.DtFechaDesde.Value = FechaActualINI()
+            Me.DtFechaHasta.Value = Date.Now
+        Catch ex As Exception
+            HandleError(Me.Name, "Rpt_Embarques_Empaque_Y_Embarque_Load", ex)
+        End Try
+    End Sub
+
     Private Sub TxtClientes_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCliente.KeyDown
-        Dim sText As String
-        Select Case e.KeyCode
-            Case Keys.F6
+        Try
+            Dim sText As String
+            Select Case e.KeyCode
+                Case Keys.F6
 Buscar:
-                sText = Me.oClientes.BusquedaVisual_PorDescripcion
-                If txtLEN(sText) = True Then Me.TxtCliente.Text = sText
-            Case Keys.Enter
-                If txtLEN(Me.TxtCliente.Text) = False Then
-                    Me.lblNombreCliente.Text = ""
-                    Me.CkbFechaReferencia.Focus()
-                    Exit Sub
-                End If
+                    sText = Me.oClientes.BusquedaVisual_PorDescripcion
+                    If txtLEN(sText) = True Then Me.TxtCliente.Text = sText
+                Case Keys.Enter
+                    If txtLEN(Me.TxtCliente.Text) = False Then
+                        Me.lblNombreCliente.Text = ""
+                        Me.CkbFechaReferencia.Focus()
+                        Exit Sub
+                    End If
 
-                Me.oClientes = New Class_CatClientes(Me.TxtCliente.Text)
-                If Me.oClientes.Existe = False Then
-                    Me.lblNombreCliente.Text = "" : GoTo Buscar : Exit Sub
-                End If
+                    Me.oClientes = New Class_CatClientes(Me.TxtCliente.Text)
+                    If Me.oClientes.Existe = False Then
+                        Me.lblNombreCliente.Text = "" : GoTo Buscar : Exit Sub
+                    End If
 
-                Me.lblNombreCliente.Text = Me.oClientes.NOMBRE_CLIENTE
-                txtTAB(e)
-        End Select
+                    Me.lblNombreCliente.Text = Me.oClientes.NOMBRE_CLIENTE
+                    txtTAB(e)
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, "TxtClientes_KeyDown", ex)
+        End Try
     End Sub
 
     Private Sub TxtCodigoProducto_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoProducto.KeyDown
-        Dim sText As String
-        Select Case e.KeyCode
-            Case Keys.F6
+        Try
+            Dim sText As String
+            Select Case e.KeyCode
+                Case Keys.F6
 Buscar:
-                sText = Me.oArticulos.BusquedaVisual_PorDescripcion
-                If txtLEN(sText) = True Then Me.TxtCodigoProducto.Text = sText
-            Case Keys.Enter
-                If txtLEN(Me.TxtCodigoProducto.Text) = False Then
-                    Me.LblNombreProducto.Text = ""
-                    Me.CboAlmacen.Focus()
-                    Exit Sub
-                End If
+                    sText = Me.oArticulos.BusquedaVisual_PorDescripcion
+                    If txtLEN(sText) = True Then Me.TxtCodigoProducto.Text = sText
+                Case Keys.Enter
+                    If txtLEN(Me.TxtCodigoProducto.Text) = False Then
+                        Me.LblNombreProducto.Text = ""
+                        Me.CboAlmacen.Focus()
+                        Exit Sub
+                    End If
 
-                Me.oArticulos = New Class_CatArticulos(Me.TxtCodigoProducto.Text)
-                If Me.oArticulos.Existe = False Then
-                    Me.LblNombreProducto.Text = "" : GoTo Buscar : Exit Sub
-                End If
+                    Me.oArticulos = New Class_CatArticulos(Me.TxtCodigoProducto.Text)
+                    If Me.oArticulos.Existe = False Then
+                        Me.LblNombreProducto.Text = "" : GoTo Buscar : Exit Sub
+                    End If
 
-                Me.LblNombreProducto.Text = Me.oArticulos.DESCRIPCION
-                txtTAB(e)
-        End Select
+                    Me.LblNombreProducto.Text = Me.oArticulos.DESCRIPCION
+                    txtTAB(e)
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, "TxtCodigoProducto_KeyDown", ex)
+        End Try
     End Sub
 
-    Private Sub Rdn_CheckedChanged(sender As Object, e As EventArgs) Handles RdnVentasPorCultivo.CheckedChanged, RdnVentasPorFacturas.CheckedChanged, RdnDevoluciones.CheckedChanged, rdnVtaUtilidadGasto.CheckedChanged
-        If Me.RdnDevoluciones.Checked = True Then
-            Me.CboTipoDocumento.Visible = False
-            Me.lblDocumentos.Visible = False
-            Me.CkbFechaReferencia.Visible = False
-            Me.CboMercado.Visible = False
-            Me.CboCultivoAgricola.Visible = False
-            Me.LblDisplayMercado.Visible = False
-            Me.lblCultivoAgricola.Visible = False
-            Me.cboVendedor.Visible = False
+    Private Sub Rdn_CheckedChanged(sender As Object, e As EventArgs) Handles RdnVentasPorCultivo.CheckedChanged, RdnVentasPorFacturas.CheckedChanged, RdnDevoluciones.CheckedChanged, rdnVtaUtilidadGasto.CheckedChanged, RdnVentasPorCultivo.CheckedChanged
+        Try
+            If Me.RdnDevoluciones.Checked = True Then
+                Me.CboTipoDocumento.Visible = False
+                Me.lblDocumentos.Visible = False
+                Me.CkbFechaReferencia.Visible = False
+                Me.CboMercado.Visible = False
+                Me.CboCultivoAgricola.Visible = False
+                Me.LblDisplayMercado.Visible = False
+                Me.lblCultivoAgricola.Visible = False
+                Me.cboVendedor.Visible = False
 
-            Me.LblDisplayProducto.Visible = True
-            Me.TxtCodigoProducto.Visible = True
-            Me.LblNombreProducto.Visible = True
-            Me.LblDisplayLinea.Visible = True
-            Me.CboLinea.Visible = True
-            Me.LblFamilia.Visible = True
-            Me.CboFamilia.Visible = True
+                Me.LblDisplayProducto.Visible = True
+                Me.TxtCodigoProducto.Visible = True
+                Me.LblNombreProducto.Visible = True
+                Me.LblDisplayLinea.Visible = True
+                Me.CboLinea.Visible = True
+                Me.LblFamilia.Visible = True
+                Me.CboFamilia.Visible = True
 
-        Else
-            Me.CboTipoDocumento.Visible = True
-            Me.lblDocumentos.Visible = True
-            Me.CkbFechaReferencia.Visible = True
-            Me.CboMercado.Visible = True
-            Me.CboCultivoAgricola.Visible = True
-            Me.LblDisplayMercado.Visible = True
-            Me.lblCultivoAgricola.Visible = True
-            Me.cboVendedor.Visible = True
+            Else
+                Me.CboTipoDocumento.Visible = True
+                Me.lblDocumentos.Visible = True
+                Me.CkbFechaReferencia.Visible = True
+                Me.CboMercado.Visible = True
+                Me.CboCultivoAgricola.Visible = True
+                Me.LblDisplayMercado.Visible = True
+                Me.lblCultivoAgricola.Visible = True
+                Me.cboVendedor.Visible = True
 
-            Me.LblDisplayProducto.Visible = True
-            Me.TxtCodigoProducto.Visible = True
-            Me.LblNombreProducto.Visible = True
-            Me.LblDisplayLinea.Visible = True
-            Me.CboLinea.Visible = True
-            Me.LblFamilia.Visible = True
-            Me.CboFamilia.Visible = True
+                Me.LblDisplayProducto.Visible = True
+                Me.TxtCodigoProducto.Visible = True
+                Me.LblNombreProducto.Visible = True
+                Me.LblDisplayLinea.Visible = True
+                Me.CboLinea.Visible = True
+                Me.LblFamilia.Visible = True
+                Me.CboFamilia.Visible = True
 
-        End If
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, "Rdn_CheckedChanged", ex)
+        End Try
+    End Sub
+#End Region
+
+#Region "Eventos Genericos"
+    Private Sub TxtCodArticulo_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboTipoDocumento.KeyPress, CboZona.KeyPress, TxtCliente.KeyPress, CkbFechaReferencia.KeyPress,
+    TxtCodigoProducto.KeyPress, CboAlmacen.KeyPress, CboMercado.KeyPress, CboLinea.KeyPress, CboFamilia.KeyPress, CboCultivoAgricola.KeyPress, DtFechaHasta.KeyPress, DtFechaDesde.KeyPress, DtFechaHasta.KeyPress, DtFechaDesde.KeyPress, cboVendedor.KeyPress
+        txtNoBeep(e)
     End Sub
 
+    Private Sub cboCultivo_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboTipoDocumento.KeyDown, CboZona.KeyDown, TxtCliente.KeyDown, CkbFechaReferencia.KeyDown,
+    TxtCodigoProducto.KeyDown, CboAlmacen.KeyDown, CboMercado.KeyDown, CboLinea.KeyDown, CboFamilia.KeyDown, CboCultivoAgricola.KeyDown, DtFechaHasta.KeyDown, DtFechaDesde.KeyDown, cboVendedor.KeyDown
+        txtTAB(e)
+    End Sub
+#End Region
+
+#Region "Métodos y procedimientos"
     Private Sub DesplegarAlmacen()
         Dim oAlmacen As New Class_CatAlmacenes
         Try
             With Me.CboAlmacen
                 .DisplayMember = "NOMBRE_ALMACEN"
                 .ValueMember = "CODIGO_ALMACEN"
-
                 Dim dView As New Data.DataView(oAlmacen.ObtenerAlmacenesParaReportes())
                 dView.Sort = "NOMBRE_ALMACEN"
                 .DataSource = dView
@@ -118,14 +172,13 @@ Buscar:
             With Me.CboTipoDocumento
                 .DisplayMember = "NOMBRE_TIPO_DOCUMENTO"
                 .ValueMember = "CODIGO_TIPO_DOCUMENTO"
-
                 Dim dView As New Data.DataView(oDocumentos.ObtenerTiposDocumentosParaReportes("", "0", "CODIGO_MODULO='VTA' AND AFECTA_CXC='1' AND AFECTA_INVENTARIOS='1' "))
                 dView.Sort = "NOMBRE_TIPO_DOCUMENTO"
                 .DataSource = dView
                 .Text = "TODOS"
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarAlmacen", ex)
+            HandleError(Me.Name, "DesplegarTiposDocumentos", ex)
         End Try
     End Sub
 
@@ -135,7 +188,6 @@ Buscar:
             With Me.CboLinea
                 .DisplayMember = "NOMBRE_LINEA"
                 .ValueMember = "CODIGO_LINEA"
-
                 Dim dView As New Data.DataView(oLinea.ObtenerElementosParaReportes)
                 dView.Sort = "NOMBRE_LINEA"
                 .DataSource = dView
@@ -152,7 +204,6 @@ Buscar:
             With Me.CboMercado
                 .DisplayMember = "NOMBRE_TIPO_MERCADO"
                 .ValueMember = "CODIGO_TIPO_MERCADO"
-
                 Dim dView As New Data.DataView(oMercados.ObtenerTiposMercadosParaReportes())
                 dView.Sort = "NOMBRE_TIPO_MERCADO"
                 .DataSource = dView
@@ -169,7 +220,6 @@ Buscar:
             With Me.CboFamilia
                 .DisplayMember = "NOMBRE_FAMILIA"
                 .ValueMember = "CODIGO_FAMILIA"
-
                 Dim dView As New Data.DataView(oFamilia.ObtenerElementosParaReportes())
                 dView.Sort = "NOMBRE_FAMILIA"
                 .DataSource = dView
@@ -186,7 +236,6 @@ Buscar:
             With Me.CboZona
                 .DisplayMember = "NOMBRE_ZONA"
                 .ValueMember = "CODIGO_ZONA"
-
                 Dim dView As New Data.DataView(oZonas.ObtenerZonasParaReportes())
                 dView.Sort = "NOMBRE_ZONA"
                 .DataSource = dView
@@ -204,7 +253,6 @@ Buscar:
             With Me.CboCultivoAgricola
                 .DisplayMember = "NOMBRE_CULTIVO"
                 .ValueMember = "CODIGO_CULTIVO"
-
                 Dim dView As New Data.DataView(oCultivos.ObtenerElementosParaReportes())
                 dView.Sort = "NOMBRE_CULTIVO"
                 .DataSource = dView
@@ -221,7 +269,6 @@ Buscar:
             With Me.cboVendedor
                 .DisplayMember = "NOMBRE_VENDEDOR"
                 .ValueMember = "CODIGO_VENDEDOR"
-
                 Dim dView As New Data.DataView(oVendedores.ObtenerVendedoresParaReportes())
                 dView.Sort = "NOMBRE_VENDEDOR"
                 .DataSource = dView
@@ -232,31 +279,13 @@ Buscar:
         End Try
     End Sub
 
-    Private Sub Rpt_Embarques_Empaque_Y_Embarque_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.DesplegarTiposDocumentos()
-        Me.DesplegarZonas()
-        Me.DesplegarAlmacen()
-        Me.DesplegarMercados()
-        Me.DesplegarLineas()
-        Me.DesplegarFamilias()
-        Me.DesplegarCultivos()
-        Me.DesplegarVendedores()
-
-        Me.DtFechaDesde.Value = FechaActualINI()
-        Me.DtFechaHasta.Value = Date.Now
-    End Sub
-
-    Private Sub tsbConsultar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbConsultar.Click
-        Consultar()
-    End Sub
-
     Private Sub Consultar()
         Dim FormatoDeReporte As String = ""
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
         Try
             If Me.ValidarPeriodo = False Then
-                Exit Sub
+                Return
             End If
 
             If Me.RdnVentasPorFacturas.Checked = True Then
@@ -265,19 +294,20 @@ Buscar:
                 FormatoDeReporte = "RPT_VENTAS_AGRUPADO_CULTIVO"
             ElseIf Me.RdnDevoluciones.Checked = True Then
                 FormatoDeReporte = "RPT_CXC_DEVOLUCIONES"
-            Else
+            ElseIf Me.rdnVtaUtilidadGasto.Checked = True Then
                 FormatoDeReporte = "RPT_VENTAS_UTILIDAD_CON_GASTO"
+            ElseIf Me.rdnVentasPorArticulo.Checked = True Then
+                FormatoDeReporte = "RPT_VENTAS_AGRUPADO_ARTICULO"
             End If
 
             oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
+
             Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.TxtCliente.Text)
             Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_ALMACEN", Me.CboAlmacen.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_USUARIO", Usuario.Codigo_Usuario.ToString)
-
-
             Rpt.SetParameterValue("@CODIGO_ARTICULO", Me.TxtCodigoProducto.Text)
             Rpt.SetParameterValue("@CODIGO_LINEA", Me.CboLinea.SelectedValue.ToString)
             Rpt.SetParameterValue("@CODIGO_FAMILIA", Me.CboFamilia.SelectedValue.ToString)
@@ -310,32 +340,10 @@ Buscar:
         If Me.DtFechaDesde.Value > Me.DtFechaHasta.Value Then
             MsgBox("Rango de fechas inválidas.", MsgBoxStyle.Exclamation, Me.Name)
             Me.DtFechaDesde.Focus()
-            Exit Function
+            Return False
         End If
-        ValidarPeriodo = True
+        Return True
     End Function
-
-    Private Sub TxtCodArticulo_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboTipoDocumento.KeyPress, CboZona.KeyPress, TxtCliente.KeyPress, CkbFechaReferencia.KeyPress, _
-    TxtCodigoProducto.KeyPress, CboAlmacen.KeyPress, CboMercado.KeyPress, CboLinea.KeyPress, CboFamilia.KeyPress, CboCultivoAgricola.KeyPress, DtFechaHasta.KeyPress, DtFechaDesde.KeyPress, DtFechaHasta.KeyPress, DtFechaDesde.KeyPress, cboVendedor.KeyPress
-        txtNoBeep(e)
-    End Sub
-
-    Private Sub cboCultivo_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboTipoDocumento.KeyDown, CboZona.KeyDown, TxtCliente.KeyDown, CkbFechaReferencia.KeyDown, _
-    TxtCodigoProducto.KeyDown, CboAlmacen.KeyDown, CboMercado.KeyDown, CboLinea.KeyDown, CboFamilia.KeyDown, CboCultivoAgricola.KeyDown, DtFechaHasta.KeyDown, DtFechaDesde.KeyDown, cboVendedor.KeyDown
-        txtTAB(e)
-    End Sub
-
-    Private Sub tsbSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSalir.Click
-        Me.Close()
-    End Sub
-
-    Public Sub New()
-
-        ' This call is required by the Windows Form Designer.
-        InitializeComponent()
-
-        ' Add any initialization after the InitializeComponent() call.
-
-    End Sub
+#End Region
 
 End Class

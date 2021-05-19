@@ -131,7 +131,7 @@ Buscar:
         Try
             If Me.rdnCalificaProductoFlujo.Checked = True Then
                 FormatoDeReporte = "RPT_Q_CALIFICA_PRODUCTOS_FLUJO_HORIZONTAL"
-                'ElseIf  @ = True Then
+                'ElseIf Me.algo.Checked= True Then
                 'FormatoDeReporte = ""
             End If
 
