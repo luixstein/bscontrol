@@ -600,8 +600,8 @@ Buscar:
         End If
     End Sub
 
-    Private Sub Grid1_CellChanging(ByVal Sender As Object, ByVal e As FlexCell.Grid.CellChangingEventArgs) Handles GridVentas.CellChanging
-        Const sProcedure As String = "Grid1_CellChanging"
+    Private Sub GridVentas_CellChanging(ByVal Sender As Object, ByVal e As FlexCell.Grid.CellChangingEventArgs) Handles GridVentas.CellChanging
+        Const sProcedure As String = "GridVentas_CellChanging"
         Try
             Dim Columna As Integer = e.Col, Renglon As Integer = e.Row, dPagoMXN As Decimal, dPagoUSD As Decimal
             Dim sMonedaVenta As String = Me.GridVentas.Cell(Renglon, Me.iGyB_VtaMoneda).Text
@@ -656,7 +656,7 @@ Buscar:
         End Try
     End Sub
 
-    Private Sub Grid_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridVentas.KeyDown
+    Private Sub GridVentas_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridVentas.KeyDown
         Me.GestionaGrid(e)
     End Sub
 
