@@ -57,7 +57,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.lblDisplayCuentaContableOrigenRecursos = New System.Windows.Forms.Label()
         Me.ckbAbonoCuentaBeneficiario = New System.Windows.Forms.CheckBox()
         Me.lblMoneda = New System.Windows.Forms.Label()
-        Me.cboMoneda = New System.Windows.Forms.ComboBox()
+        Me.cboMonedaPago = New System.Windows.Forms.ComboBox()
         Me.lblNombreMonedaDestino = New System.Windows.Forms.Label()
         Me.lblNombreMonedaOrigen = New System.Windows.Forms.Label()
         Me.lblDisplayTipoPago = New System.Windows.Forms.Label()
@@ -337,7 +337,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.gbGlobal.Controls.Add(Me.lblDisplayCuentaContableOrigenRecursos)
         Me.gbGlobal.Controls.Add(Me.ckbAbonoCuentaBeneficiario)
         Me.gbGlobal.Controls.Add(Me.lblMoneda)
-        Me.gbGlobal.Controls.Add(Me.cboMoneda)
+        Me.gbGlobal.Controls.Add(Me.cboMonedaPago)
         Me.gbGlobal.Controls.Add(Me.TxtImporte)
         Me.gbGlobal.Controls.Add(Me.lblNombreMonedaDestino)
         Me.gbGlobal.Controls.Add(Me.lblNombreMonedaOrigen)
@@ -438,14 +438,14 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.lblMoneda.TabIndex = 382
         Me.lblMoneda.Text = "Moneda :"
         '
-        'cboMoneda
+        'cboMonedaPago
         '
-        Me.cboMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboMoneda.FormattingEnabled = True
-        Me.cboMoneda.Location = New System.Drawing.Point(309, 158)
-        Me.cboMoneda.Name = "cboMoneda"
-        Me.cboMoneda.Size = New System.Drawing.Size(83, 21)
-        Me.cboMoneda.TabIndex = 381
+        Me.cboMonedaPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboMonedaPago.FormattingEnabled = True
+        Me.cboMonedaPago.Location = New System.Drawing.Point(309, 158)
+        Me.cboMonedaPago.Name = "cboMonedaPago"
+        Me.cboMonedaPago.Size = New System.Drawing.Size(83, 21)
+        Me.cboMonedaPago.TabIndex = 381
         '
         'lblNombreMonedaDestino
         '
@@ -814,7 +814,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
     Friend WithEvents cboTipoPago As System.Windows.Forms.ComboBox
     Friend WithEvents lblNombreMonedaOrigen As System.Windows.Forms.Label
     Friend WithEvents lblNombreMonedaDestino As System.Windows.Forms.Label
-    Friend WithEvents cboMoneda As System.Windows.Forms.ComboBox
+    Friend WithEvents cboMonedaPago As System.Windows.Forms.ComboBox
     Friend WithEvents lblMoneda As System.Windows.Forms.Label
     Friend WithEvents tsbIvaAcreditable As ToolStripButton
     Friend WithEvents txtCuentaContableOrigenRecursos As TextBox

@@ -302,9 +302,9 @@ enter:
                     Me.lblCuentaBancaria.Text = oCuentaBancaria.NOMBRE_CUENTA_BANCARIA
                     Me.lblNombreMonedaOrigen.Text = oCuentaBancaria.NOMBRE_MONEDA
                     If oCuentaBancaria.CODIGO_MONEDA <> "1" Then '1=pesos
-                        Me.cboMoneda.SelectedValue = 2 'USD 'Nota, aqui es SelectedValue y no SelectedIndex
+                        Me.cboMonedaPago.SelectedValue = 2 'USD 'Nota, aqui es SelectedValue y no SelectedIndex
                     Else 'MXN
-                        Me.cboMoneda.SelectedValue = 1 'MXN
+                        Me.cboMonedaPago.SelectedValue = 1 'MXN
                     End If
 
                     Me.txtCuentaContableOrigenRecursos.Text = oCuentaBancaria.CUENTA_CONTABLE_PESOS
@@ -395,7 +395,7 @@ buscar_acreedor:
                             Me.LblProveedor.Text = oProveedores.Nombre_Proveedor
 
                             If txtLEN(oProveedores.CUENTA_CONTABLE) = False Then
-                                MsgBox("El proveedor/cuenta destino no tiene cuenta contable asiginda, favor de asignarle una.", MsgBoxStyle.Exclamation, Me.Text)
+                                MsgBox("El proveedor/cuenta destino no tiene cuenta contable asignada, favor de asignarle una.", MsgBoxStyle.Exclamation, Me.Text)
                                 Exit Sub
                             End If
 
@@ -453,7 +453,7 @@ buscar_acreedor:
                 If valorNumerico(Me.TxtImporte.Text) > 0 Then
                     Me.TxtImporte.Text = FormatImporteContable(CDbl(Me.TxtImporte.Text))
                     'If Me.ckbDolares.Checked = True Then
-                    If Me.cboMoneda.SelectedValue = 2 Then
+                    If Me.cboMonedaPago.SelectedValue = 2 Then
                         Me.txtTipoCambio.Focus()
                         Me.CalculaImporteDolares()
                         'If txtLEN(Me.TxtImporte.Text) = True And valorNumerico(Me.TxtImporte.Text) > 0 Then
@@ -646,7 +646,7 @@ buscar_acreedor:
 
                             'Sólo si están pagando usd y tecleando usd hacemos el cálculo sugerido(el usuario podrá editarlo)
                             'Si estuvieran pagando el pesos el cálculo ya se hizo al teclear los MXN y dar enter.
-                            If Me.cboMoneda.Text = "DOLARES" Then
+                            If Me.cboMonedaPago.Text = "DOLARES" Then
                                 If sMonedaCompra = "USD" Then
                                     dIvaPagoMXN = RedondearD((dPagoUSD / dTotalUSD) * dImpuestoUSD, 2) * dTipoCambioPago
                                     Me.Grid1.Cell(Renglon, Me.iGyCxpIvaPagado).Text = dIvaPagoMXN.ToString
@@ -710,8 +710,8 @@ buscar_acreedor:
         Me.ObtieneTipoCambioDia()
     End Sub
 
-    Private Sub cboMoneda_SelectedValueChanged(sender As Object, e As EventArgs) Handles cboMoneda.SelectedValueChanged
-        If Me.cboMoneda.SelectedValue = 2 Then
+    Private Sub cboMonedaPago_SelectedValueChanged(sender As Object, e As EventArgs) Handles cboMonedaPago.SelectedValueChanged
+        If Me.cboMonedaPago.SelectedValue = 2 Then
             If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
                 Me.ObtieneTipoCambioDia()
             End If
@@ -894,7 +894,7 @@ enter:
                 .Column(Me.iGyComFacturaProveedor).Width = 60
                 .Column(Me.iGyComFecha).Width = 70
                 .Column(Me.iGyComFolio).Width = 70
-                .Column(Me.iGyComMoneda).Width = 30
+                .Column(Me.iGyComMoneda).Width = 40
                 .Column(Me.iGyComTipoCambio).Width = 50
                 .Column(Me.iGyComSubtotalUSD).Width = 70  'New
                 .Column(Me.iGyComImpuestoUSD).Width = 70
@@ -919,7 +919,7 @@ enter:
                 .Column(Me.iGyCxpPagoSubtotaMXNNuevos).Width = 60 'New
                 .Column(Me.iGyCxpDiferenciaCambiaria).Width = 60 'New
 
-                .Cell(0, Me.iGyComFacturaProveedor).Text = "C.Fac. Prov."
+                .Cell(0, Me.iGyComFacturaProveedor).Text = "C.Fac.Prov"
                 .Cell(0, Me.iGyComFecha).Text = "C.Fecha"
                 .Cell(0, Me.iGyComFolio).Text = "C.Folio"
                 .Cell(0, Me.iGyComMoneda).Text = "C.Mon"
@@ -931,7 +931,7 @@ enter:
                 .Cell(0, Me.iGyComConcepto).Text = "Concepto"
                 .Cell(0, Me.iGyComImpuestoMXN).Text = "C.IVAMXN"
                 .Cell(0, Me.iGyComTotalMXN).Text = "C.TotalMXN"
-                .Cell(0, Me.iGyComSaldoMXN_TpPago).Text = "C. SaldoMXN TpP"
+                .Cell(0, Me.iGyComSaldoMXN_TpPago).Text = "C.SaldoMXN TpP"
                 .Cell(0, Me.iGyComSaldoMXN_CXP).Text = "C.SaldoCXP" 'New
                 .Cell(0, Me.iGySaldoImpuesto).Text = "Saldo Imp."
                 .Cell(0, Me.iGyCxpRetencion).Text = "Retencion"
@@ -1688,7 +1688,7 @@ enter:
         Try
             Dim oMoneda As New Class_CatMonedas
             Dim dTable As New DataTable
-            With Me.cboMoneda
+            With Me.cboMonedaPago
                 .DisplayMember = "NOMBRE"
                 .ValueMember = "CODIGO_MONEDA"
                 dTable = oMoneda.ObtenerElementos
@@ -1996,9 +1996,9 @@ enter:
 
                 'Esto debe ir antes de establecer el tpcambio porque al cambiar entre monedas pudiera cambiarse en automático al del dia seleccionado.
                 If Me.oBancosCXP.CODIGO_MONEDA_SAT = "MXN" Then
-                    Me.cboMoneda.SelectedValue = 1 '1=MXN
+                    Me.cboMonedaPago.SelectedValue = 1 '1=MXN
                 Else
-                    Me.cboMoneda.SelectedValue = 2 '2=USD
+                    Me.cboMonedaPago.SelectedValue = 2 '2=USD
                 End If
 
                 Me.txtTipoCambio.Text = Format(oBancosCXP.TIPO_DE_CAMBIO, "###,##0.0000")
@@ -2071,26 +2071,93 @@ enter:
     End Function
 
     Private Function CargaComprasConSaldo() As Boolean
+        Const sProcedure As String = "CargaComprasConSaldo"
         Dim bResultado As Boolean = False
         Dim dTabla As DataTable
-        Dim oCompras As New Class_Compras_Global
+        Dim oCompras As New Class_Compras_Global, i As Integer = 0
 
         Try
-            dTabla = oBancosCXP.CargaComprasProveedorConSaldo(Me.TxtCodigoProveedor.Text)
+            If Me.cboMonedaPago.Text = "PESOS" Then
+                'Si el pago es en MXN y hay facturas USD con saldo, se necesita el tipo de cambio(aunque la cuenta bancaria este en MXN) para calcular un saldoMXN a tp pago.
+                If oBancosCXP.SiTieneComprasProveedorConSaldoUSD(Me.TxtCodigoProveedor.Text) Then
+                    If valorNumericoD(Me.txtTipoCambio.Text) <= 10 Then 'Ponemos 10 pesos previendo este configurado uno incorrecto.
+                        MsgBox("Tipo de cambio del pago incorrecto, se necesita porque es un pago en MXN y hay facturas en USD.", vbExclamation, sProcedure)
+                        Return False
+                    End If
+                End If
+            End If
+
+            dTabla = oBancosCXP.CargaComprasProveedorConSaldo(Me.TxtCodigoProveedor.Text, valorNumericoD(Me.txtTipoCambio.Text))
 
             Me.Grid1.AutoRedraw = False
-            Me.Grid1.Rows = 1
+            Me.Grid1.Rows = 2
+            i = 1
 
             'Nota(Descartada, ver nota2), para el concepto se usó Replace(dRow("CONCEPTO").ToString, vbTab, " ").ToString  porque puede hacer conceptos que tengan incrustados tabs y este método ocupa los tabs para separar campos
             'Nota2, Pero ese método de usar Replace como función regresa nothing si la cadena esta vacia asi que se usará esta forma dRow("CONCEPTO").ToString.Replace(vbTab, " ").ToString
 
+            'Borrar esto
+            'Dim sSQL As String = ("SELECT FOLIO_PROVEEDOR,ISNULL(Convert(varchar(10),G.FECHA, 103),'') FECHA,G.FOLIO_COMPRA,M.ABREVIACION NOMBRE_MONEDA_CO,G.TIPO_DE_CAMBIO," &
+            '                  "G.SUBTOTAL_USD,G.IMPUESTO_USD,G.TOTAL_DOLARES,LEFT(CONCEPTO,40) CONCEPTO, " &
+            '                  "G.IMPUESTO,G.TOTAL,G.SALDO,SALDO_IMPUESTO,RETENCION_IVA,0 PAGAR_IMPUESTO,ISNULL(A.IMPORTE_AUTORIZADO,0) PAGAR,0 PAGO_USD, " &
+            '                  "CASE WHEN G.SALDO=ISNULL(A.IMPORTE_AUTORIZADO,0) THEN 1 ELSE 0 END SELECCION, CODIGO_DOCUMENTO,ISNULL(Convert(varchar(10),A.FECHA_AUTORIZACION, 103),'') AUTORIZADO " &
+            '                  "CASE WHEN G.CODIGO_MONEDA='2'/*1=MXN,2=USD*/ THEN ROUND(G.SALDO_DOLARES*" & dTipoCambioPago.ToString & ",2) ELSE G.SALDO END SALDO_MXN_TP_PAGO,G.SALDO SALDO_CXP," &
+            '                  "CASE WHEN G.CODIGO_MONEDA='2'/*1=MXN,2=USD*/ THEN G.SALDO_DOLARES ELSE ROUND(G.SALDO/" & dTipoCambioPago.ToString & ",2) END SALDO_DOLARES," &
+            '                  "FROM COMPRA_GLOBAL G " &
+            '                  "INNER JOIN CAT_PROVEEDORES P ON(G.CODIGO_PROVEEDOR=P.CODIGO_PROVEEDOR)  " &
+            '                  "LEFT JOIN CXP_PAGOS_AUTORIZADOS A ON(G.FOLIO_COMPRA=A.FOLIO_COMPRA AND A.ESTATUS_AUTORIZACION_USADA='0') " &
+            '                  "INNER JOIN CATALOGO_MONEDAS M ON(G.CODIGO_MONEDA=M.CODIGO_MONEDA)" &
+            '                  "WHERE G.CODIGO_PROVEEDOR='" & sReplace(CodigoProveedor) & "' AND G.SALDO<>0 AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " ORDER BY CAST(G.FECHA AS DATETIME)")
+
             For Each dRow As DataRow In dTabla.Rows
-                Me.Grid1.AddItem(dRow("FOLIO_PROVEEDOR").ToString & Chr(9) & dRow("FECHA").ToString & Chr(9) & dRow("FOLIO_COMPRA").ToString & Chr(9) & dRow("NOMBRE_MONEDA_CO").ToString & Chr(9) & dRow("TIPO_DE_CAMBIO").ToString & Chr(9) &
-                                 dRow("IMPUESTO_USD").ToString & Chr(9) & dRow("TOTAL_DOLARES").ToString & Chr(9) & dRow("SALDO_DOLARES").ToString & Chr(9) & dRow("CONCEPTO").ToString.Replace(vbTab, " ").ToString & Chr(9) &
-                                 dRow("IMPUESTO").ToString & Chr(9) & dRow("TOTAL").ToString & Chr(9) & dRow("SALDO").ToString & Chr(9) & dRow("SALDO_IMPUESTO").ToString & Chr(9) &
-                                 dRow("RETENCION_IVA").ToString & Chr(9) & dRow("PAGAR_IMPUESTO").ToString & Chr(9) & dRow("PAGAR").ToString & Chr(9) & dRow("PAGO_USD") & Chr(9) &
-                                 dRow("SELECCION").ToString & Chr(9) & dRow("CODIGO_DOCUMENTO").ToString & Chr(9) & dRow("AUTORIZADO").ToString & Chr(9))
+                'Me.Grid1.AddItem(dRow("FOLIO_PROVEEDOR").ToString & Chr(9) & dRow("FECHA").ToString & Chr(9) & dRow("FOLIO_COMPRA").ToString & Chr(9) & dRow("NOMBRE_MONEDA_CO").ToString & Chr(9) & dRow("TIPO_DE_CAMBIO").ToString & Chr(9) &
+                '                 dRow("IMPUESTO_USD").ToString & Chr(9) & dRow("TOTAL_DOLARES").ToString & Chr(9) & dRow("SALDO_DOLARES").ToString & Chr(9) & dRow("CONCEPTO").ToString.Replace(vbTab, " ").ToString & Chr(9) &
+                '                 dRow("IMPUESTO").ToString & Chr(9) & dRow("TOTAL").ToString & Chr(9) & dRow("SALDO").ToString & Chr(9) & dRow("SALDO_IMPUESTO").ToString & Chr(9) &
+                '                 dRow("RETENCION_IVA").ToString & Chr(9) & dRow("PAGAR_IMPUESTO").ToString & Chr(9) & dRow("PAGAR").ToString & Chr(9) & dRow("PAGO_USD") & Chr(9) &
+                '                 dRow("SELECCION").ToString & Chr(9) & dRow("CODIGO_DOCUMENTO").ToString & Chr(9) & dRow("AUTORIZADO").ToString & Chr(9))
+
+                With Me.Grid1
+                    .Cell(i, Me.iGyComFacturaProveedor).Text = dRow("FOLIO_PROVEEDOR").ToString
+                    .Cell(i, Me.iGyComFecha).Text = dRow("FECHA").ToString
+                    .Cell(i, Me.iGyComFolio).Text = dRow("FOLIO_COMPRA").ToString
+                    .Cell(i, Me.iGyComMoneda).Text = dRow("NOMBRE_MONEDA_CO").ToString
+                    .Cell(i, Me.iGyComTipoCambio).Text = dRow("TIPO_DE_CAMBIO").ToString
+                    .Cell(i, Me.iGyComSubtotalUSD).Text = dRow("SUBTOTAL_USD").ToString
+                    .Cell(i, Me.iGyComImpuestoUSD).Text = dRow("IMPUESTO_USD").ToString
+                    .Cell(i, Me.iGyComTotalUSD).Text = dRow("TOTAL_DOLARES").ToString
+                    .Cell(i, Me.iGyComSaldoUSD).Text = dRow("SALDO_DOLARES")
+                    .Cell(i, Me.iGyComConcepto).Text = dRow("CONCEPTO").ToString.Replace(vbTab, " ").ToString
+                    .Cell(i, Me.iGyComImpuestoMXN).Text = dRow("IMPUESTO").ToString
+                    .Cell(i, Me.iGyComTotalMXN).Text = dRow("TOTAL").ToString
+                    .Cell(i, Me.iGyComSaldoMXN_TpPago).Text = dRow("SALDO_MXN_TP_PAGO").ToString
+                    .Cell(i, Me.iGyComSaldoMXN_CXP).Text = dRow("SALDO_CXP").ToString 'New
+                    .Cell(i, Me.iGySaldoImpuesto).Text = dRow("SALDO_IMPUESTO").ToString
+                    .Cell(i, Me.iGyCxpRetencion).Text = dRow("RETENCION_IVA").ToString
+                    .Cell(i, Me.iGyCxpIvaPagado).Text = "0"
+                    .Cell(i, Me.iGyCxpIvaPendientePago).Text = "0" 'New
+                    .Cell(i, Me.iGyCxpPagoMXNCapturado).Text = "0" 'New
+                    .Cell(i, Me.iGyCxpTotal).Text = "0"
+                    .Cell(i, Me.iGyCxpPagoUSDCapturado).Text = ""
+                    .Cell(i, Me.iGyPagoPagoSeleccion).Text = "0"
+                    .Cell(i, Me.iGyComCodigoDocumento).Text = dRow("CODIGO_DOCUMENTO").ToString
+                    .Cell(i, Me.iGyPagoAutorizado).Text = dRow("AUTORIZADO").ToString
+                    .Cell(i, Me.iGyCxpPagoSubtotaMXNViejos).Text = "0" 'New
+                    .Cell(i, Me.iGyCxpPagoSubtotaMXNNuevos).Text = "0" 'New
+                    .Cell(i, Me.iGyCxpDiferenciaCambiaria).Text = "0" 'New
+
+                    .Rows += 1
+                    i = i + 1
+                End With
             Next
+
+            Select Case Me.cboMonedaPago.Text
+                Case "PESOS"
+                    Me.Grid1.Column(Me.iGyCxpPagoMXNCapturado).Locked = False
+                    Me.Grid1.Column(Me.iGyCxpPagoUSDCapturado).Locked = True
+                Case "DOLARES"
+                    Me.Grid1.Column(Me.iGyCxpPagoMXNCapturado).Locked = True
+                    Me.Grid1.Column(Me.iGyCxpPagoUSDCapturado).Locked = False
+            End Select
 
             'No es posible hace un datasource y luego intentar cambiar datos de celdas con codigo, no marca error pero no hace el cambio
             dTabla.DefaultView.AllowDelete = False
@@ -2371,7 +2438,7 @@ enter:
                     Me.txtCuentaBancaria.Enabled = True
                     Me.txtCuentaContableOrigenRecursos.Enabled = True
                     'Me.ckbDolares.Enabled = False
-                    Me.cboMoneda.Enabled = False
+                    Me.cboMonedaPago.Enabled = False
 
                     If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
                         Me.txtTipoCambio.Enabled = False
@@ -2397,7 +2464,7 @@ enter:
                     Me.cboDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
                     'Me.ckbDolares.Enabled = False
-                    Me.cboMoneda.Enabled = False
+                    Me.cboMonedaPago.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.txtImporteDolares.Enabled = False
                     Me.TxtCodigoProveedor.Enabled = False
@@ -2429,7 +2496,7 @@ enter:
                     Me.cboDocumento.Enabled = False
                     Me.dtFecha.Enabled = False
                     'Me.ckbDolares.Enabled = False
-                    Me.cboMoneda.Enabled = False
+                    Me.cboMonedaPago.Enabled = False
                     Me.txtTipoCambio.Enabled = False
                     Me.txtImporteDolares.Enabled = False
                     Me.TxtCodigoProveedor.Enabled = False
@@ -2880,7 +2947,7 @@ BuscaEmbarque:
                 If oTipoCambio.Existe AndAlso oTipoCambio.TIPO_DE_CAMBIO > 0 Then
                     Me.txtTipoCambio.Text = Format(oTipoCambio.TIPO_DE_CAMBIO, "###,##0.0000")
                 Else
-                    If Me.cboMoneda.SelectedValue = 2 Then
+                    If Me.cboMonedaPago.SelectedValue = 2 Then
                         MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
                     End If
                 End If
@@ -2898,7 +2965,7 @@ BuscaEmbarque:
 
     Private Sub VisibilidadColumnasGridVentas()
         Try
-            If Me.cboMoneda.Text = "USD" Then
+            If Me.cboMonedaPago.Text = "USD" Then
                 Me.Grid1.Column(Me.iGyComTotalMXN).Visible = False
                 Me.Grid1.Column(Me.iGyComSaldoMXN_TpPago).Visible = False
                 Me.Grid1.Column(Me.iGyComImpuestoUSD).Visible = False
