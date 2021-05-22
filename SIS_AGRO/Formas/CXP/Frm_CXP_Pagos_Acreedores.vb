@@ -479,10 +479,16 @@ buscar_acreedor:
     End Sub
 
     Private Sub txtTipoCambio_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTipoCambio.KeyDown
+        Dim dTipoCambio As Decimal = 0
         Try
             If e.KeyCode = Keys.Return Then
+                dTipoCambio = valorNumericoD(Me.txtTipoCambio.Text)
+                dTipoCambio = RedondearD(dTipoCambio, 4)
+                Me.txtTipoCambio.Text = Format(dTipoCambio, "##0.0000")
+
                 If valorNumerico(Me.txtTipoCambio.Text) < 0 Or valorNumerico(Me.txtTipoCambio.Text) > 30 Then
-                    MsgBox("Tipo de cambio incorrecto", MsgBoxStyle.Information, "Validación de tipo de cambio")
+                    MsgBox("Tipo de cambio incorrecto", MsgBoxStyle.Information, "Validación de tipo de cambio.")
+                    Me.txtTipoCambio.Text = Format(0, "##0.0000")
                     Exit Sub
                 Else
                     Me.CalculaImporteDolares()
@@ -672,11 +678,18 @@ buscar_acreedor:
     End Sub
 
     Private Sub cboMonedaPago_SelectedValueChanged(sender As Object, e As EventArgs) Handles cboMonedaPago.SelectedValueChanged
-        If Me.cboMonedaPago.SelectedValue = 2 Then
-            If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
-                Me.ObtieneTipoCambioDia()
+        Try
+            If Me.cboMonedaPago.SelectedValue = 2 Then '1=MXN,2=USD
+                If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+                    Me.ObtieneTipoCambioDia()
+                End If
             End If
-        End If
+
+            Me.VisibilidadColumnasGridCompras()
+
+        Catch ex As Exception
+            HandleError(Me.Name, "cboMonedaPago_SelectedValueChanged", ex)
+        End Try
     End Sub
 
     Private Sub txtCuentaContableOrigenRecursos_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCuentaContableOrigenRecursos.KeyDown
@@ -878,7 +891,7 @@ enter:
                 .Column(Me.iGyPagoAutorizado).Width = 60
                 .Column(Me.iGyCxpPagoSubtotaMXNViejos).Width = 60 'New
                 .Column(Me.iGyCxpPagoSubtotaMXNNuevos).Width = 60 'New
-                .Column(Me.iGyCxpDiferenciaCambiaria).Width = 60 'New
+                .Column(Me.iGyCxpDiferenciaCambiaria).Width = 80 'New
 
                 .Cell(0, Me.iGyComFacturaProveedor).Text = "C.Fac.Prov"
                 .Cell(0, Me.iGyComFecha).Text = "C.Fecha"
@@ -1430,14 +1443,21 @@ enter:
             End If
 
             If txtLEN(oCuentaOrigen.CUENTA_CONTABLE_PESOS) = False Then
-                MsgBox("La cuenta origen no tiene cuenta contable en MXP.", MsgBoxStyle.Exclamation, sProcedure)
+                MsgBox("La cuenta origen no tiene cuenta contable en MXN.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtCuentaBancaria.Focus()
                 Return False
             End If
 
             If txtLEN(oProveedor.CUENTA_CONTABLE) = False Then
-                MsgBox("El proveedor/cuenta destino no tiene cuenta contable en MXP.", MsgBoxStyle.Exclamation, sProcedure)
+                MsgBox("El proveedor/cuenta destino no tiene cuenta contable en MXN.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
+            End If
+
+            If Me.cboMonedaPago.Text = "DOLARES" Then
+                If txtLEN(oProveedor.CUENTA_CONTABLE_DOLARES) = False Then
+                    MsgBox("El proveedor/cuenta destino no tiene cuenta contable en USD.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
             End If
 
             If Me.ModoPago = enumModoPago.PROVEEDOR Then
@@ -1446,33 +1466,83 @@ enter:
                     Return False
                 End If
 
-                Dim i As Integer, oCompra As Class_Compras_Global
+                Dim i As Integer, oCompra As Class_Compras_Global, iNumeroPagos As Integer = 0
+
                 For i = 1 To GridCompras.Rows - 1
-                    If valorNumerico(Me.GridCompras.Cell(i, Me.iGyCxpTotal).Text) > 0 And txtLEN(Me.GridCompras.Cell(i, Me.iGyComFolio).Text) = True Then
-                        If valorNumerico(Me.GridCompras.Cell(i, Me.iGyCxpTotal).Text) > valorNumerico(Me.GridCompras.Cell(i, Me.iGyComSaldoMXN_TpPago).Text) Then
-                            MsgBox("El pago en el renglón: " & i & " es mayor al saldo del documento favor de revisar.", MsgBoxStyle.Exclamation, "Validación de Importes de CXP")
-                            Return False
-                        End If
 
-                        'Nota aunque sabemos que el nombre correcto de la moneda en pesos es MXN, en el sistema en la tabla se graba como MXP
-                        If Me.GridCompras.Cell(i, Me.iGyComMoneda).Text <> "MXP" AndAlso txtLEN(oProveedor.CUENTA_CONTABLE_DOLARES) = False Then
-                            MsgBox("El proveedor/cuenta destino no tiene cuenta contable en moneda extranjera.", MsgBoxStyle.Exclamation, sProcedure)
-                            Return False
-                        End If
+                    'Si no estan pagando algo omitimos validar este renglón y con el continue for se salta al siguiente.
+                    If Not (valorNumerico(Me.GridCompras.Cell(i, Me.iGyCxpPagoMXNCapturado).Text) > 0 And txtLEN(Me.GridCompras.Cell(i, Me.iGyComFolio).Text) = True) Then
+                        Continue For 'Se hace así para no agregar todo el código aqui dentro en un subnivel más(osea recorriendolo con otro tab).
+                    Else
+                        iNumeroPagos += 1
+                    End If
 
-                        oCompra = New Class_Compras_Global(Me.GridCompras.Cell(i, Me.iGyComFolio).Text, Me.GridCompras.Cell(i, Me.iGyComCodigoDocumento).Text)
+                    Select Case Me.cboMonedaPago.Text
+                        Case "DOLARES" 'Pago en USD
+                            Me.CalculaImportesPagoUSD(i)
 
-                        If oCuentaOrigen.ES_CUENTA_FISCAL <> oCompra.ES_FISCAL Then
-                            If oCuentaOrigen.ES_CUENTA_FISCAL = True Then
-                                MsgBox("Esta cuenta bancaria es ""fiscal"" y la compra " & oCompra.FOLIO_COMPRA & " es no fiscal, no puede hacer el pago.", MsgBoxStyle.Exclamation, sProcedure)
-                            Else
-                                MsgBox("Esta cuenta bancaria es ""no fiscal"" y la compra " & oCompra.FOLIO_COMPRA & " es fiscal, no puede hacer el pago.", MsgBoxStyle.Exclamation, sProcedure)
+                            'Estas declaraciones van aqui porque el CalculaImportesPagoUSD recordemos que refresca los saldos.
+                            Dim dCompraSaldoUSD As Decimal = valorNumericoD(Me.GridCompras.Cell(i, Me.iGyComSaldoUSD).Text)
+                            Dim dPagoUSD As Decimal = valorNumericoD(Me.GridCompras.Cell(i, Me.iGyCxpPagoUSDCapturado).Text)
+
+                            If dPagoUSD > dCompraSaldoUSD Then
+                                MsgBox("El pago por " & FormatImporteContable(dPagoUSD) & " USD en el renglón " & i.ToString & " es mayor al saldo del documento de " & FormatImporteContable(dCompraSaldoUSD) & " USD, favor de revisar.",
+                                       MsgBoxStyle.Exclamation, sProcedure)
+                                Return False
                             End If
 
-                            Return False
+                        Case "PESOS" 'Pago en MXN
+                            Me.CalculaImportesPagoMXN(i)
+
+                            'Estas declaraciones van aqui porque el CalculaImportesPagoMXN recordemos que refresca los saldos.
+                            Dim dCompraSaldoMXN_TpPago As Decimal = valorNumericoD(Me.GridCompras.Cell(i, Me.iGyComSaldoMXN_TpPago).Text)
+                            Dim dCxpPagoMXNCapturado As Decimal = valorNumericoD(Me.GridCompras.Cell(i, Me.iGyCxpPagoMXNCapturado).Text)
+
+                            If dCxpPagoMXNCapturado > dCompraSaldoMXN_TpPago Then
+                                MsgBox("El pago por " & FormatImporteContable(dCxpPagoMXNCapturado) & " MXN en el renglón " & i.ToString & " es mayor al saldo del documento de " & FormatImporteContable(dCompraSaldoMXN_TpPago) & " MXN, favor de revisar.",
+                                       MsgBoxStyle.Exclamation, sProcedure)
+                                Return False
+                            End If
+                    End Select
+
+                    oCompra = New Class_Compras_Global(Me.GridCompras.Cell(i, Me.iGyComFolio).Text, Me.GridCompras.Cell(i, Me.iGyComCodigoDocumento).Text)
+
+                    If oCuentaOrigen.ES_CUENTA_FISCAL <> oCompra.ES_FISCAL Then
+                        If oCuentaOrigen.ES_CUENTA_FISCAL = True Then
+                            MsgBox("Esta cuenta bancaria es ""fiscal"" y la compra " & oCompra.FOLIO_COMPRA & " es no fiscal, no puede hacer el pago.", MsgBoxStyle.Exclamation, sProcedure)
+                        Else
+                            MsgBox("Esta cuenta bancaria es ""no fiscal"" y la compra " & oCompra.FOLIO_COMPRA & " es fiscal, no puede hacer el pago.", MsgBoxStyle.Exclamation, sProcedure)
                         End If
 
+                        Return False
                     End If
+
+                    'Código anterior a esta reforma.
+                    'If valorNumerico(Me.GridCompras.Cell(i, Me.iGyCxpTotal).Text) > 0 And txtLEN(Me.GridCompras.Cell(i, Me.iGyComFolio).Text) = True Then
+                    '    If valorNumerico(Me.GridCompras.Cell(i, Me.iGyCxpTotal).Text) > valorNumerico(Me.GridCompras.Cell(i, Me.iGyComSaldoMXN_TpPago).Text) Then
+                    '        MsgBox("El pago en el renglón: " & i & " es mayor al saldo del documento favor de revisar.", MsgBoxStyle.Exclamation, "Validación de Importes de CXP")
+                    '        Return False
+                    '    End If
+
+                    '    'Nota aunque sabemos que el nombre correcto de la moneda en pesos es MXN, en el sistema en la tabla se graba como MXP
+                    '    If Me.GridCompras.Cell(i, Me.iGyComMoneda).Text <> "MXP" AndAlso txtLEN(oProveedor.CUENTA_CONTABLE_DOLARES) = False Then
+                    '        MsgBox("El proveedor/cuenta destino no tiene cuenta contable en moneda extranjera.", MsgBoxStyle.Exclamation, sProcedure)
+                    '        Return False
+                    '    End If
+
+                    '    oCompra = New Class_Compras_Global(Me.GridCompras.Cell(i, Me.iGyComFolio).Text, Me.GridCompras.Cell(i, Me.iGyComCodigoDocumento).Text)
+
+                    '    If oCuentaOrigen.ES_CUENTA_FISCAL <> oCompra.ES_FISCAL Then
+                    '        If oCuentaOrigen.ES_CUENTA_FISCAL = True Then
+                    '            MsgBox("Esta cuenta bancaria es ""fiscal"" y la compra " & oCompra.FOLIO_COMPRA & " es no fiscal, no puede hacer el pago.", MsgBoxStyle.Exclamation, sProcedure)
+                    '        Else
+                    '            MsgBox("Esta cuenta bancaria es ""no fiscal"" y la compra " & oCompra.FOLIO_COMPRA & " es fiscal, no puede hacer el pago.", MsgBoxStyle.Exclamation, sProcedure)
+                    '        End If
+
+                    '        Return False
+                    '    End If
+                    'End If
+
                 Next i
             End If
 
@@ -1487,7 +1557,7 @@ enter:
                 End If
             End If
 
-            If Me.lblNombreMonedaOrigen.Text = "DOLARES" Or Me.lblNombreMonedaDestino.Text = "DOLARES" Then
+            If Me.cboMonedaPago.Text = "DOLARES" Or Me.lblNombreMonedaOrigen.Text = "DOLARES" Or Me.lblNombreMonedaDestino.Text = "DOLARES" Then
                 Me.CalculaImporteDolares()
                 If valorNumerico(Me.txtTipoCambio.Text) <= 0 Then
                     MsgBox("Asígne el tipo de cambio.", MsgBoxStyle.Exclamation, sProcedure)
@@ -1495,9 +1565,9 @@ enter:
                     Return False
                 End If
 
-                If oCuentaOrigen.CODIGO_MONEDA <> 1 Then
+                If oCuentaOrigen.CODIGO_MONEDA <> 1 Then '1=MXN,2=USD
                     If txtLEN(oCuentaOrigen.CUENTA_CONTABLE_DOLARES) = False Then
-                        MsgBox("La cuenta origen no tiene cuenta contable en moneda extranjera.", MsgBoxStyle.Exclamation, sProcedure)
+                        MsgBox("La cuenta origen no tiene cuenta contable en USD.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
                     End If
                 End If
@@ -1861,6 +1931,7 @@ enter:
     'End Function
 
     Private Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
 
         Dim sFolio As String = Me.TxtFolio.Text
@@ -1985,13 +2056,15 @@ enter:
                     Me.txtTotalMXN.Text = FormatImporteContable(oBancosCXP.TOTAL)
                 End If
 
+                Me.VisibilidadColumnasGridCompras()
+
                 bResultado = True
 
                 Me.GestionaCambioEstado()
             End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "Consultar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -2001,22 +2074,32 @@ enter:
         Const sProcedure As String = "CargaComprasConSaldo"
         Dim bResultado As Boolean = False
         Dim dTabla As DataTable
-        Dim oCompras As New Class_Compras_Global, i As Integer = 0
+        Dim oCompras As New Class_Compras_Global, i As Integer = 0, dTipoCambioPago As Decimal = 0
 
         Try
+            dTipoCambioPago = valorNumericoD(Me.txtTipoCambio.Text)
+
             If Me.cboMonedaPago.Text = "PESOS" Then
                 'Si el pago es en MXN y hay facturas USD con saldo, se necesita el tipo de cambio(aunque la cuenta bancaria este en MXN) para calcular un saldoMXN a tp pago.
-                If oBancosCXP.SiTieneComprasProveedorConSaldoUSD(Me.TxtCodigoProveedor.Text) Then
-                    If valorNumericoD(Me.txtTipoCambio.Text) <= 10 Then 'Ponemos 10 pesos previendo este configurado uno incorrecto.
+                If oBancosCXP.SiTieneComprasProveedorConSaldoUSD(Me.TxtCodigoProveedor.Text) = True Then
+                    'If valorNumericoD(Me.txtTipoCambio.Text) <= 10 Then 'Ponemos 10 pesos previendo este configurado uno incorrecto.
+                    If dTipoCambioPago <= 0 Or dTipoCambioPago > 30 Then
                         MsgBox("Tipo de cambio del pago incorrecto, se necesita porque es un pago en MXN y hay facturas en USD.", vbExclamation, sProcedure)
                         Return False
                     End If
+
+                    Me.GridCompras.Column(Me.iGyCxpDiferenciaCambiaria).Visible = True 'Recordemos que si la compraMoneda=USD si hay diferencia cambiaria.
+                    Me.GridCompras.Column(Me.iGyCxpTotal).Visible = True
                 End If
             End If
 
             dTabla = oBancosCXP.CargaComprasProveedorConSaldo(Me.TxtCodigoProveedor.Text, valorNumericoD(Me.txtTipoCambio.Text))
 
+            Me.InicializaGridCompras()
+            Me.VisibilidadColumnasGridCompras()  'Al inicializarse con el método anterior se pierde la visibilidad de las columnas según la moneda de pago
+
             Me.GridCompras.AutoRedraw = False
+
             Me.GridCompras.Rows = 2
             i = 1
 
@@ -2034,7 +2117,7 @@ enter:
                     .Cell(i, Me.iGyComFacturaProveedor).Text = dRow("FOLIO_PROVEEDOR").ToString
                     .Cell(i, Me.iGyComFecha).Text = dRow("FECHA").ToString
                     .Cell(i, Me.iGyComFolio).Text = dRow("FOLIO_COMPRA").ToString
-                    .Cell(i, Me.iGyComMoneda).Text = dRow("NOMBRE_MONEDA_CO").ToString
+                    .Cell(i, Me.iGyComMoneda).Text = dRow("CODIGO_MONEDA_SAT").ToString
                     .Cell(i, Me.iGyComTipoCambio).Text = dRow("TIPO_DE_CAMBIO").ToString
                     .Cell(i, Me.iGyComSubtotalUSD).Text = dRow("SUBTOTAL_USD").ToString
                     .Cell(i, Me.iGyComImpuestoUSD).Text = dRow("IMPUESTO_USD").ToString
@@ -2085,7 +2168,8 @@ enter:
             End If
 
             bResultado = True
-            Me.FormateaGridCompras()
+
+            'Me.FormateaGridCompras()'Ya no hace falta formatear porque en el InicializaGridCompras se formatea, además que se perderian los cambios hechos luego al llamado a VisibilidadColumnasGridCompras
 
             Me.Totales()
 
@@ -2883,7 +2967,8 @@ BuscaEmbarque:
         oVisorXML.Show()
     End Sub
 
-    Private Sub CalculaImporteDolares()
+    Private Sub CalculaImporteDolares_old()
+        Const sProcedure As String = "CalculaImporteDolares_old"
         Dim dTipoCambio As Double, dTotalUSD As Double = 0, dTotalMXN As Double = 0
         Try
             dDiferenciaCambiaria = 0
@@ -2915,21 +3000,45 @@ BuscaEmbarque:
             End Select
 
         Catch ex As Exception
-            HandleError(Me.Name, "CalculaImporteDolares", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
-    Private Sub CalculaImporteDolaresx()
+    Private Sub CalculaImporteDolares()
+        Const sProcedure As String = "CalculaImporteDolares"
+        Dim dTipoCambio As Decimal = 0, dTotalUSD As Decimal = 0, dTotalMXN As Decimal = 0, i As Integer, dPago As Decimal
         Try
-            Dim i As Integer, dPago As Double
-            For i = 1 To Me.GridVentas.Rows - 1
-                dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
-                If dPago > 0 Then
-                    Me.CalculaImportesPagoUSD(i)
-                End If
-            Next i
+            dTipoCambio = RedondearD(valorNumericoD(Me.txtTipoCambio.Text), 4)
+
+            Select Case Me.ModoPago
+                Case enumModoPago.PROVEEDOR
+                    For i = 1 To Me.GridCompras.Rows - 1
+                        dPago = valorNumerico(Me.GridCompras.Cell(i, Me.iGyCxpPagoMXNCapturado).Text)
+                        If dPago > 0 Then
+                            Me.CalculaImportesPagoUSD(i)
+                        End If
+                    Next i
+                Case enumModoPago.ACREEDOR
+                    Me.txtTipoCambio.Text = Format(dTipoCambio, "###,##0.0000")
+                    dTotalMXN = valorNumericoD(Me.txtTotalMXN.Text)
+
+                    If Me.cboMonedaPago.Text = "DOLARES" Then
+                        If dTipoCambio <= 0 Then
+                            MsgBox("El tipo de cambio no puede ser cero.", MsgBoxStyle.Exclamation, sProcedure)
+                            Me.txtTotalUSD.Text = FormatImporteContable(0)
+                        End If
+
+                        If dTotalMXN > 0 Then
+                            dTotalUSD = Redondear(dTotalMXN / dTipoCambio, 2)
+                        End If
+                        Me.txtTotalUSD.Text = FormatImporteContable(dTotalUSD)
+                    Else
+                        Me.txtTotalUSD.Text = FormatImporteContable(0)
+                    End If
+            End Select
+
         Catch ex As Exception
-            HandleError(Me.Name, "CalculaImporteDolares", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
@@ -3168,7 +3277,7 @@ BuscaEmbarque:
                         '    Me.Grid1.Cell(Renglon, 6).SetFocus()
 
                         Case Me.iGyCxpPagoMXNCapturado
-                            If Me.cboMonedaPago.Text <> "MXN" Then 'Pago MXN
+                            If Me.cboMonedaPago.Text <> "PESOS" Then 'Pago MXN
                                 MsgBox("Este dato sólo es capturable si esta pagando pesos.", MsgBoxStyle.Exclamation, sProcedure)
                                 Return
                             End If
@@ -3324,7 +3433,7 @@ BuscaEmbarque:
     Private Sub VisibilidadColumnasGridCompras()
         Try
             With Me.GridCompras
-                If Me.cboMonedaPago.Text = "USD" Then
+                If Me.cboMonedaPago.Text = "DOLARES" Then
                     .Column(Me.iGyComTotalMXN).Visible = False
                     .Column(Me.iGyComSaldoMXN_TpPago).Visible = False
                     .Column(Me.iGyComImpuestoUSD).Visible = False
