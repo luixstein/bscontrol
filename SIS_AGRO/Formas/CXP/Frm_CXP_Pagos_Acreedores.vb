@@ -1306,7 +1306,12 @@ enter:
                             .MODULO = "CXP"
                             .CODIGO_MONEDA = oCuentaBancaria.CODIGO_MONEDA
                             .TOTAL_USD = valorNumerico(Me.GridCompras.Cell(i, Me.iGyCxpPagoUSDCapturado).Text)
-                            .IMPUESTO = valorNumerico(Me.GridCompras.Cell(i, Me.iGyCxpIvaPagado).Text)
+                            .DIFERENCIA_CAMBIARIA = valorNumericoD(Me.GridCompras.Cell(i, Me.iGyCxpDiferenciaCambiaria).Text)
+                            .PAGO_MXN_BANCOS = valorNumericoD(Me.GridCompras.Cell(i, Me.iGyCxpPagoMXNCapturado).Text)
+                            .SUBTOTAL = valorNumericoD(Me.GridCompras.Cell(i, Me.iGyCxpPagoSubtotaMXNViejos).Text)
+                            .SUBTOTAL_PAGADO = valorNumericoD(Me.GridCompras.Cell(i, Me.iGyCxpPagoSubtotaMXNNuevos).Text)
+                            .IMPUESTO = valorNumericoD(Me.GridCompras.Cell(i, Me.iGyCxpIvaPendientePago).Text)
+                            .IMPUESTO_PAGADO = valorNumericoD(Me.GridCompras.Cell(i, Me.iGyCxpIvaPagado).Text)
 
                             bResultadoParcial = .InsertarPagosProveedoresAcreedores(Class_CXP_Afecta_Documentos.enumModoPago.PROVEEDOR)
                         End With
@@ -3331,7 +3336,7 @@ BuscaEmbarque:
                             End If
 
                         Case Me.iGyCxpPagoUSDCapturado
-                            If Me.cboMonedaPago.Text <> "USD" Then 'Pago USD
+                            If Me.cboMonedaPago.Text <> "DOLARES" Then 'Pago USD
                                 MsgBox("Este dato sólo es capturable si esta pagando dólares.", MsgBoxStyle.Exclamation, sProcedure)
                                 Return
                             End If
