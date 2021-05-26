@@ -236,7 +236,7 @@ Module FacturacionElectronica33
             Dim drRETENCION_IVA_PORCENTAJE As Decimal = 0, drRETENCION_IVA_BASE As Decimal = 0, drRETENCION_IVA_IMPORTE As Decimal = 0
             Dim drRETENCION_ISR_PORCENTAJE As Decimal = 0, drRETENCION_ISR_BASE As Decimal = 0, drRETENCION_ISR_IMPORTE As Decimal = 0
 
-            For Each row As DataRow In oVenta.ObtenerDetalleParaCFDI.Rows
+            For Each row As DataRow In oVenta.ObtenerDetalleParaCFDI(oVenta.FOLIO_VENTA).Rows
                 drCantidad = CDec(row("CANTIDAD").ToString)
                 drIMPUESTO_PORCENTAJE = CDec(row("IMPUESTO_PORCENTAJE").ToString) / CDec("100.00")
                 drIEPS_PORCENTAJE = CDec(row("IEPS_PORCENTAJE").ToString) / CDec("100.00")
