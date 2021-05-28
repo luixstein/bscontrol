@@ -15,13 +15,13 @@ Public Class Class_Inventarios_Detalle
     Private _IMPORTE As Decimal
     Private _ID_ADICIONAL As Integer = 0
     Private _LISTA_SERIES As String
-
     Private _FLETE_DETALLE_IMPORTE As Decimal = 0
     Private _COSTO_DETALLE_BASE As Decimal = 0
     Private _IMPORTE_BASE As Decimal = 0
     Private _ID_COMPRA_DETALLE As Integer = Nothing
     Private _DISPONIBLE As Double
     Private _ID_INVENTARIO_LOTES_COSTOS As Integer = Nothing
+    Private _COSTO_USD As Decimal = 0
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -172,6 +172,15 @@ Public Class Class_Inventarios_Detalle
         End Set
     End Property
 
+    Public Property COSTO_USD() As Decimal
+        Get
+            Return Me._COSTO_USD
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._COSTO_USD = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -245,12 +254,12 @@ Public Class Class_Inventarios_Detalle
             sqlParametro = .Parameters.Add("@IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE
             sqlParametro = .Parameters.Add("@ID_ADICIONAL", SqlDbType.Int) : sqlParametro.Value = Me._ID_ADICIONAL
             sqlParametro = .Parameters.Add("@LISTA_SERIES", SqlDbType.NVarChar) : sqlParametro.Value = Me._LISTA_SERIES.ToUpper
-
             sqlParametro = .Parameters.Add("@FLETE_DETALLE_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._FLETE_DETALLE_IMPORTE
             sqlParametro = .Parameters.Add("@COSTO_DETALLE_BASE", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO_DETALLE_BASE
             sqlParametro = .Parameters.Add("@IMPORTE_BASE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPORTE_BASE
             sqlParametro = .Parameters.Add("@ID_COMPRA_DETALLE", SqlDbType.Int) : sqlParametro.Value = Me._ID_COMPRA_DETALLE
             sqlParametro = .Parameters.Add("@ID_INVENTARIO_LOTES_COSTOS", SqlDbType.Int) : sqlParametro.Value = Me._ID_INVENTARIO_LOTES_COSTOS
+            sqlParametro = .Parameters.Add("@COSTO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO_USD
 
             Try
                 Me._Conexion.Open()

@@ -454,7 +454,7 @@ Buscar:
         Me.DtpFechaFacturaProveedor.Value = Me.DtpFecha.Value
 
         If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
-            ObtenerTipoCambioDia()
+            Me.ObtenerTipoCambioDia()
             Me.Totales()
         End If
     End Sub
@@ -4029,20 +4029,23 @@ BuscarCuentas:
     End Function
 
     Private Sub ObtenerTipoCambioDia()
-        If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.GRABADO Then
+        Const sProcedure As String = "ObtenerTipoCambioDia"
+        Try
+            If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.GRABADO Then
+                Dim oTipoCambio As New Class_CatTiposCambio(Me.DtpFecha.Value)
+                Me.txtTipoCambio.Text = "0"
 
-            Dim oTipoCambio As New Class_CatTiposCambio(Me.DtpFecha.Value)
-            Me.txtTipoCambio.Text = "0"
-
-            If oTipoCambio.Existe AndAlso oTipoCambio.TIPO_DE_CAMBIO > 0 Then
-                Me.txtTipoCambio.Text = oTipoCambio.TIPO_DE_CAMBIO.ToString
-            Else
-                If Me.cboMoneda.SelectedIndex = 1 Then
-                    MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
+                If oTipoCambio.Existe AndAlso oTipoCambio.TIPO_DE_CAMBIO > 0 Then
+                    Me.txtTipoCambio.Text = oTipoCambio.TIPO_DE_CAMBIO.ToString
+                Else
+                    If Me.cboMoneda.SelectedIndex = 1 Then
+                        MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
+                    End If
                 End If
             End If
-
-        End If
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Sub GestionaMoneda(Optional ByVal bInicializa As Boolean = False) 'creado falta usar, la idea es que del consultar no inicializa, pero si del cambiar en el combo
@@ -4497,6 +4500,8 @@ BuscarCuentas:
             oInventario.CodigoDocumentoParaGrabar = "ER" 'ER=ENTRADA RECEPCION COMPRA
             oInventario.FolioOrdenCompra = Me.txtFolioCompra.Text
             oInventario.CodigoAlmacenOrdenCompra = Me.CboAlmacen.SelectedValue.ToString
+            oInventario.Moneda = Me.cboMoneda.SelectedValue.ToString
+            'oInventario.TipoCambio = valorNumericoD(Me.txtTipoCambio.Text)
 
             oInventario.ShowDialog()
             oInventario.Visible = False

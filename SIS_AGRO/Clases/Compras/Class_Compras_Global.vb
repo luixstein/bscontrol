@@ -2094,13 +2094,17 @@ Public Class Class_Compras_Global
         Return dTabla
     End Function
 
-    Public Function ObtenerDetalleDisponiblesOrdenCompra(ByVal sFolioOrdenCompra As String) As DataTable
+    Public Function ObtenerDetalleDisponiblesOrdenCompra(ByVal sFolioOrdenCompra As String) As DataTable ' ByVal sMoneda As String, ByVal dTipoCambio As Decimal) As DataTable
         Dim dTabla As New DataTable("detalle")
         Dim sSQL As String
 
         Try
-            sSQL = "SELECT R.CODIGO_ARTICULO,A.DESCRIPCION,R.DISPONIBLE CANTIDAD,R.PRECIO COSTO_DETALLE,R.IMPORTE,'' CUENTA_CONTABLE,'' NOMBRE_CUENTA, " &
-                    "'' Boton,ROW_NUMBER() OVER(ORDER BY R.ID_COMPRA_DETALLE) ID_ADICIONAL,R.ID_COMPRA_DETALLE " &
+            'IIf(sMoneda = "USD", "ROUND(R.PRECIO_USD*" & dTipoCambio.ToString & ",3)", "R.PRECIO").ToString & " COSTO_DETALLE," &
+            sSQL = "SELECT R.CODIGO_ARTICULO,A.DESCRIPCION,R.DISPONIBLE CANTIDAD," &
+                    "R.PRECIO COSTO_DETALLE," &
+                    "0 IMPORTE,/*R.IMPORTE,*/ " &
+                    "'' CUENTA_CONTABLE,'' NOMBRE_CUENTA, " &
+                    "'' Boton,ROW_NUMBER() OVER(ORDER BY R.ID_COMPRA_DETALLE) ID_ADICIONAL,R.ID_COMPRA_DETALLE,R.PRECIO_USD " &
                     "FROM COMPRA_DETALLE R  " &
                     "INNER JOIN CAT_ARTICULOS A ON(A.CODIGO_ARTICULO=R.CODIGO_ARTICULO)  " &
                     "WHERE R.FOLIO_COMPRA=@FOLIO_ORDEN_COMPRA AND R.DISPONIBLE>0 AND A.INVENTARIABLE='1' " &

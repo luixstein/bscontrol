@@ -33,6 +33,7 @@ Public Class Class_Inventarios_Global
     Private _FOLIO_ENTRADA_FINANCIERA As String
     Private _FOLIO_ORDEN_PRODUCCION As String
     Private _CODIGO_CLIENTE As String
+    Private _TIPO_DE_CAMBIO As Decimal = 0
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -288,13 +289,21 @@ Public Class Class_Inventarios_Global
         End Set
     End Property
 
-
     Public Property CODIGO_CLIENTE() As String
         Get
             Return Me._CODIGO_CLIENTE
         End Get
         Set(Value As String)
             Me._CODIGO_CLIENTE = Value
+        End Set
+    End Property
+
+    Public Property TIPO_DE_CAMBIO() As Decimal
+        Get
+            Return Me._TIPO_DE_CAMBIO
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._TIPO_DE_CAMBIO = Value
         End Set
     End Property
 
@@ -401,6 +410,7 @@ Public Class Class_Inventarios_Global
             sqlParametro = .Parameters.Add("@CODIGO_ALMACEN_ENTRADA_FINANCIERA", SqlDbType.NVarChar, 4) : sqlParametro.Value = "" & Me._CODIGO_ALMACEN_ENTRADA_FINANCIERA
             sqlParametro = .Parameters.Add("@FOLIO_ORDEN_PRODUCCION", SqlDbType.NVarChar, 30) : sqlParametro.Value = "" & Me._FOLIO_ORDEN_PRODUCCION
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = "" & Me._CODIGO_CLIENTE
+            sqlParametro = .Parameters.Add("@TIPO_DE_CAMBIO", SqlDbType.Decimal) : sqlParametro.Value = Me._TIPO_DE_CAMBIO
 
             Try
                 Me._Conexion.Open()
@@ -614,7 +624,7 @@ Public Class Class_Inventarios_Global
                     "(SELECT ID_ADICIONAL,MAX(CUENTA_CONTABLE) FROM CENTRO_COSTOS_MOVIMIENTOS_DETALLE WHERE FOLIO_MOVIMIENTO=@FOLIO_MOVIMIENTO_INVENTARIO GROUP BY FOLIO_MOVIMIENTO,ID_ADICIONAL) " &
                     "SELECT I.CODIGO_ARTICULO,A.DESCRIPCION,I.CANTIDAD,I.COSTO_DETALLE,I.IMPORTE,I.CUENTA_CONTABLE,CASE WHEN DC.CUENTA_CONTABLE IS NOT NULL THEN 'Tiene detalle -->>' ELSE C.NOMBRE_CUENTA END NOMBRE_CUENTA, " &
                     "'' Boton,I.ID_ADICIONAL, " &
-                    "I.FLETE_DETALLE_IMPORTE,I.COSTO_DETALLE_BASE,I.IMPORTE_BASE,I.ID_COMPRA_DETALLE,I.DISPONIBLE,I.ID_INVENTARIO_LOTES_COSTOS " &
+                    "I.FLETE_DETALLE_IMPORTE,I.COSTO_DETALLE_BASE,I.IMPORTE_BASE,I.ID_COMPRA_DETALLE,I.DISPONIBLE,I.ID_INVENTARIO_LOTES_COSTOS,I.COSTO_USD " &
                     "FROM INVENTARIO_MOVIMIENTOS_DETALLE I  " &
                     "INNER JOIN CAT_ARTICULOS A ON(A.CODIGO_ARTICULO=I.CODIGO_ARTICULO)  " &
                     "LEFT JOIN CON_CAT_CUENTAS C ON(I.CUENTA_CONTABLE=C.CUENTA_CONTABLE) " &

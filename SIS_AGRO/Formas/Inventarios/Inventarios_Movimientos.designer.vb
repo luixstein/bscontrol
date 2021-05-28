@@ -99,6 +99,10 @@ Partial Class Inventarios_Movimientos
         Me.lblDisplayCliente = New System.Windows.Forms.Label()
         Me.txtCliente = New System.Windows.Forms.TextBox()
         Me.lblCliente = New System.Windows.Forms.Label()
+        Me.lblDisplayTipoCambio = New System.Windows.Forms.Label()
+        Me.txtTipoCambio = New System.Windows.Forms.TextBox()
+        Me.lblDisplayMoneda = New System.Windows.Forms.Label()
+        Me.cboMoneda = New System.Windows.Forms.ComboBox()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.TpSeries.SuspendLayout()
@@ -834,11 +838,58 @@ Partial Class Inventarios_Movimientos
         Me.lblCliente.Text = "_"
         Me.lblCliente.Visible = False
         '
+        'lblDisplayTipoCambio
+        '
+        Me.lblDisplayTipoCambio.AutoSize = True
+        Me.lblDisplayTipoCambio.Location = New System.Drawing.Point(1038, 212)
+        Me.lblDisplayTipoCambio.Name = "lblDisplayTipoCambio"
+        Me.lblDisplayTipoCambio.Size = New System.Drawing.Size(86, 13)
+        Me.lblDisplayTipoCambio.TabIndex = 409
+        Me.lblDisplayTipoCambio.Text = "Tipo de cambio :"
+        Me.lblDisplayTipoCambio.Visible = False
+        '
+        'txtTipoCambio
+        '
+        Me.txtTipoCambio.Location = New System.Drawing.Point(1126, 209)
+        Me.txtTipoCambio.MaxLength = 8
+        Me.txtTipoCambio.Name = "txtTipoCambio"
+        Me.txtTipoCambio.ReadOnly = True
+        Me.txtTipoCambio.Size = New System.Drawing.Size(62, 20)
+        Me.txtTipoCambio.TabIndex = 408
+        Me.txtTipoCambio.Text = "0"
+        Me.txtTipoCambio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtTipoCambio.Visible = False
+        '
+        'lblDisplayMoneda
+        '
+        Me.lblDisplayMoneda.AutoSize = True
+        Me.lblDisplayMoneda.Location = New System.Drawing.Point(1038, 180)
+        Me.lblDisplayMoneda.Name = "lblDisplayMoneda"
+        Me.lblDisplayMoneda.Size = New System.Drawing.Size(52, 13)
+        Me.lblDisplayMoneda.TabIndex = 411
+        Me.lblDisplayMoneda.Text = "Moneda :"
+        Me.lblDisplayMoneda.Visible = False
+        '
+        'cboMoneda
+        '
+        Me.cboMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboMoneda.Enabled = False
+        Me.cboMoneda.FormattingEnabled = True
+        Me.cboMoneda.Location = New System.Drawing.Point(1110, 179)
+        Me.cboMoneda.Name = "cboMoneda"
+        Me.cboMoneda.Size = New System.Drawing.Size(78, 21)
+        Me.cboMoneda.TabIndex = 410
+        Me.cboMoneda.Visible = False
+        '
         'Inventarios_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1308, 587)
+        Me.Controls.Add(Me.lblDisplayMoneda)
+        Me.Controls.Add(Me.cboMoneda)
+        Me.Controls.Add(Me.lblDisplayTipoCambio)
+        Me.Controls.Add(Me.txtTipoCambio)
         Me.Controls.Add(Me.lblCliente)
         Me.Controls.Add(Me.lblDisplayCliente)
         Me.Controls.Add(Me.txtCliente)
@@ -980,4 +1031,8 @@ Partial Class Inventarios_Movimientos
     Friend WithEvents lblDisplayCliente As Label
     Friend WithEvents txtCliente As TextBox
     Friend WithEvents lblCliente As Label
+    Friend WithEvents lblDisplayTipoCambio As Label
+    Friend WithEvents txtTipoCambio As TextBox
+    Friend WithEvents lblDisplayMoneda As Label
+    Friend WithEvents cboMoneda As ComboBox
 End Class

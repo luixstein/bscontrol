@@ -17,6 +17,8 @@ Public Class Inventarios_Movimientos
     Private _FolioOrdenCompra As String
     Private _CodigoAlmacenOrdenCompra As String
     Private OcTieneRequisicion As Boolean
+    Private _Moneda As String
+    Private _TipoCambio As Decimal
 
     Private Estado As enumEstados
     Private oInventarios As New Class_Inventarios_Global
@@ -53,6 +55,7 @@ Public Class Inventarios_Movimientos
     Private iGyIDCompraDetalle As Integer = 13
     Private iGyDisponible As Integer = 14
     Private iGyID_INVENTARIO_LOTES_COSTOS As Integer = 15
+    Private iGyCostoUSD As Integer = 16 'No se graba en la base de datos , es sólo para calcular el Precio normal cuando se trata de una entrada que viene por recepción de compra en usd 
 #End Region
 
 #Region "Columnas grid series"
@@ -118,6 +121,24 @@ Public Class Inventarios_Movimientos
         End Get
         Set(ByVal value As String)
             Me._CodigoAlmacenOrdenCompra = value
+        End Set
+    End Property
+
+    Public Property Moneda() As String
+        Get
+            Return Me._Moneda
+        End Get
+        Set(ByVal value As String)
+            Me._Moneda = value
+        End Set
+    End Property
+
+    Public Property TipoCambio() As Decimal
+        Get
+            Return Me._TipoCambio
+        End Get
+        Set(ByVal value As Decimal)
+            Me._TipoCambio = value
         End Set
     End Property
 
@@ -231,94 +252,107 @@ Public Class Inventarios_Movimientos
     Private Sub Inventarios_Movimientos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         'Dim dTabla As DataTable
         'Dim dCajaCarton As Boolean
+        Try
+            Me.DesplegarMonedas()
 
-        If Me._LlamadoExteriorGenerarSalidaEmbarque = True Then
+            If Me._LlamadoExteriorGenerarSalidaEmbarque = True Then
 
-            Me.InicializaExterno()
+                Me.InicializaExterno()
 
-            Me.TxtFolio.Text = Me._FolioEmbarque
-            Me.Consultar()
+                Me.TxtFolio.Text = Me._FolioEmbarque
+                Me.Consultar()
 
-            If Me.lblStatus.Text = "A" Then
-                Me.tsbEditarCostos.Enabled = True
+                If Me.lblStatus.Text = "A" Then
+                    Me.tsbEditarCostos.Enabled = True
+                End If
+
+                Return
+
+                'Este era el código que estaba cuando se hacia una salida por cada palet.
+                'Me.InicializaExterno()
+                'Dim oPalet = New Class_Embarques_PaletsGlobal(Me.TxtFolioReferencia.Text)
+
+                'Dim sql As New Class_find("SELECT count(CODIGO_ARTICULO) articulos,max(CODIGO_ARTICULO) FROM EMB_PALETS_DETALLE " & _
+                '            "WHERE FOLIO_PALET='" & Me.TxtFolioReferencia.Text & "'")
+
+                'If sql.Result1 = "1" Then
+                '    Dim sql1 As New Class_find("SELECT 1 FROM CAT_PRODUCTOS_AGRICOLAS_FORMULAS_EMPAQUE WHERE CLAVE='CAJA_CARTON' AND CODIGO_PRODUCTO='" & sql.Result2 & "'")
+
+                '    If sql1.Result1 = "1" Then
+                '        dCajaCarton = True
+                '    Else
+                '        MsgBox("El producto no tiene configurado el material de empaque.", MsgBoxStyle.Information, "Aplicando Movimientos de Inventarios")
+                '    End If
+
+                '    dTabla = oPalet.ObtenerDetalleSalidaInventario(Me._FolioEmbarque) '.Rows.Count
+                '    Me.Grid1.Rows = 1
+                '    For Each dRow As DataRow In dTabla.Rows
+                '        Me.Grid1.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & Chr(9) & dRow(2).ToString & Chr(9) & dRow(3).ToString & Chr(9) & dRow(4).ToString & Chr(9) & _
+                '                        dRow(5).ToString & Chr(9))
+                '    Next
+                'End If
+
+                'Me.FormateaGrid()
+
+                'If Me.Grid1.Rows = 1 Then
+                '    InicializaGrid()
+                'End If
+
+                'Me.Totales()
+                'Me.Grid1.Focus()
+                'Me.Visible = False
+
+                'If dCajaCarton = True Then
+                '    Me.tsbAplicar.PerformClick()
+                'Else
+                '    Me.Visible = True
+                'End If
+
+
+            ElseIf Me._ConsultaExteriorSalida = True Then
+                Me.InicializaExterno()
+                Dim sql As New Class_find("SELECT MAX(FOLIO_MOVIMIENTO_INVENTARIO)FOLIO_MOVIMIENTO_INVENTARIO FROM INVENTARIO_MOVIMIENTOS_GLOBAL WHERE FOLIO_REFERENCIA='" & Me.TxtFolioReferencia.Text & "' AND ESTA_CANCELADO='0'")
+                Me.TxtFolio.Text = sql.Result1.ToString
+                Me.Consultar()
+                Me.tsbNuevo.Enabled = False
+                Me.tsbCancelar.Enabled = False
+
+            ElseIf Me._LlamadoExteriorRecepcionarEntradaOrdenCompra = True Then
+                Me.Inicializa()
+                Me.DesplegarDocumentos()
+                Me.DesplegarAlmacenes()
+                Me.DesplegarConceptosInventarios()
+                Me.Cambia_Estado(enumEstados.NUEVO)
+
+                Me.CboDocumento.SelectedValue = Me._CodigoDocumentoParaGrabar
+                Me.txtFolioOrdenCompra.Text = Me._FolioOrdenCompra
+                Me.CboAlmacen.SelectedValue = Me._CodigoAlmacenOrdenCompra
+                Me.cboMoneda.SelectedValue = Me._Moneda
+                'Me.txtTipoCambio.Text = Me._TipoCambio.ToString
+                Me.ConsultarOrdenCompra()
+
+                Me.tsbNuevo.Enabled = False
+                Me.tsbCancelar.Enabled = False
+                Me.TxtFolio.Enabled = False
+                Me.btnDocumentoAnterior.Enabled = False
+                Me.btnDocumentoSiguiente.Enabled = False
+
+                Me.cboMoneda.Visible = True : Me.lblDisplayMoneda.Visible = True
+                Me.txtTipoCambio.Visible = True : Me.lblDisplayTipoCambio.Visible = True
+
+            Else
+                Me.Inicializa()
+                Me.DesplegarDocumentos()
+                Me.DesplegarAlmacenes()
+                Me.DesplegarConceptosInventarios()
+                Me.Cambia_Estado(enumEstados.NUEVO)
             End If
 
-            Return
+            Me.ObtenerTipoCambioDia()
 
-            'Este era el código que estaba cuando se hacia una salida por cada palet.
-            'Me.InicializaExterno()
-            'Dim oPalet = New Class_Embarques_PaletsGlobal(Me.TxtFolioReferencia.Text)
-
-            'Dim sql As New Class_find("SELECT count(CODIGO_ARTICULO) articulos,max(CODIGO_ARTICULO) FROM EMB_PALETS_DETALLE " & _
-            '            "WHERE FOLIO_PALET='" & Me.TxtFolioReferencia.Text & "'")
-
-            'If sql.Result1 = "1" Then
-            '    Dim sql1 As New Class_find("SELECT 1 FROM CAT_PRODUCTOS_AGRICOLAS_FORMULAS_EMPAQUE WHERE CLAVE='CAJA_CARTON' AND CODIGO_PRODUCTO='" & sql.Result2 & "'")
-
-            '    If sql1.Result1 = "1" Then
-            '        dCajaCarton = True
-            '    Else
-            '        MsgBox("El producto no tiene configurado el material de empaque.", MsgBoxStyle.Information, "Aplicando Movimientos de Inventarios")
-            '    End If
-
-            '    dTabla = oPalet.ObtenerDetalleSalidaInventario(Me._FolioEmbarque) '.Rows.Count
-            '    Me.Grid1.Rows = 1
-            '    For Each dRow As DataRow In dTabla.Rows
-            '        Me.Grid1.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & Chr(9) & dRow(2).ToString & Chr(9) & dRow(3).ToString & Chr(9) & dRow(4).ToString & Chr(9) & _
-            '                        dRow(5).ToString & Chr(9))
-            '    Next
-            'End If
-
-            'Me.FormateaGrid()
-
-            'If Me.Grid1.Rows = 1 Then
-            '    InicializaGrid()
-            'End If
-
-            'Me.Totales()
-            'Me.Grid1.Focus()
-            'Me.Visible = False
-
-            'If dCajaCarton = True Then
-            '    Me.tsbAplicar.PerformClick()
-            'Else
-            '    Me.Visible = True
-            'End If
-
-
-        ElseIf Me._ConsultaExteriorSalida = True Then
-            Me.InicializaExterno()
-            Dim sql As New Class_find("SELECT MAX(FOLIO_MOVIMIENTO_INVENTARIO)FOLIO_MOVIMIENTO_INVENTARIO FROM INVENTARIO_MOVIMIENTOS_GLOBAL WHERE FOLIO_REFERENCIA='" & Me.TxtFolioReferencia.Text & "' AND ESTA_CANCELADO='0'")
-            Me.TxtFolio.Text = sql.Result1.ToString
-            Me.Consultar()
-            Me.tsbNuevo.Enabled = False
-            Me.tsbCancelar.Enabled = False
-
-        ElseIf Me._LlamadoExteriorRecepcionarEntradaOrdenCompra = True Then
-            Me.Inicializa()
-            Me.DesplegarDocumentos()
-            Me.DesplegarAlmacenes()
-            Me.DesplegarConceptosInventarios()
-            Me.Cambia_Estado(enumEstados.NUEVO)
-
-            Me.CboDocumento.SelectedValue = Me._CodigoDocumentoParaGrabar
-            Me.txtFolioOrdenCompra.Text = Me._FolioOrdenCompra
-            Me.CboAlmacen.SelectedValue = Me._CodigoAlmacenOrdenCompra
-            Me.ConsultarOrdenCompra()
-
-            Me.tsbNuevo.Enabled = False
-            Me.tsbCancelar.Enabled = False
-            Me.TxtFolio.Enabled = False
-            Me.btnDocumentoAnterior.Enabled = False
-            Me.btnDocumentoSiguiente.Enabled = False
-
-        Else
-            Me.Inicializa()
-            Me.DesplegarDocumentos()
-            Me.DesplegarAlmacenes()
-            Me.DesplegarConceptosInventarios()
-            Me.Cambia_Estado(enumEstados.NUEVO)
-        End If
+        Catch ex As Exception
+            HandleError(Me.Name, "Inventarios_Movimientos_Load", ex)
+        End Try
     End Sub
 
     Private Sub Grid1_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Grid1.KeyDown
@@ -523,6 +557,12 @@ Buscar:
         End Select
     End Sub
 
+    Private Sub DtpFecha_ValueChanged(sender As Object, e As EventArgs) Handles DtpFecha.ValueChanged
+        If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = True Then
+            Me.ObtenerTipoCambioDia()
+            Me.Totales()
+        End If
+    End Sub
 #Region "Eventos Genericos"
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles DtpFecha.KeyPress, TxtConcepto.KeyPress, TxtFolio.KeyPress, TxtFolioReferencia.KeyPress, txtFolioEmbarque.KeyPress,
         txtFolioOrdenCompra.KeyPress
@@ -1244,6 +1284,20 @@ BuscarCuentas:
             Return False
         End If
 
+        If Me.oDocumentos.CODIGO_TIPO_DOCUMENTO = "ER" Then
+            If Me.cboMoneda.Text = "USD" Then
+                If valorNumericoD(Me.txtTipoCambio.Text) <= 0 Then
+                    MsgBox("El tipo de cambio no puede ser cero en esta entrada que proviene de una orden de compra en USD.", vbExclamation, sProcedure)
+                    Return False
+                End If
+            End If
+        End If
+
+        If valorNumericoD(Me.txtTotal.Text) <= 0 Then
+            MsgBox("El total no puede ser cero.", vbExclamation, sProcedure)
+            Return False
+        End If
+
         'Me.oInventarios = New Class_Inventarios_Global
 
         Select Case Me.Estado
@@ -1280,6 +1334,7 @@ BuscarCuentas:
                         End If
                         .FOLIO_ORDEN_PRODUCCION = Me.TxtFolioOrdenProduccion.Text.ToUpper
                         .CODIGO_CLIENTE = Me.txtCliente.Text
+                        .TIPO_DE_CAMBIO = valorNumericoD(Me.txtTipoCambio.Text)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -1325,6 +1380,7 @@ BuscarCuentas:
                                 .oInventariosDetalle.IMPORTE_BASE = valorNumericoD(Me.Grid1.Cell(i, Me.iGyImporte).Text.ToString)
                                 .oInventariosDetalle.ID_COMPRA_DETALLE = CInt("0" & Me.Grid1.Cell(i, Me.iGyIDCompraDetalle).Text)
                                 .oInventariosDetalle.ID_INVENTARIO_LOTES_COSTOS = CInt("0" & Me.Grid1.Cell(i, Me.iGyID_INVENTARIO_LOTES_COSTOS).Text)
+                                .oInventariosDetalle.COSTO_USD = valorNumericoD(Me.Grid1.Cell(i, Me.iGyCostoUSD).Text)
 
                                 If .oInventariosDetalle.GrabaRenglon() = False Then
                                     MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, sProcedure)
@@ -1932,7 +1988,7 @@ BuscarCuentas:
                 Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("COSTO_DETALLE_BASE").ToString & Chr(9) & dRow("IMPORTE_BASE").ToString & Chr(9) &
                                 dRow("Boton").ToString & Chr(9) & dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("ID_ADICIONAL").ToString & Chr(9) &
                                 dRow("FLETE_DETALLE_IMPORTE").ToString & Chr(9) & dRow("COSTO_DETALLE").ToString & Chr(9) & dRow("IMPORTE_BASE").ToString & Chr(9) & dRow("ID_COMPRA_DETALLE").ToString & Chr(9) & dRow("DISPONIBLE").ToString & Chr(9) &
-                                dRow("ID_INVENTARIO_LOTES_COSTOS").ToString & Chr(9))
+                                dRow("ID_INVENTARIO_LOTES_COSTOS").ToString & Chr(9) & dRow("COSTO_USD").ToString & Chr(9))
             Next
 
             If Me.lblStatus.Text = "G" Then
@@ -2046,7 +2102,7 @@ BuscarCuentas:
         Try
             With Me.Grid1
                 .AutoRedraw = False
-                .Cols = 16
+                .Cols = 17
                 '.DefaultFont = New Font("Tahoma", 8)
                 .DisplayFocusRect = False
                 '.DisplayDateTimeMask = True
@@ -2078,6 +2134,7 @@ BuscarCuentas:
                 .Cell(0, Me.iGyIDCompraDetalle).Text = "IDCompraDetalle"
                 .Cell(0, Me.iGyDisponible).Text = "Disponible"
                 .Cell(0, Me.iGyID_INVENTARIO_LOTES_COSTOS).Text = "ID_INVENTARIO_LOTES_COSTOS"
+                .Cell(0, Me.iGyCostoUSD).Text = "CostoUSD" 'De momento este costo sólo se usa cuando son entradas por recepción de compras.
 
                 .Column(Me.iGyCantidad).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
@@ -2109,6 +2166,10 @@ BuscarCuentas:
                 .Column(Me.iGyImporteMasFlete).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
                 .Column(Me.iGyImporteMasFlete).Alignment = FlexCell.AlignmentEnum.RightCenter
 
+                .Column(Me.iGyCostoUSD).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyCostoUSD).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.iGyCostoUSD).Alignment = FlexCell.AlignmentEnum.RightCenter
+
                 .Column(Me.iGyBoton).CellType = FlexCell.CellTypeEnum.Button
 
                 .Column(Me.iGyDescripcion).Locked = True
@@ -2118,6 +2179,7 @@ BuscarCuentas:
                 .Column(Me.iGyCostoMasFlete).Locked = True
                 .Column(Me.iGyImporteMasFlete).Locked = True
                 .Column(Me.iGyIDCompraDetalle).Locked = True
+                .Column(Me.iGyCostoUSD).Locked = True
 
                 .Column(Me.iGyCodigo).Width = 100
                 .Column(Me.iGyDescripcion).Width = 190
@@ -2132,6 +2194,7 @@ BuscarCuentas:
                 .Column(Me.iGyIDCompraDetalle).Visible = False
                 .Column(Me.iGyDisponible).Visible = False
                 .Column(Me.iGyID_INVENTARIO_LOTES_COSTOS).Visible = False
+                .Column(Me.iGyCostoUSD).Visible = False
 
             End With
 
@@ -2146,14 +2209,24 @@ BuscarCuentas:
     Private Sub Totales()
         Const sProcedure As String = "Totales"
         Try
+            If Me.Grid1.Cols < Me.iGyID_INVENTARIO_LOTES_COSTOS Then 'Si aún no se inicializa el grid no totalizar nada porque fallaria al no tener todavia creadas todas las coumnas.
+                Return
+            End If
+
             Dim i As Integer
-            Dim dCantidad As Decimal = 0, dCosto As Decimal = 0, dImporte As Decimal = 0, dFleteImporte As Decimal = 0, dCostoMasFlete As Decimal = 0, dImporteMasFlete As Decimal = 0
+            Dim dCantidad As Decimal = 0, dCosto As Decimal = 0, dImporte As Decimal = 0, dFleteImporte As Decimal = 0, dCostoMasFlete As Decimal = 0, dImporteMasFlete As Decimal = 0, dCostoUSD As Decimal = 0
             Dim dFleteTotal As Decimal = 0
             For i = 1 To Me.Grid1.Rows - 1
                 If Len("" & Me.Grid1.Cell(i, Me.iGyCantidad).Text) > 0 Then
                     dCantidad = valorNumericoD(0 & Me.Grid1.Cell(i, Me.iGyCantidad).Text)
                     dCosto = valorNumericoD(0 & Me.Grid1.Cell(i, Me.iGyCosto).Text)
                     dFleteImporte = valorNumericoD(0 & Me.Grid1.Cell(i, Me.iGyFleteDetalleImporte).Text)
+                    dCostoUSD = valorNumericoD(0 & Me.Grid1.Cell(i, Me.iGyCostoUSD).Text)
+
+                    If dCostoUSD > 0 And Me._LlamadoExteriorRecepcionarEntradaOrdenCompra = True Then
+                        dCosto = RedondearD(dCostoUSD * valorNumericoD(Me.txtTipoCambio.Text), Empresa_Sistema.DECIMALES_PRECIO)
+                        Me.Grid1.Cell(i, Me.iGyCosto).Text = dCosto.ToString
+                    End If
 
                     '.Column(Me.iGyCosto).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
                     '.Column(Me.iGyImporte).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
@@ -3134,13 +3207,28 @@ busca_serie:
             Me.InicializaGridSeries()
             Me.OcultaControles()
 
+            'Dim dTabla As DataTable = oOrdenCompra.ObtenerDetalleDisponiblesOrdenCompra(Me.txtFolioOrdenCompra.Text, Me.cboMoneda.Text, valorNumericoD(Me.txtTipoCambio.Text))
             Dim dTabla As DataTable = oOrdenCompra.ObtenerDetalleDisponiblesOrdenCompra(Me.txtFolioOrdenCompra.Text)
+
             Me.Grid1.AutoRedraw = False
             Me.Grid1.Rows = 1
             For Each dRow As DataRow In dTabla.Rows
-                Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("COSTO_DETALLE").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9) &
-                                dRow("Boton").ToString & Chr(9) & dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("NOMBRE_CUENTA").ToString & Chr(9) & dRow("ID_ADICIONAL").ToString & Chr(9) &
-                                "0" & Chr(9) & dRow("COSTO_DETALLE").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9) & dRow("ID_COMPRA_DETALLE").ToString & Chr(9)) 'El 0 es para el flete pero todavia no lo calculamos
+                Me.Grid1.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) &
+                                 dRow("DESCRIPCION").ToString & Chr(9) &
+                                 dRow("CANTIDAD").ToString & Chr(9) &
+                                 dRow("COSTO_DETALLE").ToString & Chr(9) &
+                                 dRow("IMPORTE").ToString & Chr(9) &
+                                dRow("Boton").ToString & Chr(9) &
+                                dRow("CUENTA_CONTABLE").ToString & Chr(9) &
+                                dRow("NOMBRE_CUENTA").ToString & Chr(9) &
+                                dRow("ID_ADICIONAL").ToString & Chr(9) &
+                                "0" & Chr(9) &
+                                dRow("COSTO_DETALLE").ToString & Chr(9) &
+                                dRow("IMPORTE").ToString & Chr(9) &
+                                dRow("ID_COMPRA_DETALLE").ToString & Chr(9) &
+                                "" & Chr(9) &
+                                "" & Chr(9) &
+                                dRow("PRECIO_USD").ToString & Chr(9)) 'El 0 es para el flete pero todavia no lo calculamos
 
             Next
 
@@ -3172,7 +3260,7 @@ busca_serie:
     Private Sub InicializaOrdenCompra()
         Const sProcedure As String = "InicializaOrdenCompra"
         Try
-            'Estos datos que se establezcan en blando deberán también establecerse en el inicializa normal
+            'Estos datos que se establezcan en blanco deberán también establecerse en el inicializa normal
             Me.txtFolioOrdenCompra.Text = ""
             Me.txtFleteOrdenCompra.Text = ""
             Me.txtProveedor.Text = ""
@@ -3584,7 +3672,51 @@ busca_serie:
         End Try
     End Function
 
+    Private Sub DesplegarMonedas()
+        Const sProcedure As String = "DesplegarMonedas"
+        Try
+            Dim oMoneda As New Class_CatMonedas
+            Dim dTable As New DataTable
 
+            With Me.cboMoneda
+                .DisplayMember = "CODIGO_MONEDA_SAT"
+                .ValueMember = "CODIGO_MONEDA"
+                dTable = oMoneda.ObtenerElementos
+                dTable.Rows(2).Delete() 'Quita Euros del DataTable
+                .DataSource = dTable
+                .SelectedValue = 1 '1=MXN
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
+    Private Sub ObtenerTipoCambioDia()
+        Const sProcedure As String = "ObtenerTipoCambioDia"
+        Try
+            If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.GRABADO Then
+                Dim oTipoCambio As New Class_CatTiposCambio(Me.DtpFecha.Value)
+                Me.txtTipoCambio.Text = "0"
+
+                If oTipoCambio.Existe = True AndAlso oTipoCambio.TIPO_DE_CAMBIO > 0 Then
+                    Me.txtTipoCambio.Text = oTipoCambio.TIPO_DE_CAMBIO.ToString
+                Else
+                    If Me.cboMoneda.SelectedIndex = 1 Then
+                        MsgBox("No se ha capturado el tipo de cambio del día.", MsgBoxStyle.Exclamation, Me.Text)
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
+    Private Sub Inventarios_Movimientos_Activated(sender As Object, e As EventArgs) Handles Me.Activated
+        'If Me._LlamadoExteriorRecepcionarEntradaOrdenCompra = True Then
+        '    Stop
+        '    MsgBox("totalizar aqui ?")
+        'End If
+    End Sub
 
 #End Region
 
