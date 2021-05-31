@@ -650,11 +650,23 @@ Public Class Class_Bancos_CXP
         Dim sSQL As String
 
         'CargaFacturasPagadas()
-        sSQL = "SELECT B.FOLIO_REFERENCIA_USUARIO,ISNULL(Convert(varchar(10),B.FECHA, 103),'') FECHA,B.FOLIO_REFERENCIA,B.NOMBRE_MONEDA_CO,B.TIPO_DE_CAMBIO_CO,B.IMPUESTO_USD_COMPRA,B.TOTAL_COMPRA_DOLARES,B.SALDO_USD_CO,B.CONCEPTO_COMPRA," &
-               "B.IMPUESTO_COMPRA,B.TOTAL_COMPRA,B.SALDO_COMPRA,0 SALDO_IMPUESTO,B.RETENCION_IVA,B.TOTAL_DETALLE_IMPUESTO,B.TOTAL_DETALLE,B.TOTAL_DETALLE_DOLARES,0,B.CODIGO_DOCUMENTO_COMPRA,'' " &
+        'sSQL = "SELECT B.FOLIO_REFERENCIA_USUARIO,ISNULL(Convert(varchar(10),B.FECHA, 103),'') FECHA,B.FOLIO_REFERENCIA,B.NOMBRE_MONEDA_CO,B.TIPO_DE_CAMBIO_CO,B.IMPUESTO_USD_COMPRA,B.TOTAL_COMPRA_DOLARES,B.SALDO_USD_CO,B.CONCEPTO_COMPRA," &
+        '       "B.IMPUESTO_COMPRA,B.TOTAL_COMPRA,B.SALDO_COMPRA,0 SALDO_IMPUESTO,B.RETENCION_IVA,B.TOTAL_DETALLE_IMPUESTO,B.TOTAL_DETALLE,B.TOTAL_DETALLE_DOLARES,0,B.CODIGO_DOCUMENTO_COMPRA,'' " &
+        '       "FROM VW_BANCOS_CXP_DETALLE B " &
+        '       "WHERE B.FOLIO_BANCO='" & Me._FOLIO_BANCO & "' AND B.CODIGO_PLAZA= " & Plaza.CODIGO_PLAZA & " " &
+        '       "ORDER BY FECHA"
+
+        sSQL = "SELECT B.FOLIO_REFERENCIA_USUARIO,ISNULL(Convert(varchar(10),B.FECHA, 103),'') FECHA,B.FOLIO_REFERENCIA,B.CODIGO_MONEDA_SAT_CO,B.TIPO_DE_CAMBIO_CO,B.SUBTOTAL_USD_CO,B.IMPUESTO_USD_CO,B.TOTAL_COMPRA_DOLARES,B.SALDO_USD_CO,B.CONCEPTO_COMPRA," &
+               "B.IMPUESTO_COMPRA,B.TOTAL_COMPRA," &
+               "CASE When B.CODIGO_MONEDA_SAT_CO='USD' THEN ROUND(B.SALDO_COMPRA_DOLARES*B.TIPO_DE_CAMBIO,2) ELSE B.SALDO_COMPRA END SALDO_MXN_TP_PAGO,B.SALDO_COMPRA SALDO_CXP," &
+               "0 SALDO_IMPUESTO,B.RETENCION_IVA,B.IVA_PAGADO_CXP,B.IVA_PENDIENTE_PAGO," &
+               "B.PAGO_MXN_BANCOS_CXP,B.TOTAL_DETALLE CXP_TOTAL," &
+               "B.TOTAL_DETALLE_DOLARES,0 SELECCION,B.CODIGO_DOCUMENTO_COMPRA,'' AUTORIZADO," &
+               "B.SUBTOTAL_CXP,B.SUBTOTAL_PAGADO_CXP,B.DIFERENCIA_CAMBIARIA_CXP " &
                "FROM VW_BANCOS_CXP_DETALLE B " &
-               "WHERE FOLIO_BANCO='" & Me._FOLIO_BANCO & "' AND CODIGO_PLAZA= " & Plaza.CODIGO_PLAZA & " " &
-               "ORDER BY FECHA"
+               "WHERE B.FOLIO_BANCO='" & Me._FOLIO_BANCO & "' AND B.CODIGO_PLAZA= " & Plaza.CODIGO_PLAZA & " " &
+               "ORDER BY B.ID_CXP_GLOBAL"
+
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
@@ -665,11 +677,24 @@ Public Class Class_Bancos_CXP
         Return dTabla
     End Function
 
-    Public Function CargaComprasProveedorConSaldo(ByVal CodigoProveedor As String) As DataTable
+    Public Function CargaComprasProveedorConSaldo(ByVal CodigoProveedor As String, Optional ByVal dTipoCambioPago As Decimal = CDec(0)) As DataTable
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter ',IMPUESTO_PORCENTAJE
-        Dim sSQL As String = ("SELECT FOLIO_PROVEEDOR,ISNULL(Convert(varchar(10),G.FECHA, 103),'') FECHA,G.FOLIO_COMPRA,M.ABREVIACION NOMBRE_MONEDA_CO,G.TIPO_DE_CAMBIO,G.IMPUESTO_USD,G.TOTAL_DOLARES,G.SALDO_DOLARES,LEFT(CONCEPTO,40) CONCEPTO, " &
+
+        'Dim sSQL As String = ("SELECT FOLIO_PROVEEDOR,ISNULL(Convert(varchar(10),G.FECHA, 103),'') FECHA,G.FOLIO_COMPRA,M.ABREVIACION NOMBRE_MONEDA_CO,G.TIPO_DE_CAMBIO,G.IMPUESTO_USD,G.TOTAL_DOLARES,G.SALDO_DOLARES,LEFT(CONCEPTO,40) CONCEPTO, " &
+        '                      "G.IMPUESTO,G.TOTAL,G.SALDO,SALDO_IMPUESTO,RETENCION_IVA,0 PAGAR_IMPUESTO,ISNULL(A.IMPORTE_AUTORIZADO,0) PAGAR,0 PAGO_USD, " &
+        '                      "CASE WHEN G.SALDO=ISNULL(A.IMPORTE_AUTORIZADO,0) THEN 1 ELSE 0 END SELECCION, CODIGO_DOCUMENTO,ISNULL(Convert(varchar(10),A.FECHA_AUTORIZACION, 103),'') AUTORIZADO " &
+        '                      "FROM COMPRA_GLOBAL G " &
+        '                      "INNER JOIN CAT_PROVEEDORES P ON(G.CODIGO_PROVEEDOR=P.CODIGO_PROVEEDOR)  " &
+        '                      "LEFT JOIN CXP_PAGOS_AUTORIZADOS A ON(G.FOLIO_COMPRA=A.FOLIO_COMPRA AND A.ESTATUS_AUTORIZACION_USADA='0') " &
+        '                      "INNER JOIN CATALOGO_MONEDAS M ON(G.CODIGO_MONEDA=M.CODIGO_MONEDA)" &
+        '                      "WHERE G.CODIGO_PROVEEDOR='" & sReplace(CodigoProveedor) & "' AND G.SALDO<>0 AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " ORDER BY CAST(G.FECHA AS DATETIME)")
+
+        Dim sSQL As String = ("SELECT FOLIO_PROVEEDOR,ISNULL(Convert(varchar(10),G.FECHA, 103),'') FECHA,G.FOLIO_COMPRA,M.CODIGO_MONEDA_SAT,G.TIPO_DE_CAMBIO," &
+                              "G.SUBTOTAL_USD,G.IMPUESTO_USD,G.TOTAL_DOLARES,LEFT(CONCEPTO,40) CONCEPTO, " &
                               "G.IMPUESTO,G.TOTAL,G.SALDO,SALDO_IMPUESTO,RETENCION_IVA,0 PAGAR_IMPUESTO,ISNULL(A.IMPORTE_AUTORIZADO,0) PAGAR,0 PAGO_USD, " &
-                              "CASE WHEN G.SALDO=ISNULL(A.IMPORTE_AUTORIZADO,0) THEN 1 ELSE 0 END SELECCION, CODIGO_DOCUMENTO,ISNULL(Convert(varchar(10),A.FECHA_AUTORIZACION, 103),'') AUTORIZADO " &
+                              "CASE WHEN G.SALDO=ISNULL(A.IMPORTE_AUTORIZADO,0) THEN 1 ELSE 0 END SELECCION, CODIGO_DOCUMENTO,ISNULL(Convert(varchar(10),A.FECHA_AUTORIZACION, 103),'') AUTORIZADO, " &
+                              "CASE WHEN G.CODIGO_MONEDA='2'/*1=MXN,2=USD*/ THEN ROUND(G.SALDO_DOLARES*" & dTipoCambioPago.ToString & ",2) ELSE G.SALDO END SALDO_MXN_TP_PAGO,G.SALDO SALDO_CXP," &
+                              "CASE WHEN G.CODIGO_MONEDA='2'/*1=MXN,2=USD*/ THEN G.SALDO_DOLARES ELSE ROUND(G.SALDO/" & dTipoCambioPago.ToString & ",2) END SALDO_DOLARES " &
                               "FROM COMPRA_GLOBAL G " &
                               "INNER JOIN CAT_PROVEEDORES P ON(G.CODIGO_PROVEEDOR=P.CODIGO_PROVEEDOR)  " &
                               "LEFT JOIN CXP_PAGOS_AUTORIZADOS A ON(G.FOLIO_COMPRA=A.FOLIO_COMPRA AND A.ESTATUS_AUTORIZACION_USADA='0') " &
@@ -684,6 +709,24 @@ Public Class Class_Bancos_CXP
             HandleError(Me.Nombre_Clase, "CargaComprasProveedorConSaldo", ex)
         End Try
         Return dTabla
+    End Function
+
+    Public Function SiTieneComprasProveedorConSaldoUSD(ByVal CodigoProveedor As String) As Boolean
+        Dim bResultado As Boolean = False
+        Dim sSQL As String = ("SELECT TOP 1 '1' HAY_COMPRAS_EN_USD " &
+                              "FROM COMPRA_GLOBAL G " &
+                              "INNER JOIN CAT_PROVEEDORES P ON(G.CODIGO_PROVEEDOR=P.CODIGO_PROVEEDOR)  " &
+                              "INNER JOIN CATALOGO_MONEDAS M ON(G.CODIGO_MONEDA=M.CODIGO_MONEDA)" &
+                              "WHERE G.CODIGO_PROVEEDOR='" & sReplace(CodigoProveedor) & "' AND G.SALDO<>0 AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " AND G.CODIGO_MONEDA='2'") '--1=MXN,2=USD
+        Try
+            Dim oFind As New Class_find(sSQL)
+            If oFind.Result1 = "1" Then
+                bResultado = True
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "SiTieneComprasProveedorConSaldoUSD", ex)
+        End Try
+        Return bResultado
     End Function
 
     Public Function CargaComprasProveedorConSaldoParaDescuentos(ByVal CodigoProveedor As String) As DataTable

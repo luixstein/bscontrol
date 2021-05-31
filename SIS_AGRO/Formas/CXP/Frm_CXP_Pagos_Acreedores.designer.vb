@@ -48,7 +48,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.LblDisplayProveedor = New System.Windows.Forms.Label()
         Me.TxtCodigoProveedor = New System.Windows.Forms.TextBox()
         Me.LblDisplayImporte = New System.Windows.Forms.Label()
-        Me.TxtImporte = New System.Windows.Forms.TextBox()
+        Me.txtTotalMXN = New System.Windows.Forms.TextBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
         Me.Button1 = New System.Windows.Forms.Button()
@@ -57,7 +57,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.lblDisplayCuentaContableOrigenRecursos = New System.Windows.Forms.Label()
         Me.ckbAbonoCuentaBeneficiario = New System.Windows.Forms.CheckBox()
         Me.lblMoneda = New System.Windows.Forms.Label()
-        Me.cboMoneda = New System.Windows.Forms.ComboBox()
+        Me.cboMonedaPago = New System.Windows.Forms.ComboBox()
         Me.lblNombreMonedaDestino = New System.Windows.Forms.Label()
         Me.lblNombreMonedaOrigen = New System.Windows.Forms.Label()
         Me.lblDisplayTipoPago = New System.Windows.Forms.Label()
@@ -73,7 +73,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.CboFacturasRecibidas = New System.Windows.Forms.ComboBox()
         Me.lblFacturasRecibidas = New System.Windows.Forms.Label()
         Me.lblTipoCambio = New System.Windows.Forms.Label()
-        Me.txtImporteDolares = New System.Windows.Forms.TextBox()
+        Me.txtTotalUSD = New System.Windows.Forms.TextBox()
         Me.txtTipoCambio = New System.Windows.Forms.TextBox()
         Me.lblTotalDolares = New System.Windows.Forms.Label()
         Me.LblPoliza = New System.Windows.Forms.LinkLabel()
@@ -82,9 +82,9 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.tssElaboro = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssCancelo = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gbCompras = New System.Windows.Forms.GroupBox()
-        Me.Grid1 = New FlexCell.Grid()
+        Me.GridCompras = New FlexCell.Grid()
         Me.gbFleteEmbarques = New System.Windows.Forms.GroupBox()
-        Me.Grid2 = New FlexCell.Grid()
+        Me.GridFletes = New FlexCell.Grid()
         Me.tsMenu.SuspendLayout()
         Me.gbGlobal.SuspendLayout()
         Me.gbPagosAutorizados.SuspendLayout()
@@ -310,15 +310,15 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.LblDisplayImporte.TabIndex = 239
         Me.LblDisplayImporte.Text = "Importe :"
         '
-        'TxtImporte
+        'txtTotalMXN
         '
-        Me.TxtImporte.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtImporte.Location = New System.Drawing.Point(103, 158)
-        Me.TxtImporte.MaxLength = 0
-        Me.TxtImporte.Name = "TxtImporte"
-        Me.TxtImporte.Size = New System.Drawing.Size(135, 26)
-        Me.TxtImporte.TabIndex = 5
-        Me.TxtImporte.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtTotalMXN.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTotalMXN.Location = New System.Drawing.Point(103, 158)
+        Me.txtTotalMXN.MaxLength = 0
+        Me.txtTotalMXN.Name = "txtTotalMXN"
+        Me.txtTotalMXN.Size = New System.Drawing.Size(135, 26)
+        Me.txtTotalMXN.TabIndex = 5
+        Me.txtTotalMXN.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label8
         '
@@ -337,8 +337,8 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.gbGlobal.Controls.Add(Me.lblDisplayCuentaContableOrigenRecursos)
         Me.gbGlobal.Controls.Add(Me.ckbAbonoCuentaBeneficiario)
         Me.gbGlobal.Controls.Add(Me.lblMoneda)
-        Me.gbGlobal.Controls.Add(Me.cboMoneda)
-        Me.gbGlobal.Controls.Add(Me.TxtImporte)
+        Me.gbGlobal.Controls.Add(Me.cboMonedaPago)
+        Me.gbGlobal.Controls.Add(Me.txtTotalMXN)
         Me.gbGlobal.Controls.Add(Me.lblNombreMonedaDestino)
         Me.gbGlobal.Controls.Add(Me.lblNombreMonedaOrigen)
         Me.gbGlobal.Controls.Add(Me.lblDisplayTipoPago)
@@ -352,7 +352,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.gbGlobal.Controls.Add(Me.CboFacturasRecibidas)
         Me.gbGlobal.Controls.Add(Me.lblFacturasRecibidas)
         Me.gbGlobal.Controls.Add(Me.lblTipoCambio)
-        Me.gbGlobal.Controls.Add(Me.txtImporteDolares)
+        Me.gbGlobal.Controls.Add(Me.txtTotalUSD)
         Me.gbGlobal.Controls.Add(Me.txtTipoCambio)
         Me.gbGlobal.Controls.Add(Me.lblTotalDolares)
         Me.gbGlobal.Controls.Add(Me.LblPoliza)
@@ -438,14 +438,14 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.lblMoneda.TabIndex = 382
         Me.lblMoneda.Text = "Moneda :"
         '
-        'cboMoneda
+        'cboMonedaPago
         '
-        Me.cboMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboMoneda.FormattingEnabled = True
-        Me.cboMoneda.Location = New System.Drawing.Point(309, 158)
-        Me.cboMoneda.Name = "cboMoneda"
-        Me.cboMoneda.Size = New System.Drawing.Size(83, 21)
-        Me.cboMoneda.TabIndex = 381
+        Me.cboMonedaPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboMonedaPago.FormattingEnabled = True
+        Me.cboMonedaPago.Location = New System.Drawing.Point(309, 158)
+        Me.cboMonedaPago.Name = "cboMonedaPago"
+        Me.cboMonedaPago.Size = New System.Drawing.Size(83, 21)
+        Me.cboMonedaPago.TabIndex = 381
         '
         'lblNombreMonedaDestino
         '
@@ -596,16 +596,16 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.lblTipoCambio.TabIndex = 297
         Me.lblTipoCambio.Text = "Tipo de cambio :"
         '
-        'txtImporteDolares
+        'txtTotalUSD
         '
-        Me.txtImporteDolares.Enabled = False
-        Me.txtImporteDolares.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold)
-        Me.txtImporteDolares.Location = New System.Drawing.Point(698, 157)
-        Me.txtImporteDolares.MaxLength = 15
-        Me.txtImporteDolares.Name = "txtImporteDolares"
-        Me.txtImporteDolares.Size = New System.Drawing.Size(142, 26)
-        Me.txtImporteDolares.TabIndex = 10
-        Me.txtImporteDolares.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtTotalUSD.Enabled = False
+        Me.txtTotalUSD.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold)
+        Me.txtTotalUSD.Location = New System.Drawing.Point(698, 157)
+        Me.txtTotalUSD.MaxLength = 15
+        Me.txtTotalUSD.Name = "txtTotalUSD"
+        Me.txtTotalUSD.Size = New System.Drawing.Size(142, 26)
+        Me.txtTotalUSD.TabIndex = 10
+        Me.txtTotalUSD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'txtTipoCambio
         '
@@ -673,7 +673,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
         '
         'gbCompras
         '
-        Me.gbCompras.Controls.Add(Me.Grid1)
+        Me.gbCompras.Controls.Add(Me.GridCompras)
         Me.gbCompras.Location = New System.Drawing.Point(6, 223)
         Me.gbCompras.Name = "gbCompras"
         Me.gbCompras.Size = New System.Drawing.Size(1245, 329)
@@ -681,28 +681,28 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.gbCompras.TabStop = False
         Me.gbCompras.Text = "Compras "
         '
-        'Grid1
+        'GridCompras
         '
-        Me.Grid1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.Grid1.CheckedImage = CType(resources.GetObject("Grid1.CheckedImage"), System.Drawing.Bitmap)
-        Me.Grid1.Cols = 1
-        Me.Grid1.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
-        Me.Grid1.DefaultRowHeight = CType(24, Short)
-        Me.Grid1.DisplayRowNumber = True
-        Me.Grid1.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.Grid1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Grid1.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Grid1.Location = New System.Drawing.Point(6, 37)
-        Me.Grid1.LockButton = True
-        Me.Grid1.Name = "Grid1"
-        Me.Grid1.Rows = 20
-        Me.Grid1.Size = New System.Drawing.Size(1236, 263)
-        Me.Grid1.TabIndex = 0
-        Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
+        Me.GridCompras.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.GridCompras.CheckedImage = CType(resources.GetObject("GridCompras.CheckedImage"), System.Drawing.Bitmap)
+        Me.GridCompras.Cols = 1
+        Me.GridCompras.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.GridCompras.DefaultRowHeight = CType(24, Short)
+        Me.GridCompras.DisplayRowNumber = True
+        Me.GridCompras.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
+        Me.GridCompras.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridCompras.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.GridCompras.Location = New System.Drawing.Point(6, 37)
+        Me.GridCompras.LockButton = True
+        Me.GridCompras.Name = "GridCompras"
+        Me.GridCompras.Rows = 20
+        Me.GridCompras.Size = New System.Drawing.Size(1236, 263)
+        Me.GridCompras.TabIndex = 0
+        Me.GridCompras.UncheckedImage = CType(resources.GetObject("GridCompras.UncheckedImage"), System.Drawing.Bitmap)
         '
         'gbFleteEmbarques
         '
-        Me.gbFleteEmbarques.Controls.Add(Me.Grid2)
+        Me.gbFleteEmbarques.Controls.Add(Me.GridFletes)
         Me.gbFleteEmbarques.Location = New System.Drawing.Point(1257, 253)
         Me.gbFleteEmbarques.Name = "gbFleteEmbarques"
         Me.gbFleteEmbarques.Size = New System.Drawing.Size(978, 265)
@@ -711,24 +711,24 @@ Partial Class Frm_CXP_Pagos_Acreedores
         Me.gbFleteEmbarques.Text = "Embarques"
         Me.gbFleteEmbarques.Visible = False
         '
-        'Grid2
+        'GridFletes
         '
-        Me.Grid2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.Grid2.CheckedImage = CType(resources.GetObject("Grid2.CheckedImage"), System.Drawing.Bitmap)
-        Me.Grid2.Cols = 1
-        Me.Grid2.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
-        Me.Grid2.DefaultRowHeight = CType(24, Short)
-        Me.Grid2.DisplayRowNumber = True
-        Me.Grid2.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.Grid2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Grid2.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Grid2.Location = New System.Drawing.Point(12, 19)
-        Me.Grid2.LockButton = True
-        Me.Grid2.Name = "Grid2"
-        Me.Grid2.Rows = 20
-        Me.Grid2.Size = New System.Drawing.Size(960, 240)
-        Me.Grid2.TabIndex = 210
-        Me.Grid2.UncheckedImage = CType(resources.GetObject("Grid2.UncheckedImage"), System.Drawing.Bitmap)
+        Me.GridFletes.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.GridFletes.CheckedImage = CType(resources.GetObject("GridFletes.CheckedImage"), System.Drawing.Bitmap)
+        Me.GridFletes.Cols = 1
+        Me.GridFletes.DefaultFont = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.GridFletes.DefaultRowHeight = CType(24, Short)
+        Me.GridFletes.DisplayRowNumber = True
+        Me.GridFletes.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
+        Me.GridFletes.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridFletes.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.GridFletes.Location = New System.Drawing.Point(12, 19)
+        Me.GridFletes.LockButton = True
+        Me.GridFletes.Name = "GridFletes"
+        Me.GridFletes.Rows = 20
+        Me.GridFletes.Size = New System.Drawing.Size(960, 240)
+        Me.GridFletes.TabIndex = 210
+        Me.GridFletes.UncheckedImage = CType(resources.GetObject("GridFletes.UncheckedImage"), System.Drawing.Bitmap)
         '
         'Frm_CXP_Pagos_Acreedores
         '
@@ -783,7 +783,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
     Friend WithEvents LblDisplayProveedor As System.Windows.Forms.Label
     Friend WithEvents TxtCodigoProveedor As System.Windows.Forms.TextBox
     Friend WithEvents LblDisplayImporte As System.Windows.Forms.Label
-    Friend WithEvents TxtImporte As System.Windows.Forms.TextBox
+    Friend WithEvents txtTotalMXN As System.Windows.Forms.TextBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents tsbCancelar As System.Windows.Forms.ToolStripButton
     Friend WithEvents gbGlobal As System.Windows.Forms.GroupBox
@@ -793,16 +793,16 @@ Partial Class Frm_CXP_Pagos_Acreedores
     Friend WithEvents tssCancelo As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents LblPoliza As System.Windows.Forms.LinkLabel
     Friend WithEvents gbCompras As System.Windows.Forms.GroupBox
-    Friend WithEvents Grid1 As FlexCell.Grid
+    Friend WithEvents GridCompras As FlexCell.Grid
     Friend WithEvents ckbAbonoCuentaBeneficiario As System.Windows.Forms.CheckBox
     Friend WithEvents txtTipoCambio As System.Windows.Forms.TextBox
     Friend WithEvents lblTotalDolares As System.Windows.Forms.Label
     Friend WithEvents lblTipoCambio As System.Windows.Forms.Label
-    Friend WithEvents txtImporteDolares As System.Windows.Forms.TextBox
+    Friend WithEvents txtTotalUSD As System.Windows.Forms.TextBox
     Friend WithEvents lblFacturasRecibidas As System.Windows.Forms.Label
     Friend WithEvents CkbPagoFleteEmbarques As System.Windows.Forms.CheckBox
     Friend WithEvents gbFleteEmbarques As System.Windows.Forms.GroupBox
-    Friend WithEvents Grid2 As FlexCell.Grid
+    Friend WithEvents GridFletes As FlexCell.Grid
     Friend WithEvents gbPagosAutorizados As System.Windows.Forms.GroupBox
     Friend WithEvents btnAutorizaciones As System.Windows.Forms.Button
     Friend WithEvents btnSiguiente As System.Windows.Forms.Button
@@ -814,7 +814,7 @@ Partial Class Frm_CXP_Pagos_Acreedores
     Friend WithEvents cboTipoPago As System.Windows.Forms.ComboBox
     Friend WithEvents lblNombreMonedaOrigen As System.Windows.Forms.Label
     Friend WithEvents lblNombreMonedaDestino As System.Windows.Forms.Label
-    Friend WithEvents cboMoneda As System.Windows.Forms.ComboBox
+    Friend WithEvents cboMonedaPago As System.Windows.Forms.ComboBox
     Friend WithEvents lblMoneda As System.Windows.Forms.Label
     Friend WithEvents tsbIvaAcreditable As ToolStripButton
     Friend WithEvents txtCuentaContableOrigenRecursos As TextBox
