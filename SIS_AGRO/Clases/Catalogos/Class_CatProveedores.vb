@@ -349,7 +349,7 @@ Public Class Class_CatProveedores
             sqlParametro = .Parameters.Add("@CORREO_ELECTRONICO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._CORREO_ELECTRONICO.ToUpper
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE
             sqlParametro = .Parameters.Add("@CUENTA_CONTABLE_DOLARES", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._CUENTA_CONTABLE_DOLARES
-            sqlParametro = .Parameters.Add("@CODIGO_TIPO_PROVEEDOR", SqlDbType.Char, 1) : sqlParametro.Value = Me._CODIGO_TIPO_PROVEEDOR.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_PROVEEDOR", SqlDbType.Char, 2) : sqlParametro.Value = Me._CODIGO_TIPO_PROVEEDOR.ToUpper
             sqlParametro = .Parameters.Add("@CONTACTO", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONTACTO.ToUpper
             sqlParametro = .Parameters.Add("@CONTACTO_TELEFONO_CELULAR", SqlDbType.NVarChar, 80) : sqlParametro.Value = Me._CONTACTO_TELEFONO_CELULAR.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
