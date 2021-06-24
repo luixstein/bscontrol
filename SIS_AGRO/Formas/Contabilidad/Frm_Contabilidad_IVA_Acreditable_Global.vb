@@ -107,6 +107,8 @@ Public Class Frm_Contabilidad_IVA_Acreditable_Global
             Else
                 MsgBox("Asígne por favor el UUID.", MsgBoxStyle.Exclamation, Me.Name)
             End If
+        Else
+            MsgBox("Seleccione por favor un registro.", MsgBoxStyle.Exclamation, Me.Name)
         End If
     End Sub
 
