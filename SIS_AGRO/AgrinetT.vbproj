@@ -62,6 +62,14 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AuxiliarCtas_1_2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\AuxiliarCtas_1_2.dll</HintPath>
+    </Reference>
+    <Reference Include="AuxiliarFolios_1_2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\AuxiliarFolios_1_2.dll</HintPath>
+    </Reference>
     <Reference Include="BalanzaComprobacion_1_2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\BalanzaComprobacion_1_2.dll</HintPath>

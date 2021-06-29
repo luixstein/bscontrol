@@ -36,6 +36,8 @@ Module FacturacionElectronica
         CATALOGO_CUENTAS
         BALANZA_COMPROBACION
         POLIZAS
+        AUXILIAR_CTAS
+        AUXILIAR_FOLIOS
     End Enum
 
     Public Structure Certificado
