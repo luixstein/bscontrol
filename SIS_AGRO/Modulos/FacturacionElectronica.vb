@@ -1827,6 +1827,10 @@ Module FacturacionElectronica
                     XSL.Load(GetType(BalanzaComprobacion_1_2))
                 Case TipoArchivoContabilidadElectronica.POLIZAS
                     XSL.Load(GetType(PolizasPeriodo_1_2))
+                Case TipoArchivoContabilidadElectronica.AUXILIAR_CTAS
+                    XSL.Load(GetType(AuxiliarCtas_1_2))
+                Case TipoArchivoContabilidadElectronica.AUXILIAR_FOLIOS
+                    XSL.Load(GetType(AuxiliarFolios_1_2))
             End Select
 
             XSL.Transform(myXPathDoc, Nothing, ms)
