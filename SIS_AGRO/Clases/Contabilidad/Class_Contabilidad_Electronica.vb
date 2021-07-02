@@ -524,7 +524,144 @@ Public Class Class_Contabilidad_Electronica
     End Function
 
     Public Function GeneraXMLPolizasPeriodo(ByVal dFecha As Date, ByVal iCodigoTipoArchivo As Integer, ByVal iCodigoEjercicio As Integer, ByVal sNumOrden As String, ByVal sNumTramite As String, ByVal iPruebas As Integer) As Boolean
-        MsgBox("FALTA")
+        Dim bResultado As Boolean = False
+        Const sProcedure As String = "GeneraXMLPolizasPeriodo"
+
+        Dim bValidaciones As Boolean = False, fElectronica As New FacturaElectronica()
+        Dim strStreamW As Stream = Nothing, strStreamWriter As StreamWriter = Nothing, sCarpeta As String
+        Dim oXML As New XmlDocument, sRutaXML As String
+
+        Try
+
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'Validar si el archivo ya fue generado
+            Me.Consultar(iCodigoTipoArchivo, dFecha)
+            If Me._EXISTE = True Then
+                If MsgBox("Este archivo ya se generó, seguro desea genearlo otra vez?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
+                    Return False
+                End If
+            End If
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Dim oTipo As New Class_Contabilidad_Electronica_CatalogoTiposArchivos(iCodigoTipoArchivo.ToString)
+            If oTipo.EXISTE = False Then
+                Return False
+            End If
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            sCarpeta = sContabilidadElectronicaCarpeta & "\" & Year(dFecha) & "." & Format(dFecha, "MM").ToUpper
+            sRutaXML = sCarpeta & "\" & Empresa_Sistema.RFC & Year(dFecha) & Format(dFecha, "MM") & oTipo.TERMINACION_NOMBRE_ARCHIVO_XML & ".xml" '"BN.xml"
+
+            If Len(Dir(sCarpeta, FileAttribute.Directory)) = 0 Then
+                MkDir(sCarpeta)
+            End If
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Dim dt As New DataTable
+            Using da As New SqlDataAdapter("MP_CONTABILIDAD_ELECTRONICA_POLIZAS", Me._Conexion)
+                da.SelectCommand.CommandTimeout = 300
+                da.SelectCommand.CommandType = CommandType.StoredProcedure
+
+                Dim parameter As SqlParameter
+
+                parameter = New SqlParameter("@FECHA", SqlDbType.NVarChar, 20) : parameter.Value = Format(dFecha, "yyyy-dd-MM") : da.SelectCommand.Parameters.Add(parameter)
+                parameter = New SqlParameter("@ID_CON_EJERCICIO", SqlDbType.SmallInt) : parameter.Value = iCodigoEjercicio : da.SelectCommand.Parameters.Add(parameter)
+                parameter = New SqlParameter("@CODIGO_TIPO_ARCHIVO", SqlDbType.SmallInt) : parameter.Value = iCodigoTipoArchivo : da.SelectCommand.Parameters.Add(parameter)
+                parameter = New SqlParameter("@NUM_ORDEN", SqlDbType.NVarChar, 13) : parameter.Value = sNumOrden : da.SelectCommand.Parameters.Add(parameter)
+                parameter = New SqlParameter("@NUM_TRAMITE", SqlDbType.NVarChar, 15) : parameter.Value = sNumTramite : da.SelectCommand.Parameters.Add(parameter)
+
+                da.Fill(dt)
+            End Using
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            If dt.Rows.Count <= 0 Then
+                MsgBox("No se encontró ninguna información.", vbExclamation, sProcedure)
+                Return False
+            End If
+
+            If dt.Rows.Count = 1 Then
+                MsgBox("No se encontraron pólizas.", vbExclamation, sProcedure)
+                Return False
+            End If
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            strStreamW = File.Create(sRutaXML)
+            strStreamWriter = New StreamWriter(strStreamW, System.Text.Encoding.UTF8) ' tipo de codificacion para escritura
+
+            'Linea por línea construye el xml en un stream, aun no existe el archivo en físico
+            'For Each dRow As DataRow In dt.Select("LEN(LINEA)>0")
+            For Each dRow As DataRow In dt.Rows
+                If dRow("LINEA").ToString.Length > 0 Then 'And dRow("LINEA").ToString > "010" Then
+                    strStreamWriter.WriteLine(dRow("LINEA").ToString)
+                    'Console.WriteLine(dRow("LINEA").ToString)
+                End If
+            Next
+
+            strStreamWriter.Flush()
+            strStreamW.Position = 0
+            Dim SR As New StreamReader(strStreamW)
+            Dim LineRead As String = SR.ReadToEnd 'Aquí del stream lo carga todo en una variable con la que se cargará el xml con LoadXml
+            'SR.Dispose()'No es necesario haerle dispose porque el dispose del strStreamWriter lo libera
+
+            strStreamWriter.Close()
+            strStreamWriter.Dispose()
+
+            oXML.LoadXml(LineRead)
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            Dim Cert As Certificado = GestionaCertificado(Date.Now) 'intencionalmente se le pasa cualquier fecha con el fin de validar si está vigente el certificado, este xml no tiene fecha, tiene mes y año y no es necesario crear una fecha.
+            If Cert.CertificadoValido = False Then
+                Return False
+            End If
+
+            oXML.Item("PLZ:Polizas").Attributes("noCertificado").Value = Cert.noCertificado
+            oXML.Item("PLZ:Polizas").Attributes("Certificado").Value = Cert.Certificado
+            oXML.Save(sRutaXML)
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            Dim xmlDoc As New MSXML2.DOMDocument60
+            xmlDoc.loadXML(oXML.InnerXml)
+
+            fElectronica = GenerarSelloContabilidadElectronicaConPFX(sRutaXML, TipoArchivoContabilidadElectronica.POLIZAS)
+
+            If txtLEN(fElectronica.SelloDigital) = False Then
+                MsgBox("No se generó el sello digital.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            oXML.Item("PLZ:Polizas").Attributes("Sello").Value = fElectronica.SelloDigital
+            oXML.Save(sRutaXML)
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            If ConvierteUTF8(sRutaXML) = False Then
+                MsgBox("Error al intentar convertir el archivo a utf8.", MsgBoxStyle.Exclamation, Me.NombreClase)
+                Return False
+            End If
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'Comprime
+            Dim sRutaXMLZip As String = sRutaXML.Replace(".xml", ".zip")
+
+            Using zip As ZipFile = New ZipFile()
+                zip.AddFile(sRutaXML, "")
+                zip.Save(sRutaXMLZip)
+            End Using
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'Borra archivo xml(se necesita sólo en .zip)
+
+            File.Delete(sRutaXML)
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            If oXML.FirstChild.NodeType = XmlNodeType.XmlDeclaration Then
+                oXML.RemoveChild(oXML.FirstChild) 'Se tiene que graba sin el encabezado de la codificación
+            End If
+
+            If iPruebas = 0 Then 'Sólo se va grabar cuando no sean pruebas.
+                bResultado = Me.GrabaXML(dFecha, iCodigoTipoArchivo, oXML.InnerXml)
+            Else
+                bResultado = True
+            End If
+
+            Process.Start(sCarpeta)
+
+        Catch ex As Exception
+            HandleError(Me.NombreClase, sProcedure, ex)
+        End Try
+
+        Return bResultado
     End Function
 
     Public Function GeneraXMLAuxiliarCtas(ByVal dFecha As Date, ByVal iCodigoTipoArchivo As Integer, ByVal iCodigoEjercicio As Integer, ByVal sNumOrden As String, ByVal sNumTramite As String, ByVal iPruebas As Integer) As Boolean

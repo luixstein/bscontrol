@@ -246,25 +246,24 @@ Partial Class ContabilidadElectronicaGeneraXMLs
         'rbAuxiliarCtas
         '
         Me.rbAuxiliarCtas.AutoSize = True
-        Me.rbAuxiliarCtas.Checked = True
         Me.rbAuxiliarCtas.Location = New System.Drawing.Point(257, 46)
         Me.rbAuxiliarCtas.Name = "rbAuxiliarCtas"
         Me.rbAuxiliarCtas.Size = New System.Drawing.Size(114, 17)
         Me.rbAuxiliarCtas.TabIndex = 231
-        Me.rbAuxiliarCtas.TabStop = True
         Me.rbAuxiliarCtas.Text = "Auxiliar de cuentas"
         Me.rbAuxiliarCtas.UseVisualStyleBackColor = True
         '
         'rbPolizasPeriodo
         '
         Me.rbPolizasPeriodo.AutoSize = True
+        Me.rbPolizasPeriodo.Checked = True
         Me.rbPolizasPeriodo.Location = New System.Drawing.Point(257, 20)
         Me.rbPolizasPeriodo.Name = "rbPolizasPeriodo"
         Me.rbPolizasPeriodo.Size = New System.Drawing.Size(113, 17)
         Me.rbPolizasPeriodo.TabIndex = 230
+        Me.rbPolizasPeriodo.TabStop = True
         Me.rbPolizasPeriodo.Text = "Pólizas del periodo"
         Me.rbPolizasPeriodo.UseVisualStyleBackColor = True
-        Me.rbPolizasPeriodo.Visible = False
         '
         'btnGeneraXML
         '
