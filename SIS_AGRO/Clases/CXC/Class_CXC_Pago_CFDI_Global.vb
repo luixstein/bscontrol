@@ -889,6 +889,29 @@ Public Class Class_CXC_Pago_CFDI_Global
 
         Return dTabla
     End Function
+
+    Public Function BusquedaVisualPagosClienteParaRelacionarCFDIs(ByVal sCodigoCliente As String) As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de pagos del cliente."
+        f.sCampo = "P.FOLIO_PAGO"
+        f.sOrder = "P.FECHA_PAGO DESC"
+        f.sTable = "CFDI_PAGOS_CXC_GLOBAL"
+        f.sQl = "SELECT P.FOLIO_PAGO,P.FOLIO_BANCO,P.ESTATUS_PAGO,DBO.FN_FORMAT_FECHA_CORTO(P.FECHA_PAGO) FECHA,DBO.fn_FormatoNum(P.MONTO,1,2) TOTAL,P.FOLIO_FISCAL_SAT " +
+        "FROM CFDI_PAGOS_CXC_GLOBAL P " +
+        "WHERE P.CODIGO_CLIENTE='" & sCodigoCliente.ToString & "' AND LEN(P.FOLIO_FISCAL_SAT)>0 AND P.ESTATUS_PAGO='A' AND " 'Busca sólo pagos timbrados.
+        f.arrayWidthColumns = New Integer() {100, 60, 70, 250, 100, 300}
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "BusquedaVisualPagosClienteParaRelacionarCFDIs", ex)
+        End Try
+        Return Resultado
+    End Function
 #End Region
 
 End Class

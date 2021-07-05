@@ -24,6 +24,8 @@ Public Class Frm_CXC_Pagos
     Private bDocumentosCargados As Boolean = False
     Private bConsultando As Boolean = False
 
+    Private CodigoClienteRelacionCFDI As String
+
 #End Region
 
 #Region "Columnas grid pago"
@@ -83,6 +85,14 @@ Public Class Frm_CXC_Pagos
     Private iGyB_VtaRetencionIvaMXN As Integer = 37
     Private iGyB_VtaRetencionISRMXN As Integer = 38
     Private iGyB_VtaIEPSDesglosadoEIncluidoMXN As Integer = 39
+#End Region
+
+#Region "Columnas Grid CFDIs relacionados"
+    Private iGyGRFolioPago As Short = 1
+    Private IgyGRFolioBanco As Short = 2
+    Private iGyGRFecha As Short = 3
+    Private iGyGRUUID As Integer = 4
+    Private iGyGRTotal As Short = 5
 #End Region
 
 #Region "Opciones"
@@ -227,6 +237,7 @@ Public Class Frm_CXC_Pagos
             Me.DesplegarMetodosPago()
             Me.DesplegarMonedas()
             Me.DesplegarRegimenesFiscales()
+            Me.DesplegarTiposRelacionCFDI()
 
             Me.Inicializa()
 
@@ -600,7 +611,7 @@ Buscar:
         End If
     End Sub
 
-    Private Sub GridVentas_CellChanging(ByVal Sender As Object, ByVal e As FlexCell.Grid.CellChangingEventArgs) Handles GridVentas.CellChanging
+    Private Sub GridVentas_CellChanging(ByVal Sender As Object, ByVal e As FlexCell.Grid.CellChangingEventArgs)
         Const sProcedure As String = "GridVentas_CellChanging"
         Try
             Dim Columna As Integer = e.Col, Renglon As Integer = e.Row, dPagoMXN As Decimal, dPagoUSD As Decimal
@@ -656,8 +667,12 @@ Buscar:
         End Try
     End Sub
 
-    Private Sub GridVentas_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridVentas.KeyDown
+    Private Sub GridVentas_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs)
         Me.GestionaGrid(e)
+    End Sub
+
+    Private Sub GridCFDIsRelacionados_KeyDown(ByVal Sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridCFDIsRelacionados.KeyDown
+        Me.GestionaGridCFDIsRelacionados(e)
     End Sub
 
     Private Sub chkVentasNoFiscales_CheckedChanged(sender As Object, e As EventArgs) Handles chkVentasNoFiscales.CheckedChanged
@@ -730,6 +745,9 @@ Buscar:
 
             Me.InicializaDocumentoPago()
             Me.InicializaGridDocumentosPago()
+            Me.InicializaGridCFDIsRelacionados()
+
+            Me.cboTipoRelacionCFDI.SelectedIndex = -1
 
             Me.GeneraFolio()
 
@@ -746,6 +764,10 @@ Buscar:
             Me.tssElaboro.Text = "Elaboró : "
             Me.tssCancelo.Text = "Canceló : "
             Me.tssFechaEmisionCFDI.Text = ""
+
+            Me.GridCFDIsRelacionados.Locked = True
+            Me.cboTipoRelacionCFDI.Enabled = False
+            Me.CodigoClienteRelacionCFDI = ""
 
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
@@ -1171,6 +1193,10 @@ Buscar:
             bResultado = Me.CargaFacturas()
 
             Me.GridVentas.Locked = False
+
+            Me.CodigoClienteRelacionCFDI = Me.TxtCodigoCliente.Text
+            Me.cboTipoRelacionCFDI.Enabled = True
+            Me.GridCFDIsRelacionados.Locked = False
 
             'End If
 
@@ -1742,6 +1768,7 @@ Buscar:
         Dim i As Integer, dPagoMXN As Decimal, sFolioPago As String = "", dPagoTipoCambio As Decimal = 0
         Dim dTotalPago As Decimal = 0, dSumaPagos As Decimal = 0, dAnticipo As Decimal = 0, dPagoUSD As Decimal = 0, dDiferenciaCambiaria As Decimal = 0, dImporteCapturado As Decimal = 0
         Dim dCxcTotal As Decimal = 0, dIVACobrado As Decimal = 0, dIVAPendienteCobro As Decimal = 0, dSubtotaMXNViejos As Decimal = 0, dSubtotaMXNNuevos As Decimal = 0
+        Dim sCodigoTipoRelacionCFDI As String = "", sListaCFDIsRelacionados As String = ""
 
         Try
             dTotalPago = valorNumericoD(Me.GridDocumentosPago.Cell(1, Me.iGyDocMONTO).Text)
@@ -1772,6 +1799,27 @@ Buscar:
                 End If
             End If
 
+            If Me.cboTipoRelacionCFDI.SelectedIndex <> -1 Then
+                If Me.HayCFDIsRelacionadosRepetidos() = True Then
+                    Return False
+                End If
+
+                sCodigoTipoRelacionCFDI = Me.cboTipoRelacionCFDI.SelectedValue.ToString
+
+                For i = 1 To Me.GridCFDIsRelacionados.Rows - 1
+                    If txtLEN(Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolioPago).Text) = True Then
+                        sListaCFDIsRelacionados = sListaCFDIsRelacionados & Me.GridCFDIsRelacionados.Cell(i, iGyGRFolioPago).Text & ","
+                    End If
+                Next
+
+                If txtLEN(sListaCFDIsRelacionados) = True Then
+                    sListaCFDIsRelacionados = sListaCFDIsRelacionados.Substring(0, sListaCFDIsRelacionados.Length - 1) 'Para quitarle la última coma que sale sobrando.
+                Else
+                    MsgBox("Seleccionó un tipo de relación CFDI, pero no indicó cuales son los CFDIs relacionados.", vbExclamation, sProcedure)
+                    Return False
+                End If
+            End If
+
             Me.oBancosCXC = New Class_Bancos_CXC
             'If Me.oBancosCXC.Existe = True Then
             '    Exit Function
@@ -1797,6 +1845,9 @@ Buscar:
 
             oBancosCXC.ES_PAGO_VENTAS_NO_FISCALES = Me.chkVentasNoFiscales.Checked
             oBancosCXC.CODIGO_REGIMEN_FISCAL = Me.cboRegimenFiscal.SelectedValue.ToString
+
+            oBancosCXC.CODIGO_TIPO_RELACION_CFDI = sCodigoTipoRelacionCFDI
+            oBancosCXC.LISTA_CFDIS_RELACIONADOS = sListaCFDIsRelacionados
 
             'Inserta en BANCOS_GLOBAL
             If oBancosCXC.Inserta_Global() = False Then '''''''''''''''''==========================Afectacion
@@ -2799,6 +2850,15 @@ Buscar:
                     Me.lblEsCuentaFiscal.Text = "Sólo remisiones"
                 End If
 
+                If txtLEN("" & Me.oBancosCXC.CODIGO_TIPO_RELACION_CFDI) = True Then
+                    Me.cboTipoRelacionCFDI.SelectedValue = Me.oBancosCXC.CODIGO_TIPO_RELACION_CFDI
+
+                    Me.GridCFDIsRelacionados.DataSource = Me.oBancosCXC.ObtienePagosRelacionados()
+                    Me.FormateaGridCFDIsRelacionados()
+                Else
+                    Me.cboTipoRelacionCFDI.SelectedIndex = -1
+                End If
+
                 bResultado = True
 
                 Me.GestionaCambioEstado()
@@ -3031,6 +3091,10 @@ Buscar:
                     Me.btnGenerarCFDIS.Enabled = False
                     Me.chkVentasNoFiscales.Enabled = False ' Antes estaba true, pero ahora como se llena sólo dependiendo de si la cuenta es o no fiscal, nunca se habilita
                     Me.cboRegimenFiscal.Enabled = True
+
+                    Me.cboTipoRelacionCFDI.Enabled = False
+                    Me.GridCFDIsRelacionados.Locked = True
+                    Me.CodigoClienteRelacionCFDI = ""
 
                     'Me.gbTotales.Enabled = True
 
@@ -4525,6 +4589,164 @@ Buscar:
             HandleError(Me.Name, "VisibilidadColumnasGridVentas", ex)
         End Try
     End Sub
+
+    Private Sub DesplegarTiposRelacionCFDI()
+        Try
+            With Me.cboTipoRelacionCFDI
+                .DisplayMember = "NOMBRE_TIPO_RELACION_CFDI"
+                .ValueMember = "CODIGO_TIPO_RELACION_CFDI"
+                Dim dView As New Data.DataView(dtTiposRelacionCFDI)
+                dView.Sort = "NOMBRE_TIPO_RELACION_CFDI"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = -1
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarTiposRelacionCFDI", ex)
+        End Try
+    End Sub
+
+    Private Sub InicializaGridCFDIsRelacionados()
+        Try
+            Me.GridCFDIsRelacionados.DataSource = Nothing
+            FG_Grid_Limpiar(Me.GridCFDIsRelacionados)
+            Me.GridCFDIsRelacionados.Rows = 2
+            Me.GridCFDIsRelacionados.Cols = 6
+            Me.FormateaGridCFDIsRelacionados()
+        Catch ex As Exception
+            HandleError(Me.Name, "InicializaGridCFDIsRelacionados", ex)
+        End Try
+    End Sub
+
+    Private Sub FormateaGridCFDIsRelacionados()
+        Try
+            With Me.GridCFDIsRelacionados
+                .AutoRedraw = False
+
+                .Column(Me.iGyGRFolioPago).Width = 100
+                .Column(Me.IgyGRFolioBanco).Width = 100
+                .Column(Me.iGyGRFecha).Width = 80
+                .Column(Me.iGyGRUUID).Width = 280
+                .Column(Me.iGyGRTotal).Width = 100
+
+                .Cell(0, Me.iGyGRFolioPago).Text = "Folio pago"
+                .Cell(0, Me.IgyGRFolioBanco).Text = "Folio banco"
+                .Cell(0, Me.iGyGRFecha).Text = "Fecha"
+                .Cell(0, Me.iGyGRUUID).Text = "UUID"
+                .Cell(0, Me.iGyGRTotal).Text = "Total"
+
+                .Column(Me.iGyGRFolioPago).Locked = False
+                .Column(Me.IgyGRFolioBanco).Locked = True
+                .Column(Me.iGyGRFecha).Locked = True
+                .Column(Me.iGyGRUUID).Locked = True
+                .Column(Me.iGyGRTotal).Locked = True
+
+                .Column(Me.iGyGRFecha).CellType = FlexCell.CellTypeEnum.DateTime
+                .Column(Me.iGyGRFecha).FormatString = "dd-MMM-yy"
+
+                .Column(Me.iGyGRTotal).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.iGyGRTotal).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.iGyGRTotal).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
+                .Column(Me.iGyGRTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .AutoRedraw = True
+                .Refresh()
+
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "FormateaGridCFDIsRelacionados", ex)
+        End Try
+    End Sub
+
+    Private Sub GestionaGridCFDIsRelacionados(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Try
+            If Me.GridCFDIsRelacionados.Locked = True Then
+                Return
+            End If
+
+            Dim Columna As Integer, Renglon As Integer, sFolio As String = "", oPagos As Class_CXC_Pago_CFDI_Global
+
+            Columna = Me.GridCFDIsRelacionados.Selection.FirstCol
+            Renglon = Me.GridCFDIsRelacionados.Selection.FirstRow
+            sFolio = Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRFolioPago).Text
+
+            Select Case e.KeyCode
+                Case Keys.Enter
+
+                    Select Case Columna
+                        Case Me.iGyGRFolioPago
+                            If txtLEN(sFolio) = False Then
+                                GoTo BuscaPagos : Return
+                            End If
+LlenaLinea:
+                            oPagos = New Class_CXC_Pago_CFDI_Global(sFolio)
+                            If oPagos.EXISTE = False Then
+                                GoTo BuscaPagos : Return
+                            End If
+
+                            Me.GridCFDIsRelacionados.Cell(Renglon, Me.IgyGRFolioBanco).Text = oPagos.FOLIO_BANCO
+                            Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRFecha).Text = oPagos.FECHA_PAGO.ToString
+                            Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRUUID).Text = oPagos.FOLIO_FISCAL_SAT
+                            Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRTotal).Text = oPagos.MONTO.ToString
+                    End Select
+
+                    If Me.GridCFDIsRelacionados.Rows - 1 = Renglon Then
+                        Me.GridCFDIsRelacionados.Rows = Me.GridCFDIsRelacionados.Rows + 1
+                    End If
+
+                Case Keys.F6
+BuscaPagos:
+                    Select Case Columna
+                        Case Me.iGyGRFolioPago
+                            oPagos = New Class_CXC_Pago_CFDI_Global
+                            sFolio = oPagos.BusquedaVisualPagosClienteParaRelacionarCFDIs(Me.CodigoClienteRelacionCFDI)
+                            If txtLEN(sFolio) = True Then
+                                Me.GridCFDIsRelacionados.Cell(Renglon, Me.iGyGRFolioPago).Text = sFolio
+                                GoTo LlenaLinea : Return
+                            End If
+                    End Select
+
+                Case Keys.F8 'Borrar renglón
+                    If (Me.Estado = enumEstados.NUEVO) Then
+                        Me.GridCFDIsRelacionados.Selection.DeleteByRow()
+                    End If
+
+                Case Keys.Delete 'Borrar renglón
+                    Return
+
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, "GestionaGridCFDIsRelacionados", ex)
+        End Try
+    End Sub
+
+    Private Function HayCFDIsRelacionadosRepetidos() As Boolean
+        Const sProcedure As String = "HayCFDIsRelacionadosRepetidos"
+        Try
+            Dim i As Integer, j As Integer, sFolio As String = ""
+            For i = 1 To Me.GridCFDIsRelacionados.Rows - 1
+                If txtLEN(Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolioPago).Text) = True Then
+                    sFolio = Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolioPago).Text
+                    For j = i + 1 To Me.GridCFDIsRelacionados.Rows - 1
+                        If txtLEN(Me.GridCFDIsRelacionados.Cell(j, Me.iGyGRFolioPago).Text) = True Then
+                            If sFolio = Me.GridCFDIsRelacionados.Cell(j, Me.iGyGRFolioPago).Text And Me.GridCFDIsRelacionados.Rows > 2 Then
+                                MsgBox("El CFDI relacionado " & iGyGRFolioPago & " esta repetido en el renglón #" & i.ToString & " y en el #" & j.ToString, MsgBoxStyle.Exclamation, sProcedure)
+                                Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolioPago).SetFocus()
+                                'Me.GridSemanaTrabajadores.Selection.DeleteByRow()
+                                Return True
+                            End If
+                        End If
+                    Next j
+                End If
+            Next i
+
+            Return False
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Function
 
 #End Region
 
