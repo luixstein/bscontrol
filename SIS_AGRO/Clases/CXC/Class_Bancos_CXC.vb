@@ -59,6 +59,9 @@ Public Class Class_Bancos_CXC
     Private _FECHA_EMISION_CFDI As Date
     Private _ES_PAGO_VENTAS_NO_FISCALES As Boolean
     Private _CODIGO_REGIMEN_FISCAL As String
+
+    Private _CODIGO_TIPO_RELACION_CFDI As String
+    Private _LISTA_CFDIS_RELACIONADOS As String
 #End Region
 
 #Region "Campos de sistema"
@@ -446,6 +449,24 @@ Public Class Class_Bancos_CXC
         End Set
     End Property
 
+    Public Property CODIGO_TIPO_RELACION_CFDI() As String
+        Get
+            Return Me._CODIGO_TIPO_RELACION_CFDI
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_TIPO_RELACION_CFDI = Value
+        End Set
+    End Property
+
+    Public Property LISTA_CFDIS_RELACIONADOS() As String
+        Get
+            Return Me._LISTA_CFDIS_RELACIONADOS
+        End Get
+        Set(ByVal Value As String)
+            Me._LISTA_CFDIS_RELACIONADOS = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedad Nombre de Clase"
@@ -524,6 +545,8 @@ Public Class Class_Bancos_CXC
             sqlParametro = .Parameters.Add("@FECHA_CHEQUE", SqlDbType.Date) : sqlParametro.Value = Me._FECHA_CHEQUE
             sqlParametro = .Parameters.Add("@ES_PAGO_VENTAS_NO_FISCALES", SqlDbType.Bit) : sqlParametro.Value = Convert.ToInt32(Me._ES_PAGO_VENTAS_NO_FISCALES)
             sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_RELACION_CFDI", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_RELACION_CFDI
+            sqlParametro = .Parameters.Add("@LISTA_CFDIS_RELACIONADOS", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_CFDIS_RELACIONADOS
 
             Try
                 Me._Conexion.Open()
@@ -604,6 +627,8 @@ Public Class Class_Bancos_CXC
                     Me._FECHA_EMISION_CFDI = CType(dReader("BAN_FECHA_EMISION_CFDI"), Date)
                     Me._ES_PAGO_VENTAS_NO_FISCALES = CBool(dReader("BAN_ES_PAGO_VENTAS_NO_FISCALES"))
                     Me._CODIGO_REGIMEN_FISCAL = "" & dReader("BAN_CODIGO_REGIMEN_FISCAL").ToString
+
+                    Me._CODIGO_TIPO_RELACION_CFDI = "" & dReader("BAN_CODIGO_TIPO_RELACION_CFDI").ToString
 
                     bResultado = True
 
@@ -1111,6 +1136,28 @@ Public Class Class_Bancos_CXC
             da.Dispose()
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, "ObtenerPagosParaConsultaCFDI", ex)
+        End Try
+
+        Return dTabla
+    End Function
+
+    Public Function ObtienePagosRelacionados() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        sSQL = "SELECT P.FOLIO_PAGO,PR.FOLIO_BANCO,P.FECHA_PAGO,P.FOLIO_FISCAL_SAT,P.MONTO TOTAL " &
+                "FROM CXC_PAGOS_CDFI_RELACIONADOS PR " &
+                "INNER JOIN CFDI_PAGOS_CXC_GLOBAL P ON(PR.FOLIO_PAGO_RELACIONADO=P.FOLIO_PAGO) " &
+                "WHERE PR.FOLIO_BANCO='" & Me.FOLIO_BANCO & "'" &
+                "ORDER BY P.FECHA_PAGO"
+
+        Try
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+
+            da.Dispose()
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "ObtienePagosRelacionados", ex)
         End Try
 
         Return dTabla
