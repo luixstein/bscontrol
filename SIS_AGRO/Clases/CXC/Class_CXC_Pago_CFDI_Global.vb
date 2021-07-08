@@ -899,7 +899,7 @@ Public Class Class_CXC_Pago_CFDI_Global
         f.sTable = "CFDI_PAGOS_CXC_GLOBAL"
         f.sQl = "SELECT P.FOLIO_PAGO,P.FOLIO_BANCO,P.ESTATUS_PAGO,DBO.FN_FORMAT_FECHA_CORTO(P.FECHA_PAGO) FECHA,DBO.fn_FormatoNum(P.MONTO,1,2) TOTAL,P.FOLIO_FISCAL_SAT " +
         "FROM CFDI_PAGOS_CXC_GLOBAL P " +
-        "WHERE P.CODIGO_CLIENTE='" & sCodigoCliente.ToString & "' AND LEN(P.FOLIO_FISCAL_SAT)>0 AND P.ESTATUS_PAGO='A' AND " 'Busca sólo pagos timbrados.
+        "WHERE P.CODIGO_CLIENTE='" & sCodigoCliente.ToString & "' AND LEN(P.FOLIO_FISCAL_SAT)>0 AND " 'Busca sólo pagos timbrados.
         f.arrayWidthColumns = New Integer() {100, 60, 70, 250, 100, 300}
         f.Inicia("")
         f.ShowDialog()
