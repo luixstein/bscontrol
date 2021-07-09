@@ -117,8 +117,8 @@ Partial Class Frm_CXC_Pagos
         Me.btnGenerarCFDIS = New System.Windows.Forms.Button()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GridVentas = New FlexCell.Grid()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GridCFDIsRelacionados = New FlexCell.Grid()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
@@ -138,7 +138,7 @@ Partial Class Frm_CXC_Pagos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirPoliza, Me.tsbImprimirComprobante, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1541, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1539, 27)
         Me.tsMenu.TabIndex = 5
         Me.tsMenu.Text = "tsMenu"
         '
@@ -225,9 +225,9 @@ Partial Class Frm_CXC_Pagos
         Me.gbGlobal.Controls.Add(Me.LblDisplayCuentaBancaria)
         Me.gbGlobal.Controls.Add(Me.TxtCuentaBancaria)
         Me.gbGlobal.Location = New System.Drawing.Point(11, 34)
-        Me.gbGlobal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbGlobal.Margin = New System.Windows.Forms.Padding(4)
         Me.gbGlobal.Name = "gbGlobal"
-        Me.gbGlobal.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbGlobal.Padding = New System.Windows.Forms.Padding(4)
         Me.gbGlobal.Size = New System.Drawing.Size(1379, 191)
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
@@ -249,7 +249,7 @@ Partial Class Frm_CXC_Pagos
         '
         Me.txtTotalUSD.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTotalUSD.Location = New System.Drawing.Point(1145, 161)
-        Me.txtTotalUSD.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtTotalUSD.Margin = New System.Windows.Forms.Padding(4)
         Me.txtTotalUSD.Name = "txtTotalUSD"
         Me.txtTotalUSD.ReadOnly = True
         Me.txtTotalUSD.Size = New System.Drawing.Size(163, 26)
@@ -261,7 +261,7 @@ Partial Class Frm_CXC_Pagos
         Me.cboRegimenFiscal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboRegimenFiscal.FormattingEnabled = True
         Me.cboRegimenFiscal.Location = New System.Drawing.Point(504, 154)
-        Me.cboRegimenFiscal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboRegimenFiscal.Margin = New System.Windows.Forms.Padding(4)
         Me.cboRegimenFiscal.MaxLength = 1
         Me.cboRegimenFiscal.Name = "cboRegimenFiscal"
         Me.cboRegimenFiscal.Size = New System.Drawing.Size(444, 24)
@@ -291,7 +291,7 @@ Partial Class Frm_CXC_Pagos
         '
         Me.chkVentasNoFiscales.AutoSize = True
         Me.chkVentasNoFiscales.Location = New System.Drawing.Point(160, 159)
-        Me.chkVentasNoFiscales.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkVentasNoFiscales.Margin = New System.Windows.Forms.Padding(4)
         Me.chkVentasNoFiscales.Name = "chkVentasNoFiscales"
         Me.chkVentasNoFiscales.Size = New System.Drawing.Size(155, 21)
         Me.chkVentasNoFiscales.TabIndex = 382
@@ -302,7 +302,7 @@ Partial Class Frm_CXC_Pagos
         'cmdPruebaPagoCFDI
         '
         Me.cmdPruebaPagoCFDI.Location = New System.Drawing.Point(676, 82)
-        Me.cmdPruebaPagoCFDI.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cmdPruebaPagoCFDI.Margin = New System.Windows.Forms.Padding(4)
         Me.cmdPruebaPagoCFDI.Name = "cmdPruebaPagoCFDI"
         Me.cmdPruebaPagoCFDI.Size = New System.Drawing.Size(141, 37)
         Me.cmdPruebaPagoCFDI.TabIndex = 378
@@ -314,7 +314,7 @@ Partial Class Frm_CXC_Pagos
         '
         Me.TxtTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TxtTotal.Location = New System.Drawing.Point(1145, 129)
-        Me.TxtTotal.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtTotal.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtTotal.Name = "TxtTotal"
         Me.TxtTotal.ReadOnly = True
         Me.TxtTotal.Size = New System.Drawing.Size(163, 26)
@@ -339,7 +339,7 @@ Partial Class Frm_CXC_Pagos
         Me.lstClientesAgregados.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.col_CodigoSocio, Me.col_NombreSocio, Me.col_Total})
         Me.lstClientesAgregados.GridLines = True
         Me.lstClientesAgregados.Location = New System.Drawing.Point(845, 28)
-        Me.lstClientesAgregados.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.lstClientesAgregados.Margin = New System.Windows.Forms.Padding(4)
         Me.lstClientesAgregados.Name = "lstClientesAgregados"
         Me.lstClientesAgregados.Size = New System.Drawing.Size(493, 95)
         Me.lstClientesAgregados.TabIndex = 375
@@ -367,7 +367,7 @@ Partial Class Frm_CXC_Pagos
         'TxtConcepto
         '
         Me.TxtConcepto.Location = New System.Drawing.Point(504, 126)
-        Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtConcepto.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtConcepto.MaxLength = 160
         Me.TxtConcepto.Name = "TxtConcepto"
         Me.TxtConcepto.Size = New System.Drawing.Size(444, 22)
@@ -376,7 +376,7 @@ Partial Class Frm_CXC_Pagos
         'btnDepositosSiguiente
         '
         Me.btnDepositosSiguiente.Location = New System.Drawing.Point(376, 86)
-        Me.btnDepositosSiguiente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnDepositosSiguiente.Margin = New System.Windows.Forms.Padding(4)
         Me.btnDepositosSiguiente.Name = "btnDepositosSiguiente"
         Me.btnDepositosSiguiente.Size = New System.Drawing.Size(43, 32)
         Me.btnDepositosSiguiente.TabIndex = 374
@@ -386,7 +386,7 @@ Partial Class Frm_CXC_Pagos
         'btnDepositosAnterior
         '
         Me.btnDepositosAnterior.Location = New System.Drawing.Point(325, 86)
-        Me.btnDepositosAnterior.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnDepositosAnterior.Margin = New System.Windows.Forms.Padding(4)
         Me.btnDepositosAnterior.Name = "btnDepositosAnterior"
         Me.btnDepositosAnterior.Size = New System.Drawing.Size(43, 32)
         Me.btnDepositosAnterior.TabIndex = 373
@@ -408,7 +408,7 @@ Partial Class Frm_CXC_Pagos
         '
         Me.txtTipoCambio.Enabled = False
         Me.txtTipoCambio.Location = New System.Drawing.Point(547, 95)
-        Me.txtTipoCambio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtTipoCambio.Margin = New System.Windows.Forms.Padding(4)
         Me.txtTipoCambio.MaxLength = 15
         Me.txtTipoCambio.Name = "txtTipoCambio"
         Me.txtTipoCambio.Size = New System.Drawing.Size(103, 22)
@@ -429,7 +429,7 @@ Partial Class Frm_CXC_Pagos
         Me.CboDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboDocumento.FormattingEnabled = True
         Me.CboDocumento.Location = New System.Drawing.Point(137, 23)
-        Me.CboDocumento.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboDocumento.Margin = New System.Windows.Forms.Padding(4)
         Me.CboDocumento.Name = "CboDocumento"
         Me.CboDocumento.Size = New System.Drawing.Size(280, 24)
         Me.CboDocumento.TabIndex = 0
@@ -466,7 +466,7 @@ Partial Class Frm_CXC_Pagos
         'dtFecha
         '
         Me.dtFecha.Location = New System.Drawing.Point(137, 126)
-        Me.dtFecha.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.dtFecha.Margin = New System.Windows.Forms.Padding(4)
         Me.dtFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtFecha.Name = "dtFecha"
         Me.dtFecha.Size = New System.Drawing.Size(280, 22)
@@ -506,7 +506,7 @@ Partial Class Frm_CXC_Pagos
         '
         Me.TxtFolio.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TxtFolio.Location = New System.Drawing.Point(137, 86)
-        Me.TxtFolio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtFolio.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtFolio.MaxLength = 160
         Me.TxtFolio.Name = "TxtFolio"
         Me.TxtFolio.Size = New System.Drawing.Size(179, 30)
@@ -554,7 +554,7 @@ Partial Class Frm_CXC_Pagos
         'TxtCuentaBancaria
         '
         Me.TxtCuentaBancaria.Location = New System.Drawing.Point(137, 54)
-        Me.TxtCuentaBancaria.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCuentaBancaria.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCuentaBancaria.MaxLength = 6
         Me.TxtCuentaBancaria.Name = "TxtCuentaBancaria"
         Me.TxtCuentaBancaria.Size = New System.Drawing.Size(53, 22)
@@ -565,7 +565,7 @@ Partial Class Frm_CXC_Pagos
         Me.CboMedioDePago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboMedioDePago.FormattingEnabled = True
         Me.CboMedioDePago.Location = New System.Drawing.Point(1137, 463)
-        Me.CboMedioDePago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboMedioDePago.Margin = New System.Windows.Forms.Padding(4)
         Me.CboMedioDePago.Name = "CboMedioDePago"
         Me.CboMedioDePago.Size = New System.Drawing.Size(280, 24)
         Me.CboMedioDePago.TabIndex = 1
@@ -622,9 +622,9 @@ Partial Class Frm_CXC_Pagos
         Me.gbAgregaDocCliente.Controls.Add(Me.TxtCodigoCliente)
         Me.gbAgregaDocCliente.Controls.Add(Me.chkEsBancoExtranjero)
         Me.gbAgregaDocCliente.Location = New System.Drawing.Point(11, 231)
-        Me.gbAgregaDocCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbAgregaDocCliente.Margin = New System.Windows.Forms.Padding(4)
         Me.gbAgregaDocCliente.Name = "gbAgregaDocCliente"
-        Me.gbAgregaDocCliente.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbAgregaDocCliente.Padding = New System.Windows.Forms.Padding(4)
         Me.gbAgregaDocCliente.Size = New System.Drawing.Size(1379, 172)
         Me.gbAgregaDocCliente.TabIndex = 1
         Me.gbAgregaDocCliente.TabStop = False
@@ -648,7 +648,7 @@ Partial Class Frm_CXC_Pagos
         Me.cboTipoVentas.FormattingEnabled = True
         Me.cboTipoVentas.Items.AddRange(New Object() {"MISMO RFC CLIENTE", "MISMO CODIGO CLIENTE"})
         Me.cboTipoVentas.Location = New System.Drawing.Point(389, 144)
-        Me.cboTipoVentas.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboTipoVentas.Margin = New System.Windows.Forms.Padding(4)
         Me.cboTipoVentas.Name = "cboTipoVentas"
         Me.cboTipoVentas.Size = New System.Drawing.Size(235, 25)
         Me.cboTipoVentas.TabIndex = 388
@@ -656,7 +656,7 @@ Partial Class Frm_CXC_Pagos
         'cmdSeleccionaSPEI
         '
         Me.cmdSeleccionaSPEI.Location = New System.Drawing.Point(977, 144)
-        Me.cmdSeleccionaSPEI.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cmdSeleccionaSPEI.Margin = New System.Windows.Forms.Padding(4)
         Me.cmdSeleccionaSPEI.Name = "cmdSeleccionaSPEI"
         Me.cmdSeleccionaSPEI.Size = New System.Drawing.Size(141, 30)
         Me.cmdSeleccionaSPEI.TabIndex = 387
@@ -667,7 +667,7 @@ Partial Class Frm_CXC_Pagos
         'txtSPEI_cadenaCDA
         '
         Me.txtSPEI_cadenaCDA.Location = New System.Drawing.Point(921, 146)
-        Me.txtSPEI_cadenaCDA.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtSPEI_cadenaCDA.Margin = New System.Windows.Forms.Padding(4)
         Me.txtSPEI_cadenaCDA.MaxLength = 0
         Me.txtSPEI_cadenaCDA.Name = "txtSPEI_cadenaCDA"
         Me.txtSPEI_cadenaCDA.Size = New System.Drawing.Size(136, 22)
@@ -677,7 +677,7 @@ Partial Class Frm_CXC_Pagos
         'txtSPEI_sello
         '
         Me.txtSPEI_sello.Location = New System.Drawing.Point(779, 146)
-        Me.txtSPEI_sello.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtSPEI_sello.Margin = New System.Windows.Forms.Padding(4)
         Me.txtSPEI_sello.MaxLength = 0
         Me.txtSPEI_sello.Name = "txtSPEI_sello"
         Me.txtSPEI_sello.Size = New System.Drawing.Size(136, 22)
@@ -687,7 +687,7 @@ Partial Class Frm_CXC_Pagos
         'txtSPEI_numeroCertificado
         '
         Me.txtSPEI_numeroCertificado.Location = New System.Drawing.Point(633, 148)
-        Me.txtSPEI_numeroCertificado.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtSPEI_numeroCertificado.Margin = New System.Windows.Forms.Padding(4)
         Me.txtSPEI_numeroCertificado.MaxLength = 0
         Me.txtSPEI_numeroCertificado.Name = "txtSPEI_numeroCertificado"
         Me.txtSPEI_numeroCertificado.Size = New System.Drawing.Size(136, 22)
@@ -697,7 +697,7 @@ Partial Class Frm_CXC_Pagos
         'dtFechaCheque
         '
         Me.dtFechaCheque.Location = New System.Drawing.Point(1051, 80)
-        Me.dtFechaCheque.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.dtFechaCheque.Margin = New System.Windows.Forms.Padding(4)
         Me.dtFechaCheque.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtFechaCheque.Name = "dtFechaCheque"
         Me.dtFechaCheque.Size = New System.Drawing.Size(280, 22)
@@ -716,7 +716,7 @@ Partial Class Frm_CXC_Pagos
         'dtFechaPagoCliente
         '
         Me.dtFechaPagoCliente.Location = New System.Drawing.Point(1051, 47)
-        Me.dtFechaPagoCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.dtFechaPagoCliente.Margin = New System.Windows.Forms.Padding(4)
         Me.dtFechaPagoCliente.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtFechaPagoCliente.Name = "dtFechaPagoCliente"
         Me.dtFechaPagoCliente.Size = New System.Drawing.Size(280, 22)
@@ -728,7 +728,7 @@ Partial Class Frm_CXC_Pagos
         Me.CboBancos.Enabled = False
         Me.CboBancos.FormattingEnabled = True
         Me.CboBancos.Location = New System.Drawing.Point(633, 94)
-        Me.CboBancos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboBancos.Margin = New System.Windows.Forms.Padding(4)
         Me.CboBancos.Name = "CboBancos"
         Me.CboBancos.Size = New System.Drawing.Size(280, 24)
         Me.CboBancos.TabIndex = 8
@@ -737,7 +737,7 @@ Partial Class Frm_CXC_Pagos
         '
         Me.txtCuentaEmisor.Enabled = False
         Me.txtCuentaEmisor.Location = New System.Drawing.Point(759, 47)
-        Me.txtCuentaEmisor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCuentaEmisor.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCuentaEmisor.MaxLength = 50
         Me.txtCuentaEmisor.Name = "txtCuentaEmisor"
         Me.txtCuentaEmisor.Size = New System.Drawing.Size(164, 22)
@@ -746,7 +746,7 @@ Partial Class Frm_CXC_Pagos
         'txtFolioDetalle
         '
         Me.txtFolioDetalle.Location = New System.Drawing.Point(848, 18)
-        Me.txtFolioDetalle.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFolioDetalle.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFolioDetalle.MaxLength = 100
         Me.txtFolioDetalle.Name = "txtFolioDetalle"
         Me.txtFolioDetalle.Size = New System.Drawing.Size(136, 22)
@@ -755,7 +755,7 @@ Partial Class Frm_CXC_Pagos
         'btnEditarCuentaBancariaCliente
         '
         Me.btnEditarCuentaBancariaCliente.Location = New System.Drawing.Point(560, 74)
-        Me.btnEditarCuentaBancariaCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnEditarCuentaBancariaCliente.Margin = New System.Windows.Forms.Padding(4)
         Me.btnEditarCuentaBancariaCliente.Name = "btnEditarCuentaBancariaCliente"
         Me.btnEditarCuentaBancariaCliente.Size = New System.Drawing.Size(71, 46)
         Me.btnEditarCuentaBancariaCliente.TabIndex = 344
@@ -765,7 +765,7 @@ Partial Class Frm_CXC_Pagos
         'btnAgregarCuentaBancariaCliente
         '
         Me.btnAgregarCuentaBancariaCliente.Location = New System.Drawing.Point(485, 74)
-        Me.btnAgregarCuentaBancariaCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnAgregarCuentaBancariaCliente.Margin = New System.Windows.Forms.Padding(4)
         Me.btnAgregarCuentaBancariaCliente.Name = "btnAgregarCuentaBancariaCliente"
         Me.btnAgregarCuentaBancariaCliente.Size = New System.Drawing.Size(71, 46)
         Me.btnAgregarCuentaBancariaCliente.TabIndex = 343
@@ -807,7 +807,7 @@ Partial Class Frm_CXC_Pagos
         Me.cboCuentaEmisor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboCuentaEmisor.FormattingEnabled = True
         Me.cboCuentaEmisor.Location = New System.Drawing.Point(132, 47)
-        Me.cboCuentaEmisor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboCuentaEmisor.Margin = New System.Windows.Forms.Padding(4)
         Me.cboCuentaEmisor.Name = "cboCuentaEmisor"
         Me.cboCuentaEmisor.Size = New System.Drawing.Size(497, 24)
         Me.cboCuentaEmisor.TabIndex = 1
@@ -815,7 +815,7 @@ Partial Class Frm_CXC_Pagos
         'txtRFCEmisor
         '
         Me.txtRFCEmisor.Location = New System.Drawing.Point(633, 122)
-        Me.txtRFCEmisor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtRFCEmisor.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRFCEmisor.MaxLength = 13
         Me.txtRFCEmisor.Name = "txtRFCEmisor"
         Me.txtRFCEmisor.Size = New System.Drawing.Size(128, 22)
@@ -824,7 +824,7 @@ Partial Class Frm_CXC_Pagos
         'btnLimpiarDocumentoPagos
         '
         Me.btnLimpiarDocumentoPagos.Location = New System.Drawing.Point(1232, 126)
-        Me.btnLimpiarDocumentoPagos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnLimpiarDocumentoPagos.Margin = New System.Windows.Forms.Padding(4)
         Me.btnLimpiarDocumentoPagos.Name = "btnLimpiarDocumentoPagos"
         Me.btnLimpiarDocumentoPagos.Size = New System.Drawing.Size(100, 37)
         Me.btnLimpiarDocumentoPagos.TabIndex = 13
@@ -844,7 +844,7 @@ Partial Class Frm_CXC_Pagos
         'txtMonto
         '
         Me.txtMonto.Location = New System.Drawing.Point(132, 114)
-        Me.txtMonto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtMonto.Margin = New System.Windows.Forms.Padding(4)
         Me.txtMonto.MaxLength = 20
         Me.txtMonto.Name = "txtMonto"
         Me.txtMonto.Size = New System.Drawing.Size(143, 22)
@@ -886,7 +886,7 @@ Partial Class Frm_CXC_Pagos
         Me.cboFormaPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboFormaPago.FormattingEnabled = True
         Me.cboFormaPago.Location = New System.Drawing.Point(132, 81)
-        Me.cboFormaPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboFormaPago.Margin = New System.Windows.Forms.Padding(4)
         Me.cboFormaPago.Name = "cboFormaPago"
         Me.cboFormaPago.Size = New System.Drawing.Size(304, 24)
         Me.cboFormaPago.TabIndex = 2
@@ -898,7 +898,7 @@ Partial Class Frm_CXC_Pagos
         Me.cboMonedaPago.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboMonedaPago.FormattingEnabled = True
         Me.cboMonedaPago.Location = New System.Drawing.Point(284, 114)
-        Me.cboMonedaPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboMonedaPago.Margin = New System.Windows.Forms.Padding(4)
         Me.cboMonedaPago.Name = "cboMonedaPago"
         Me.cboMonedaPago.Size = New System.Drawing.Size(96, 25)
         Me.cboMonedaPago.TabIndex = 4
@@ -917,7 +917,7 @@ Partial Class Frm_CXC_Pagos
         '
         Me.chkAnticipo.AutoSize = True
         Me.chkAnticipo.Location = New System.Drawing.Point(389, 118)
-        Me.chkAnticipo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkAnticipo.Margin = New System.Windows.Forms.Padding(4)
         Me.chkAnticipo.Name = "chkAnticipo"
         Me.chkAnticipo.Size = New System.Drawing.Size(80, 21)
         Me.chkAnticipo.TabIndex = 5
@@ -928,7 +928,7 @@ Partial Class Frm_CXC_Pagos
         'btnAgregarDocumentosClientes
         '
         Me.btnAgregarDocumentosClientes.Location = New System.Drawing.Point(1127, 126)
-        Me.btnAgregarDocumentosClientes.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnAgregarDocumentosClientes.Margin = New System.Windows.Forms.Padding(4)
         Me.btnAgregarDocumentosClientes.Name = "btnAgregarDocumentosClientes"
         Me.btnAgregarDocumentosClientes.Size = New System.Drawing.Size(100, 37)
         Me.btnAgregarDocumentosClientes.TabIndex = 12
@@ -948,7 +948,7 @@ Partial Class Frm_CXC_Pagos
         'TxtReferencia
         '
         Me.TxtReferencia.Location = New System.Drawing.Point(1088, 18)
-        Me.TxtReferencia.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtReferencia.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtReferencia.MaxLength = 160
         Me.TxtReferencia.Name = "TxtReferencia"
         Me.TxtReferencia.Size = New System.Drawing.Size(243, 22)
@@ -986,7 +986,7 @@ Partial Class Frm_CXC_Pagos
         'TxtCodigoCliente
         '
         Me.TxtCodigoCliente.Location = New System.Drawing.Point(132, 18)
-        Me.TxtCodigoCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoCliente.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoCliente.MaxLength = 8
         Me.TxtCodigoCliente.Name = "TxtCodigoCliente"
         Me.TxtCodigoCliente.Size = New System.Drawing.Size(87, 22)
@@ -996,7 +996,7 @@ Partial Class Frm_CXC_Pagos
         '
         Me.chkEsBancoExtranjero.Enabled = False
         Me.chkEsBancoExtranjero.Location = New System.Drawing.Point(53, 145)
-        Me.chkEsBancoExtranjero.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkEsBancoExtranjero.Margin = New System.Windows.Forms.Padding(4)
         Me.chkEsBancoExtranjero.Name = "chkEsBancoExtranjero"
         Me.chkEsBancoExtranjero.Size = New System.Drawing.Size(183, 26)
         Me.chkEsBancoExtranjero.TabIndex = 385
@@ -1006,9 +1006,9 @@ Partial Class Frm_CXC_Pagos
         'gbVentas
         '
         Me.gbVentas.Location = New System.Drawing.Point(1433, 377)
-        Me.gbVentas.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbVentas.Margin = New System.Windows.Forms.Padding(4)
         Me.gbVentas.Name = "gbVentas"
-        Me.gbVentas.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbVentas.Padding = New System.Windows.Forms.Padding(4)
         Me.gbVentas.Size = New System.Drawing.Size(71, 35)
         Me.gbVentas.TabIndex = 2
         Me.gbVentas.TabStop = False
@@ -1018,10 +1018,10 @@ Partial Class Frm_CXC_Pagos
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssEstado, Me.tssElaboro, Me.tssCancelo, Me.tssFechaEmisionCFDI})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 810)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 808)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1541, 29)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1539, 29)
         Me.StatusStripEstado.TabIndex = 240
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -1066,9 +1066,9 @@ Partial Class Frm_CXC_Pagos
         Me.gbDocumentosPago.Controls.Add(Me.btnEliminarDocumentoPago)
         Me.gbDocumentosPago.Controls.Add(Me.GridDocumentosPago)
         Me.gbDocumentosPago.Location = New System.Drawing.Point(11, 411)
-        Me.gbDocumentosPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDocumentosPago.Margin = New System.Windows.Forms.Padding(4)
         Me.gbDocumentosPago.Name = "gbDocumentosPago"
-        Me.gbDocumentosPago.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbDocumentosPago.Padding = New System.Windows.Forms.Padding(4)
         Me.gbDocumentosPago.Size = New System.Drawing.Size(1379, 111)
         Me.gbDocumentosPago.TabIndex = 1
         Me.gbDocumentosPago.TabStop = False
@@ -1077,7 +1077,7 @@ Partial Class Frm_CXC_Pagos
         'btnEliminarDocumentoPago
         '
         Me.btnEliminarDocumentoPago.Location = New System.Drawing.Point(1203, 0)
-        Me.btnEliminarDocumentoPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnEliminarDocumentoPago.Margin = New System.Windows.Forms.Padding(4)
         Me.btnEliminarDocumentoPago.Name = "btnEliminarDocumentoPago"
         Me.btnEliminarDocumentoPago.Size = New System.Drawing.Size(100, 23)
         Me.btnEliminarDocumentoPago.TabIndex = 13
@@ -1097,7 +1097,7 @@ Partial Class Frm_CXC_Pagos
         Me.GridDocumentosPago.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.GridDocumentosPago.Location = New System.Drawing.Point(9, 23)
         Me.GridDocumentosPago.LockButton = True
-        Me.GridDocumentosPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GridDocumentosPago.Margin = New System.Windows.Forms.Padding(4)
         Me.GridDocumentosPago.Name = "GridDocumentosPago"
         Me.GridDocumentosPago.Rows = 3
         Me.GridDocumentosPago.SelectionMode = FlexCell.SelectionModeEnum.ByRow
@@ -1108,7 +1108,7 @@ Partial Class Frm_CXC_Pagos
         'btnVerCFDIS
         '
         Me.btnVerCFDIS.Location = New System.Drawing.Point(1395, 245)
-        Me.btnVerCFDIS.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnVerCFDIS.Margin = New System.Windows.Forms.Padding(4)
         Me.btnVerCFDIS.Name = "btnVerCFDIS"
         Me.btnVerCFDIS.Size = New System.Drawing.Size(141, 82)
         Me.btnVerCFDIS.TabIndex = 379
@@ -1118,7 +1118,7 @@ Partial Class Frm_CXC_Pagos
         'btnGenerarCFDIS
         '
         Me.btnGenerarCFDIS.Location = New System.Drawing.Point(1395, 151)
-        Me.btnGenerarCFDIS.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnGenerarCFDIS.Margin = New System.Windows.Forms.Padding(4)
         Me.btnGenerarCFDIS.Name = "btnGenerarCFDIS"
         Me.btnGenerarCFDIS.Size = New System.Drawing.Size(141, 82)
         Me.btnGenerarCFDIS.TabIndex = 381
@@ -1132,7 +1132,7 @@ Partial Class Frm_CXC_Pagos
         Me.TabControl1.Location = New System.Drawing.Point(11, 529)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1518, 278)
+        Me.TabControl1.Size = New System.Drawing.Size(1516, 267)
         Me.TabControl1.TabIndex = 382
         '
         'TabPage1
@@ -1141,23 +1141,10 @@ Partial Class Frm_CXC_Pagos
         Me.TabPage1.Location = New System.Drawing.Point(4, 25)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1510, 249)
+        Me.TabPage1.Size = New System.Drawing.Size(1508, 238)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Ventas"
         Me.TabPage1.UseVisualStyleBackColor = True
-        '
-        'TabPage2
-        '
-        Me.TabPage2.Controls.Add(Me.GridCFDIsRelacionados)
-        Me.TabPage2.Controls.Add(Me.Label3)
-        Me.TabPage2.Controls.Add(Me.cboTipoRelacionCFDI)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 25)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1510, 249)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Relacionar CFDIs"
-        Me.TabPage2.UseVisualStyleBackColor = True
         '
         'GridVentas
         '
@@ -1175,9 +1162,22 @@ Partial Class Frm_CXC_Pagos
         Me.GridVentas.Margin = New System.Windows.Forms.Padding(4)
         Me.GridVentas.Name = "GridVentas"
         Me.GridVentas.Rows = 7
-        Me.GridVentas.Size = New System.Drawing.Size(1510, 249)
+        Me.GridVentas.Size = New System.Drawing.Size(1504, 242)
         Me.GridVentas.TabIndex = 1
         Me.GridVentas.UncheckedImage = CType(resources.GetObject("GridVentas.UncheckedImage"), System.Drawing.Bitmap)
+        '
+        'TabPage2
+        '
+        Me.TabPage2.Controls.Add(Me.GridCFDIsRelacionados)
+        Me.TabPage2.Controls.Add(Me.Label3)
+        Me.TabPage2.Controls.Add(Me.cboTipoRelacionCFDI)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 25)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(1508, 238)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Relacionar CFDIs"
+        Me.TabPage2.UseVisualStyleBackColor = True
         '
         'GridCFDIsRelacionados
         '
@@ -1225,7 +1225,10 @@ Partial Class Frm_CXC_Pagos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1541, 839)
+        Me.AutoScroll = True
+        Me.AutoSize = True
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.ClientSize = New System.Drawing.Size(1539, 837)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.btnGenerarCFDIS)
         Me.Controls.Add(Me.btnVerCFDIS)
@@ -1239,7 +1242,7 @@ Partial Class Frm_CXC_Pagos
         Me.Controls.Add(Me.LblDisplayMedioPago)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Frm_CXC_Pagos"
         Me.Text = "Elaboración de pagos de clientes"
