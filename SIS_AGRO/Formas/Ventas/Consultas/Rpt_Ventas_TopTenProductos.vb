@@ -557,16 +557,16 @@ Public Class Rpt_Ventas_TopTenProductos
             End If
 
             If Me.RbtnPorcentaje.Checked = True Then
-                If txtLEN(Me.TxtPorcentaje.Text) = False Then
+                If txtLEN(Me.txtPorcentajeUtilidad.Text) = False Then
                     MsgBox("Capture un porcentaje.", MsgBoxStyle.Exclamation, Me.Text)
-                    Me.TxtPorcentaje.Focus()
+                    Me.txtPorcentajeUtilidad.Focus()
                     Return False
                 End If
             End If
 
-            If txtLEN(Me.TxtUtilidadMaxima.Text) = False Then
+            If txtLEN(Me.txtUtilidadMaxima.Text) = False Then
                 MsgBox("Capture la utilidad maxima.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.TxtUtilidadMaxima.Focus()
+                Me.txtUtilidadMaxima.Focus()
                 Return False
             End If
 
@@ -622,17 +622,14 @@ Public Class Rpt_Ventas_TopTenProductos
                         .Add(New SqlParameter("@FECHA1", SqlDbType.NVarChar, 20)).Value = Format(Me.DtFechaDesde.Value, "yyyy-dd-MM")
                         .Add(New SqlParameter("@FECHA2", SqlDbType.NVarChar, 20)).Value = Format(Me.DtFechaHasta.Value, "yyyy-dd-MM")
                         .Add(New SqlParameter("@CODIGO_ZONA", SqlDbType.NVarChar, 2)).Value = Me.CboZona.SelectedValue.ToString
-                        .Add(New SqlParameter("@PORCENTAJE", SqlDbType.SmallInt)).Value = IIf(txtLEN(Me.TxtPorcentaje.Text), CInt(Me.TxtPorcentaje.Text), 0)
                         .Add(New SqlParameter("@DESCRIPCION", SqlDbType.NVarChar, 30)).Value = Me.TxtDescripcion.Text.ToUpper
-                        .Add(New SqlParameter("@MIN", SqlDbType.NVarChar, 4)).Value = Me.TxtMin.Text
+                        .Add(New SqlParameter("@FILRAR_POR_UTILIDAD", SqlDbType.Char, 1)).Value = Me.TxtMin.Text
+                        .Add(New SqlParameter("@TIPO_UTILIDAD", SqlDbType.NVarChar, 20)).Value = Me.TxtMin.Text
+                        .Add(New SqlParameter("@PORCENTAJE_UTILIDAD", SqlDbType.Decimal)).Value = Me.TxtMin.Text
                         .Add(New SqlParameter("@TIPO_PAGO", SqlDbType.NVarChar, 1)).Value = Me.cboTipoPago.SelectedValue.ToString
-                        .Add(New SqlParameter("@UTILIDAD_MAXIMA", SqlDbType.SmallInt)).Value = CInt(Me.TxtUtilidadMaxima.Text)
-                        .Add(New SqlParameter("@CATEGORIA", SqlDbType.NVarChar, 4)).Value = Me.TxtCategoria.Text
-                        .Add(New SqlParameter("@FILTRAR_VALOR", SqlDbType.NVarChar, 1)).Value = IIf(Me.RbtnCategoria.Checked = True, "C", "P")
+                        .Add(New SqlParameter("@UTILIDAD_MAXIMA", SqlDbType.SmallInt)).Value = CInt(Me.txtUtilidadMaxima.Text)
                         .Add(New SqlParameter("@CODIGOS_PRODUCTOS", SqlDbType.NVarChar, 2000)).Value = Me.TxtCodigosProductos.Text.ToUpper
                         .Add(New SqlParameter("@ORDEN", SqlDbType.NVarChar, 30)).Value = Me.cboOrden.SelectedValue
-                        .Add(New SqlParameter("@COD_USU_EJECUTO", SqlDbType.NVarChar, 2)).Value = Usuario.Codigo_Usuario.ToString
-                        .Add(New SqlParameter("@SISTEMA", SqlDbType.NVarChar, 20)).Value = "BS"
                     End With
 
                     da.Fill(dt)
@@ -675,15 +672,15 @@ Public Class Rpt_Ventas_TopTenProductos
             If Me.ModoAgrupado = enumModoAgrupado.PRODUCTOS Then
                 Me.Grid.Rows = 1
                 For Each dRow As DataRow In dt.Rows
-                    Me.Grid.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & Chr(9) & dRow(2).ToString & Chr(9) & dRow(3).ToString & Chr(9) & dRow(4).ToString & Chr(9) & _
-                                    dRow(5).ToString & Chr(9) & dRow(6).ToString & Chr(9) & dRow(7).ToString & Chr(9) & dRow(8).ToString & Chr(9) & dRow(9).ToString & Chr(9) & _
-                                    dRow(10).ToString & Chr(9) & dRow(11).ToString & Chr(9) & dRow(12).ToString & Chr(9) & dRow(13).ToString & Chr(9) & dRow(14).ToString & Chr(9) & _
+                    Me.Grid.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & Chr(9) & dRow(2).ToString & Chr(9) & dRow(3).ToString & Chr(9) & dRow(4).ToString & Chr(9) &
+                                    dRow(5).ToString & Chr(9) & dRow(6).ToString & Chr(9) & dRow(7).ToString & Chr(9) & dRow(8).ToString & Chr(9) & dRow(9).ToString & Chr(9) &
+                                    dRow(10).ToString & Chr(9) & dRow(11).ToString & Chr(9) & dRow(12).ToString & Chr(9) & dRow(13).ToString & Chr(9) & dRow(14).ToString & Chr(9) &
                                     dRow(15).ToString & Chr(9))
                 Next
             Else
                 Me.Grid.Rows = 1
                 For Each dRow As DataRow In dt.Rows
-                    Me.Grid.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & Chr(9) & dRow(2).ToString & Chr(9) & dRow(3).ToString & Chr(9) & dRow(4).ToString & Chr(9) & _
+                    Me.Grid.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & Chr(9) & dRow(2).ToString & Chr(9) & dRow(3).ToString & Chr(9) & dRow(4).ToString & Chr(9) &
                                     dRow(5).ToString & Chr(9) & dRow(6).ToString & Chr(9) & dRow(7).ToString & Chr(9) & dRow(8).ToString & Chr(9))
                 Next
             End If
@@ -733,11 +730,11 @@ Public Class Rpt_Ventas_TopTenProductos
                 Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
                 Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
                 Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue.ToString())
-                Rpt.SetParameterValue("@PORCENTAJE", IIf(txtLEN(Me.TxtPorcentaje.Text), CInt(Me.TxtPorcentaje.Text), 0))
+                Rpt.SetParameterValue("@PORCENTAJE", IIf(txtLEN(Me.txtPorcentajeUtilidad.Text), CInt(Me.txtPorcentajeUtilidad.Text), 0))
                 Rpt.SetParameterValue("@DESCRIPCION", Me.TxtDescripcion.Text.ToUpper)
                 Rpt.SetParameterValue("@MIN", Me.TxtMin.Text)
                 Rpt.SetParameterValue("@TIPO_PAGO", Me.cboTipoPago.SelectedValue.ToString)
-                Rpt.SetParameterValue("@UTILIDAD_MAXIMA", CInt(Me.TxtUtilidadMaxima.Text))
+                Rpt.SetParameterValue("@UTILIDAD_MAXIMA", CInt(Me.txtUtilidadMaxima.Text))
                 Rpt.SetParameterValue("@CATEGORIA", Me.TxtCategoria.Text)
                 Rpt.SetParameterValue("@FILTRAR_VALOR", IIf(Me.RbtnCategoria.Checked = True, "C", "P"))
                 Rpt.SetParameterValue("@CODIGOS_PRODUCTOS", Me.TxtCodigosProductos.Text.ToUpper)
@@ -781,11 +778,11 @@ Public Class Rpt_Ventas_TopTenProductos
         ValidarPeriodo = True
     End Function
 
-    Private Sub cboCultivo_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCliente.KeyPress, TxtCodigosProductos.KeyPress, TxtDescripcion.KeyPress, TxtCategoria.KeyPress, TxtPorcentaje.KeyPress, TxtMin.KeyPress, TxtUtilidadMaxima.KeyPress, DtFechaDesde.KeyPress, DtFechaHasta.KeyPress
+    Private Sub cboCultivo_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCliente.KeyPress, TxtCodigosProductos.KeyPress, TxtDescripcion.KeyPress, txtPorcentajeUtilidad.KeyPress, txtUtilidadMaxima.KeyPress, DtFechaDesde.KeyPress, DtFechaHasta.KeyPress
         txtNoBeep(e)
     End Sub
 
-    Private Sub cboCultivo_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaDesde.KeyDown, CboZona.KeyDown, TxtDescripcion.KeyDown, TxtPorcentaje.KeyDown, TxtMin.KeyDown, TxtUtilidadMaxima.KeyDown, cboTipoPago.KeyDown, CboDocumento.KeyDown, cboOrden.KeyDown
+    Private Sub cboCultivo_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtFechaDesde.KeyDown, CboZona.KeyDown, TxtDescripcion.KeyDown, txtPorcentajeUtilidad.KeyDown, txtUtilidadMaxima.KeyDown, cboTipoPago.KeyDown, CboDocumento.KeyDown, cboOrden.KeyDown
         If e.KeyCode = Keys.Return Then
             txtTAB(e)
         End If
@@ -825,7 +822,7 @@ Buscar:
         txtTAB(e)
     End Sub
 
-    Private Sub TxtCategoria_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCategoria.KeyDown
+    Private Sub TxtCategoria_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
         Dim oCategoria As New Class_CatCategorias
         Dim sText As String
         Select Case e.KeyCode
@@ -862,17 +859,17 @@ Buscar:
         txtTAB(e)
     End Sub
 
-    Private Sub RbtnCategoria_CheckedChanged(sender As Object, e As EventArgs) Handles RbtnCategoria.CheckedChanged
+    Private Sub RbtnCategoria_CheckedChanged(sender As Object, e As EventArgs)
         If Me.RbtnCategoria.Checked = True Then
             Me.TxtCategoria.Enabled = True
-            Me.TxtPorcentaje.Enabled = False
+            Me.txtPorcentajeUtilidad.Enabled = False
         Else
             Me.TxtCategoria.Enabled = False
-            Me.TxtPorcentaje.Enabled = True
+            Me.txtPorcentajeUtilidad.Enabled = True
         End If
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtMin.KeyPress, TxtUtilidadMaxima.KeyPress, TxtCategoria.KeyPress, TxtPorcentaje.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtMin.KeyPress, txtUtilidadMaxima.KeyPress, TxtCategoria.KeyPress, txtPorcentajeUtilidad.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
