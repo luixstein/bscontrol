@@ -460,13 +460,14 @@ Friend Class cComplementoPagos
 
             'MsgBox ("duda: NumOperacion , validar que la lleve si es spei ?, no esta claro si deba ser obligatorio a llevar la clave de rastreo en caso de ser SPEI(Dice en la guia NumOperacion)"
 
+            '******Esta validación ya no se necesitara, la hace el proveedor de timbres ******
             'If dSumaPagado <> valorNumerico(Me.Monto) Then
-            If Math.Abs(dSumaPagado - valorNumericoD(Me.Monto)) > 10 Then 'El sat permite una variación que calcula, de momento validamos 10 pesos fijos.
-                'If dSumaPagado > valorNumerico(Me.Monto) Then
-                'MsgBox("Monto : La suma de los valores registrados en el nodo DoctoRelacionados, atributo ImpPagado, sea menor o igual que el valor de este atributo." & vbCrLf &
-                MsgBox("Monto : La suma de los valores registrados en el nodo DoctoRelacionados, atributo ImpPagado, sea igual que el valor de este atributo." & vbCrLf &
-                       "Pago.Monto=" & Me.Monto & vbCrLf & "Suma DoctoRelacionados.ImpPagado=" & dSumaPagado.ToString, vbExclamation, sProcedure) : Exit Function
-            End If
+            'If Math.Abs(dSumaPagado - valorNumericoD(Me.Monto)) > 10 Then 'El sat permite una variación que calcula, de momento validamos 10 pesos fijos.
+            '    'If dSumaPagado > valorNumerico(Me.Monto) Then
+            '    'MsgBox("Monto : La suma de los valores registrados en el nodo DoctoRelacionados, atributo ImpPagado, sea menor o igual que el valor de este atributo." & vbCrLf &
+            '    MsgBox("Monto : La suma de los valores registrados en el nodo DoctoRelacionados, atributo ImpPagado, sea igual que el valor de este atributo." & vbCrLf &
+            '           "Pago.Monto=" & Me.Monto & vbCrLf & "Suma DoctoRelacionados.ImpPagado=" & dSumaPagado.ToString, vbExclamation, sProcedure) : Exit Function
+            'End If
 
             If dRow(0)("ES_BANCARIZADO").ToString = "0" And txtLEN(Me.TipoCadPago) = True Then
                 MsgBox("TipoCadPago : Se debe omitir si la forma de pago no es bancarizada.", vbExclamation, sProcedure) : Exit Function
