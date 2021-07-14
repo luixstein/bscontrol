@@ -29,6 +29,10 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.cboTipoPago = New System.Windows.Forms.ComboBox()
         Me.LblTipoPago = New System.Windows.Forms.Label()
         Me.gFiltrarUtilidad = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.rbMaximo = New System.Windows.Forms.RadioButton()
+        Me.rbMinimo = New System.Windows.Forms.RadioButton()
+        Me.chkFiltrarPorUtilidad = New System.Windows.Forms.CheckBox()
         Me.txtPorcentajeUtilidad = New System.Windows.Forms.TextBox()
         Me.cboOrden = New System.Windows.Forms.ComboBox()
         Me.LblOrden = New System.Windows.Forms.Label()
@@ -59,10 +63,6 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.tsbConsultar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
-        Me.chkFiltrarPorUtilidad = New System.Windows.Forms.CheckBox()
-        Me.rbMinimo = New System.Windows.Forms.RadioButton()
-        Me.rbMaximo = New System.Windows.Forms.RadioButton()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.gFiltrarUtilidad.SuspendLayout()
         Me.gbConsulta.SuspendLayout()
@@ -74,6 +74,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.GroupBox1.Controls.Add(Me.lblTipoCambio)
         Me.GroupBox1.Controls.Add(Me.txtTipoCambio)
         Me.GroupBox1.Controls.Add(Me.cboTipoPago)
+        Me.GroupBox1.Controls.Add(Me.chkFiltrarPorUtilidad)
         Me.GroupBox1.Controls.Add(Me.LblTipoPago)
         Me.GroupBox1.Controls.Add(Me.gFiltrarUtilidad)
         Me.GroupBox1.Controls.Add(Me.cboOrden)
@@ -114,11 +115,12 @@ Partial Class Rpt_Ventas_TopTenProductos
         'txtTipoCambio
         '
         Me.txtTipoCambio.Location = New System.Drawing.Point(859, 78)
-        Me.txtTipoCambio.MaxLength = 3
+        Me.txtTipoCambio.MaxLength = 7
         Me.txtTipoCambio.Name = "txtTipoCambio"
         Me.txtTipoCambio.Size = New System.Drawing.Size(49, 20)
         Me.txtTipoCambio.TabIndex = 396
-        Me.txtTipoCambio.Text = "0"
+        Me.txtTipoCambio.Text = "00.0000"
+        Me.txtTipoCambio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'cboTipoPago
         '
@@ -143,16 +145,56 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.gFiltrarUtilidad.Controls.Add(Me.Label1)
         Me.gFiltrarUtilidad.Controls.Add(Me.rbMaximo)
         Me.gFiltrarUtilidad.Controls.Add(Me.rbMinimo)
-        Me.gFiltrarUtilidad.Controls.Add(Me.chkFiltrarPorUtilidad)
         Me.gFiltrarUtilidad.Controls.Add(Me.txtPorcentajeUtilidad)
         Me.gFiltrarUtilidad.Enabled = False
         Me.gFiltrarUtilidad.Location = New System.Drawing.Point(438, 12)
-        Me.gFiltrarUtilidad.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.gFiltrarUtilidad.Margin = New System.Windows.Forms.Padding(2)
         Me.gFiltrarUtilidad.Name = "gFiltrarUtilidad"
-        Me.gFiltrarUtilidad.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.gFiltrarUtilidad.Padding = New System.Windows.Forms.Padding(2)
         Me.gFiltrarUtilidad.Size = New System.Drawing.Size(137, 64)
         Me.gFiltrarUtilidad.TabIndex = 4
         Me.gFiltrarUtilidad.TabStop = False
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(115, 31)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(15, 13)
+        Me.Label1.TabIndex = 401
+        Me.Label1.Text = "%"
+        '
+        'rbMaximo
+        '
+        Me.rbMaximo.AutoSize = True
+        Me.rbMaximo.Location = New System.Drawing.Point(25, 42)
+        Me.rbMaximo.Name = "rbMaximo"
+        Me.rbMaximo.Size = New System.Drawing.Size(61, 17)
+        Me.rbMaximo.TabIndex = 400
+        Me.rbMaximo.Text = "Máximo"
+        Me.rbMaximo.UseVisualStyleBackColor = True
+        '
+        'rbMinimo
+        '
+        Me.rbMinimo.AutoSize = True
+        Me.rbMinimo.Checked = True
+        Me.rbMinimo.Location = New System.Drawing.Point(25, 22)
+        Me.rbMinimo.Name = "rbMinimo"
+        Me.rbMinimo.Size = New System.Drawing.Size(60, 17)
+        Me.rbMinimo.TabIndex = 399
+        Me.rbMinimo.TabStop = True
+        Me.rbMinimo.Text = "Mínimo"
+        Me.rbMinimo.UseVisualStyleBackColor = True
+        '
+        'chkFiltrarPorUtilidad
+        '
+        Me.chkFiltrarPorUtilidad.AutoSize = True
+        Me.chkFiltrarPorUtilidad.Location = New System.Drawing.Point(444, 13)
+        Me.chkFiltrarPorUtilidad.Name = "chkFiltrarPorUtilidad"
+        Me.chkFiltrarPorUtilidad.Size = New System.Drawing.Size(125, 17)
+        Me.chkFiltrarPorUtilidad.TabIndex = 398
+        Me.chkFiltrarPorUtilidad.Text = "Filtrar por % utilidad ?"
+        Me.chkFiltrarPorUtilidad.UseVisualStyleBackColor = True
         '
         'txtPorcentajeUtilidad
         '
@@ -350,7 +392,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.Grid.LockButton = True
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 20
-        Me.Grid.Size = New System.Drawing.Size(952, 321)
+        Me.Grid.Size = New System.Drawing.Size(1245, 436)
         Me.Grid.TabIndex = 223
         Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -363,7 +405,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.gbConsulta.Controls.Add(Me.Grid)
         Me.gbConsulta.Location = New System.Drawing.Point(12, 150)
         Me.gbConsulta.Name = "gbConsulta"
-        Me.gbConsulta.Size = New System.Drawing.Size(968, 397)
+        Me.gbConsulta.Size = New System.Drawing.Size(1257, 489)
         Me.gbConsulta.TabIndex = 224
         Me.gbConsulta.TabStop = False
         Me.gbConsulta.Text = "Consulta"
@@ -372,7 +414,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         Me.txtSum1.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.txtSum1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSum1.Location = New System.Drawing.Point(420, 345)
+        Me.txtSum1.Location = New System.Drawing.Point(420, 462)
         Me.txtSum1.Name = "txtSum1"
         Me.txtSum1.Size = New System.Drawing.Size(100, 20)
         Me.txtSum1.TabIndex = 236
@@ -382,7 +424,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         Me.txtSum4.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.txtSum4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSum4.Location = New System.Drawing.Point(526, 345)
+        Me.txtSum4.Location = New System.Drawing.Point(526, 462)
         Me.txtSum4.Name = "txtSum4"
         Me.txtSum4.Size = New System.Drawing.Size(100, 20)
         Me.txtSum4.TabIndex = 235
@@ -392,7 +434,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         Me.txtSum2.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.txtSum2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSum2.Location = New System.Drawing.Point(632, 345)
+        Me.txtSum2.Location = New System.Drawing.Point(632, 462)
         Me.txtSum2.Name = "txtSum2"
         Me.txtSum2.Size = New System.Drawing.Size(93, 20)
         Me.txtSum2.TabIndex = 233
@@ -401,7 +443,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         'lblDisplayTotalPesos
         '
         Me.lblDisplayTotalPesos.AutoSize = True
-        Me.lblDisplayTotalPesos.Location = New System.Drawing.Point(282, 349)
+        Me.lblDisplayTotalPesos.Location = New System.Drawing.Point(282, 466)
         Me.lblDisplayTotalPesos.Name = "lblDisplayTotalPesos"
         Me.lblDisplayTotalPesos.Size = New System.Drawing.Size(68, 13)
         Me.lblDisplayTotalPesos.TabIndex = 230
@@ -413,7 +455,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.ToolStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbConsultar, Me.tsbImprimir, Me.tsbSalir})
         Me.ToolStrip2.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip2.Name = "ToolStrip2"
-        Me.ToolStrip2.Size = New System.Drawing.Size(988, 27)
+        Me.ToolStrip2.Size = New System.Drawing.Size(1274, 27)
         Me.ToolStrip2.TabIndex = 225
         Me.ToolStrip2.Text = "ToolStrip2"
         '
@@ -441,52 +483,11 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
         Me.tsbSalir.Text = "&Salir"
         '
-        'chkFiltrarPorUtilidad
-        '
-        Me.chkFiltrarPorUtilidad.AutoSize = True
-        Me.chkFiltrarPorUtilidad.Location = New System.Drawing.Point(5, 1)
-        Me.chkFiltrarPorUtilidad.Name = "chkFiltrarPorUtilidad"
-        Me.chkFiltrarPorUtilidad.Size = New System.Drawing.Size(125, 17)
-        Me.chkFiltrarPorUtilidad.TabIndex = 398
-        Me.chkFiltrarPorUtilidad.Text = "Filtrar por % utilidad ?"
-        Me.chkFiltrarPorUtilidad.UseVisualStyleBackColor = True
-        '
-        'rbMinimo
-        '
-        Me.rbMinimo.AutoSize = True
-        Me.rbMinimo.Checked = True
-        Me.rbMinimo.Location = New System.Drawing.Point(25, 22)
-        Me.rbMinimo.Name = "rbMinimo"
-        Me.rbMinimo.Size = New System.Drawing.Size(60, 17)
-        Me.rbMinimo.TabIndex = 399
-        Me.rbMinimo.TabStop = True
-        Me.rbMinimo.Text = "Mínimo"
-        Me.rbMinimo.UseVisualStyleBackColor = True
-        '
-        'rbMaximo
-        '
-        Me.rbMaximo.AutoSize = True
-        Me.rbMaximo.Location = New System.Drawing.Point(25, 42)
-        Me.rbMaximo.Name = "rbMaximo"
-        Me.rbMaximo.Size = New System.Drawing.Size(61, 17)
-        Me.rbMaximo.TabIndex = 400
-        Me.rbMaximo.Text = "Máximo"
-        Me.rbMaximo.UseVisualStyleBackColor = True
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(115, 31)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(15, 13)
-        Me.Label1.TabIndex = 401
-        Me.Label1.Text = "%"
-        '
         'Rpt_Ventas_TopTenProductos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(988, 559)
+        Me.ClientSize = New System.Drawing.Size(1274, 644)
         Me.Controls.Add(Me.gbConsulta)
         Me.Controls.Add(Me.ToolStrip2)
         Me.Controls.Add(Me.GroupBox1)
