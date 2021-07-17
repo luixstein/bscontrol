@@ -1048,7 +1048,7 @@ Partial Class Frm_CXC_Pagos
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Location = New System.Drawing.Point(8, 430)
-        Me.TabControl1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabControl1.Margin = New System.Windows.Forms.Padding(2)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(1137, 217)
@@ -1058,9 +1058,9 @@ Partial Class Frm_CXC_Pagos
         '
         Me.TabPage1.Controls.Add(Me.GridVentas)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage1.Margin = New System.Windows.Forms.Padding(2)
         Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(2)
         Me.TabPage1.Size = New System.Drawing.Size(1129, 191)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Ventas"
@@ -1091,9 +1091,9 @@ Partial Class Frm_CXC_Pagos
         Me.TabPage2.Controls.Add(Me.Label3)
         Me.TabPage2.Controls.Add(Me.cboTipoRelacionCFDI)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage2.Margin = New System.Windows.Forms.Padding(2)
         Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(2)
         Me.TabPage2.Size = New System.Drawing.Size(1129, 191)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Relacionar CFDIs"
@@ -1143,7 +1143,6 @@ Partial Class Frm_CXC_Pagos
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.AutoSize = True
         Me.ClientSize = New System.Drawing.Size(1154, 680)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.btnGenerarCFDIS)
