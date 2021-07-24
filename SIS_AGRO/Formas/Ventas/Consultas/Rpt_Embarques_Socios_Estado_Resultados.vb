@@ -6,7 +6,7 @@ Public Class Rpt_Embarques_Socios_Estado_Resultados
 
 #Region "Opciones"
     Private Sub tsbConsultar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbConsultar.Click
-        If txtLEN(Me.TxtCodArticulo.Text) = False Then
+        If rbtAnalisisEmbarque.Checked And txtLEN(Me.TxtCodArticulo.Text) = False Then
             MsgBox("Asígne un artículo", MsgBoxStyle.Exclamation, Me.Text)
             Me.TxtCodArticulo.Focus()
             Exit Sub
@@ -56,6 +56,69 @@ buscar:
                 Me.tsbConsultar.PerformClick()
         End Select
     End Sub
+
+    Private Sub TxtCodigoSocio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoSocio.KeyDown
+        Dim oUsuario As New Class_sisUsuarios
+        Try
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    Dim sUsuario As String = oUsuario.BusquedaVisual_PorDescripcion()
+                    If txtLEN(sUsuario) = True Then
+                        Me.TxtCodigoSocio.Text = sUsuario
+                        GoTo Enter : Return
+                    End If
+
+                Case Keys.Enter
+                    If txtLEN(Me.TxtCodigoSocio.Text) = False Then
+                        Me.TxtCodigoSocio.Text = ""
+                        GoTo Buscar : Return
+                    End If
+Enter:
+                    oUsuario = New Class_sisUsuarios(CInt(valorNumerico(Me.TxtCodigoSocio.Text)))
+
+                    If oUsuario.Existe = False Then
+                        Me.LblNombreSocio.Text = ""
+                        GoTo Buscar : Return
+                    ElseIf oUsuario.ESTATUS = "B" Then
+                        MsgBox("El usuario " & Me.TxtCodigoSocio.Text & " está dado de baja.", MsgBoxStyle.Exclamation, Me.Text)
+                        GoTo Buscar : Return
+                    End If
+
+                    Me.LblNombreSocio.Text = oUsuario.Nombre_Usuario
+
+                    txtTAB(e)
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, "TxtCodigoSocio_KeyDown", ex)
+        End Try
+    End Sub
+
+    Private Sub Rpt_Embarques_Socios_Estado_Resultados_Load(sender As Object, e As EventArgs) Handles Me.Load
+        Me.DtFechaDesde.Value = CDate("01/01/" & Year(Date.Now))
+        Me.DtFechaHasta.Value = Date.Now
+    End Sub
+
+    Private Sub rbtAnalisisEmbarque_CheckedChanged(sender As Object, e As EventArgs) Handles rbtAnalisisEmbarque.CheckedChanged
+        If Me.rbtAnalisisEmbarque.Checked Then
+            Me.LblDisplayCodArticulo.Visible = True
+            Me.lblArticulo.Visible = True
+            Me.TxtCodArticulo.Visible = True
+            Me.LblDisplaySocio.Visible = False
+            Me.LblNombreSocio.Visible = False
+            Me.TxtCodigoSocio.Visible = False
+        Else
+            Me.LblDisplayCodArticulo.Visible = False
+            Me.lblArticulo.Visible = False
+            Me.TxtCodArticulo.Visible = False
+            Me.LblDisplaySocio.Visible = True
+            Me.LblNombreSocio.Visible = True
+            Me.TxtCodigoSocio.Visible = True
+        End If
+
+    End Sub
+
 #End Region
 
 
@@ -80,11 +143,25 @@ buscar:
         Dim FormatoDeReporte As String = ""
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
+        Dim sCodigo, sParametro As String
         Try
-            FormatoDeReporte = "RPT_EMBARQUES_SOCIOS_ESTADO_RESULTADOS"
+
+            If rbtAnalisisEmbarque.Checked Then
+                FormatoDeReporte = "RPT_EMBARQUES_SOCIOS_ESTADO_RESULTADOS"
+                sParametro = "@CODIGO_ARTICULO"
+                sCodigo = Me.TxtCodArticulo.Text
+
+            Else 'Analsis por socio
+                FormatoDeReporte = "RPT_EMBARQUES_SOCIOS_ANALISIS_RESULTADOS"
+                sParametro = "@CODIGO_USUARIO_SOCIO"
+                sCodigo = IIf(txtLEN(Me.TxtCodigoSocio.Text), Me.TxtCodigoSocio.Text, "0")
+            End If
+
             oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
 
-            Rpt.SetParameterValue("@CODIGO_ARTICULO", Me.TxtCodArticulo.Text)
+            Rpt.SetParameterValue(sParametro, sCodigo)
+            Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
+            Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@FORMATO", "SOCIOS")
             Rpt.SetParameterValue("FORMATO_SUBREPORTE", "DETALLE")
 
