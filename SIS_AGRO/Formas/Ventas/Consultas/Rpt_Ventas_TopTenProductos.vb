@@ -13,7 +13,7 @@ Public Class Rpt_Ventas_TopTenProductos
     Private igyVenta As Short = 4
     Private igyCosto As Short = 5
     Private igyUtilidad As Short = 6
-    Private igyP_Utilidad As Short = 7
+    Private igyUtilidadPorcentaje As Short = 7
     Private igyPrecioUnitario As Short = 8
     Private igyCostoUnitario As Short = 9
     Private igyUtilidadUnitaria As Short = 10
@@ -21,21 +21,21 @@ Public Class Rpt_Ventas_TopTenProductos
     Private igyAcumuladoUtilidad As Short = 12
     Private igyParticipacionVenta As Short = 13
     Private igyAcumuladoVenta As Short = 14
-    'Private igyUtilidadBruta As Short = 15
-    'Private igyUtilidadBrutaPorcentaje As Short = 16
 #End Region
 
 #Region "Columnas grid clientes"
-    Private igyPTCCodigo As Short = 1
-    Private igyPTCDescripcion As Short = 2
-    Private igyPTCVenta As Short = 3
-    Private igyPTCPorcParticipacion As Short = 4
-    Private igyPTCPorcAcumulada As Short = 5
-    Private igyPTCVentaNetaDolares As Short = 6
-    Private igyPTCVentaNetaPesos As Short = 7
-    Private igyPTCPrecioPromDolares As Short = 8
-    Private igyPTCPrecioPromPesos As Short = 9
-    Private igyPTCImporteTotalPesos As Short = 10
+    Private igyCtesCodigo As Short = 1
+    Private igyCtesNombreCliente As Short = 2
+    Private igyCtesCantidad As Short = 3
+    Private igyCtesVenta As Short = 4
+    Private igyCtesCosto As Short = 5
+    Private igyCtesUtilidad As Short = 6
+    Private igyCtesUtilidadPorcentaje As Short = 7
+    Private igyCtesParticipacionUtilidad As Short = 8
+    Private igyCtesAcumuladoUtilidad As Short = 9
+    Private igyCtesParticipacionVenta As Short = 10
+    Private igyCtesAcumuladoVenta As Short = 11
+    Private igyCtesNumeroProductos As Short = 12
 #End Region
 
 #Region "Campos privados"
@@ -51,6 +51,8 @@ Public Class Rpt_Ventas_TopTenProductos
     Private _TopTenConsultaExteriorMercado As String
 
     Private _ConsultaExterior As Boolean = False
+
+
 #End Region
 
 #Region "Campos públicos"
@@ -145,27 +147,19 @@ Public Class Rpt_Ventas_TopTenProductos
 #Region "Eventos"
     Private Sub Rpt_Ventas_TopTenProductos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            Me.DesplegarZona()
-            Me.DesplegarDocumentos()
-            Me.DesplegarOrden()
-            Me.DesplegarTipoPago()
-
-            Me.DtFechaDesde.Value = FechaActualINI()
-            Me.DtFechaHasta.Value = Now
-            Me.txtTipoCambio.Text = "0"
-
-            Me.Inicializa()
-            Me.InicializaGrid()
-            'Me.ocultarElementos()
-
             If Me._ConsultaExterior = True Then
-                Me.DtFechaDesde.Value = CDate(Me._TopTenConsultaExteriorDia1)
-                Me.DtFechaHasta.Value = CDate(Me._TopTenConsultaExteriorDia2)
-                Me.TxtCliente.Text = Me._TopTenConsultaExteriorCliente.ToString
-                Me.CboZona.SelectedValue = Me._TopTenConsultaExteriorZona.ToString
+                'Me.DtFechaDesde.Value = CDate(Me._TopTenConsultaExteriorDia1)
+                'Me.DtFechaHasta.Value = CDate(Me._TopTenConsultaExteriorDia2)
+                'Me.TxtCliente.Text = Me._TopTenConsultaExteriorCliente.ToString
+                'Me.CboZona.SelectedValue = Me._TopTenConsultaExteriorZona.ToString
 
                 Me.GroupBox1.Enabled = False
                 Me.Consultar()
+            Else
+                'Esto debe ir aquí para que no se pierdan la reutilización de los mismos controles sin usar variables, se hacen dos show, el 1ero incializa , el segundo ya no
+                Me.Inicializa()
+                Me.InicializaGrid()
+                'Me.ocultarElementos()
             End If
 
             Select Case Me.ModoAgrupado
@@ -181,10 +175,66 @@ Public Class Rpt_Ventas_TopTenProductos
     End Sub
 
     Private Sub Grid_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.DoubleClick 'Habilitar cuando se actualice el stored de top ten clientes
-        'Dim Columna As Integer, Renglon As Integer, vdg As String
+        Try
+            Dim Columna As Integer, Renglon As Integer
 
-        'Columna = Me.Grid.Selection.FirstCol
-        'Renglon = Me.Grid.Selection.FirstRow
+            Columna = Me.Grid.Selection.FirstCol
+            Renglon = Me.Grid.Selection.FirstRow
+
+            Dim Child As New Rpt_Ventas_TopTenProductos
+
+            Select Case Me.ModoAgrupado
+                Case enumModoAgrupado.PRODUCTOS
+                    Child.ModoAgrupado = Rpt_Ventas_TopTenProductos.enumModoAgrupado.CLIENTES
+                Case enumModoAgrupado.CLIENTES
+                    Child.ModoAgrupado = Rpt_Ventas_TopTenProductos.enumModoAgrupado.PRODUCTOS
+            End Select
+
+            Child.StartPosition = FormStartPosition.CenterScreen
+            Child.Show() 'Esto corre el form load una primera vez
+
+            With Child
+                .ConsultaExterior = True
+                .TxtCliente.Text = Me.TxtCliente.Text
+                .CboZona.SelectedValue = Me.CboZona.SelectedValue
+                '.TxtDescripcion.Text = Me.TxtDescripcion.Text
+                .TxtCodigosProductos.Text = Me.TxtCodigosProductos.Text
+                .DtFechaDesde.Value = Me.DtFechaDesde.Value
+                .DtFechaHasta.Value = Me.DtFechaHasta.Value
+                '.chkFiltrarPorUtilidad.Checked = Me.chkFiltrarPorUtilidad.Checked
+                '.rbMinimo.Checked = Me.rbMinimo.Checked
+                '.rbMaximo.Checked = Me.rbMaximo.Checked
+                '.txtPorcentajeUtilidad.Text = Me.txtPorcentajeUtilidad.Text
+                '.txtUtilidadMaxima.Text = Me.txtUtilidadMaxima.Text
+                .cboTipoPago.SelectedValue = Me.cboTipoPago.SelectedValue
+                .cboOrden.Text = Me.cboOrden.Text
+                .CboDocumento.SelectedValue = Me.CboDocumento.SelectedValue
+            End With
+
+            Select Case Me.ModoAgrupado
+                Case enumModoAgrupado.PRODUCTOS
+                    Child.ModoAgrupado = Rpt_Ventas_TopTenProductos.enumModoAgrupado.CLIENTES
+
+                    If Renglon > 0 AndAlso Columna > 0 Then
+                        Child.TxtCodigosProductos.Text = Me.Grid.Cell(Renglon, Me.igyCodigo).Text
+                    End If
+
+                Case enumModoAgrupado.CLIENTES
+                    Child.ModoAgrupado = Rpt_Ventas_TopTenProductos.enumModoAgrupado.PRODUCTOS
+
+                    If Renglon > 0 AndAlso Columna > 0 Then
+                        Child.TxtCliente.Text = Me.Grid.Cell(Renglon, Me.igyCtesCodigo).Text
+                    End If
+            End Select
+
+            Child.Visible = False 'Se ocupa para poder hacer show de nuevo ahora con dialog.
+            Child.ShowDialog() 'Esto corre el form load por 2da vez.
+            Child.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Name, "Grid_DoubleClick", ex)
+        End Try
+
 
         'If Me._ConsultaExterior = True Then
         '    Exit Sub
@@ -303,27 +353,16 @@ Buscar:
 #Region "Métodos y procedimientos"
     Private Sub Inicializa()
         Try
-            Me.CboZona.SelectedValue = "T"
+            Me.DesplegarZona()
+            Me.DesplegarDocumentos()
+            Me.DesplegarOrden()
+            Me.DesplegarTipoPago()
 
-            Select Case Me.ModoAgrupado
-                Case enumModoAgrupado.PRODUCTOS
-                    '    Me.InicializaGrid()
-                    '    Me.lblDisplayAgrupado.Visible = True
-                    Me.txtSum1.Visible = True
-                    Me.txtSum2.Visible = True
-                    'Me.txtSum3.Visible = True
-                    Me.txtSum4.Visible = True
-                'Me.txtSum5.Visible = True
-                'Me.txtSum6.Visible = False
-                Case enumModoAgrupado.CLIENTES
-                    '    Me.lblDisplayAgrupado.Visible = False
-                    Me.txtSum1.Visible = True
-                    Me.txtSum2.Visible = False
-                    'Me.txtSum3.Visible = False
-                    Me.txtSum4.Visible = False
-                    'Me.txtSum5.Visible = False
-                    'Me.txtSum6.Visible = True
-            End Select
+            Me.DtFechaDesde.Value = FechaActualINI()
+            Me.DtFechaHasta.Value = Now
+            Me.txtTipoCambio.Text = "0"
+
+            Me.CboZona.SelectedValue = "T"
 
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
@@ -400,228 +439,220 @@ Buscar:
             FG_Grid_Limpiar(Me.Grid)
 
             Me.Grid.Rows = 2
-            'Me.Grid.Cols = 13
 
-            If Me.ModoAgrupado = enumModoAgrupado.PRODUCTOS Then
-                Me.Grid.Cols = 15
-                Me.FormateaGrid()
-            Else
-                Me.Grid.Cols = 10
-                Me.FormateaGrid2()
-            End If
+            Select Case Me.ModoAgrupado
+                Case enumModoAgrupado.PRODUCTOS
+                    Me.Grid.Cols = 15
+                    Me.FormateaGridToptenProductos()
+                Case enumModoAgrupado.CLIENTES
+                    Me.Grid.Cols = 13
+                    Me.FormateaGridToptenClientes()
+            End Select
+
         Catch ex As Exception
             HandleError(Me.Name, "InicializaGrid", ex)
         End Try
     End Sub
 
-    Private Sub FormateaGrid()
+    Private Sub FormateaGridToptenProductos()
         Try
-            Me.Grid.FrozenCols = 2
+            With Me.Grid
+                .FrozenCols = 2 'Para que las columnas código y nombre queden estáticas sin moverse.
 
-            Me.Grid.Column(Me.igyCodigo).Width = 70
-            Me.Grid.Column(Me.igyDescripcion).Width = 300
-            Me.Grid.Column(Me.igyCantidad).Width = 100
-            Me.Grid.Column(Me.igyVenta).Width = 100
-            Me.Grid.Column(Me.igyCosto).Width = 100
-            Me.Grid.Column(Me.igyUtilidad).Width = 100
-            Me.Grid.Column(Me.igyP_Utilidad).Width = 100
-            Me.Grid.Column(Me.igyPrecioUnitario).Width = 100
-            Me.Grid.Column(Me.igyCostoUnitario).Width = 100
-            Me.Grid.Column(Me.igyUtilidadUnitaria).Width = 100
-            Me.Grid.Column(Me.igyParticipacionUtilidad).Width = 100
-            Me.Grid.Column(Me.igyAcumuladoUtilidad).Width = 100
-            Me.Grid.Column(Me.igyParticipacionVenta).Width = 100
-            Me.Grid.Column(Me.igyAcumuladoVenta).Width = 100
-            'Me.Grid.Column(Me.igyUtilidadBruta).Width = 100
-            'Me.Grid.Column(Me.igyUtilidadBrutaPorcentaje).Width = 100
+                .Column(Me.igyCodigo).Width = 70
+                .Column(Me.igyDescripcion).Width = 300
+                .Column(Me.igyCantidad).Width = 100
+                .Column(Me.igyVenta).Width = 100
+                .Column(Me.igyCosto).Width = 100
+                .Column(Me.igyUtilidad).Width = 100
+                .Column(Me.igyUtilidadPorcentaje).Width = 100
+                .Column(Me.igyPrecioUnitario).Width = 100
+                .Column(Me.igyCostoUnitario).Width = 100
+                .Column(Me.igyUtilidadUnitaria).Width = 100
+                .Column(Me.igyParticipacionUtilidad).Width = 100
+                .Column(Me.igyAcumuladoUtilidad).Width = 100
+                .Column(Me.igyParticipacionVenta).Width = 100
+                .Column(Me.igyAcumuladoVenta).Width = 100
+                '.Column(Me.igyUtilidadBruta).Width = 100
+                '.Column(Me.igyUtilidadBrutaPorcentaje).Width = 100
 
-            Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
-            Me.Grid.Cell(0, Me.igyDescripcion).Text = "Descripción"
-            Me.Grid.Cell(0, Me.igyCantidad).Text = "Cant."
-            Me.Grid.Cell(0, Me.igyVenta).Text = "Venta"
-            Me.Grid.Cell(0, Me.igyCosto).Text = "Costo"
-            Me.Grid.Cell(0, Me.igyUtilidad).Text = "Utilidad"
-            Me.Grid.Cell(0, Me.igyP_Utilidad).Text = "% Util."
-            Me.Grid.Cell(0, Me.igyPrecioUnitario).Text = "Precio uni."
-            Me.Grid.Cell(0, Me.igyCostoUnitario).Text = "Costo uni."
-            Me.Grid.Cell(0, Me.igyUtilidadUnitaria).Text = "Utilidad uni."
-            Me.Grid.Cell(0, Me.igyParticipacionUtilidad).Text = "Participacion uti."
-            Me.Grid.Cell(0, Me.igyAcumuladoUtilidad).Text = "Acumulado uti."
-            Me.Grid.Cell(0, Me.igyParticipacionVenta).Text = "Participacion vta."
-            Me.Grid.Cell(0, Me.igyAcumuladoVenta).Text = "Acumulativo vta."
-            'Me.Grid.Cell(0, Me.igyUtilidadBruta).Text = "Utilidad bruta"
-            'Me.Grid.Cell(0, Me.igyUtilidadBrutaPorcentaje).Text = "% uti. bruta"
+                .Cell(0, Me.igyCodigo).Text = "Código"
+                .Cell(0, Me.igyDescripcion).Text = "Descripción"
+                .Cell(0, Me.igyCantidad).Text = "Cant."
+                .Cell(0, Me.igyVenta).Text = "Venta"
+                .Cell(0, Me.igyCosto).Text = "Costo"
+                .Cell(0, Me.igyUtilidad).Text = "Utilidad"
+                .Cell(0, Me.igyUtilidadPorcentaje).Text = "% Util."
+                .Cell(0, Me.igyPrecioUnitario).Text = "Precio uni."
+                .Cell(0, Me.igyCostoUnitario).Text = "Costo uni."
+                .Cell(0, Me.igyUtilidadUnitaria).Text = "Utilidad uni."
+                .Cell(0, Me.igyParticipacionUtilidad).Text = "Participacion uti."
+                .Cell(0, Me.igyAcumuladoUtilidad).Text = "Acumulado uti."
+                .Cell(0, Me.igyParticipacionVenta).Text = "Participacion vta."
+                .Cell(0, Me.igyAcumuladoVenta).Text = "Acumulativo vta."
+                '.Cell(0, Me.igyUtilidadBruta).Text = "Utilidad bruta"
+                '.Cell(0, Me.igyUtilidadBrutaPorcentaje).Text = "% uti. bruta"
 
-            Me.Grid.Column(Me.igyCantidad).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyCantidad).DecimalLength = 0
-            Me.Grid.Column(Me.igyCantidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.igyCantidad).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyCantidad).DecimalLength = 0
+                .Column(Me.igyCantidad).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyVenta).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.Grid.Column(Me.igyVenta).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyVenta).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
-            Me.Grid.Column(Me.igyVenta).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.igyVenta).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.igyVenta).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyVenta).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyVenta).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyCosto).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.Grid.Column(Me.igyCosto).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyCosto).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
-            Me.Grid.Column(Me.igyCosto).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.igyCosto).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.igyCosto).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyCosto).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyCosto).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyUtilidad).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.Grid.Column(Me.igyUtilidad).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyUtilidad).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
-            Me.Grid.Column(Me.igyUtilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.igyUtilidad).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.igyUtilidad).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyUtilidad).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyUtilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyP_Utilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.igyUtilidadPorcentaje).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyPrecioUnitario).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.Grid.Column(Me.igyPrecioUnitario).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyPrecioUnitario).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
-            Me.Grid.Column(Me.igyPrecioUnitario).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.igyPrecioUnitario).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.igyPrecioUnitario).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyPrecioUnitario).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyPrecioUnitario).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyCostoUnitario).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.Grid.Column(Me.igyCostoUnitario).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyCostoUnitario).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
-            Me.Grid.Column(Me.igyCostoUnitario).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.igyCostoUnitario).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.igyCostoUnitario).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyCostoUnitario).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyCostoUnitario).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyUtilidadUnitaria).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.Grid.Column(Me.igyUtilidadUnitaria).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyUtilidadUnitaria).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
-            Me.Grid.Column(Me.igyUtilidadUnitaria).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.igyUtilidadUnitaria).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.igyUtilidadUnitaria).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyUtilidadUnitaria).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyUtilidadUnitaria).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyParticipacionUtilidad).FormatString = "##0.00 %"
-            Me.Grid.Column(Me.igyParticipacionUtilidad).Mask = FlexCell.MaskEnum.Numeric
-            'Me.Grid.Column(Me.igyParticipacionUtilidad).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
-            Me.Grid.Column(Me.igyParticipacionUtilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.igyParticipacionUtilidad).FormatString = "##0.00 %"
+                .Column(Me.igyParticipacionUtilidad).Mask = FlexCell.MaskEnum.Numeric
+                '.Column(Me.igyParticipacionUtilidad).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyParticipacionUtilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyAcumuladoUtilidad).FormatString = "##0.00 %"
-            Me.Grid.Column(Me.igyAcumuladoUtilidad).Mask = FlexCell.MaskEnum.Numeric
-            'Me.Grid.Column(Me.igyAcumuladoUtilidad).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
-            Me.Grid.Column(Me.igyAcumuladoUtilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.igyAcumuladoUtilidad).FormatString = "##0.00 %"
+                .Column(Me.igyAcumuladoUtilidad).Mask = FlexCell.MaskEnum.Numeric
+                '.Column(Me.igyAcumuladoUtilidad).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyAcumuladoUtilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyParticipacionVenta).FormatString = "##0.00 %"
-            Me.Grid.Column(Me.igyParticipacionVenta).Mask = FlexCell.MaskEnum.Numeric
-            'Me.Grid.Column(Me.igyParticipacionVenta).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
-            Me.Grid.Column(Me.igyParticipacionVenta).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.igyParticipacionVenta).FormatString = "##0.00 %"
+                .Column(Me.igyParticipacionVenta).Mask = FlexCell.MaskEnum.Numeric
+                '.Column(Me.igyParticipacionVenta).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyParticipacionVenta).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyAcumuladoVenta).FormatString = "##0.00 %"
-            Me.Grid.Column(Me.igyAcumuladoVenta).Mask = FlexCell.MaskEnum.Numeric
-            'Me.Grid.Column(Me.igyAcumuladoVenta).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
-            Me.Grid.Column(Me.igyAcumuladoVenta).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.igyAcumuladoVenta).FormatString = "##0.00 %"
+                .Column(Me.igyAcumuladoVenta).Mask = FlexCell.MaskEnum.Numeric
+                '.Column(Me.igyAcumuladoVenta).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyAcumuladoVenta).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            'Me.Grid.Column(Me.igyUtilidadBruta).Alignment = FlexCell.AlignmentEnum.RightCenter
-            'Me.Grid.Column(Me.igyUtilidadBrutaPorcentaje).Alignment = FlexCell.AlignmentEnum.RightCenter
+                '.Column(Me.igyUtilidadBruta).Alignment = FlexCell.AlignmentEnum.RightCenter
+                '.Column(Me.igyUtilidadBrutaPorcentaje).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyCodigo).Visible = True
-            Me.Grid.Column(Me.igyDescripcion).Visible = True
-            Me.Grid.Column(Me.igyCantidad).Visible = True
-            Me.Grid.Column(Me.igyVenta).Visible = True
-            Me.Grid.Column(Me.igyCosto).Visible = True
-            Me.Grid.Column(Me.igyUtilidad).Visible = True
-            Me.Grid.Column(Me.igyP_Utilidad).Visible = True
-            Me.Grid.Column(Me.igyPrecioUnitario).Visible = True
-            Me.Grid.Column(Me.igyCostoUnitario).Visible = True
-            Me.Grid.Column(Me.igyUtilidadUnitaria).Visible = True
-            Me.Grid.Column(Me.igyParticipacionUtilidad).Visible = True
-            Me.Grid.Column(Me.igyAcumuladoUtilidad).Visible = True
-            Me.Grid.Column(Me.igyParticipacionVenta).Visible = True
-            Me.Grid.Column(Me.igyAcumuladoVenta).Visible = True
-            'Me.Grid.Column(Me.igyUtilidadBruta).Visible = True
-            'Me.Grid.Column(Me.igyUtilidadBrutaPorcentaje).Visible = True
+                .Locked = True
 
-            Me.Grid.Column(Me.igyCodigo).Locked = True
-            Me.Grid.Column(Me.igyDescripcion).Locked = True
-            Me.Grid.Column(Me.igyCantidad).Locked = True
-            Me.Grid.Column(Me.igyVenta).Locked = True
-            Me.Grid.Column(Me.igyCosto).Locked = True
-            Me.Grid.Column(Me.igyUtilidad).Locked = True
-            Me.Grid.Column(Me.igyP_Utilidad).Locked = True
-            Me.Grid.Column(Me.igyPrecioUnitario).Locked = True
-            Me.Grid.Column(Me.igyCostoUnitario).Locked = True
-            Me.Grid.Column(Me.igyUtilidadUnitaria).Locked = True
-            Me.Grid.Column(Me.igyParticipacionUtilidad).Locked = True
-            Me.Grid.Column(Me.igyAcumuladoUtilidad).Locked = True
-            Me.Grid.Column(Me.igyParticipacionVenta).Locked = True
-            Me.Grid.Column(Me.igyAcumuladoVenta).Locked = True
-            'Me.Grid.Column(Me.igyUtilidadBruta).Locked = True
-            'Me.Grid.Column(Me.igyUtilidadBrutaPorcentaje).Locked = True
-
+            End With
         Catch ex As Exception
-            HandleError(Me.Name, "FormateaGrid", ex)
+            HandleError(Me.Name, "FormateaGridToptenProductos", ex)
         End Try
     End Sub
 
-    Private Sub FormateaGrid2()
+    Private Sub FormateaGridToptenClientes()
         Try
-            Me.Grid.Column(Me.igyPTCCodigo).Width = 70
-            Me.Grid.Column(Me.igyPTCDescripcion).Width = 300
-            Me.Grid.Column(Me.igyPTCVenta).Width = 100
-            Me.Grid.Column(Me.igyPTCPorcParticipacion).Width = 80
-            Me.Grid.Column(Me.igyPTCPorcAcumulada).Width = 80
-            Me.Grid.Column(Me.igyPTCVentaNetaDolares).Width = 100
-            Me.Grid.Column(Me.igyPTCVentaNetaPesos).Width = 100
-            Me.Grid.Column(Me.igyPTCPrecioPromDolares).Width = 80
-            Me.Grid.Column(Me.igyPTCPrecioPromPesos).Width = 80
+            With Me.Grid
+                .FrozenCols = 2 'Para que las columnas código y nombre queden estáticas sin moverse.
 
-            Me.Grid.Cell(0, Me.igyPTCCodigo).Text = "Código"
-            Me.Grid.Cell(0, Me.igyPTCDescripcion).Text = "Descripción"
-            Me.Grid.Cell(0, Me.igyPTCVenta).Text = "Venta."
-            Me.Grid.Cell(0, Me.igyPTCPorcParticipacion).Text = "Porc. part.."
-            Me.Grid.Cell(0, Me.igyPTCPorcAcumulada).Text = "Part. Acum."
-            Me.Grid.Cell(0, Me.igyPTCVentaNetaDolares).Text = "Total dolares."
-            Me.Grid.Cell(0, Me.igyPTCVentaNetaPesos).Text = "Total pesos."
+                .Column(Me.igyCtesCodigo).Width = 70
+                .Column(Me.igyCtesNombreCliente).Width = 300
+                .Column(Me.igyCtesCantidad).Width = 100
+                .Column(Me.igyCtesVenta).Width = 100
+                .Column(Me.igyCtesCosto).Width = 100
+                .Column(Me.igyCtesUtilidad).Width = 100
+                .Column(Me.igyCtesUtilidadPorcentaje).Width = 100
+                .Column(Me.igyCtesParticipacionUtilidad).Width = 100
+                .Column(Me.igyCtesAcumuladoUtilidad).Width = 100
+                .Column(Me.igyCtesParticipacionVenta).Width = 100
+                .Column(Me.igyCtesAcumuladoVenta).Width = 100
+                .Column(Me.igyCtesNumeroProductos).Width = 100
 
-            Me.Grid.Column(Me.igyPTCPorcParticipacion).Alignment = FlexCell.AlignmentEnum.RightCenter
-            Me.Grid.Column(Me.igyPTCPorcAcumulada).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Cell(0, Me.igyCtesCodigo).Text = "Código"
+                .Cell(0, Me.igyCtesNombreCliente).Text = "Cliente"
+                .Cell(0, Me.igyCtesCantidad).Text = "Cant."
+                .Cell(0, Me.igyCtesVenta).Text = "Venta."
+                .Cell(0, Me.igyCtesCosto).Text = "Costo"
+                .Cell(0, Me.igyCtesUtilidad).Text = "Utilidad"
+                .Cell(0, Me.igyCtesUtilidadPorcentaje).Text = "% Util."
+                .Cell(0, Me.igyCtesParticipacionUtilidad).Text = "Participacion uti."
+                .Cell(0, Me.igyCtesAcumuladoUtilidad).Text = "Acumulado uti."
+                .Cell(0, Me.igyCtesParticipacionVenta).Text = "Participacion vta."
+                .Cell(0, Me.igyCtesAcumuladoVenta).Text = "Acumulativo vta."
+                .Cell(0, Me.igyCtesNumeroProductos).Text = "# Prods."
 
-            Me.Grid.Column(Me.igyPTCVenta).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.Grid.Column(Me.igyPTCVenta).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyPTCVenta).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
-            Me.Grid.Column(Me.igyPTCVenta).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.igyCtesCantidad).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyCtesCantidad).DecimalLength = 0
+                .Column(Me.igyCtesCantidad).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyPTCVentaNetaDolares).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.Grid.Column(Me.igyPTCVentaNetaDolares).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyPTCVentaNetaDolares).DecimalLength = 2
-            Me.Grid.Column(Me.igyPTCVentaNetaDolares).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.igyCtesVenta).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.igyCtesVenta).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyCtesVenta).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyCtesVenta).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyPTCVentaNetaPesos).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            Me.Grid.Column(Me.igyPTCVentaNetaPesos).Mask = FlexCell.MaskEnum.Numeric
-            Me.Grid.Column(Me.igyPTCVentaNetaPesos).DecimalLength = 2
-            Me.Grid.Column(Me.igyPTCVentaNetaPesos).Alignment = FlexCell.AlignmentEnum.RightCenter
+                .Column(Me.igyCtesCosto).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.igyCtesCosto).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyCtesCosto).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyCtesCosto).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyPTCCodigo).Visible = True
-            Me.Grid.Column(Me.igyPTCDescripcion).Visible = True
-            Me.Grid.Column(Me.igyPTCVenta).Visible = True
-            Me.Grid.Column(Me.igyPTCPorcParticipacion).Visible = True
-            Me.Grid.Column(Me.igyPTCPorcAcumulada).Visible = True
-            Me.Grid.Column(Me.igyPTCVentaNetaDolares).Visible = False
-            Me.Grid.Column(Me.igyPTCVentaNetaPesos).Visible = False
-            Me.Grid.Column(Me.igyPTCPrecioPromDolares).Visible = False
-            Me.Grid.Column(Me.igyPTCPrecioPromPesos).Visible = False
+                .Column(Me.igyCtesUtilidad).FormatString = "$ ###,###,##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_CONTABILIDAD)
+                .Column(Me.igyCtesUtilidad).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyCtesUtilidad).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyCtesUtilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-            Me.Grid.Column(Me.igyPTCCodigo).Locked = True
-            Me.Grid.Column(Me.igyPTCDescripcion).Locked = True
-            Me.Grid.Column(Me.igyPTCVenta).Locked = True
-            Me.Grid.Column(Me.igyPTCPorcParticipacion).Locked = True
-            Me.Grid.Column(Me.igyPTCPorcAcumulada).Locked = True
-            Me.Grid.Column(Me.igyPTCVentaNetaDolares).Locked = True
-            Me.Grid.Column(Me.igyPTCVentaNetaPesos).Locked = True
-            Me.Grid.Column(Me.igyPTCPrecioPromDolares).Locked = True
-            Me.Grid.Column(Me.igyPTCPrecioPromPesos).Locked = True
+                .Column(Me.igyCtesUtilidadPorcentaje).Alignment = FlexCell.AlignmentEnum.RightCenter
 
+                .Column(Me.igyCtesParticipacionUtilidad).FormatString = "##0.00 %"
+                .Column(Me.igyCtesParticipacionUtilidad).Mask = FlexCell.MaskEnum.Numeric
+                '.Column(Me.igyCtesParticipacionUtilidad).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyCtesParticipacionUtilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.igyCtesAcumuladoUtilidad).FormatString = "##0.00 %"
+                .Column(Me.igyCtesAcumuladoUtilidad).Mask = FlexCell.MaskEnum.Numeric
+                '.Column(Me.igyCtesAcumuladoUtilidad).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyCtesAcumuladoUtilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.igyCtesParticipacionVenta).FormatString = "##0.00 %"
+                .Column(Me.igyCtesParticipacionVenta).Mask = FlexCell.MaskEnum.Numeric
+                '.Column(Me.igyCtesParticipacionVenta).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyCtesParticipacionVenta).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.igyCtesAcumuladoVenta).FormatString = "##0.00 %"
+                .Column(Me.igyCtesAcumuladoVenta).Mask = FlexCell.MaskEnum.Numeric
+                '.Column(Me.igyCtesAcumuladoVenta).DecimalLength = Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyCtesAcumuladoVenta).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.igyCtesNumeroProductos).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Locked = True
+            End With
         Catch ex As Exception
-            HandleError(Me.Name, "FormateaGrid2", ex)
+            HandleError(Me.Name, "FormateaGridToptenClientes", ex)
         End Try
     End Sub
 
     Public Sub Totales()
         Try
-            If Me.ModoAgrupado = enumModoAgrupado.PRODUCTOS Then
-                Me.txtSum1.Text = FormatNumber(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyCantidad)), 0)
-                Me.txtSum4.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyVenta)))
-                Me.txtSum2.Text = FormatImporteContable(CDbl(Me.Grid.Cell(1, Me.igyCosto).Text))
-            Else
-                Me.txtSum1.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyPTCVenta)))
-            End If
+            Select Case Me.ModoAgrupado
+                Case enumModoAgrupado.PRODUCTOS
+                    Me.txtTotalCantidad.Text = FormatNumber(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyCantidad)), 0)
+                    Me.txtTotalVenta.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyVenta)))
+                    Me.txtTotalCosto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyCosto)))
+                Case enumModoAgrupado.CLIENTES
+                    Me.txtTotalCantidad.Text = FormatNumber(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyCtesCantidad)), 0)
+                    Me.txtTotalVenta.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyCtesVenta)))
+                    Me.txtTotalCosto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyCtesCosto)))
+            End Select
 
         Catch ex As Exception
             HandleError(Me.Name, "Totales", ex)
@@ -634,24 +665,18 @@ Buscar:
                 Return True
             End If
 
-            If ModoAgrupado = enumModoAgrupado.PRODUCTOS Then
-                If Me.chkFiltrarPorUtilidad.Checked = True Then
-                    If txtLEN(Me.txtPorcentajeUtilidad.Text) = False Then
-                        MsgBox("Capture un porcentaje.", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.txtPorcentajeUtilidad.Focus()
-                        Return False
-                    End If
-                End If
-
-                If txtLEN(Me.txtUtilidadMaxima.Text) = False Then
-                    MsgBox("Capture la utilidad máxima.", MsgBoxStyle.Exclamation, Me.Name)
-                    Me.txtUtilidadMaxima.Focus()
+            If Me.chkFiltrarPorUtilidad.Checked = True Then
+                If txtLEN(Me.txtPorcentajeUtilidad.Text) = False Then
+                    MsgBox("Capture un porcentaje.", MsgBoxStyle.Exclamation, Me.Name)
+                    Me.txtPorcentajeUtilidad.Focus()
                     Return False
                 End If
-            Else
-                If txtLEN(Me.txtTipoCambio.Text) = False Then
-                    Me.txtTipoCambio.Text = "0"
-                End If
+            End If
+
+            If txtLEN(Me.txtUtilidadMaxima.Text) = False Then
+                MsgBox("Capture la utilidad máxima.", MsgBoxStyle.Exclamation, Me.Name)
+                Me.txtUtilidadMaxima.Focus()
+                Return False
             End If
 
             Return True
@@ -699,7 +724,7 @@ Buscar:
                             .Add(New SqlParameter("@FECHA2", SqlDbType.NVarChar, 20)).Value = Format(Me.DtFechaHasta.Value, "yyyy-dd-MM")
                             .Add(New SqlParameter("@CODIGO_ZONA", SqlDbType.NVarChar, 30)).Value = Me.CboZona.SelectedValue.ToString
                             .Add(New SqlParameter("@DESCRIPCION", SqlDbType.NVarChar, 30)).Value = Me.TxtDescripcion.Text.ToUpper
-                            .Add(New SqlParameter("@FILRAR_POR_UTILIDAD", SqlDbType.Char, 1)).Value = Convert.ToInt32(Me.chkFiltrarPorUtilidad.Checked).ToString
+                            .Add(New SqlParameter("@FILTRAR_POR_UTILIDAD", SqlDbType.Char, 1)).Value = Convert.ToInt32(Me.chkFiltrarPorUtilidad.Checked).ToString
                             .Add(New SqlParameter("@TIPO_UTILIDAD", SqlDbType.NVarChar, 20)).Value = IIf(Me.rbMinimo.Checked = True, "MINIMA", "MAXIMA").ToString
                             .Add(New SqlParameter("@PORCENTAJE_UTILIDAD", SqlDbType.Decimal)).Value = valorNumericoD(Me.txtPorcentajeUtilidad.Text)
                             .Add(New SqlParameter("@TIPO_PAGO", SqlDbType.Char, 1)).Value = Me.cboTipoPago.SelectedValue.ToString
@@ -719,15 +744,23 @@ Buscar:
                         Dim da As New SqlDataAdapter(command)
 
                         With command.Parameters
-                            .Add("@FECHA1_DIA", SqlDbType.NVarChar, 20).Value = Format(Me.DtFechaDesde.Value, "yyyy-dd-MM")
-                            .Add("@FECHA2_DIA", SqlDbType.NVarChar, 20).Value = Format(Me.DtFechaHasta.Value, "yyyy-dd-MM")
-                            .Add("@UNIDAD_VENTA", SqlDbType.NVarChar, 10).Value = Me._TopTenConsultaExteriorPresentacion.ToString
-                            .Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8).Value = Me.TxtCliente.Text
-                            .Add("@TIPO_CAMBIO", SqlDbType.Decimal).Value = valorNumerico(Me.txtTipoCambio.Text)
-                            .Add("@CODIGO_ZONA", SqlDbType.NVarChar, 2).Value = Me.CboZona.SelectedValue.ToString
+                            .Add(New SqlParameter("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8)).Value = Me.TxtCliente.Text
+                            .Add(New SqlParameter("@CODIGO_DOCUMENTO", SqlDbType.NVarChar, 10)).Value = Me.CboDocumento.SelectedValue.ToString
+                            .Add(New SqlParameter("@FECHA1", SqlDbType.NVarChar, 20)).Value = Format(Me.DtFechaDesde.Value, "yyyy-dd-MM")
+                            .Add(New SqlParameter("@FECHA2", SqlDbType.NVarChar, 20)).Value = Format(Me.DtFechaHasta.Value, "yyyy-dd-MM")
+                            .Add(New SqlParameter("@CODIGO_ZONA", SqlDbType.NVarChar, 30)).Value = Me.CboZona.SelectedValue.ToString
+                            .Add(New SqlParameter("@DESCRIPCION", SqlDbType.NVarChar, 30)).Value = Me.TxtDescripcion.Text.ToUpper
+                            .Add(New SqlParameter("@FILTRAR_POR_UTILIDAD", SqlDbType.Char, 1)).Value = Convert.ToInt32(Me.chkFiltrarPorUtilidad.Checked).ToString
+                            .Add(New SqlParameter("@TIPO_UTILIDAD", SqlDbType.NVarChar, 20)).Value = IIf(Me.rbMinimo.Checked = True, "MINIMA", "MAXIMA").ToString
+                            .Add(New SqlParameter("@PORCENTAJE_UTILIDAD", SqlDbType.Decimal)).Value = valorNumericoD(Me.txtPorcentajeUtilidad.Text)
+                            .Add(New SqlParameter("@TIPO_PAGO", SqlDbType.Char, 1)).Value = Me.cboTipoPago.SelectedValue.ToString
+                            .Add(New SqlParameter("@UTILIDAD_MAXIMA", SqlDbType.SmallInt)).Value = CInt(Me.txtUtilidadMaxima.Text)
+                            .Add(New SqlParameter("@CODIGOS_PRODUCTOS", SqlDbType.NVarChar, 2000)).Value = Me.TxtCodigosProductos.Text.ToUpper
+                            .Add(New SqlParameter("@ORDEN", SqlDbType.NVarChar, 30)).Value = Me.cboOrden.SelectedValue
                         End With
 
                         da.Fill(dt)
+                        dt.Columns.Remove("IDTRANS")
                     End Using
             End Select
 
@@ -748,25 +781,29 @@ Buscar:
             If Me.ModoAgrupado = enumModoAgrupado.PRODUCTOS Then
                 For Each dRow As DataRow In dt.Rows
                     Me.Grid.AddItem(dRow("CODIGO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("VENTA").ToString & Chr(9) & dRow("COSTO").ToString & Chr(9) &
-                                    dRow("UTILIDAD").ToString & Chr(9) & dRow("P_UTILIDAD").ToString & Chr(9) & dRow("PRECIO_UNITARIO").ToString & Chr(9) & dRow("COSTO_UNITARIO").ToString & Chr(9) & dRow("UTILIDAD_UNITARIA").ToString & Chr(9) &
+                                    dRow("UTILIDAD").ToString & Chr(9) & dRow("UTILIDAD_PORCENTAJE").ToString & Chr(9) & dRow("PRECIO_UNITARIO").ToString & Chr(9) & dRow("COSTO_UNITARIO").ToString & Chr(9) & dRow("UTILIDAD_UNITARIA").ToString & Chr(9) &
                                    valorNumericoD(dRow("PARTICIPACION_UTILIDAD").ToString) / valorNumericoD("100.00") & Chr(9) &
                                    valorNumericoD(dRow("ACUMULADO_UTILIDAD").ToString) / valorNumericoD("100.00") & Chr(9) &
                                    valorNumericoD(dRow("PARTICIPACION_VENTA").ToString) / valorNumericoD("100.00") & Chr(9) &
-                                   valorNumericoD(dRow("ACUMULADO_VENTA").ToString) / valorNumericoD("100.00") & Chr(9)) ' & dRow(14).ToString & Chr(9) &
-                    'dRow(15).ToString & Chr(9))
+                                   valorNumericoD(dRow("ACUMULADO_VENTA").ToString) / valorNumericoD("100.00") & Chr(9))
                 Next
             Else
                 For Each dRow As DataRow In dt.Rows
-                    Me.Grid.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & Chr(9) & dRow(2).ToString & Chr(9) & dRow(3).ToString & Chr(9) & dRow(4).ToString & Chr(9) &
-                                    dRow(5).ToString & Chr(9) & dRow(6).ToString & Chr(9) & dRow(7).ToString & Chr(9) & dRow(8).ToString & Chr(9))
+                    Me.Grid.AddItem(dRow("CODIGO_CLIENTE").ToString & Chr(9) & dRow("NOMBRE_CLIENTE").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("VENTA").ToString & Chr(9) & dRow("COSTO").ToString & Chr(9) &
+                                    dRow("UTILIDAD").ToString & Chr(9) & dRow("UTILIDAD_PORCENTAJE").ToString & Chr(9) &
+                                   valorNumericoD(dRow("PARTICIPACION_UTILIDAD").ToString) / valorNumericoD("100.00") & Chr(9) &
+                                   valorNumericoD(dRow("ACUMULADO_UTILIDAD").ToString) / valorNumericoD("100.00") & Chr(9) &
+                                   valorNumericoD(dRow("PARTICIPACION_VENTA").ToString) / valorNumericoD("100.00") & Chr(9) &
+                                   valorNumericoD(dRow("ACUMULADO_VENTA").ToString) / valorNumericoD("100.00") & Chr(9) &
+                                   dRow("NUMERO_PRODUCTOS").ToString)
                 Next
             End If
 
             If Me.Grid.Rows = 1 Then
                 Me.Grid.Rows = 2
-                Me.txtSum1.Text = FormatNumber(0)
-                Me.txtSum4.Text = FormatImporteContable(0)
-                Me.txtSum2.Text = FormatImporteContable(0)
+                Me.txtTotalCantidad.Text = FormatNumber(0)
+                Me.txtTotalVenta.Text = FormatImporteContable(0)
+                Me.txtTotalCosto.Text = FormatImporteContable(0)
             Else
                 Me.Totales()
             End If

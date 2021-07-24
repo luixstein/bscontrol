@@ -27,12 +27,12 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.lblTipoCambio = New System.Windows.Forms.Label()
         Me.txtTipoCambio = New System.Windows.Forms.TextBox()
         Me.cboTipoPago = New System.Windows.Forms.ComboBox()
+        Me.chkFiltrarPorUtilidad = New System.Windows.Forms.CheckBox()
         Me.LblTipoPago = New System.Windows.Forms.Label()
         Me.gFiltrarUtilidad = New System.Windows.Forms.GroupBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.rbMaximo = New System.Windows.Forms.RadioButton()
         Me.rbMinimo = New System.Windows.Forms.RadioButton()
-        Me.chkFiltrarPorUtilidad = New System.Windows.Forms.CheckBox()
         Me.txtPorcentajeUtilidad = New System.Windows.Forms.TextBox()
         Me.cboOrden = New System.Windows.Forms.ComboBox()
         Me.LblOrden = New System.Windows.Forms.Label()
@@ -55,14 +55,17 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker()
         Me.Grid = New FlexCell.Grid()
         Me.gbConsulta = New System.Windows.Forms.GroupBox()
-        Me.txtSum1 = New System.Windows.Forms.Label()
-        Me.txtSum4 = New System.Windows.Forms.Label()
-        Me.txtSum2 = New System.Windows.Forms.Label()
+        Me.txtTotalCantidad = New System.Windows.Forms.Label()
+        Me.txtTotalVenta = New System.Windows.Forms.Label()
+        Me.txtTotalCosto = New System.Windows.Forms.Label()
         Me.lblDisplayTotalPesos = New System.Windows.Forms.Label()
         Me.ToolStrip2 = New System.Windows.Forms.ToolStrip()
         Me.tsbConsultar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
+        Me.lblDisplayTotalCantidad = New System.Windows.Forms.Label()
+        Me.lblDisplayTotalVenta = New System.Windows.Forms.Label()
+        Me.lblDisplayTotalCosto = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.gFiltrarUtilidad.SuspendLayout()
         Me.gbConsulta.SuspendLayout()
@@ -111,6 +114,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.lblTipoCambio.Size = New System.Drawing.Size(86, 13)
         Me.lblTipoCambio.TabIndex = 397
         Me.lblTipoCambio.Text = "Tipo de cambio :"
+        Me.lblTipoCambio.Visible = False
         '
         'txtTipoCambio
         '
@@ -121,6 +125,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.txtTipoCambio.TabIndex = 396
         Me.txtTipoCambio.Text = "00.0000"
         Me.txtTipoCambio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtTipoCambio.Visible = False
         '
         'cboTipoPago
         '
@@ -130,6 +135,16 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.cboTipoPago.Name = "cboTipoPago"
         Me.cboTipoPago.Size = New System.Drawing.Size(89, 21)
         Me.cboTipoPago.TabIndex = 7
+        '
+        'chkFiltrarPorUtilidad
+        '
+        Me.chkFiltrarPorUtilidad.AutoSize = True
+        Me.chkFiltrarPorUtilidad.Location = New System.Drawing.Point(444, 13)
+        Me.chkFiltrarPorUtilidad.Name = "chkFiltrarPorUtilidad"
+        Me.chkFiltrarPorUtilidad.Size = New System.Drawing.Size(125, 17)
+        Me.chkFiltrarPorUtilidad.TabIndex = 398
+        Me.chkFiltrarPorUtilidad.Text = "Filtrar por % utilidad ?"
+        Me.chkFiltrarPorUtilidad.UseVisualStyleBackColor = True
         '
         'LblTipoPago
         '
@@ -185,16 +200,6 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.rbMinimo.TabStop = True
         Me.rbMinimo.Text = "Mínimo"
         Me.rbMinimo.UseVisualStyleBackColor = True
-        '
-        'chkFiltrarPorUtilidad
-        '
-        Me.chkFiltrarPorUtilidad.AutoSize = True
-        Me.chkFiltrarPorUtilidad.Location = New System.Drawing.Point(444, 13)
-        Me.chkFiltrarPorUtilidad.Name = "chkFiltrarPorUtilidad"
-        Me.chkFiltrarPorUtilidad.Size = New System.Drawing.Size(125, 17)
-        Me.chkFiltrarPorUtilidad.TabIndex = 398
-        Me.chkFiltrarPorUtilidad.Text = "Filtrar por % utilidad ?"
-        Me.chkFiltrarPorUtilidad.UseVisualStyleBackColor = True
         '
         'txtPorcentajeUtilidad
         '
@@ -398,56 +403,59 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         'gbConsulta
         '
-        Me.gbConsulta.Controls.Add(Me.txtSum1)
-        Me.gbConsulta.Controls.Add(Me.txtSum4)
-        Me.gbConsulta.Controls.Add(Me.txtSum2)
+        Me.gbConsulta.Controls.Add(Me.lblDisplayTotalCosto)
+        Me.gbConsulta.Controls.Add(Me.lblDisplayTotalVenta)
+        Me.gbConsulta.Controls.Add(Me.lblDisplayTotalCantidad)
+        Me.gbConsulta.Controls.Add(Me.txtTotalCantidad)
+        Me.gbConsulta.Controls.Add(Me.txtTotalVenta)
+        Me.gbConsulta.Controls.Add(Me.txtTotalCosto)
         Me.gbConsulta.Controls.Add(Me.lblDisplayTotalPesos)
         Me.gbConsulta.Controls.Add(Me.Grid)
         Me.gbConsulta.Location = New System.Drawing.Point(12, 150)
         Me.gbConsulta.Name = "gbConsulta"
-        Me.gbConsulta.Size = New System.Drawing.Size(1257, 489)
+        Me.gbConsulta.Size = New System.Drawing.Size(1257, 516)
         Me.gbConsulta.TabIndex = 224
         Me.gbConsulta.TabStop = False
         Me.gbConsulta.Text = "Consulta"
         '
-        'txtSum1
+        'txtTotalCantidad
         '
-        Me.txtSum1.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.txtSum1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSum1.Location = New System.Drawing.Point(420, 462)
-        Me.txtSum1.Name = "txtSum1"
-        Me.txtSum1.Size = New System.Drawing.Size(100, 20)
-        Me.txtSum1.TabIndex = 236
-        Me.txtSum1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.txtTotalCantidad.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.txtTotalCantidad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtTotalCantidad.Location = New System.Drawing.Point(420, 462)
+        Me.txtTotalCantidad.Name = "txtTotalCantidad"
+        Me.txtTotalCantidad.Size = New System.Drawing.Size(100, 20)
+        Me.txtTotalCantidad.TabIndex = 236
+        Me.txtTotalCantidad.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'txtSum4
+        'txtTotalVenta
         '
-        Me.txtSum4.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.txtSum4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSum4.Location = New System.Drawing.Point(526, 462)
-        Me.txtSum4.Name = "txtSum4"
-        Me.txtSum4.Size = New System.Drawing.Size(100, 20)
-        Me.txtSum4.TabIndex = 235
-        Me.txtSum4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.txtTotalVenta.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.txtTotalVenta.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtTotalVenta.Location = New System.Drawing.Point(526, 462)
+        Me.txtTotalVenta.Name = "txtTotalVenta"
+        Me.txtTotalVenta.Size = New System.Drawing.Size(100, 20)
+        Me.txtTotalVenta.TabIndex = 235
+        Me.txtTotalVenta.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'txtSum2
+        'txtTotalCosto
         '
-        Me.txtSum2.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.txtSum2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSum2.Location = New System.Drawing.Point(632, 462)
-        Me.txtSum2.Name = "txtSum2"
-        Me.txtSum2.Size = New System.Drawing.Size(93, 20)
-        Me.txtSum2.TabIndex = 233
-        Me.txtSum2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.txtTotalCosto.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.txtTotalCosto.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtTotalCosto.Location = New System.Drawing.Point(632, 462)
+        Me.txtTotalCosto.Name = "txtTotalCosto"
+        Me.txtTotalCosto.Size = New System.Drawing.Size(93, 20)
+        Me.txtTotalCosto.TabIndex = 233
+        Me.txtTotalCosto.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'lblDisplayTotalPesos
         '
         Me.lblDisplayTotalPesos.AutoSize = True
         Me.lblDisplayTotalPesos.Location = New System.Drawing.Point(282, 466)
         Me.lblDisplayTotalPesos.Name = "lblDisplayTotalPesos"
-        Me.lblDisplayTotalPesos.Size = New System.Drawing.Size(68, 13)
+        Me.lblDisplayTotalPesos.Size = New System.Drawing.Size(48, 13)
         Me.lblDisplayTotalPesos.TabIndex = 230
-        Me.lblDisplayTotalPesos.Text = "Total pesos :"
+        Me.lblDisplayTotalPesos.Text = "Totales :"
         '
         'ToolStrip2
         '
@@ -483,11 +491,39 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
         Me.tsbSalir.Text = "&Salir"
         '
+        'lblDisplayTotalCantidad
+        '
+        Me.lblDisplayTotalCantidad.AutoSize = True
+        Me.lblDisplayTotalCantidad.Location = New System.Drawing.Point(471, 482)
+        Me.lblDisplayTotalCantidad.Name = "lblDisplayTotalCantidad"
+        Me.lblDisplayTotalCantidad.Size = New System.Drawing.Size(49, 13)
+        Me.lblDisplayTotalCantidad.TabIndex = 237
+        Me.lblDisplayTotalCantidad.Text = "Cantidad"
+        '
+        'lblDisplayTotalVenta
+        '
+        Me.lblDisplayTotalVenta.AutoSize = True
+        Me.lblDisplayTotalVenta.Location = New System.Drawing.Point(591, 483)
+        Me.lblDisplayTotalVenta.Name = "lblDisplayTotalVenta"
+        Me.lblDisplayTotalVenta.Size = New System.Drawing.Size(35, 13)
+        Me.lblDisplayTotalVenta.TabIndex = 238
+        Me.lblDisplayTotalVenta.Text = "Venta"
+        '
+        'lblDisplayTotalCosto
+        '
+        Me.lblDisplayTotalCosto.AutoSize = True
+        Me.lblDisplayTotalCosto.Location = New System.Drawing.Point(691, 483)
+        Me.lblDisplayTotalCosto.Name = "lblDisplayTotalCosto"
+        Me.lblDisplayTotalCosto.Size = New System.Drawing.Size(34, 13)
+        Me.lblDisplayTotalCosto.TabIndex = 239
+        Me.lblDisplayTotalCosto.Text = "Costo"
+        Me.lblDisplayTotalCosto.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
         'Rpt_Ventas_TopTenProductos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1274, 644)
+        Me.ClientSize = New System.Drawing.Size(1274, 678)
         Me.Controls.Add(Me.gbConsulta)
         Me.Controls.Add(Me.ToolStrip2)
         Me.Controls.Add(Me.GroupBox1)
@@ -524,9 +560,9 @@ Partial Class Rpt_Ventas_TopTenProductos
     Friend WithEvents tsbSalir As System.Windows.Forms.ToolStripButton
     Friend WithEvents CboZona As System.Windows.Forms.ComboBox
     Friend WithEvents lblDisplayZona As System.Windows.Forms.Label
-    Friend WithEvents txtSum4 As System.Windows.Forms.Label
-    Friend WithEvents txtSum2 As System.Windows.Forms.Label
-    Friend WithEvents txtSum1 As System.Windows.Forms.Label
+    Friend WithEvents txtTotalVenta As System.Windows.Forms.Label
+    Friend WithEvents txtTotalCosto As System.Windows.Forms.Label
+    Friend WithEvents txtTotalCantidad As System.Windows.Forms.Label
     Friend WithEvents CboDocumento As System.Windows.Forms.ComboBox
     Friend WithEvents LblDocumento As System.Windows.Forms.Label
     Friend WithEvents txtPorcentajeUtilidad As System.Windows.Forms.TextBox
@@ -548,4 +584,7 @@ Partial Class Rpt_Ventas_TopTenProductos
     Friend WithEvents rbMaximo As RadioButton
     Friend WithEvents rbMinimo As RadioButton
     Friend WithEvents chkFiltrarPorUtilidad As CheckBox
+    Friend WithEvents lblDisplayTotalCosto As Label
+    Friend WithEvents lblDisplayTotalVenta As Label
+    Friend WithEvents lblDisplayTotalCantidad As Label
 End Class
