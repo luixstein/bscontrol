@@ -364,6 +364,11 @@ Buscar:
 
             Me.CboZona.SelectedValue = "T"
 
+            Me.txtTotalCantidad.Text = FormatNumber(0, 0)
+            Me.txtTotalVenta.Text = FormatImporteContable(0)
+            Me.txtTotalCosto.Text = FormatImporteContable(0)
+            Me.txtTotalUtilidad.Text = FormatImporteContable(0)
+
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
         End Try
@@ -648,10 +653,12 @@ Buscar:
                     Me.txtTotalCantidad.Text = FormatNumber(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyCantidad)), 0)
                     Me.txtTotalVenta.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyVenta)))
                     Me.txtTotalCosto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyCosto)))
+                    Me.txtTotalUtilidad.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyUtilidad)))
                 Case enumModoAgrupado.CLIENTES
                     Me.txtTotalCantidad.Text = FormatNumber(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyCtesCantidad)), 0)
                     Me.txtTotalVenta.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyCtesVenta)))
                     Me.txtTotalCosto.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyCtesCosto)))
+                    Me.txtTotalUtilidad.Text = FormatImporteContable(FG_Grid_SumaCol(Me.Grid, CShort(Me.igyCtesUtilidad)))
             End Select
 
         Catch ex As Exception
@@ -838,18 +845,19 @@ Buscar:
 
             Select Case Me.ModoAgrupado
                 Case enumModoAgrupado.PRODUCTOS
-                    FormatoDeReporte = "RPT_MP_Q_VENTAS_TOP_PRODUCTOS"
+                    FormatoDeReporte = "RPT_MP_Q_TOPTEN_PRODUCTOS" ' "RPT_MP_Q_VENTAS_TOP_PRODUCTOS"
 
                     oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
+
                     Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.TxtCliente.Text)
                     Rpt.SetParameterValue("@CODIGO_DOCUMENTO", Me.CboDocumento.SelectedValue)
                     Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
                     Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
                     Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue.ToString())
                     Rpt.SetParameterValue("@DESCRIPCION", Me.TxtDescripcion.Text.ToUpper)
-                    Rpt.SetParameterValue("@FILRAR_POR_UTILIDAD", Convert.ToInt32(Me.chkFiltrarPorUtilidad.Checked).ToString)
-                    Rpt.SetParameterValue("@TIPO_UTILIDAD", IIf(Me.rbMinimo.Checked = True, "MINIMA", "MAXIMO").ToString)
-                    Rpt.SetParameterValue("@PORCENTAJE_UTILIDAD", Me.txtPorcentajeUtilidad.Text)
+                    Rpt.SetParameterValue("@FILTRAR_POR_UTILIDAD", Convert.ToInt32(Me.chkFiltrarPorUtilidad.Checked).ToString)
+                    Rpt.SetParameterValue("@TIPO_UTILIDAD", IIf(Me.rbMinimo.Checked = True, "MINIMA", "MAXIMA").ToString)
+                    Rpt.SetParameterValue("@PORCENTAJE_UTILIDAD", valorNumericoD(Me.txtPorcentajeUtilidad.Text))
                     Rpt.SetParameterValue("@TIPO_PAGO", Me.cboTipoPago.SelectedValue.ToString)
                     Rpt.SetParameterValue("@UTILIDAD_MAXIMA", CInt(Me.txtUtilidadMaxima.Text))
                     Rpt.SetParameterValue("@CODIGOS_PRODUCTOS", Me.TxtCodigosProductos.Text.ToUpper)
@@ -859,12 +867,20 @@ Buscar:
                     FormatoDeReporte = "RPT_MP_Q_TOPTEN_CLIENTES"
 
                     oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
-                    Rpt.SetParameterValue("@FECHA1_DIA", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
-                    Rpt.SetParameterValue("@FECHA2_DIA", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
-                    Rpt.SetParameterValue("@UNIDAD_VENTA", Me._TopTenConsultaExteriorPresentacion.ToString)
+
                     Rpt.SetParameterValue("@CODIGO_CLIENTE", Me.TxtCliente.Text)
-                    Rpt.SetParameterValue("@TIPO_CAMBIO", valorNumerico(Me.txtTipoCambio.Text))
-                    Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue)
+                    Rpt.SetParameterValue("@CODIGO_DOCUMENTO", Me.CboDocumento.SelectedValue)
+                    Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
+                    Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
+                    Rpt.SetParameterValue("@CODIGO_ZONA", Me.CboZona.SelectedValue.ToString())
+                    Rpt.SetParameterValue("@DESCRIPCION", Me.TxtDescripcion.Text.ToUpper)
+                    Rpt.SetParameterValue("@FILTRAR_POR_UTILIDAD", Convert.ToInt32(Me.chkFiltrarPorUtilidad.Checked).ToString)
+                    Rpt.SetParameterValue("@TIPO_UTILIDAD", IIf(Me.rbMinimo.Checked = True, "MINIMA", "MAXIMO").ToString)
+                    Rpt.SetParameterValue("@PORCENTAJE_UTILIDAD", Me.txtPorcentajeUtilidad.Text)
+                    Rpt.SetParameterValue("@TIPO_PAGO", Me.cboTipoPago.SelectedValue.ToString)
+                    Rpt.SetParameterValue("@UTILIDAD_MAXIMA", CInt(Me.txtUtilidadMaxima.Text))
+                    Rpt.SetParameterValue("@CODIGOS_PRODUCTOS", Me.TxtCodigosProductos.Text.ToUpper)
+                    Rpt.SetParameterValue("@ORDEN", Me.cboOrden.SelectedValue)
             End Select
 
             Dim frm As New Reporte(Rpt)

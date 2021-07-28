@@ -55,6 +55,11 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker()
         Me.Grid = New FlexCell.Grid()
         Me.gbConsulta = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayTotalUtilidad = New System.Windows.Forms.Label()
+        Me.txtTotalUtilidad = New System.Windows.Forms.Label()
+        Me.lblDisplayTotalCosto = New System.Windows.Forms.Label()
+        Me.lblDisplayTotalVenta = New System.Windows.Forms.Label()
+        Me.lblDisplayTotalCantidad = New System.Windows.Forms.Label()
         Me.txtTotalCantidad = New System.Windows.Forms.Label()
         Me.txtTotalVenta = New System.Windows.Forms.Label()
         Me.txtTotalCosto = New System.Windows.Forms.Label()
@@ -63,9 +68,6 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.tsbConsultar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
-        Me.lblDisplayTotalCantidad = New System.Windows.Forms.Label()
-        Me.lblDisplayTotalVenta = New System.Windows.Forms.Label()
-        Me.lblDisplayTotalCosto = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.gFiltrarUtilidad.SuspendLayout()
         Me.gbConsulta.SuspendLayout()
@@ -251,7 +253,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.txtUtilidadMaxima.Name = "txtUtilidadMaxima"
         Me.txtUtilidadMaxima.Size = New System.Drawing.Size(49, 20)
         Me.txtUtilidadMaxima.TabIndex = 6
-        Me.txtUtilidadMaxima.Text = "100"
+        Me.txtUtilidadMaxima.Text = "101"
         Me.txtUtilidadMaxima.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblDisplayUtilidadMaxima
@@ -403,6 +405,8 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         'gbConsulta
         '
+        Me.gbConsulta.Controls.Add(Me.lblDisplayTotalUtilidad)
+        Me.gbConsulta.Controls.Add(Me.txtTotalUtilidad)
         Me.gbConsulta.Controls.Add(Me.lblDisplayTotalCosto)
         Me.gbConsulta.Controls.Add(Me.lblDisplayTotalVenta)
         Me.gbConsulta.Controls.Add(Me.lblDisplayTotalCantidad)
@@ -417,6 +421,54 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.gbConsulta.TabIndex = 224
         Me.gbConsulta.TabStop = False
         Me.gbConsulta.Text = "Consulta"
+        '
+        'lblDisplayTotalUtilidad
+        '
+        Me.lblDisplayTotalUtilidad.AutoSize = True
+        Me.lblDisplayTotalUtilidad.Location = New System.Drawing.Point(782, 483)
+        Me.lblDisplayTotalUtilidad.Name = "lblDisplayTotalUtilidad"
+        Me.lblDisplayTotalUtilidad.Size = New System.Drawing.Size(42, 13)
+        Me.lblDisplayTotalUtilidad.TabIndex = 241
+        Me.lblDisplayTotalUtilidad.Text = "Utilidad"
+        Me.lblDisplayTotalUtilidad.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'txtTotalUtilidad
+        '
+        Me.txtTotalUtilidad.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.txtTotalUtilidad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtTotalUtilidad.Location = New System.Drawing.Point(731, 462)
+        Me.txtTotalUtilidad.Name = "txtTotalUtilidad"
+        Me.txtTotalUtilidad.Size = New System.Drawing.Size(93, 20)
+        Me.txtTotalUtilidad.TabIndex = 240
+        Me.txtTotalUtilidad.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'lblDisplayTotalCosto
+        '
+        Me.lblDisplayTotalCosto.AutoSize = True
+        Me.lblDisplayTotalCosto.Location = New System.Drawing.Point(691, 483)
+        Me.lblDisplayTotalCosto.Name = "lblDisplayTotalCosto"
+        Me.lblDisplayTotalCosto.Size = New System.Drawing.Size(34, 13)
+        Me.lblDisplayTotalCosto.TabIndex = 239
+        Me.lblDisplayTotalCosto.Text = "Costo"
+        Me.lblDisplayTotalCosto.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'lblDisplayTotalVenta
+        '
+        Me.lblDisplayTotalVenta.AutoSize = True
+        Me.lblDisplayTotalVenta.Location = New System.Drawing.Point(591, 483)
+        Me.lblDisplayTotalVenta.Name = "lblDisplayTotalVenta"
+        Me.lblDisplayTotalVenta.Size = New System.Drawing.Size(35, 13)
+        Me.lblDisplayTotalVenta.TabIndex = 238
+        Me.lblDisplayTotalVenta.Text = "Venta"
+        '
+        'lblDisplayTotalCantidad
+        '
+        Me.lblDisplayTotalCantidad.AutoSize = True
+        Me.lblDisplayTotalCantidad.Location = New System.Drawing.Point(471, 482)
+        Me.lblDisplayTotalCantidad.Name = "lblDisplayTotalCantidad"
+        Me.lblDisplayTotalCantidad.Size = New System.Drawing.Size(49, 13)
+        Me.lblDisplayTotalCantidad.TabIndex = 237
+        Me.lblDisplayTotalCantidad.Text = "Cantidad"
         '
         'txtTotalCantidad
         '
@@ -491,34 +543,6 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
         Me.tsbSalir.Text = "&Salir"
         '
-        'lblDisplayTotalCantidad
-        '
-        Me.lblDisplayTotalCantidad.AutoSize = True
-        Me.lblDisplayTotalCantidad.Location = New System.Drawing.Point(471, 482)
-        Me.lblDisplayTotalCantidad.Name = "lblDisplayTotalCantidad"
-        Me.lblDisplayTotalCantidad.Size = New System.Drawing.Size(49, 13)
-        Me.lblDisplayTotalCantidad.TabIndex = 237
-        Me.lblDisplayTotalCantidad.Text = "Cantidad"
-        '
-        'lblDisplayTotalVenta
-        '
-        Me.lblDisplayTotalVenta.AutoSize = True
-        Me.lblDisplayTotalVenta.Location = New System.Drawing.Point(591, 483)
-        Me.lblDisplayTotalVenta.Name = "lblDisplayTotalVenta"
-        Me.lblDisplayTotalVenta.Size = New System.Drawing.Size(35, 13)
-        Me.lblDisplayTotalVenta.TabIndex = 238
-        Me.lblDisplayTotalVenta.Text = "Venta"
-        '
-        'lblDisplayTotalCosto
-        '
-        Me.lblDisplayTotalCosto.AutoSize = True
-        Me.lblDisplayTotalCosto.Location = New System.Drawing.Point(691, 483)
-        Me.lblDisplayTotalCosto.Name = "lblDisplayTotalCosto"
-        Me.lblDisplayTotalCosto.Size = New System.Drawing.Size(34, 13)
-        Me.lblDisplayTotalCosto.TabIndex = 239
-        Me.lblDisplayTotalCosto.Text = "Costo"
-        Me.lblDisplayTotalCosto.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
         'Rpt_Ventas_TopTenProductos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -587,4 +611,6 @@ Partial Class Rpt_Ventas_TopTenProductos
     Friend WithEvents lblDisplayTotalCosto As Label
     Friend WithEvents lblDisplayTotalVenta As Label
     Friend WithEvents lblDisplayTotalCantidad As Label
+    Friend WithEvents lblDisplayTotalUtilidad As Label
+    Friend WithEvents txtTotalUtilidad As Label
 End Class
