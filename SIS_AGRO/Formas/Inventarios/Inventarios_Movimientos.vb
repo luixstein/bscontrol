@@ -563,6 +563,7 @@ Buscar:
             Me.Totales()
         End If
     End Sub
+
 #Region "Eventos Genericos"
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles DtpFecha.KeyPress, TxtConcepto.KeyPress, TxtFolio.KeyPress, TxtFolioReferencia.KeyPress, txtFolioEmbarque.KeyPress,
         txtFolioOrdenCompra.KeyPress
