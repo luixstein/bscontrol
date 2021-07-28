@@ -876,7 +876,7 @@ Buscar:
                     Rpt.SetParameterValue("@DESCRIPCION", Me.TxtDescripcion.Text.ToUpper)
                     Rpt.SetParameterValue("@FILTRAR_POR_UTILIDAD", Convert.ToInt32(Me.chkFiltrarPorUtilidad.Checked).ToString)
                     Rpt.SetParameterValue("@TIPO_UTILIDAD", IIf(Me.rbMinimo.Checked = True, "MINIMA", "MAXIMO").ToString)
-                    Rpt.SetParameterValue("@PORCENTAJE_UTILIDAD", Me.txtPorcentajeUtilidad.Text)
+                    Rpt.SetParameterValue("@PORCENTAJE_UTILIDAD", valorNumericoD(Me.txtPorcentajeUtilidad.Text))
                     Rpt.SetParameterValue("@TIPO_PAGO", Me.cboTipoPago.SelectedValue.ToString)
                     Rpt.SetParameterValue("@UTILIDAD_MAXIMA", CInt(Me.txtUtilidadMaxima.Text))
                     Rpt.SetParameterValue("@CODIGOS_PRODUCTOS", Me.TxtCodigosProductos.Text.ToUpper)
