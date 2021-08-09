@@ -178,7 +178,7 @@ Partial Class Frm_CXP_Gastos
         '
         Me.TxtCodigoArticulo.Location = New System.Drawing.Point(1047, 47)
         Me.TxtCodigoArticulo.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtCodigoArticulo.MaxLength = 4
+        Me.TxtCodigoArticulo.MaxLength = 16
         Me.TxtCodigoArticulo.Name = "TxtCodigoArticulo"
         Me.TxtCodigoArticulo.Size = New System.Drawing.Size(86, 22)
         Me.TxtCodigoArticulo.TabIndex = 387

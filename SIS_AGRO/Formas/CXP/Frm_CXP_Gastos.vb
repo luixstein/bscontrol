@@ -1320,6 +1320,7 @@ Buscar:
                     Me.TxtCodigoAlmacen.Enabled = True
                     Me.TxtCodigoProveedor.Enabled = True
                     Me.cboTemporada.Enabled = True
+                    Me.TxtCodigoArticulo.Enabled = True
                     Me.lblEstatus.Text = "NUEVO"
 
                     Me.tsslElaboro.Visible = False : Me.tsslElaboro.Text = ""
@@ -1347,6 +1348,7 @@ Buscar:
                     Me.btnActualizaConcepto.Visible = False
                     Me.btnGrabaDetalleVenta.Enabled = True
                     Me.cboTemporada.Enabled = False
+                    Me.TxtCodigoArticulo.Enabled = False
 
                     'Me.GridCuentas.Locked = False
                     'Me.GridCuentas.Column(Me.iGyCtasNombreCentroCosto).Locked = True
