@@ -4614,6 +4614,12 @@ buscaCentrosCostos:
                 Me.cboVendedor.SelectedValue = Me.oCliente.CODIGO_VENDEDOR
             End If
 
+            If Empresa_Sistema.CODIGO_ALMACEN_POR_CLIENTE AndAlso txtLEN(Me.oCliente.CODIGO_ALMACEN) Then
+                Me.CboAlmacen.SelectedValue = Me.oCliente.CODIGO_ALMACEN
+            Else
+                Me.CboAlmacen.SelectedValue = Plaza.CODIGO_ALMACEN_PRINCIPAL
+            End If
+
             Dim bEstableceFormaPago As Boolean
 
             If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
