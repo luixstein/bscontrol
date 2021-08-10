@@ -2693,46 +2693,49 @@ CANCELAR:
                     Return False
                 End If
 
-                Select Case dt(0)("CODIGO_MONEDA_SAT").ToString
-                    Case "MXN"
-                        If valorNumericoD(dt(0)("TOTAL_MXN").ToString) > valorNumericoD(Me.lblTotal.Text) Then
-                            MsgBox("El total MXN de la factura de anticipo de ser menor o igual que el total de la factura final." + vbCrLf +
-                                       "Anticipo.Total=" + FormatImporteContable(valorNumericoD(dt(0)("TOTAL_MXN").ToString)) + " MXN" + vbCrLf +
-                                       "FacturaFinal.Total=" + FormatImporteContable(valorNumericoD(Me.lblTotal.Text)) + " MXN" + vbCrLf, MsgBoxStyle.Exclamation, sProcedure)
-                            Return False
-                        End If
-                    Case "USD"
-                        If valorNumericoD(dt(0)("TOTAL_USD").ToString) > valorNumericoD(Me.lblTotal_USD.Text) Then
-                            MsgBox("El total USD de la factura de anticipo de ser menor o igual que el total de la factura final." + vbCrLf +
-                                       "Anticipo.Total=" + FormatImporteContable(valorNumericoD(dt(0)("TOTAL_USD").ToString)) + " USD" + vbCrLf +
-                                       "FacturaFinal.Total=" + FormatImporteContable(valorNumericoD(Me.lblTotal_USD.Text)) + " USD" + vbCrLf, MsgBoxStyle.Exclamation, sProcedure)
-                            Return False
-                        End If
-                End Select
+                'Select Case dt(0)("CODIGO_MONEDA_SAT").ToString
+                '    Case "MXN"
+                '        If valorNumericoD(dt(0)("TOTAL_MXN").ToString) > valorNumericoD(Me.lblTotal.Text) Then
+                '            MsgBox("El total MXN de la factura de anticipo de ser menor o igual que el total de la factura final." + vbCrLf +
+                '                       "Anticipo.Total=" + FormatImporteContable(valorNumericoD(dt(0)("TOTAL_MXN").ToString)) + " MXN" + vbCrLf +
+                '                       "FacturaFinal.Total=" + FormatImporteContable(valorNumericoD(Me.lblTotal.Text)) + " MXN" + vbCrLf, MsgBoxStyle.Exclamation, sProcedure)
+                '            Return False
+                '        End If
+                '    Case "USD"
+                '        If valorNumericoD(dt(0)("TOTAL_USD").ToString) > valorNumericoD(Me.lblTotal_USD.Text) Then
+                '            MsgBox("El total USD de la factura de anticipo de ser menor o igual que el total de la factura final." + vbCrLf +
+                '                       "Anticipo.Total=" + FormatImporteContable(valorNumericoD(dt(0)("TOTAL_USD").ToString)) + " USD" + vbCrLf +
+                '                       "FacturaFinal.Total=" + FormatImporteContable(valorNumericoD(Me.lblTotal_USD.Text)) + " USD" + vbCrLf, MsgBoxStyle.Exclamation, sProcedure)
+                '            Return False
+                '        End If
+                'End Select
 
-                If valorNumericoD(dt(0)("IMPUESTO").ToString) = 0 And valorNumericoD(Me.lblImpuesto.Text) > 0 Then
-                    MsgBox("La factura de anticipo no tiene IVA y esta factura si tiene, de momento esto no es posible.", MsgBoxStyle.Exclamation, sProcedure)
-                    Return False
-                ElseIf valorNumericoD(dt(0)("IMPUESTO").ToString) > 0 Then
-                    If valorNumericoD(Me.lblImpuesto.Text) = 0 Then
-                        MsgBox("La factura de anticipo si tiene IVA y esta factura no tiene, de momento esto no es posible.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
+                'If valorNumericoD(dt(0)("IMPUESTO").ToString) = 0 And valorNumericoD(Me.lblImpuesto.Text) > 0 Then
+                '    MsgBox("La factura de anticipo no tiene IVA y esta factura si tiene, de momento esto no es posible.", MsgBoxStyle.Exclamation, sProcedure)
+                '    Return False
+                'ElseIf valorNumericoD(dt(0)("IMPUESTO").ToString) > 0 Then
+                '    If valorNumericoD(Me.lblImpuesto.Text) = 0 Then
+                '        MsgBox("La factura de anticipo si tiene IVA y esta factura no tiene, de momento esto no es posible.", MsgBoxStyle.Exclamation, sProcedure)
+                '        Return False
+                '    End If
 
-                    If valorNumericoD(dt(0)("IMPUESTO").ToString) > valorNumericoD(Me.lblImpuesto.Text) Then
-                        MsgBox("La factura de anticipo tiene un IVA mayor que esta factura, de momento esto no es posible.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
-                End If
+                '    If valorNumericoD(dt(0)("IMPUESTO").ToString) > valorNumericoD(Me.lblImpuesto.Text) Then
+                '        MsgBox("La factura de anticipo tiene un IVA mayor que esta factura, de momento esto no es posible.", MsgBoxStyle.Exclamation, sProcedure)
+                '        Return False
+                '    End If
+                'End If
 
-                sSQL = "SELECT VTA.FOLIO_VENTA FROM VENTAS_CFDI_RELACIONADOS R " +
-                            "INNER JOIN VENTA_GLOBAL VTA ON(R.FOLIO_VENTA=VTA.FOLIO_VENTA) " +
-                            "WHERE R.FOLIO_VENTA_RELACIONADA='" + sFolioVentaAnticipo + "' " +
-                            "AND VTA.ESTATUS_VENTA='A' "
+                'sSQL = "SELECT VTA.FOLIO_VENTA FROM VENTAS_CFDI_RELACIONADOS R " +
+                '            "INNER JOIN VENTA_GLOBAL VTA ON(R.FOLIO_VENTA=VTA.FOLIO_VENTA) " +
+                '            "WHERE R.FOLIO_VENTA_RELACIONADA='" + sFolioVentaAnticipo + "' " +
+                '            "AND VTA.ESTATUS_VENTA='A' AND SALDO_ANTICIPO_DISPONIBLE=0"
+
+                sSQL = "SELECT FOLIO_VENTA FROM VENTA_GLOBAL WHERE FOLIO_VENTA='" + sFolioVentaAnticipo + "' AND SALDO_ANTICIPO_DISPONIBLE=0"
 
                 Dim oFind As New Class_find(sSQL)
                 If txtLEN(oFind.Result1) = True Then
-                    MsgBox("La factura de anticipo " + sFolioVentaAnticipo + " ya fue utilizada en la factura " + oFind.Result1 + " que actualmente esta activa, no puede volver a relacionarse el mismo anticipo.", MsgBoxStyle.Exclamation, sProcedure)
+                    'MsgBox("La factura de anticipo " + sFolioVentaAnticipo + " ya fue utilizada en la factura " + oFind.Result1 + " que actualmente esta activa, no puede volver a relacionarse el mismo anticipo.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("La factura de anticipo " + sFolioVentaAnticipo + " ya no tiene saldo disponible para aplicar.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
 
