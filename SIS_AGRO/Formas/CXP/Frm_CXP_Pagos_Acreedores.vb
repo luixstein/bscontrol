@@ -2080,13 +2080,16 @@ enter:
         Dim bResultado As Boolean = False
         Dim dTabla As DataTable
         Dim oCompras As New Class_Compras_Global, i As Integer = 0, dTipoCambioPago As Decimal = 0
+        Dim bTieneComprasUSD As Boolean
 
         Try
             dTipoCambioPago = valorNumericoD(Me.txtTipoCambio.Text)
 
+            bTieneComprasUSD = oBancosCXP.SiTieneComprasProveedorConSaldoUSD(Me.TxtCodigoProveedor.Text)
+
             If Me.cboMonedaPago.Text = "PESOS" Then
                 'Si el pago es en MXN y hay facturas USD con saldo, se necesita el tipo de cambio(aunque la cuenta bancaria este en MXN) para calcular un saldoMXN a tp pago.
-                If oBancosCXP.SiTieneComprasProveedorConSaldoUSD(Me.TxtCodigoProveedor.Text) = True Then
+                If bTieneComprasUSD = True Then
                     'If valorNumericoD(Me.txtTipoCambio.Text) <= 10 Then 'Ponemos 10 pesos previendo este configurado uno incorrecto.
                     If dTipoCambioPago <= 0 Or dTipoCambioPago > 30 Then
                         MsgBox("Tipo de cambio del pago incorrecto, se necesita porque es un pago en MXN y hay facturas en USD.", vbExclamation, sProcedure)
@@ -2098,7 +2101,7 @@ enter:
                 End If
             End If
 
-            dTabla = oBancosCXP.CargaComprasProveedorConSaldo(Me.TxtCodigoProveedor.Text, valorNumericoD(Me.txtTipoCambio.Text))
+            dTabla = oBancosCXP.CargaComprasProveedorConSaldo(Me.TxtCodigoProveedor.Text, IIf(bTieneComprasUSD, valorNumericoD(Me.txtTipoCambio.Text), 1))
 
             Me.InicializaGridCompras()
             Me.VisibilidadColumnasGridCompras()  'Al inicializarse con el método anterior se pierde la visibilidad de las columnas según la moneda de pago
