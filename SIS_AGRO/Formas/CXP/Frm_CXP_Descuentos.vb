@@ -861,6 +861,10 @@ Public Class Frm_CXP_Descuentos
                         oCxpAfectaDocumentos.TIPO_DE_CAMBIO = valorNumerico(Me.txtTipoCambio.Text)
                         oCxpAfectaDocumentos.CODIGO_USUARIO_GRABO = Usuario.Codigo_Usuario
                         'oCxpAfectaDocumentos.CODIGO_MODULO = "CXP"
+                        If Me.ckbDolares.Checked Then
+                            oCxpAfectaDocumentos.TOTAL_USD = valorNumerico(Me.Grid.Cell(i, Me.iGyDescuento).Text) / valorNumerico(Me.txtTipoCambio.Text)
+                        End If
+
                         Grabar = oCxpAfectaDocumentos.AfectaDocumentos()
 
                         oDescuentosCXP.InsertaDescuentoDetalle(oCxpAfectaDocumentos.FOLIO_CXP.ToString)
@@ -1350,15 +1354,17 @@ Public Class Frm_CXP_Descuentos
                 Me.TxtCodigoProveedor.Text = oDescuentosCXP.CODIGO_CLIENTE
                 Me.LblProveedor.Text = oDescuentosCXP.NOMBRE_CLIENTE
                 Me.LblPoliza.Text = oDescuentosCXP.FOLIO_POLIZA.ToString
+
+                Me.TxtSubTotal.Text = FormatImporteContable(oDescuentosCXP.SUBTOTAL)
+                Me.TxtImpuesto.Text = FormatImporteContable(oDescuentosCXP.IVA)
+                'Me.TxtTotal.Text = oDescuentosCXP.TOTAL.ToString
+                Me.TxtTotal.Text = FormatImporteContable(oDescuentosCXP.TOTAL)
+
                 If oDescuentosCXP.TIPO_DE_CAMBIO > 0 Then
                     Me.ckbDolares.Checked = True
                     Me.txtTipoCambio.Text = oDescuentosCXP.TIPO_DE_CAMBIO.ToString
                     Me.CalculaImporteDolares()
                 End If
-                Me.TxtSubTotal.Text = FormatImporteContable(oDescuentosCXP.SUBTOTAL)
-                Me.TxtImpuesto.Text = FormatImporteContable(oDescuentosCXP.IVA)
-                'Me.TxtTotal.Text = oDescuentosCXP.TOTAL.ToString
-                Me.TxtTotal.Text = FormatImporteContable(oDescuentosCXP.TOTAL)
 
                 Me.tssElaboro.Text = "Elaboró : " & Me.oDescuentosCXP.NOMBRE_USUARIO_GRABO & " el " & Format(Me.oDescuentosCXP.FECHA_SERVIDOR, "dd-MMM-yyyy hh:mm tt")
                 If Me.oDescuentosCXP.ESTATUS_DESCUENTO = "C" Then
