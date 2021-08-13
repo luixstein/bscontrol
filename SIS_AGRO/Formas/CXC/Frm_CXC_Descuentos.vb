@@ -1191,6 +1191,7 @@ Buscar:
                     If Me.Visible = True Then
                         Me.TxtFolio.Focus()
                     End If
+                    Me.cboUsoCFDI.Enabled = True
 
                     Me.btnCargarFacturas.Enabled = True
 
