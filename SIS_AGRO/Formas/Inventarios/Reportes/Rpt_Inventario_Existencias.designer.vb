@@ -24,7 +24,11 @@ Partial Class Rpt_Inventario_Existencias
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Rpt_Inventario_Existencias))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.lblNombreSocio = New System.Windows.Forms.Label()
+        Me.lblDisplaySocio = New System.Windows.Forms.Label()
+        Me.txtCodigoSocio = New System.Windows.Forms.TextBox()
         Me.gbxTipoFormato = New System.Windows.Forms.GroupBox()
+        Me.rbtnSocio = New System.Windows.Forms.RadioButton()
         Me.rbtnSeries = New System.Windows.Forms.RadioButton()
         Me.rbtnPorFamilias = New System.Windows.Forms.RadioButton()
         Me.rbtnParaInventario = New System.Windows.Forms.RadioButton()
@@ -54,6 +58,9 @@ Partial Class Rpt_Inventario_Existencias
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.lblNombreSocio)
+        Me.GroupBox1.Controls.Add(Me.lblDisplaySocio)
+        Me.GroupBox1.Controls.Add(Me.txtCodigoSocio)
         Me.GroupBox1.Controls.Add(Me.gbxTipoFormato)
         Me.GroupBox1.Controls.Add(Me.CboFamilia)
         Me.GroupBox1.Controls.Add(Me.chkExcluirfamilia)
@@ -65,32 +72,78 @@ Partial Class Rpt_Inventario_Existencias
         Me.GroupBox1.Controls.Add(Me.DtFechaDesde)
         Me.GroupBox1.Controls.Add(Me.ChkFechas)
         Me.GroupBox1.Controls.Add(Me.CHSoloExistencia)
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 78)
+        Me.GroupBox1.Location = New System.Drawing.Point(16, 96)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(619, 180)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
+        Me.GroupBox1.Size = New System.Drawing.Size(825, 247)
         Me.GroupBox1.TabIndex = 10
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Filtros"
         '
+        'lblNombreSocio
+        '
+        Me.lblNombreSocio.Location = New System.Drawing.Point(166, 163)
+        Me.lblNombreSocio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblNombreSocio.Name = "lblNombreSocio"
+        Me.lblNombreSocio.Size = New System.Drawing.Size(378, 25)
+        Me.lblNombreSocio.TabIndex = 280
+        Me.lblNombreSocio.Text = "_"
+        '
+        'lblDisplaySocio
+        '
+        Me.lblDisplaySocio.AutoSize = True
+        Me.lblDisplaySocio.Location = New System.Drawing.Point(28, 163)
+        Me.lblDisplaySocio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplaySocio.Name = "lblDisplaySocio"
+        Me.lblDisplaySocio.Size = New System.Drawing.Size(51, 17)
+        Me.lblDisplaySocio.TabIndex = 279
+        Me.lblDisplaySocio.Text = "Socio :"
+        '
+        'txtCodigoSocio
+        '
+        Me.txtCodigoSocio.Location = New System.Drawing.Point(87, 160)
+        Me.txtCodigoSocio.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtCodigoSocio.MaxLength = 16
+        Me.txtCodigoSocio.Name = "txtCodigoSocio"
+        Me.txtCodigoSocio.Size = New System.Drawing.Size(71, 22)
+        Me.txtCodigoSocio.TabIndex = 273
+        '
         'gbxTipoFormato
         '
+        Me.gbxTipoFormato.Controls.Add(Me.rbtnSocio)
         Me.gbxTipoFormato.Controls.Add(Me.rbtnSeries)
         Me.gbxTipoFormato.Controls.Add(Me.rbtnPorFamilias)
         Me.gbxTipoFormato.Controls.Add(Me.rbtnParaInventario)
         Me.gbxTipoFormato.Controls.Add(Me.rbtnConCostos)
-        Me.gbxTipoFormato.Location = New System.Drawing.Point(424, 52)
+        Me.gbxTipoFormato.Location = New System.Drawing.Point(565, 64)
+        Me.gbxTipoFormato.Margin = New System.Windows.Forms.Padding(4)
         Me.gbxTipoFormato.Name = "gbxTipoFormato"
-        Me.gbxTipoFormato.Size = New System.Drawing.Size(156, 118)
+        Me.gbxTipoFormato.Padding = New System.Windows.Forms.Padding(4)
+        Me.gbxTipoFormato.Size = New System.Drawing.Size(208, 174)
         Me.gbxTipoFormato.TabIndex = 272
         Me.gbxTipoFormato.TabStop = False
         Me.gbxTipoFormato.Text = "Formato "
         '
+        'rbtnSocio
+        '
+        Me.rbtnSocio.AutoSize = True
+        Me.rbtnSocio.Location = New System.Drawing.Point(20, 142)
+        Me.rbtnSocio.Margin = New System.Windows.Forms.Padding(4)
+        Me.rbtnSocio.Name = "rbtnSocio"
+        Me.rbtnSocio.Size = New System.Drawing.Size(88, 21)
+        Me.rbtnSocio.TabIndex = 4
+        Me.rbtnSocio.TabStop = True
+        Me.rbtnSocio.Text = "Por socio"
+        Me.rbtnSocio.UseVisualStyleBackColor = True
+        '
         'rbtnSeries
         '
         Me.rbtnSeries.AutoSize = True
-        Me.rbtnSeries.Location = New System.Drawing.Point(15, 92)
+        Me.rbtnSeries.Location = New System.Drawing.Point(20, 113)
+        Me.rbtnSeries.Margin = New System.Windows.Forms.Padding(4)
         Me.rbtnSeries.Name = "rbtnSeries"
-        Me.rbtnSeries.Size = New System.Drawing.Size(54, 17)
+        Me.rbtnSeries.Size = New System.Drawing.Size(69, 21)
         Me.rbtnSeries.TabIndex = 3
         Me.rbtnSeries.TabStop = True
         Me.rbtnSeries.Text = "Series"
@@ -99,9 +152,10 @@ Partial Class Rpt_Inventario_Existencias
         'rbtnPorFamilias
         '
         Me.rbtnPorFamilias.AutoSize = True
-        Me.rbtnPorFamilias.Location = New System.Drawing.Point(15, 68)
+        Me.rbtnPorFamilias.Location = New System.Drawing.Point(20, 84)
+        Me.rbtnPorFamilias.Margin = New System.Windows.Forms.Padding(4)
         Me.rbtnPorFamilias.Name = "rbtnPorFamilias"
-        Me.rbtnPorFamilias.Size = New System.Drawing.Size(126, 17)
+        Me.rbtnPorFamilias.Size = New System.Drawing.Size(167, 21)
         Me.rbtnPorFamilias.TabIndex = 2
         Me.rbtnPorFamilias.TabStop = True
         Me.rbtnPorFamilias.Text = "Agrupado por familias"
@@ -110,9 +164,10 @@ Partial Class Rpt_Inventario_Existencias
         'rbtnParaInventario
         '
         Me.rbtnParaInventario.AutoSize = True
-        Me.rbtnParaInventario.Location = New System.Drawing.Point(15, 45)
+        Me.rbtnParaInventario.Location = New System.Drawing.Point(20, 55)
+        Me.rbtnParaInventario.Margin = New System.Windows.Forms.Padding(4)
         Me.rbtnParaInventario.Name = "rbtnParaInventario"
-        Me.rbtnParaInventario.Size = New System.Drawing.Size(125, 17)
+        Me.rbtnParaInventario.Size = New System.Drawing.Size(165, 21)
         Me.rbtnParaInventario.TabIndex = 1
         Me.rbtnParaInventario.TabStop = True
         Me.rbtnParaInventario.Text = "Para tomar inventario"
@@ -121,9 +176,10 @@ Partial Class Rpt_Inventario_Existencias
         'rbtnConCostos
         '
         Me.rbtnConCostos.AutoSize = True
-        Me.rbtnConCostos.Location = New System.Drawing.Point(15, 21)
+        Me.rbtnConCostos.Location = New System.Drawing.Point(20, 26)
+        Me.rbtnConCostos.Margin = New System.Windows.Forms.Padding(4)
         Me.rbtnConCostos.Name = "rbtnConCostos"
-        Me.rbtnConCostos.Size = New System.Drawing.Size(78, 17)
+        Me.rbtnConCostos.Size = New System.Drawing.Size(99, 21)
         Me.rbtnConCostos.TabIndex = 0
         Me.rbtnConCostos.TabStop = True
         Me.rbtnConCostos.Text = "Con costos"
@@ -134,17 +190,19 @@ Partial Class Rpt_Inventario_Existencias
         Me.CboFamilia.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboFamilia.FormattingEnabled = True
         Me.CboFamilia.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
-        Me.CboFamilia.Location = New System.Drawing.Point(118, 99)
+        Me.CboFamilia.Location = New System.Drawing.Point(157, 122)
+        Me.CboFamilia.Margin = New System.Windows.Forms.Padding(4)
         Me.CboFamilia.Name = "CboFamilia"
-        Me.CboFamilia.Size = New System.Drawing.Size(267, 21)
+        Me.CboFamilia.Size = New System.Drawing.Size(355, 24)
         Me.CboFamilia.TabIndex = 271
         '
         'chkExcluirfamilia
         '
         Me.chkExcluirfamilia.AutoSize = True
-        Me.chkExcluirfamilia.Location = New System.Drawing.Point(23, 101)
+        Me.chkExcluirfamilia.Location = New System.Drawing.Point(31, 124)
+        Me.chkExcluirfamilia.Margin = New System.Windows.Forms.Padding(4)
         Me.chkExcluirfamilia.Name = "chkExcluirfamilia"
-        Me.chkExcluirfamilia.Size = New System.Drawing.Size(89, 17)
+        Me.chkExcluirfamilia.Size = New System.Drawing.Size(115, 21)
         Me.chkExcluirfamilia.TabIndex = 270
         Me.chkExcluirfamilia.Text = "Excluir familia"
         Me.chkExcluirfamilia.UseVisualStyleBackColor = True
@@ -154,26 +212,29 @@ Partial Class Rpt_Inventario_Existencias
         Me.CmbAlmacen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CmbAlmacen.FormattingEnabled = True
         Me.CmbAlmacen.Items.AddRange(New Object() {"TODOS"})
-        Me.CmbAlmacen.Location = New System.Drawing.Point(389, 17)
+        Me.CmbAlmacen.Location = New System.Drawing.Point(519, 21)
+        Me.CmbAlmacen.Margin = New System.Windows.Forms.Padding(4)
         Me.CmbAlmacen.Name = "CmbAlmacen"
-        Me.CmbAlmacen.Size = New System.Drawing.Size(211, 21)
+        Me.CmbAlmacen.Size = New System.Drawing.Size(280, 24)
         Me.CmbAlmacen.TabIndex = 6
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(299, 20)
+        Me.Label3.Location = New System.Drawing.Point(399, 25)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(54, 13)
+        Me.Label3.Size = New System.Drawing.Size(70, 17)
         Me.Label3.TabIndex = 269
         Me.Label3.Text = "Almacén :"
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(208, 77)
+        Me.Label1.Location = New System.Drawing.Point(277, 95)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(85, 13)
+        Me.Label1.Size = New System.Drawing.Size(111, 17)
         Me.Label1.TabIndex = 212
         Me.Label1.Text = "Hasta la Fecha :"
         '
@@ -181,19 +242,21 @@ Partial Class Rpt_Inventario_Existencias
         '
         Me.DtFechaHasta.Enabled = False
         Me.DtFechaHasta.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DtFechaHasta.Location = New System.Drawing.Point(299, 73)
+        Me.DtFechaHasta.Location = New System.Drawing.Point(399, 90)
+        Me.DtFechaHasta.Margin = New System.Windows.Forms.Padding(4)
         Me.DtFechaHasta.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtFechaHasta.Name = "DtFechaHasta"
-        Me.DtFechaHasta.Size = New System.Drawing.Size(86, 20)
+        Me.DtFechaHasta.Size = New System.Drawing.Size(113, 22)
         Me.DtFechaHasta.TabIndex = 5
         Me.DtFechaHasta.Value = New Date(2009, 9, 26, 0, 0, 0, 0)
         '
         'LblDisplayFechaNacimiento
         '
         Me.LblDisplayFechaNacimiento.AutoSize = True
-        Me.LblDisplayFechaNacimiento.Location = New System.Drawing.Point(20, 77)
+        Me.LblDisplayFechaNacimiento.Location = New System.Drawing.Point(27, 95)
+        Me.LblDisplayFechaNacimiento.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayFechaNacimiento.Name = "LblDisplayFechaNacimiento"
-        Me.LblDisplayFechaNacimiento.Size = New System.Drawing.Size(71, 13)
+        Me.LblDisplayFechaNacimiento.Size = New System.Drawing.Size(92, 17)
         Me.LblDisplayFechaNacimiento.TabIndex = 211
         Me.LblDisplayFechaNacimiento.Text = "De la Fecha :"
         '
@@ -201,19 +264,21 @@ Partial Class Rpt_Inventario_Existencias
         '
         Me.DtFechaDesde.Enabled = False
         Me.DtFechaDesde.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DtFechaDesde.Location = New System.Drawing.Point(97, 73)
+        Me.DtFechaDesde.Location = New System.Drawing.Point(129, 90)
+        Me.DtFechaDesde.Margin = New System.Windows.Forms.Padding(4)
         Me.DtFechaDesde.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtFechaDesde.Name = "DtFechaDesde"
-        Me.DtFechaDesde.Size = New System.Drawing.Size(94, 20)
+        Me.DtFechaDesde.Size = New System.Drawing.Size(124, 22)
         Me.DtFechaDesde.TabIndex = 4
         Me.DtFechaDesde.Value = New Date(2009, 9, 26, 0, 0, 0, 0)
         '
         'ChkFechas
         '
         Me.ChkFechas.AutoSize = True
-        Me.ChkFechas.Location = New System.Drawing.Point(23, 45)
+        Me.ChkFechas.Location = New System.Drawing.Point(31, 55)
+        Me.ChkFechas.Margin = New System.Windows.Forms.Padding(4)
         Me.ChkFechas.Name = "ChkFechas"
-        Me.ChkFechas.Size = New System.Drawing.Size(168, 17)
+        Me.ChkFechas.Size = New System.Drawing.Size(223, 21)
         Me.ChkFechas.TabIndex = 3
         Me.ChkFechas.Text = "Filtrar movimientos por  fechas"
         Me.ChkFechas.UseVisualStyleBackColor = True
@@ -223,9 +288,10 @@ Partial Class Rpt_Inventario_Existencias
         Me.CHSoloExistencia.AutoSize = True
         Me.CHSoloExistencia.Checked = True
         Me.CHSoloExistencia.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CHSoloExistencia.Location = New System.Drawing.Point(23, 19)
+        Me.CHSoloExistencia.Location = New System.Drawing.Point(31, 23)
+        Me.CHSoloExistencia.Margin = New System.Windows.Forms.Padding(4)
         Me.CHSoloExistencia.Name = "CHSoloExistencia"
-        Me.CHSoloExistencia.Size = New System.Drawing.Size(199, 17)
+        Me.CHSoloExistencia.Size = New System.Drawing.Size(258, 21)
         Me.CHSoloExistencia.TabIndex = 2
         Me.CHSoloExistencia.Text = "Ocultar artículos con existencia cero"
         Me.CHSoloExistencia.UseVisualStyleBackColor = True
@@ -235,36 +301,41 @@ Partial Class Rpt_Inventario_Existencias
         Me.gbFiltros.Controls.Add(Me.lblArticulo)
         Me.gbFiltros.Controls.Add(Me.LblDisplayCodArticulo)
         Me.gbFiltros.Controls.Add(Me.TxtCodArticulo)
-        Me.gbFiltros.Location = New System.Drawing.Point(12, 28)
+        Me.gbFiltros.Location = New System.Drawing.Point(16, 34)
+        Me.gbFiltros.Margin = New System.Windows.Forms.Padding(4)
         Me.gbFiltros.Name = "gbFiltros"
-        Me.gbFiltros.Size = New System.Drawing.Size(617, 44)
+        Me.gbFiltros.Padding = New System.Windows.Forms.Padding(4)
+        Me.gbFiltros.Size = New System.Drawing.Size(823, 54)
         Me.gbFiltros.TabIndex = 9
         Me.gbFiltros.TabStop = False
         Me.gbFiltros.Text = "Tipo de Reporte"
         '
         'lblArticulo
         '
-        Me.lblArticulo.Location = New System.Drawing.Point(181, 22)
+        Me.lblArticulo.Location = New System.Drawing.Point(241, 27)
+        Me.lblArticulo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblArticulo.Name = "lblArticulo"
-        Me.lblArticulo.Size = New System.Drawing.Size(432, 13)
+        Me.lblArticulo.Size = New System.Drawing.Size(576, 16)
         Me.lblArticulo.TabIndex = 278
         Me.lblArticulo.Text = "_"
         '
         'LblDisplayCodArticulo
         '
         Me.LblDisplayCodArticulo.AutoSize = True
-        Me.LblDisplayCodArticulo.Location = New System.Drawing.Point(25, 22)
+        Me.LblDisplayCodArticulo.Location = New System.Drawing.Point(33, 27)
+        Me.LblDisplayCodArticulo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayCodArticulo.Name = "LblDisplayCodArticulo"
-        Me.LblDisplayCodArticulo.Size = New System.Drawing.Size(50, 13)
+        Me.LblDisplayCodArticulo.Size = New System.Drawing.Size(63, 17)
         Me.LblDisplayCodArticulo.TabIndex = 277
         Me.LblDisplayCodArticulo.Text = "Artículo :"
         '
         'TxtCodArticulo
         '
-        Me.TxtCodArticulo.Location = New System.Drawing.Point(81, 19)
+        Me.TxtCodArticulo.Location = New System.Drawing.Point(108, 23)
+        Me.TxtCodArticulo.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodArticulo.MaxLength = 16
         Me.TxtCodArticulo.Name = "TxtCodArticulo"
-        Me.TxtCodArticulo.Size = New System.Drawing.Size(94, 20)
+        Me.TxtCodArticulo.Size = New System.Drawing.Size(124, 22)
         Me.TxtCodArticulo.TabIndex = 1
         '
         'ToolStrip1
@@ -273,7 +344,7 @@ Partial Class Rpt_Inventario_Existencias
         Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbConsultar, Me.tsbSalir})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(641, 27)
+        Me.ToolStrip1.Size = New System.Drawing.Size(855, 27)
         Me.ToolStrip1.TabIndex = 11
         Me.ToolStrip1.Text = "ToolStrip1"
         '
@@ -282,7 +353,7 @@ Partial Class Rpt_Inventario_Existencias
         Me.tsbConsultar.Image = CType(resources.GetObject("tsbConsultar.Image"), System.Drawing.Image)
         Me.tsbConsultar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbConsultar.Name = "tsbConsultar"
-        Me.tsbConsultar.Size = New System.Drawing.Size(82, 24)
+        Me.tsbConsultar.Size = New System.Drawing.Size(95, 24)
         Me.tsbConsultar.Text = "&Consultar"
         '
         'tsbSalir
@@ -290,18 +361,19 @@ Partial Class Rpt_Inventario_Existencias
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'Rpt_Inventario_Existencias
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(641, 270)
+        Me.ClientSize = New System.Drawing.Size(855, 353)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.gbFiltros)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Rpt_Inventario_Existencias"
         Me.Text = "Existencia del inventario"
@@ -340,4 +412,8 @@ Partial Class Rpt_Inventario_Existencias
     Friend WithEvents rbtnConCostos As System.Windows.Forms.RadioButton
     Friend WithEvents rbtnPorFamilias As System.Windows.Forms.RadioButton
     Friend WithEvents rbtnSeries As System.Windows.Forms.RadioButton
+    Friend WithEvents lblNombreSocio As System.Windows.Forms.Label
+    Friend WithEvents lblDisplaySocio As System.Windows.Forms.Label
+    Friend WithEvents txtCodigoSocio As System.Windows.Forms.TextBox
+    Friend WithEvents rbtnSocio As System.Windows.Forms.RadioButton
 End Class
