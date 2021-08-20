@@ -263,6 +263,11 @@
                     Return False
                 End If
 
+                If oPago.TIMBRADO_DESCARTADO = "1" Then
+                    MsgBox("Timbre descartado(probablemente intencionado para que no se pueda timbrar).", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
                 If oPago.GeneraPagoElectronico(True, True) = True Then
                     bResultado = True
                 End If
