@@ -318,6 +318,10 @@ buscar:
                 Return False
             End If
 
+            If Me.ValidaPrecios(Renglon) = False Then
+                Return False
+            End If
+
             Me.oPrecios = New Class_CatPreciosVenta(sArticulo, CInt(Me.cboPlaza.SelectedValue))
             Me.oPrecios.PRECIO1 = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio1).Text)
             Me.oPrecios.PRECIO2 = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio2).Text)
@@ -331,6 +335,21 @@ buscar:
             HandleError(Me.Name, "Grabar", ex)
         End Try
         Return bResultado
+    End Function
+
+    Private Function ValidaPrecios(ByVal iRenglon As Integer) As Boolean
+        Try
+            'Valida que al menos un precio o el % utilidad sea > 0
+            For i As Integer = 3 To Me.Grid.Cols - 1
+                If valorNumericoD(Me.Grid.Cell(iRenglon, i).Text) > 0 Then
+                    Return True
+                End If
+            Next
+
+            Return False
+        Catch ex As Exception
+            HandleError(Me.Name, "ValidaPrecios", ex)
+        End Try
     End Function
 
 #End Region

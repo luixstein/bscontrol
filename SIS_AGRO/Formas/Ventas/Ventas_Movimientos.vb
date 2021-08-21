@@ -5686,7 +5686,7 @@ BuscaVentas:
                             oPrecioMatriz = New Class_CatPreciosVenta(Me.Grid.Cell(i, Me.igyCodigo).Text, 1)
 
                             'Si el articulo existe en el catalogo se valida el porcentaje de ahi si no el de la empresa
-                            If oPrecio.Existe Then
+                            If oPrecio.Existe And oPrecio.PORCENTAJE_MARGEN_UTILIDAD > 0 Then
                                 If dUtilidadPorcentaje < oPrecio.PORCENTAJE_MARGEN_UTILIDAD Then
                                     Dim validaPass As New Frm_Contraseña_Cambio_Periodo
                                     validaPass.Mensaje = "El porcentaje de utilidad del artículo " & .Cell(i, Me.igyDescripcion).Text & " es menor que la utilidad minima configurada para el artículo (" & oPrecio.PORCENTAJE_MARGEN_UTILIDAD.ToString & "%)."
@@ -5699,7 +5699,7 @@ BuscaVentas:
                                     validaPass.Dispose()
                                 End If
 
-                            ElseIf oPrecioMatriz.Existe Then
+                            ElseIf oPrecioMatriz.Existe And oPrecioMatriz.PORCENTAJE_MARGEN_UTILIDAD > 0 Then
                                 If dUtilidadPorcentaje < oPrecioMatriz.PORCENTAJE_MARGEN_UTILIDAD Then
                                     Dim validaPass As New Frm_Contraseña_Cambio_Periodo
                                     validaPass.Mensaje = "El porcentaje de utilidad del artículo " & .Cell(i, Me.igyDescripcion).Text & " es menor que la utilidad minima configurada para el artículo (" & oPrecioMatriz.PORCENTAJE_MARGEN_UTILIDAD.ToString & "%)."
