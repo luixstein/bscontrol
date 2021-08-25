@@ -348,7 +348,9 @@ Public Class Inventarios_Movimientos
                 Me.Cambia_Estado(enumEstados.NUEVO)
             End If
 
-            Me.ObtenerTipoCambioDia()
+            If Empresa_Sistema.TIPO_CAMBIO_POR_DIA Then
+                Me.ObtenerTipoCambioDia()
+            End If
 
         Catch ex As Exception
             HandleError(Me.Name, "Inventarios_Movimientos_Load", ex)
@@ -3180,7 +3182,10 @@ busca_serie:
                     Return False
                 End If
             End If
-            
+
+            If Empresa_Sistema.TIPO_CAMBIO_POR_DIA = False Then
+                Me.txtTipoCambio.Text = oOrdenCompra.TIPO_DE_CAMBIO.ToString
+            End If
 
             Dim oOC As New Class_find("SELECT OC.FOLIO_COMPRA FROM COMPRA_GLOBAL OC INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(OC.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
             "WHERE OC.FOLIO_COMPRA='" & sReplace(Me.txtFolioOrdenCompra.Text) & "' AND DOC.CODIGO_TIPO_DOCUMENTO='OC' ")
