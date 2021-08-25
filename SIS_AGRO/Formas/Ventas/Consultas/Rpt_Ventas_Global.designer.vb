@@ -31,6 +31,8 @@ Partial Class Rpt_Ventas_Global
         Me.RdnListadoDesagrupado = New System.Windows.Forms.RadioButton()
         Me.RdnPorCliente = New System.Windows.Forms.RadioButton()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.LblIva = New System.Windows.Forms.Label()
+        Me.CboIva = New System.Windows.Forms.ComboBox()
         Me.lblPlaza = New System.Windows.Forms.Label()
         Me.cboPlaza = New System.Windows.Forms.ComboBox()
         Me.CboVendedores = New System.Windows.Forms.ComboBox()
@@ -55,8 +57,7 @@ Partial Class Rpt_Ventas_Global
         Me.DtFechaDesde = New System.Windows.Forms.DateTimePicker()
         Me.LblEstatus = New System.Windows.Forms.Label()
         Me.CboEstatus = New System.Windows.Forms.ComboBox()
-        Me.CboIva = New System.Windows.Forms.ComboBox()
-        Me.LblIva = New System.Windows.Forms.Label()
+        Me.RdnAgrupadoArticulo = New System.Windows.Forms.RadioButton()
         Me.ToolStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -90,6 +91,7 @@ Partial Class Rpt_Ventas_Global
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.RdnAgrupadoArticulo)
         Me.GroupBox1.Controls.Add(Me.RndTotalizadoPorCliente)
         Me.GroupBox1.Controls.Add(Me.RdnListadoDesagrupado)
         Me.GroupBox1.Controls.Add(Me.RdnPorCliente)
@@ -97,7 +99,7 @@ Partial Class Rpt_Ventas_Global
         Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox1.Size = New System.Drawing.Size(267, 123)
+        Me.GroupBox1.Size = New System.Drawing.Size(267, 152)
         Me.GroupBox1.TabIndex = 3
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Reportes"
@@ -173,6 +175,27 @@ Partial Class Rpt_Ventas_Global
         Me.GroupBox2.TabIndex = 4
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Filtros"
+        '
+        'LblIva
+        '
+        Me.LblIva.AutoSize = True
+        Me.LblIva.Location = New System.Drawing.Point(15, 415)
+        Me.LblIva.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblIva.Name = "LblIva"
+        Me.LblIva.Size = New System.Drawing.Size(37, 17)
+        Me.LblIva.TabIndex = 399
+        Me.LblIva.Text = "IVA :"
+        '
+        'CboIva
+        '
+        Me.CboIva.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboIva.FormattingEnabled = True
+        Me.CboIva.Location = New System.Drawing.Point(136, 412)
+        Me.CboIva.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboIva.MaxLength = 1
+        Me.CboIva.Name = "CboIva"
+        Me.CboIva.Size = New System.Drawing.Size(165, 24)
+        Me.CboIva.TabIndex = 398
         '
         'lblPlaza
         '
@@ -421,26 +444,16 @@ Partial Class Rpt_Ventas_Global
         Me.CboEstatus.Size = New System.Drawing.Size(408, 24)
         Me.CboEstatus.TabIndex = 374
         '
-        'CboIva
+        'RdnAgrupadoArticulo
         '
-        Me.CboIva.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CboIva.FormattingEnabled = True
-        Me.CboIva.Location = New System.Drawing.Point(136, 412)
-        Me.CboIva.Margin = New System.Windows.Forms.Padding(4)
-        Me.CboIva.MaxLength = 1
-        Me.CboIva.Name = "CboIva"
-        Me.CboIva.Size = New System.Drawing.Size(165, 24)
-        Me.CboIva.TabIndex = 398
-        '
-        'LblIva
-        '
-        Me.LblIva.AutoSize = True
-        Me.LblIva.Location = New System.Drawing.Point(15, 415)
-        Me.LblIva.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblIva.Name = "LblIva"
-        Me.LblIva.Size = New System.Drawing.Size(37, 17)
-        Me.LblIva.TabIndex = 399
-        Me.LblIva.Text = "IVA :"
+        Me.RdnAgrupadoArticulo.AutoSize = True
+        Me.RdnAgrupadoArticulo.Location = New System.Drawing.Point(21, 108)
+        Me.RdnAgrupadoArticulo.Margin = New System.Windows.Forms.Padding(4)
+        Me.RdnAgrupadoArticulo.Name = "RdnAgrupadoArticulo"
+        Me.RdnAgrupadoArticulo.Size = New System.Drawing.Size(166, 21)
+        Me.RdnAgrupadoArticulo.TabIndex = 3
+        Me.RdnAgrupadoArticulo.Text = "Agrupado por artículo"
+        Me.RdnAgrupadoArticulo.UseVisualStyleBackColor = True
         '
         'Rpt_Ventas_Global
         '
@@ -499,4 +512,5 @@ Partial Class Rpt_Ventas_Global
     Friend WithEvents cboPlaza As System.Windows.Forms.ComboBox
     Friend WithEvents LblIva As System.Windows.Forms.Label
     Friend WithEvents CboIva As System.Windows.Forms.ComboBox
+    Friend WithEvents RdnAgrupadoArticulo As System.Windows.Forms.RadioButton
 End Class

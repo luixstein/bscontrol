@@ -220,8 +220,10 @@ Buscar:
                 FormatoDeReporte = "RPT_VENTAS_LISTADO_DOCUMENTOS_VENTAS"
             ElseIf Me.RdnPorCliente.Checked = True Then
                 FormatoDeReporte = "RPT_VENTAS_AGRUPADO_CLIENTE"
-            Else
+            ElseIf Me.RndTotalizadoPorCliente.Checked = True Then
                 FormatoDeReporte = "RPT_VENTAS_TOTALIZADAS_CLIENTE"
+            Else
+                FormatoDeReporte = "RPT_VENTAS_DETALLE_AGRUPADO_ARTICULO"
             End If
 
             oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
