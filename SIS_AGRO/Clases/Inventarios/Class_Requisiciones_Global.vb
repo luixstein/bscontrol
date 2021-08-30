@@ -21,6 +21,7 @@ Public Class Class_Requisiciones_Global
     Private _FECHA_SOLICITO As Date
     Private _FECHA_CANCELACION As Date
     Private _CONCEPTO As String
+    Private _CODIGO_PRIORIDAD_REQUISICION As Integer
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -177,6 +178,15 @@ Public Class Class_Requisiciones_Global
             Me._CONCEPTO = Value
         End Set
     End Property
+
+    Public Property CODIGO_PRIORIDAD_REQUISICION() As Integer
+        Get
+            Return Me._CODIGO_PRIORIDAD_REQUISICION
+        End Get
+        Set(value As Integer)
+            Me._CODIGO_PRIORIDAD_REQUISICION = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -300,6 +310,7 @@ Public Class Class_Requisiciones_Global
             sqlParametro = .Parameters.Add("@CODIGO_DOCUMENTO", SqlDbType.NVarChar, 10) : sqlParametro.Value = "" & Me._CODIGO_DOCUMENTO
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = "" & Usuario.Codigo_Usuario
             sqlParametro = .Parameters.Add("@CONCEPTO", SqlDbType.NVarChar, 160) : sqlParametro.Value = "" & Me._CONCEPTO.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PRIORIDAD_REQUISICION", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PRIORIDAD_REQUISICION
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sAccion ' "ACTUALIZAR", "INSERTAR"
 
             Try
@@ -428,6 +439,13 @@ Public Class Class_Requisiciones_Global
                     Me._CODIGO_USUARIO_GRABO = CInt(dReader("CODIGO_USUARIO_GRABO"))
                     Me._NOMBRE_USUARIO_GRABO = "" & dReader("NOMBRE_USUARIO_GRABO").ToString()
                     Me._CONCEPTO = "" & dReader("CONCEPTO").ToString()
+
+                    If txtLEN(dReader("CODIGO_PRIORIDAD_REQUISICION").ToString) Then
+                        Me._CODIGO_PRIORIDAD_REQUISICION = CInt(dReader("CODIGO_PRIORIDAD_REQUISICION"))
+                    Else
+                        Me._CODIGO_PRIORIDAD_REQUISICION = -1
+                    End If
+
 
                     If Me._ESTATUS = "L" Or Me._ESTATUS = "R" Or Me._ESTATUS = "A" Then
                         Me._FECHA_SOLICITO = CDate(dReader("FECHA_SOLICITO"))

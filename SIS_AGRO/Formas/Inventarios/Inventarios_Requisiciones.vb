@@ -87,6 +87,7 @@ Public Class Inventarios_Requisiciones
 
 #Region "Eventos"
     Private Sub Requisiciones_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.DesplegarPrioridades()
         Me.Inicializa()
         Me.Cambia_Estado(enumEstados.NUEVO)
     End Sub
@@ -241,6 +242,7 @@ Enter:
                     Me.txtComprador.Enabled = True
                     Me.txtFolio.Enabled = True
                     Me.txtConcepto.Enabled = True
+                    Me.CboPrioridad.Enabled = True
                     Me.Grid1.Locked = False
                     Me.Grid1.Column(Me.iGyCodigo).Locked = False
                     Me.Grid1.Column(Me.iGyCantidad).Locked = False
@@ -268,6 +270,7 @@ Enter:
                     Me.txtComprador.Enabled = True
                     Me.txtFolio.Enabled = False
                     Me.txtConcepto.Enabled = True
+                    Me.CboPrioridad.Enabled = True
                     Me.Grid1.Locked = False
                     Me.Grid1.Column(Me.iGyCodigo).Locked = False
                     Me.Grid1.Column(Me.iGyCantidad).Locked = False
@@ -296,6 +299,7 @@ Enter:
                     Me.txtComprador.Enabled = False
                     Me.txtFolio.Enabled = False
                     Me.txtConcepto.Enabled = False
+                    Me.CboPrioridad.Enabled = False
                     Me.Grid1.Locked = False
                     Me.Grid1.Column(Me.iGyCodigo).Locked = True
                     Me.Grid1.Column(Me.iGyCantidad).Locked = True
@@ -323,6 +327,7 @@ Enter:
                     Me.txtComprador.Enabled = False
                     Me.txtFolio.Enabled = False
                     Me.txtConcepto.Enabled = False
+                    Me.CboPrioridad.Enabled = False
                     Me.Grid1.Locked = True
                     Me.lblNombreEstatus.Text = "APLICADO"
 
@@ -342,6 +347,7 @@ Enter:
                     Me.txtComprador.Enabled = False
                     Me.txtFolio.Enabled = False
                     Me.txtConcepto.Enabled = False
+                    Me.CboPrioridad.Enabled = False
                     Me.Grid1.Locked = True
                     Me.lblNombreEstatus.Text = "CANCELADO"
 
@@ -361,6 +367,7 @@ Enter:
             Me.dtFechaEntrega.Value = Date.Now
             Me.txtConcepto.Text = ""
             Me.lblStatus.Text = ""
+            Me.CboPrioridad.SelectedIndex = -1
             'Me.txtAlmacen.Text ="":Me.lblAlmacen.Text =""
             'Me.txtComprador.Text ="":Me.lblComprador.Text =""
 
@@ -545,6 +552,12 @@ BuscaArticulos:
                         .CODIGO_PLAZA = Usuario.Codigo_Plaza
                         .CODIGO_DOCUMENTO = "RQ" & Plaza.CODIGO_PLAZA.ToString
                         .CONCEPTO = "" & Me.txtConcepto.Text
+
+                        If CInt(Me.CboPrioridad.SelectedValue) > 0 Then
+                            .CODIGO_PRIORIDAD_REQUISICION = CInt(Me.CboPrioridad.SelectedValue)
+                        Else
+                            .CODIGO_PRIORIDAD_REQUISICION = 0
+                        End If
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -777,6 +790,7 @@ BuscaArticulos:
             Me.lblComprador.Text = oRequisiciones.NOMBRE_COMPRADOR
             Me.txtConcepto.Text = oRequisiciones.CONCEPTO
             Me.dtFechaEntrega.Value = oRequisiciones.FECHA_ENTREGA
+            Me.CboPrioridad.SelectedValue = oRequisiciones.CODIGO_PRIORIDAD_REQUISICION
 
             'Consulta datos detalle
             Dim dTabla As DataTable = Me.oRequisiciones.ObtenerDetalle
@@ -1004,6 +1018,26 @@ BuscaArticulos:
             End If
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarPrioridades()
+        Try
+            Dim oElementos As New Class_CatPrioridadesRequisicion
+            With Me.CboPrioridad
+                .DisplayMember = "NOMBRE_PRIORIDAD_REQUISICION"
+                .ValueMember = "CODIGO_PRIORIDAD_REQUISICION"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos)
+                dView.Sort = "NOMBRE_PRIORIDAD_REQUISICION"
+
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = -1
+                End If
+
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarPrioridades", ex)
         End Try
     End Sub
 

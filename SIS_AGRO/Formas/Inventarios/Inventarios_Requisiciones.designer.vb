@@ -55,6 +55,8 @@ Partial Class Inventarios_Requisiciones
         Me.txtAlmacen = New System.Windows.Forms.TextBox()
         Me.lblAlmacen = New System.Windows.Forms.Label()
         Me.lblComprador = New System.Windows.Forms.Label()
+        Me.CboPrioridad = New System.Windows.Forms.ComboBox()
+        Me.LblPrioridad = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.SuspendLayout()
@@ -65,7 +67,7 @@ Partial Class Inventarios_Requisiciones
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbSolicitar, Me.tsbImprimir, Me.tsbAnular, Me.tsbCancelar, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(794, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1059, 27)
         Me.tsMenu.TabIndex = 6
         Me.tsMenu.Text = "tsMenu"
         '
@@ -74,7 +76,7 @@ Partial Class Inventarios_Requisiciones
         Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
         Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
+        Me.tsbNuevo.Size = New System.Drawing.Size(76, 24)
         Me.tsbNuevo.Text = "&Nuevo"
         '
         'tsbGrabar
@@ -82,7 +84,7 @@ Partial Class Inventarios_Requisiciones
         Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
         Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
+        Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
         Me.tsbGrabar.Text = "&Grabar"
         '
         'tsbSolicitar
@@ -90,7 +92,7 @@ Partial Class Inventarios_Requisiciones
         Me.tsbSolicitar.Image = Global.BsControl.My.Resources.Resources._782
         Me.tsbSolicitar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSolicitar.Name = "tsbSolicitar"
-        Me.tsbSolicitar.Size = New System.Drawing.Size(73, 24)
+        Me.tsbSolicitar.Size = New System.Drawing.Size(87, 24)
         Me.tsbSolicitar.Text = "&Solicitar"
         '
         'tsbImprimir
@@ -98,7 +100,7 @@ Partial Class Inventarios_Requisiciones
         Me.tsbImprimir.Image = CType(resources.GetObject("tsbImprimir.Image"), System.Drawing.Image)
         Me.tsbImprimir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbImprimir.Name = "tsbImprimir"
-        Me.tsbImprimir.Size = New System.Drawing.Size(77, 24)
+        Me.tsbImprimir.Size = New System.Drawing.Size(90, 24)
         Me.tsbImprimir.Text = "&Imprimir"
         Me.tsbImprimir.ToolTipText = "Imprimir"
         '
@@ -107,7 +109,7 @@ Partial Class Inventarios_Requisiciones
         Me.tsbAnular.Image = CType(resources.GetObject("tsbAnular.Image"), System.Drawing.Image)
         Me.tsbAnular.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbAnular.Name = "tsbAnular"
-        Me.tsbAnular.Size = New System.Drawing.Size(66, 24)
+        Me.tsbAnular.Size = New System.Drawing.Size(76, 24)
         Me.tsbAnular.Text = "&Anular"
         '
         'tsbCancelar
@@ -115,7 +117,7 @@ Partial Class Inventarios_Requisiciones
         Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
         Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(80, 24)
+        Me.tsbCancelar.Size = New System.Drawing.Size(94, 24)
         Me.tsbCancelar.Text = " Cancelar"
         '
         'tsbSalir
@@ -123,50 +125,55 @@ Partial Class Inventarios_Requisiciones
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'lblDisplayAlmacen
         '
         Me.lblDisplayAlmacen.AutoSize = True
-        Me.lblDisplayAlmacen.Location = New System.Drawing.Point(10, 63)
+        Me.lblDisplayAlmacen.Location = New System.Drawing.Point(13, 78)
+        Me.lblDisplayAlmacen.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayAlmacen.Name = "lblDisplayAlmacen"
-        Me.lblDisplayAlmacen.Size = New System.Drawing.Size(54, 13)
+        Me.lblDisplayAlmacen.Size = New System.Drawing.Size(70, 17)
         Me.lblDisplayAlmacen.TabIndex = 267
         Me.lblDisplayAlmacen.Text = "Almacén :"
         '
         'lblDisplayConcepto
         '
         Me.lblDisplayConcepto.AutoSize = True
-        Me.lblDisplayConcepto.Location = New System.Drawing.Point(10, 115)
+        Me.lblDisplayConcepto.Location = New System.Drawing.Point(13, 142)
+        Me.lblDisplayConcepto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayConcepto.Name = "lblDisplayConcepto"
-        Me.lblDisplayConcepto.Size = New System.Drawing.Size(59, 13)
+        Me.lblDisplayConcepto.Size = New System.Drawing.Size(76, 17)
         Me.lblDisplayConcepto.TabIndex = 265
         Me.lblDisplayConcepto.Text = "Concepto :"
         '
         'txtConcepto
         '
-        Me.txtConcepto.Location = New System.Drawing.Point(76, 115)
+        Me.txtConcepto.Location = New System.Drawing.Point(101, 142)
+        Me.txtConcepto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtConcepto.MaxLength = 160
         Me.txtConcepto.Multiline = True
         Me.txtConcepto.Name = "txtConcepto"
-        Me.txtConcepto.Size = New System.Drawing.Size(584, 32)
+        Me.txtConcepto.Size = New System.Drawing.Size(777, 38)
         Me.txtConcepto.TabIndex = 4
         '
         'dtFechaEntrega
         '
-        Me.dtFechaEntrega.Location = New System.Drawing.Point(420, 32)
+        Me.dtFechaEntrega.Location = New System.Drawing.Point(560, 39)
+        Me.dtFechaEntrega.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.dtFechaEntrega.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtFechaEntrega.Name = "dtFechaEntrega"
-        Me.dtFechaEntrega.Size = New System.Drawing.Size(211, 20)
+        Me.dtFechaEntrega.Size = New System.Drawing.Size(280, 22)
         Me.dtFechaEntrega.TabIndex = 1
         '
         'lblFecha
         '
         Me.lblFecha.AutoSize = True
-        Me.lblFecha.Location = New System.Drawing.Point(320, 34)
+        Me.lblFecha.Location = New System.Drawing.Point(427, 42)
+        Me.lblFecha.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblFecha.Name = "lblFecha"
-        Me.lblFecha.Size = New System.Drawing.Size(94, 13)
+        Me.lblFecha.Size = New System.Drawing.Size(125, 17)
         Me.lblFecha.TabIndex = 261
         Me.lblFecha.Text = "Fecha a entregar :"
         '
@@ -174,35 +181,39 @@ Partial Class Inventarios_Requisiciones
         '
         Me.lblStatus.AutoSize = True
         Me.lblStatus.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.lblStatus.Location = New System.Drawing.Point(386, 61)
+        Me.lblStatus.Location = New System.Drawing.Point(515, 75)
+        Me.lblStatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Size = New System.Drawing.Size(14, 13)
+        Me.lblStatus.Size = New System.Drawing.Size(17, 17)
         Me.lblStatus.TabIndex = 260
         Me.lblStatus.Text = "E"
         '
         'lblDisplayStatus
         '
         Me.lblDisplayStatus.AutoSize = True
-        Me.lblDisplayStatus.Location = New System.Drawing.Point(320, 61)
+        Me.lblDisplayStatus.Location = New System.Drawing.Point(427, 75)
+        Me.lblDisplayStatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayStatus.Name = "lblDisplayStatus"
-        Me.lblDisplayStatus.Size = New System.Drawing.Size(48, 13)
+        Me.lblDisplayStatus.Size = New System.Drawing.Size(63, 17)
         Me.lblDisplayStatus.TabIndex = 259
         Me.lblDisplayStatus.Text = "Estatus :"
         '
         'txtFolio
         '
-        Me.txtFolio.Location = New System.Drawing.Point(76, 32)
+        Me.txtFolio.Location = New System.Drawing.Point(101, 39)
+        Me.txtFolio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtFolio.MaxLength = 20
         Me.txtFolio.Name = "txtFolio"
-        Me.txtFolio.Size = New System.Drawing.Size(141, 20)
+        Me.txtFolio.Size = New System.Drawing.Size(187, 22)
         Me.txtFolio.TabIndex = 0
         '
         'lblDisplayFolio
         '
         Me.lblDisplayFolio.AutoSize = True
-        Me.lblDisplayFolio.Location = New System.Drawing.Point(10, 34)
+        Me.lblDisplayFolio.Location = New System.Drawing.Point(13, 42)
+        Me.lblDisplayFolio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayFolio.Name = "lblDisplayFolio"
-        Me.lblDisplayFolio.Size = New System.Drawing.Size(35, 13)
+        Me.lblDisplayFolio.Size = New System.Drawing.Size(46, 17)
         Me.lblDisplayFolio.TabIndex = 258
         Me.lblDisplayFolio.Text = "Folio :"
         '
@@ -210,9 +221,10 @@ Partial Class Inventarios_Requisiciones
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslEstado, Me.tsslElaboro, Me.tsslSolicito, Me.tsslCancelo})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 493)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 607)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(794, 24)
+        Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1059, 29)
         Me.StatusStripEstado.TabIndex = 257
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -222,7 +234,7 @@ Partial Class Inventarios_Requisiciones
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.tsslEstado.Name = "tsslEstado"
-        Me.tsslEstado.Size = New System.Drawing.Size(46, 19)
+        Me.tsslEstado.Size = New System.Drawing.Size(58, 24)
         Me.tsslEstado.Text = "Estado"
         '
         'tsslElaboro
@@ -231,7 +243,7 @@ Partial Class Inventarios_Requisiciones
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.tsslElaboro.Name = "tsslElaboro"
-        Me.tsslElaboro.Size = New System.Drawing.Size(57, 19)
+        Me.tsslElaboro.Size = New System.Drawing.Size(72, 24)
         Me.tsslElaboro.Text = "Elaboro :"
         '
         'tsslSolicito
@@ -240,7 +252,7 @@ Partial Class Inventarios_Requisiciones
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.tsslSolicito.Name = "tsslSolicito"
-        Me.tsslSolicito.Size = New System.Drawing.Size(56, 19)
+        Me.tsslSolicito.Size = New System.Drawing.Size(70, 24)
         Me.tsslSolicito.Text = "Solicito :"
         '
         'tsslCancelo
@@ -249,23 +261,25 @@ Partial Class Inventarios_Requisiciones
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.tsslCancelo.Name = "tsslCancelo"
-        Me.tsslCancelo.Size = New System.Drawing.Size(60, 19)
+        Me.tsslCancelo.Size = New System.Drawing.Size(73, 24)
         Me.tsslCancelo.Text = "Cancelo :"
         '
         'btnDocumentoSiguiente
         '
-        Me.btnDocumentoSiguiente.Location = New System.Drawing.Point(254, 30)
+        Me.btnDocumentoSiguiente.Location = New System.Drawing.Point(339, 37)
+        Me.btnDocumentoSiguiente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnDocumentoSiguiente.Name = "btnDocumentoSiguiente"
-        Me.btnDocumentoSiguiente.Size = New System.Drawing.Size(25, 21)
+        Me.btnDocumentoSiguiente.Size = New System.Drawing.Size(33, 26)
         Me.btnDocumentoSiguiente.TabIndex = 382
         Me.btnDocumentoSiguiente.Text = ">"
         Me.btnDocumentoSiguiente.UseVisualStyleBackColor = True
         '
         'btnDocumentoAnterior
         '
-        Me.btnDocumentoAnterior.Location = New System.Drawing.Point(223, 30)
+        Me.btnDocumentoAnterior.Location = New System.Drawing.Point(297, 37)
+        Me.btnDocumentoAnterior.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnDocumentoAnterior.Name = "btnDocumentoAnterior"
-        Me.btnDocumentoAnterior.Size = New System.Drawing.Size(25, 21)
+        Me.btnDocumentoAnterior.Size = New System.Drawing.Size(33, 26)
         Me.btnDocumentoAnterior.TabIndex = 381
         Me.btnDocumentoAnterior.Text = "<"
         Me.btnDocumentoAnterior.UseVisualStyleBackColor = True
@@ -279,13 +293,14 @@ Partial Class Inventarios_Requisiciones
         Me.Grid1.DefaultRowHeight = CType(24, Short)
         Me.Grid1.DisplayRowNumber = True
         Me.Grid1.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.Grid1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Grid1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Grid1.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Grid1.Location = New System.Drawing.Point(10, 153)
+        Me.Grid1.Location = New System.Drawing.Point(13, 188)
         Me.Grid1.LockButton = True
+        Me.Grid1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Grid1.Name = "Grid1"
         Me.Grid1.Rows = 10
-        Me.Grid1.Size = New System.Drawing.Size(777, 337)
+        Me.Grid1.Size = New System.Drawing.Size(1036, 415)
         Me.Grid1.TabIndex = 5
         Me.Grid1.UncheckedImage = CType(resources.GetObject("Grid1.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -297,58 +312,87 @@ Partial Class Inventarios_Requisiciones
         '
         Me.lblNombreEstatus.AutoSize = True
         Me.lblNombreEstatus.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.lblNombreEstatus.Location = New System.Drawing.Point(400, 61)
+        Me.lblNombreEstatus.Location = New System.Drawing.Point(533, 75)
+        Me.lblNombreEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblNombreEstatus.Name = "lblNombreEstatus"
-        Me.lblNombreEstatus.Size = New System.Drawing.Size(42, 13)
+        Me.lblNombreEstatus.Size = New System.Drawing.Size(55, 17)
         Me.lblNombreEstatus.TabIndex = 383
         Me.lblNombreEstatus.Text = "Estatus"
         '
         'txtComprador
         '
-        Me.txtComprador.Location = New System.Drawing.Point(76, 88)
+        Me.txtComprador.Location = New System.Drawing.Point(101, 108)
+        Me.txtComprador.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtComprador.MaxLength = 3
         Me.txtComprador.Name = "txtComprador"
-        Me.txtComprador.Size = New System.Drawing.Size(57, 20)
+        Me.txtComprador.Size = New System.Drawing.Size(75, 22)
         Me.txtComprador.TabIndex = 3
         '
         'lblDisplayComprador
         '
         Me.lblDisplayComprador.AutoSize = True
-        Me.lblDisplayComprador.Location = New System.Drawing.Point(10, 91)
+        Me.lblDisplayComprador.Location = New System.Drawing.Point(13, 112)
+        Me.lblDisplayComprador.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayComprador.Name = "lblDisplayComprador"
-        Me.lblDisplayComprador.Size = New System.Drawing.Size(64, 13)
+        Me.lblDisplayComprador.Size = New System.Drawing.Size(86, 17)
         Me.lblDisplayComprador.TabIndex = 385
         Me.lblDisplayComprador.Text = "Comprador :"
         '
         'txtAlmacen
         '
-        Me.txtAlmacen.Location = New System.Drawing.Point(76, 60)
+        Me.txtAlmacen.Location = New System.Drawing.Point(101, 74)
+        Me.txtAlmacen.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtAlmacen.MaxLength = 4
         Me.txtAlmacen.Name = "txtAlmacen"
-        Me.txtAlmacen.Size = New System.Drawing.Size(57, 20)
+        Me.txtAlmacen.Size = New System.Drawing.Size(75, 22)
         Me.txtAlmacen.TabIndex = 2
         '
         'lblAlmacen
         '
-        Me.lblAlmacen.Location = New System.Drawing.Point(139, 63)
+        Me.lblAlmacen.Location = New System.Drawing.Point(185, 78)
+        Me.lblAlmacen.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblAlmacen.Name = "lblAlmacen"
-        Me.lblAlmacen.Size = New System.Drawing.Size(175, 13)
+        Me.lblAlmacen.Size = New System.Drawing.Size(233, 16)
         Me.lblAlmacen.TabIndex = 387
         Me.lblAlmacen.Text = "_"
         '
         'lblComprador
         '
-        Me.lblComprador.Location = New System.Drawing.Point(139, 91)
+        Me.lblComprador.Location = New System.Drawing.Point(185, 112)
+        Me.lblComprador.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblComprador.Name = "lblComprador"
-        Me.lblComprador.Size = New System.Drawing.Size(175, 13)
+        Me.lblComprador.Size = New System.Drawing.Size(233, 16)
         Me.lblComprador.TabIndex = 388
         Me.lblComprador.Text = "_"
         '
+        'CboPrioridad
+        '
+        Me.CboPrioridad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboPrioridad.FormattingEnabled = True
+        Me.CboPrioridad.Items.AddRange(New Object() {"TODOS"})
+        Me.CboPrioridad.Location = New System.Drawing.Point(518, 104)
+        Me.CboPrioridad.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboPrioridad.Name = "CboPrioridad"
+        Me.CboPrioridad.Size = New System.Drawing.Size(262, 24)
+        Me.CboPrioridad.TabIndex = 389
+        '
+        'LblPrioridad
+        '
+        Me.LblPrioridad.AutoSize = True
+        Me.LblPrioridad.Location = New System.Drawing.Point(427, 107)
+        Me.LblPrioridad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblPrioridad.Name = "LblPrioridad"
+        Me.LblPrioridad.Size = New System.Drawing.Size(73, 17)
+        Me.LblPrioridad.TabIndex = 390
+        Me.LblPrioridad.Text = "Prioridad :"
+        '
         'Inventarios_Requisiciones
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(794, 517)
+        Me.ClientSize = New System.Drawing.Size(1059, 636)
+        Me.Controls.Add(Me.CboPrioridad)
+        Me.Controls.Add(Me.LblPrioridad)
         Me.Controls.Add(Me.lblComprador)
         Me.Controls.Add(Me.lblAlmacen)
         Me.Controls.Add(Me.txtAlmacen)
@@ -370,6 +414,7 @@ Partial Class Inventarios_Requisiciones
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.tsMenu)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.MaximizeBox = False
         Me.Name = "Inventarios_Requisiciones"
         Me.ShowIcon = False
@@ -414,4 +459,6 @@ Partial Class Inventarios_Requisiciones
     Friend WithEvents txtAlmacen As TextBox
     Friend WithEvents lblAlmacen As Label
     Friend WithEvents lblComprador As Label
+    Friend WithEvents CboPrioridad As System.Windows.Forms.ComboBox
+    Friend WithEvents LblPrioridad As System.Windows.Forms.Label
 End Class
