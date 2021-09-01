@@ -401,6 +401,10 @@ Buscar:
 
                         Me.CargaCuentasBancariasCliente()
 
+                        If oCliente.RFC = "XAXX010101000" Then
+                            Me.cboTipoVentas.Text = "MISMO CODIGO CLIENTE"
+                        End If
+
                     End If
                     'sql = Nothing
             End Select
@@ -768,6 +772,12 @@ Buscar:
             Me.GridCFDIsRelacionados.Locked = True
             Me.cboTipoRelacionCFDI.Enabled = False
             Me.CodigoClienteRelacionCFDI = ""
+
+            If Me.chkVentasNoFiscales.Checked = False Then
+                Me.cboTipoVentas.Text = "MISMO RFC CLIENTE"
+            Else
+                Me.cboTipoVentas.Text = "MISMO CODIGO CLIENTE"
+            End If
 
         Catch ex As Exception
             HandleError(Me.Name, "Inicializa", ex)
