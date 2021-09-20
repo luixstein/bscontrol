@@ -332,6 +332,16 @@
                 .Column(Me.iGyAlcalinidad).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.iGyAlcalinidad).DecimalLength = 2
 
+                'Ya no se utilizaran
+                .Column(iGyPh).Visible = False
+                .Column(iGySal).Visible = False
+                .Column(iGyCalcio).Visible = False
+                .Column(iGyPotasio).Visible = False
+                .Column(iGyMagnesio).Visible = False
+                .Column(iGyNitritos).Visible = False
+                .Column(iGyAmonio).Visible = False
+                .Column(iGyAlcalinidad).Visible = False
+
                 .Locked = False
                 .AutoRedraw = True
                 .Refresh()
@@ -565,14 +575,14 @@
                         .oDetalle.LASTIMADOS = Me.Grid.Cell(i, Me.iGyLastimados).Text
                         .oDetalle.OXIGENO = Me.Grid.Cell(i, Me.iGyOxigeno).Text
                         .oDetalle.TEMPERATURA = Me.Grid.Cell(i, Me.iGyTemperatura).Text
-                        .oDetalle.PH = Me.Grid.Cell(i, Me.iGyPh).Text
-                        .oDetalle.SAL = Me.Grid.Cell(i, Me.iGySal).Text
-                        .oDetalle.CALCIO = Me.Grid.Cell(i, Me.iGyCalcio).Text
-                        .oDetalle.POTASIO = Me.Grid.Cell(i, Me.iGyPotasio).Text
-                        .oDetalle.MAGNESIO = Me.Grid.Cell(i, Me.iGyMagnesio).Text
-                        .oDetalle.NITRITOS = Me.Grid.Cell(i, Me.iGyNitritos).Text
-                        .oDetalle.AMONIO = Me.Grid.Cell(i, Me.iGyAmonio).Text
-                        .oDetalle.ALCALINIDAD = Me.Grid.Cell(i, Me.iGyAlcalinidad).Text
+                        '.oDetalle.PH = Me.Grid.Cell(i, Me.iGyPh).Text
+                        '.oDetalle.SAL = Me.Grid.Cell(i, Me.iGySal).Text
+                        '.oDetalle.CALCIO = Me.Grid.Cell(i, Me.iGyCalcio).Text
+                        '.oDetalle.POTASIO = Me.Grid.Cell(i, Me.iGyPotasio).Text
+                        '.oDetalle.MAGNESIO = Me.Grid.Cell(i, Me.iGyMagnesio).Text
+                        '.oDetalle.NITRITOS = Me.Grid.Cell(i, Me.iGyNitritos).Text
+                        '.oDetalle.AMONIO = Me.Grid.Cell(i, Me.iGyAmonio).Text
+                        '.oDetalle.ALCALINIDAD = Me.Grid.Cell(i, Me.iGyAlcalinidad).Text
 
                         If .oDetalle.GrabaRenglon() = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, Me.Name)
@@ -728,59 +738,59 @@
                         Return False
                     End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.iGyPh).Text) = False Then
-                        MsgBox("Capture el pH del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.Grid.Cell(i, Me.iGyPh).SetFocus()
-                        Return False
-                    End If
+                    'If txtLEN(Me.Grid.Cell(i, Me.iGyPh).Text) = False Then
+                    '    MsgBox("Capture el pH del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                    '    Me.Grid.Cell(i, Me.iGyPh).SetFocus()
+                    '    Return False
+                    'End If
 
-                    If valorNumerico(Me.Grid.Cell(i, Me.iGyPh).Text) < 0 Or valorNumerico(Me.Grid.Cell(i, Me.iGyPh).Text) > 14 Then
-                        MsgBox("El pH del renglón " & i.ToString & " debe estar un rango de 0 a 14.", MsgBoxStyle.Exclamation, Me.Text)
-                        Me.Grid.Cell(i, Me.iGyPh).SetFocus()
-                        Return False
-                    End If
+                    'If valorNumerico(Me.Grid.Cell(i, Me.iGyPh).Text) < 0 Or valorNumerico(Me.Grid.Cell(i, Me.iGyPh).Text) > 14 Then
+                    '    MsgBox("El pH del renglón " & i.ToString & " debe estar un rango de 0 a 14.", MsgBoxStyle.Exclamation, Me.Text)
+                    '    Me.Grid.Cell(i, Me.iGyPh).SetFocus()
+                    '    Return False
+                    'End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.iGySal).Text) = False Then
-                        MsgBox("Capture la sal del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.Grid.Cell(i, Me.iGySal).SetFocus()
-                        Return False
-                    End If
+                    'If txtLEN(Me.Grid.Cell(i, Me.iGySal).Text) = False Then
+                    '    MsgBox("Capture la sal del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                    '    Me.Grid.Cell(i, Me.iGySal).SetFocus()
+                    '    Return False
+                    'End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.iGyLastimados).Text) = False Then
-                        MsgBox("Capture el calcio del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.Grid.Cell(i, Me.iGyCalcio).SetFocus()
-                        Return False
-                    End If
+                    'If txtLEN(Me.Grid.Cell(i, Me.iGyLastimados).Text) = False Then
+                    '    MsgBox("Capture el calcio del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                    '    Me.Grid.Cell(i, Me.iGyCalcio).SetFocus()
+                    '    Return False
+                    'End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.iGyLastimados).Text) = False Then
-                        MsgBox("Capture el potasio del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.Grid.Cell(i, Me.iGyPotasio).SetFocus()
-                        Return False
-                    End If
+                    'If txtLEN(Me.Grid.Cell(i, Me.iGyLastimados).Text) = False Then
+                    '    MsgBox("Capture el potasio del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                    '    Me.Grid.Cell(i, Me.iGyPotasio).SetFocus()
+                    '    Return False
+                    'End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.iGyLastimados).Text) = False Then
-                        MsgBox("Capture el magnesio del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.Grid.Cell(i, Me.iGyMagnesio).SetFocus()
-                        Return False
-                    End If
+                    'If txtLEN(Me.Grid.Cell(i, Me.iGyLastimados).Text) = False Then
+                    '    MsgBox("Capture el magnesio del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                    '    Me.Grid.Cell(i, Me.iGyMagnesio).SetFocus()
+                    '    Return False
+                    'End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.iGyLastimados).Text) = False Then
-                        MsgBox("Capture los nitritos del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.Grid.Cell(i, Me.iGyNitritos).SetFocus()
-                        Return False
-                    End If
+                    'If txtLEN(Me.Grid.Cell(i, Me.iGyLastimados).Text) = False Then
+                    '    MsgBox("Capture los nitritos del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                    '    Me.Grid.Cell(i, Me.iGyNitritos).SetFocus()
+                    '    Return False
+                    'End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.iGyLastimados).Text) = False Then
-                        MsgBox("Capture el amonio del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.Grid.Cell(i, Me.iGyAmonio).SetFocus()
-                        Return False
-                    End If
+                    'If txtLEN(Me.Grid.Cell(i, Me.iGyLastimados).Text) = False Then
+                    '    MsgBox("Capture el amonio del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                    '    Me.Grid.Cell(i, Me.iGyAmonio).SetFocus()
+                    '    Return False
+                    'End If
 
-                    If txtLEN(Me.Grid.Cell(i, Me.iGyLastimados).Text) = False Then
-                        MsgBox("Capture la alcalinidad del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
-                        Me.Grid.Cell(i, Me.iGyAlcalinidad).SetFocus()
-                        Return False
-                    End If
+                    'If txtLEN(Me.Grid.Cell(i, Me.iGyLastimados).Text) = False Then
+                    '    MsgBox("Capture la alcalinidad del renglón " & i.ToString & ".", MsgBoxStyle.Exclamation, Me.Name)
+                    '    Me.Grid.Cell(i, Me.iGyAlcalinidad).SetFocus()
+                    '    Return False
+                    'End If
                 End If
             Next
 
@@ -812,7 +822,7 @@
                                 GoTo Busqueda
                             End If
 
-                        Case Me.iGyAlcalinidad
+                        Case Me.iGyTemperatura
 
                             If Me.Grid.Rows - 1 = Renglon Then
                                 Me.Grid.Rows = Me.Grid.Rows + 1

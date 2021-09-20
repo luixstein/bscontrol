@@ -300,14 +300,14 @@ Public Class Class_Acuicola_Intensivos_Detalle
             sqlParametro = .Parameters.Add("@LASTIMADOS", SqlDbType.Decimal) : sqlParametro.Value = Me._LASTIMADOS
             sqlParametro = .Parameters.Add("@OXIGENO", SqlDbType.Decimal) : sqlParametro.Value = Me._OXIGENO
             sqlParametro = .Parameters.Add("@TEMPERATURA", SqlDbType.Decimal) : sqlParametro.Value = Me._TEMPERATURA
-            sqlParametro = .Parameters.Add("@PH", SqlDbType.Decimal) : sqlParametro.Value = Me._PH
-            sqlParametro = .Parameters.Add("@SAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SAL
-            sqlParametro = .Parameters.Add("@CALCIO", SqlDbType.Decimal) : sqlParametro.Value = Me._CALCIO
-            sqlParametro = .Parameters.Add("@POTASIO", SqlDbType.Decimal) : sqlParametro.Value = Me._POTASIO
-            sqlParametro = .Parameters.Add("@MAGNESIO", SqlDbType.Decimal) : sqlParametro.Value = Me._MAGNESIO
-            sqlParametro = .Parameters.Add("@NITRITOS", SqlDbType.Decimal) : sqlParametro.Value = Me._NITRITOS
-            sqlParametro = .Parameters.Add("@AMONIO", SqlDbType.Decimal) : sqlParametro.Value = Me._AMONIO
-            sqlParametro = .Parameters.Add("@ALCALINIDAD", SqlDbType.Decimal) : sqlParametro.Value = Me._ALCALINIDAD
+            'sqlParametro = .Parameters.Add("@PH", SqlDbType.Decimal) : sqlParametro.Value = Me._PH
+            'sqlParametro = .Parameters.Add("@SAL", SqlDbType.Decimal) : sqlParametro.Value = Me._SAL
+            'sqlParametro = .Parameters.Add("@CALCIO", SqlDbType.Decimal) : sqlParametro.Value = Me._CALCIO
+            'sqlParametro = .Parameters.Add("@POTASIO", SqlDbType.Decimal) : sqlParametro.Value = Me._POTASIO
+            'sqlParametro = .Parameters.Add("@MAGNESIO", SqlDbType.Decimal) : sqlParametro.Value = Me._MAGNESIO
+            'sqlParametro = .Parameters.Add("@NITRITOS", SqlDbType.Decimal) : sqlParametro.Value = Me._NITRITOS
+            'sqlParametro = .Parameters.Add("@AMONIO", SqlDbType.Decimal) : sqlParametro.Value = Me._AMONIO
+            'sqlParametro = .Parameters.Add("@ALCALINIDAD", SqlDbType.Decimal) : sqlParametro.Value = Me._ALCALINIDAD
 
 
             Try
