@@ -26,6 +26,12 @@ Public Class Class_CXC_Devoluciones_Detalle
     Private _LISTA_SERIES As String
     Private _ID_SIS_CAT_IMPUESTOS As String
     Private _GRADO_TOXICIDAD As Integer
+    Private _RETENCION_IVA_BASE As Decimal
+    Private _RETENCION_IVA_IMPORTE As Decimal
+    Private _RETENCION_IVA_PORCENTAJE As Decimal
+    Private _RETENCION_ISR_BASE As Decimal
+    Private _RETENCION_ISR_IMPORTE As Decimal
+    Private _RETENCION_ISR_PORCENTAJE As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -221,6 +227,60 @@ Public Class Class_CXC_Devoluciones_Detalle
             Me._GRADO_TOXICIDAD = Value
         End Set
     End Property
+
+    Public Property RETENCION_IVA_BASE() As Decimal
+        Get
+            Return Me._RETENCION_IVA_BASE
+        End Get
+        Set(value As Decimal)
+            Me._RETENCION_IVA_BASE = value
+        End Set
+    End Property
+
+    Public Property RETENCION_IVA_IMPORTE() As Decimal
+        Get
+            Return Me._RETENCION_IVA_IMPORTE
+        End Get
+        Set(value As Decimal)
+            Me._RETENCION_IVA_IMPORTE = value
+        End Set
+    End Property
+
+    Public Property RETENCION_IVA_PORCENTAJE() As Decimal
+        Get
+            Return Me._RETENCION_IVA_PORCENTAJE
+        End Get
+        Set(value As Decimal)
+            Me._RETENCION_IVA_PORCENTAJE = value
+        End Set
+    End Property
+
+    Public Property RETENCION_ISR_BASE() As Decimal
+        Get
+            Return Me._RETENCION_ISR_BASE
+        End Get
+        Set(value As Decimal)
+            Me._RETENCION_IVA_BASE = value
+        End Set
+    End Property
+
+    Public Property RETENCION_ISR_IMPORTE() As Decimal
+        Get
+            Return Me._RETENCION_ISR_IMPORTE
+        End Get
+        Set(value As Decimal)
+            Me._RETENCION_ISR_IMPORTE = value
+        End Set
+    End Property
+
+    Public Property RETENCION_ISR_PORCENTAJE() As Decimal
+        Get
+            Return Me._RETENCION_ISR_PORCENTAJE
+        End Get
+        Set(value As Decimal)
+            Me._RETENCION_ISR_PORCENTAJE = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -286,6 +346,12 @@ Public Class Class_CXC_Devoluciones_Detalle
             sqlParametro = .Parameters.Add("@LISTA_SERIES", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_SERIES
             sqlParametro = .Parameters.Add("@GRADO_TOXICIDAD", SqlDbType.SmallInt) : sqlParametro.Value = Me._GRADO_TOXICIDAD
             sqlParametro = .Parameters.Add("@ID_SIS_CAT_IMPUESTOS", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._ID_SIS_CAT_IMPUESTOS
+            sqlParametro = .Parameters.Add("@RETENCION_IVA_BASE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_BASE
+            sqlParametro = .Parameters.Add("@RETENCION_IVA_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_IMPORTE
+            sqlParametro = .Parameters.Add("@RETENCION_IVA_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_PORCENTAJE
+            sqlParametro = .Parameters.Add("@RETENCION_ISR_BASE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_BASE
+            sqlParametro = .Parameters.Add("@RETENCION_ISR_IMPORTE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_IMPORTE
+            sqlParametro = .Parameters.Add("@RETENCION_ISR_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_PORCENTAJE
 
             Try
                 Me._Conexion.Open()

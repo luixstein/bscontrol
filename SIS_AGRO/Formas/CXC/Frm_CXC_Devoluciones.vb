@@ -44,6 +44,12 @@ Public Class Frm_CXC_Devoluciones
     Private igyBASE_IVA As Short = 16
     Private iGyID_SIS_CAT_IMPUESTOS As Short = 17
     Private iGyGRADO_TOXICIDAD As Short = 18
+    Private iGyRetencionIVA_BASE As Short = 19
+    Private iGyRetencionIVA_IMPORTE As Short = 20
+    Private iGyRetencionIVA_PORCENTAJE As Short = 21
+    Private iGyRetencionISR_BASE As Short = 22
+    Private iGyRetencionISR_IMPORTE As Short = 23
+    Private iGyRetencionISR_PORCENTAJE As Short = 24
 #End Region
 
 #Region "Columnas grid series"
@@ -260,6 +266,8 @@ busca:
             Me.lblTotalDolares.Text = FormatImporteContable(0)
             Me.lblSubtotal.Text = FormatImporteContable(0)
             Me.lblImpuesto.Text = FormatImporteContable(0)
+            Me.lblRetencionIVA.Text = FormatImporteContable(0)
+            Me.lblRetencionISR.Text = FormatImporteContable(0)
             Me.lblTotal.Text = FormatImporteContable(0)
             Me.txtSaldo.Text = ""
 
@@ -375,7 +383,7 @@ busca:
     Private Sub FormateaGrid()
         Try
             Me.Grid.AutoRedraw = False
-            Me.Grid.Cols = 19
+            Me.Grid.Cols = 25
 
             Me.Grid.Column(Me.igyCodigo).Width = 75
             Me.Grid.Column(Me.igyTipoControlInventariable).Width = 25
@@ -393,6 +401,12 @@ busca:
             Me.Grid.Column(Me.igyIEPS_IMPORTE).Visible = False
             Me.Grid.Column(Me.igyBASE_IEPS).Visible = False
             Me.Grid.Column(Me.igyBASE_IVA).Visible = False
+            Me.Grid.Column(Me.iGyRetencionIVA_BASE).Visible = False
+            Me.Grid.Column(Me.iGyRetencionIVA_IMPORTE).Visible = False
+            Me.Grid.Column(Me.iGyRetencionIVA_PORCENTAJE).Visible = False
+            Me.Grid.Column(Me.iGyRetencionISR_BASE).Visible = False
+            Me.Grid.Column(Me.iGyRetencionISR_IMPORTE).Visible = False
+            Me.Grid.Column(Me.iGyRetencionISR_PORCENTAJE).Visible = False
 
             Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Visible = False 'Ocultar
             Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Visible = False 'Ocultar
@@ -415,6 +429,12 @@ busca:
             Me.Grid.Cell(0, Me.igyBASE_IVA).Text = "BASE_IVA"
             Me.Grid.Cell(0, Me.iGyID_SIS_CAT_IMPUESTOS).Text = "IVA?"
             Me.Grid.Cell(0, Me.iGyGRADO_TOXICIDAD).Text = "GradoTox"
+            Me.Grid.Cell(0, Me.iGyRetencionIVA_BASE).Text = "Ret. IVA Base"
+            Me.Grid.Cell(0, Me.iGyRetencionIVA_IMPORTE).Text = "Ret. IVA Importe"
+            Me.Grid.Cell(0, Me.iGyRetencionIVA_PORCENTAJE).Text = "Ret. IVA %"
+            Me.Grid.Cell(0, Me.iGyRetencionISR_BASE).Text = "Ret. ISR Base"
+            Me.Grid.Cell(0, Me.iGyRetencionISR_IMPORTE).Text = "Ret. ISR Importe"
+            Me.Grid.Cell(0, Me.iGyRetencionISR_PORCENTAJE).Text = "Ret. ISR %"
 
             Me.Grid.Column(Me.igyCantidad).Mask = FlexCell.MaskEnum.Numeric
             Me.Grid.Column(Me.igyCantidad).DecimalLength = Empresa_Sistema.DECIMALES_CANTIDAD
@@ -463,6 +483,12 @@ busca:
             Me.Grid.Column(Me.igyBASE_IVA).Locked = True
             Me.Grid.Column(Me.iGyID_SIS_CAT_IMPUESTOS).Locked = True
             Me.Grid.Column(Me.iGyGRADO_TOXICIDAD).Locked = True
+            Me.Grid.Column(Me.iGyRetencionIVA_BASE).Locked = True
+            Me.Grid.Column(Me.iGyRetencionIVA_IMPORTE).Locked = True
+            Me.Grid.Column(Me.iGyRetencionIVA_PORCENTAJE).Locked = True
+            Me.Grid.Column(Me.iGyRetencionISR_BASE).Locked = True
+            Me.Grid.Column(Me.iGyRetencionISR_IMPORTE).Locked = True
+            Me.Grid.Column(Me.iGyRetencionISR_PORCENTAJE).Locked = True
 
 
         Catch ex As Exception
@@ -728,6 +754,8 @@ busca:
                 Me.lblIEPS.Text = FormatImporteContable(.IEPS_DESGLOSADO)
                 Me.lblIEPSIncluido.Text = FormatImporteContable(.IEPS_INCLUIDO)
                 Me.lblImpuesto.Text = FormatImporteContable(.IMPUESTO)
+                Me.lblRetencionIVA.Text = FormatImporteContable(.RETENCION_IVA)
+                Me.lblRetencionISR.Text = FormatImporteContable(.RETENCION_ISR)
                 Me.lblTotal.Text = FormatImporteContable(.TOTAL)
 
                 Me.cboMoneda.Text = .CODIGO_MONEDA_SAT
@@ -839,6 +867,8 @@ busca:
                 .IEPS_DESGLOSADO = valorNumericoD(Me.lblIEPS.Text)
                 .IEPS_INCLUIDO = valorNumericoD(Me.lblIEPSIncluido.Text)
                 .IMPUESTO_PORCENTAJE = CDec(IIf(valorNumericoD(Me.lblImpuesto.Text) > 0, "16", "0"))
+                .RETENCION_IVA = valorNumericoD(Me.lblRetencionIVA.Text)
+                .RETENCION_ISR = valorNumericoD(Me.lblRetencionISR.Text)
 
                 .ES_COMPROBANTE_ELECTRONICO = "0" 'Por default ponemos que no es comprobante electrónico para no poner varios elses para establecerlo en el siguiente bloque de código.
                 If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
@@ -904,6 +934,12 @@ busca:
                         .oDetalle.LISTA_SERIES = sListaSeries
                         .oDetalle.GRADO_TOXICIDAD = CInt(Me.Grid.Cell(i, Me.iGyGRADO_TOXICIDAD).Text)
                         .oDetalle.ID_SIS_CAT_IMPUESTOS = Me.Grid.Cell(i, Me.iGyID_SIS_CAT_IMPUESTOS).Text
+                        .oDetalle.RETENCION_IVA_BASE = valorNumericoD(Me.Grid.Cell(i, Me.iGyRetencionIVA_BASE).Text)
+                        .oDetalle.RETENCION_IVA_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyRetencionIVA_IMPORTE).Text)
+                        .oDetalle.RETENCION_IVA_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.iGyRetencionIVA_PORCENTAJE).Text)
+                        .oDetalle.RETENCION_ISR_BASE = valorNumericoD(Me.Grid.Cell(i, Me.iGyRetencionISR_BASE).Text)
+                        .oDetalle.RETENCION_ISR_IMPORTE = valorNumericoD(Me.Grid.Cell(i, Me.iGyRetencionISR_IMPORTE).Text)
+                        .oDetalle.RETENCION_ISR_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.iGyRetencionISR_PORCENTAJE).Text)
 
                         If .oDetalle.GrabaRenglon = False Then
                             MsgBox("Error al tratar de grabar el detalle.", MsgBoxStyle.Exclamation, sProcedure)
@@ -1023,7 +1059,8 @@ busca:
             Dim i As Integer, dCantidad As Decimal, dPrecioCapturado As Decimal, dPorcentajeIVA As Decimal, dImporte As Decimal, iIDOrigen As Integer = 0, dImporteTotal As Double = 0
             Dim oArticulo As New Class_CatArticulos
             Dim dIEPS_PORCENTAJE As Decimal = 0, dIEPS_UNITARIO As Decimal = 0, dIEPS_IMPORTE As Decimal = 0, dBASE_IEPS As Decimal = 0, dBASE_IVA As Decimal = 0, dPRECIO_TOTAL As Decimal = 0, dIVA_IMPORTE As Decimal = 0
-            Dim dtSubtotal As Decimal = 0, dtIEPS As Decimal = 0, dtImpuesto As Decimal = 0, dtTotal As Decimal = 0
+            Dim dRetIVA_BASE As Decimal = 0, dRetIVA_IMPORTE As Decimal = 0, dRetIVA_PORCENTAJE As Decimal = 0, dRetISR_BASE As Decimal = 0, dRetISR_IMPORTE As Decimal = 0, dRetISR_PORCENTAJE As Decimal = 0
+            Dim dtSubtotal As Decimal = 0, dtIEPS As Decimal = 0, dtImpuesto As Decimal = 0, dtTotal As Decimal = 0, dtRetIVA As Decimal = 0, dtRetISR As Decimal = 0
             Dim sID_SIS_CAT_IMPUESTOS As String = "", sGRADO_TOXICIDAD As String = "0" '0=NO GRAVA IEPS
             Dim dPrecioConDescuento As Decimal, dImporteConDescuento As Decimal
 
@@ -1031,6 +1068,8 @@ busca:
             Me.lblIEPSIncluido.Text = FormatImporteContable(0)
             Me.lblIEPS.Text = FormatImporteContable(0)
             Me.lblImpuesto.Text = FormatImporteContable(0)
+            Me.lblRetencionIVA.Text = FormatImporteContable(0)
+            Me.lblRetencionISR.Text = FormatImporteContable(0)
             Me.lblTotal.Text = FormatImporteContable(0)
 
             Me.lblSubtotalDolares.Text = FormatImporteContable(0)
@@ -1045,6 +1084,7 @@ busca:
 
                         dCantidad = 0 : dPrecioCapturado = 0 : dPrecioConDescuento = 0 : iIDOrigen = 0 : dPorcentajeIVA = 0 : dIEPS_PORCENTAJE = 0 : sID_SIS_CAT_IMPUESTOS = "" : sGRADO_TOXICIDAD = "" : dImporteConDescuento = 0
                         dBASE_IEPS = 0 : dIEPS_IMPORTE = 0 : dIEPS_UNITARIO = 0 : dBASE_IVA = 0 : dIVA_IMPORTE = 0 : dPRECIO_TOTAL = 0 : dImporte = 0 : dImporteTotal = 0
+                        dRetIVA_BASE = 0 : dRetIVA_IMPORTE = 0 : dRetIVA_PORCENTAJE = 0 : dRetISR_BASE = 0 : dRetISR_IMPORTE = 0 : dRetISR_PORCENTAJE = 0
 
                         dCantidad = valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text)
                         dPrecioCapturado = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text) 'Precio con descuento(si es que la factura tiene descuento)
@@ -1053,6 +1093,8 @@ busca:
                         dIEPS_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.igyIEPS_PORCENTAJE).Text)
                         sID_SIS_CAT_IMPUESTOS = Me.Grid.Cell(i, Me.iGyID_SIS_CAT_IMPUESTOS).Text
                         sGRADO_TOXICIDAD = Me.Grid.Cell(i, Me.iGyGRADO_TOXICIDAD).Text
+                        dRetIVA_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.iGyRetencionIVA_PORCENTAJE).Text)
+                        dRetISR_PORCENTAJE = valorNumericoD(Me.Grid.Cell(i, Me.iGyRetencionISR_PORCENTAJE).Text)
 
                         dImporte = RedondearD((dCantidad * dPrecioCapturado), Empresa_Sistema.DECIMALES_CONTABILIDAD)
 
@@ -1067,6 +1109,12 @@ busca:
                             dIEPS_IMPORTE = RedondearD(dBASE_IEPS * (dIEPS_PORCENTAJE / 100), 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
                             dIEPS_UNITARIO = CDec(Redondear(dPrecioConDescuento * (dIEPS_PORCENTAJE / 100), 4))
                         End If
+
+                        dRetIVA_BASE = dImporteConDescuento
+                        dRetIVA_IMPORTE = RedondearD(dRetIVA_BASE * (dRetIVA_PORCENTAJE), 2)
+
+                        dRetISR_BASE = dImporteConDescuento
+                        dRetISR_IMPORTE = RedondearD(dRetISR_BASE * (dRetISR_PORCENTAJE), 2)
 
                         If sID_SIS_CAT_IMPUESTOS <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
                             dBASE_IVA = dImporteConDescuento + dIEPS_IMPORTE
@@ -1090,6 +1138,10 @@ busca:
                         Me.Grid.Cell(i, Me.igyBASE_IVA).Text = dBASE_IVA.ToString
                         Me.Grid.Cell(i, Me.igyImpuestoImporte).Text = dIVA_IMPORTE.ToString
                         Me.Grid.Cell(i, Me.igyImporte).Text = dImporteTotal.ToString
+                        Me.Grid.Cell(i, Me.iGyRetencionIVA_BASE).Text = dRetIVA_BASE.ToString
+                        Me.Grid.Cell(i, Me.iGyRetencionIVA_IMPORTE).Text = dRetIVA_IMPORTE.ToString
+                        Me.Grid.Cell(i, Me.iGyRetencionISR_BASE).Text = dRetISR_BASE.ToString
+                        Me.Grid.Cell(i, Me.iGyRetencionISR_IMPORTE).Text = dRetISR_IMPORTE.ToString
                     End If
 
                 End If
@@ -1108,10 +1160,14 @@ busca:
 
             dtSubtotal = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyImporte)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
             dtImpuesto = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            dtTotal = dtSubtotal + dtIEPS + dtImpuesto
+            dtRetIVA = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.iGyRetencionIVA_IMPORTE)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtRetISR = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.iGyRetencionISR_IMPORTE)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
+            dtTotal = dtSubtotal + dtIEPS + dtImpuesto + dtRetIVA + dtRetISR
 
             Me.lblSubtotal.Text = FormatImporteContable(dtSubtotal)
             Me.lblImpuesto.Text = FormatImporteContable(dtImpuesto)
+            Me.lblRetencionIVA.Text = FormatImporteContable(dtRetIVA)
+            Me.lblRetencionISR.Text = FormatImporteContable(dtRetISR)
             Me.lblTotal.Text = FormatImporteContable(dtTotal)
 
             If valorNumerico(Me.txtTipoCambio.Text) > 0 Then

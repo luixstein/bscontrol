@@ -68,6 +68,9 @@ Public Class Class_CXC_Devoluciones_Global
     Private _FOLIO_FISCAL_CANCELACION_SAT As String
     Private _ESTATUS_CANCELACION_CFDI As String
     Private _TIENE_IEPS_DESGLOSADO As Boolean
+
+    Private _RETENCION_IVA As Decimal
+    Private _RETENCION_ISR As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -476,6 +479,24 @@ Public Class Class_CXC_Devoluciones_Global
             Me._TIENE_IEPS_DESGLOSADO = Value
         End Set
     End Property
+
+    Public Property RETENCION_IVA() As Decimal
+        Get
+            Return Me._RETENCION_IVA
+        End Get
+        Set(value As Decimal)
+            Me._RETENCION_IVA = value
+        End Set
+    End Property
+
+    Public Property RETENCION_ISR() As Decimal
+        Get
+            Return Me._RETENCION_ISR
+        End Get
+        Set(value As Decimal)
+            Me._RETENCION_ISR = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -622,6 +643,8 @@ Public Class Class_CXC_Devoluciones_Global
                 sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
                 sqlParametro = .Parameters.Add("@CODIGO_TIPO_RELACION_CFDI", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_RELACION_CFDI
                 sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL
+                sqlParametro = .Parameters.Add("@RETENCION_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
+                sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
 
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -739,6 +762,9 @@ Public Class Class_CXC_Devoluciones_Global
                     Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA = IIf(txtLEN("" & dReader("CONTRASEÑA").ToString) = True, Decrypt("" & dReader("CONTRASEÑA").ToString, "r7"), "").ToString
 
                     Me._TIENE_IEPS_DESGLOSADO = CBool(dReader("TIENE_IEPS_DESGLOSADO").ToString)
+
+                    Me._RETENCION_IVA = CDec(dReader("RETENCION_IVA"))
+                    Me._RETENCION_ISR = CDec(dReader("RETENCION_ISR"))
 
                     bResultado = True
                 End If
@@ -866,7 +892,7 @@ Public Class Class_CXC_Devoluciones_Global
         sSQL = "SELECT DR.CODIGO_ARTICULO," &
             "CASE WHEN ART.ES_SERIALIZABLE = '1' THEN 'SER' WHEN ART.INVENTARIABLE= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO," &
             "VR.DESCRIPCION,DR.CANTIDAD,DR.PRECIO,DR.PRECIO_TOTAL,VR.UNIDAD_VENTA,DR.IMPUESTO_PORCENTAJE,DR.IMPORTE,DR.IMPUESTO_IMPORTE,DR.ID_VENTA_DETALLE,DR.IEPS_PORCENTAJE,DR.IEPS_UNITARIO,DR.IEPS_IMPORTE,DR.BASE_IEPS,DR.BASE_IVA, " &
-            "DR.ID_SIS_CAT_IMPUESTOS,DR.GRADO_TOXICIDAD " &
+            "DR.ID_SIS_CAT_IMPUESTOS,DR.GRADO_TOXICIDAD,DR.RETENCION_IVA_BASE,DR.RETENCION_IVA_IMPORTE,DR.RETENCION_IVA_PORCENTAJE,DR.RETENCION_ISR_BASE,DR.RETENCION_ISR_IMPORTE,DR.RETENCION_ISR_PORCENTAJE " &
             "FROM CXC_DEVOLUCION_DETALLE DR " &
             "INNER JOIN CAT_ARTICULOS ART ON(DR.CODIGO_ARTICULO=ART.CODIGO_ARTICULO) " &
             "INNER JOIN VENTA_DETALLE VR ON(DR.ID_VENTA_DETALLE=VR.ID_VENTA_DETALLE) " &
