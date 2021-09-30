@@ -1162,7 +1162,7 @@ busca:
             dtImpuesto = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyImpuestoImporte)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
             dtRetIVA = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.iGyRetencionIVA_IMPORTE)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
             dtRetISR = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.iGyRetencionISR_IMPORTE)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
-            dtTotal = dtSubtotal + dtIEPS + dtImpuesto + dtRetIVA + dtRetISR
+            dtTotal = dtSubtotal + dtIEPS + dtImpuesto - dtRetIVA - dtRetISR
 
             Me.lblSubtotal.Text = FormatImporteContable(dtSubtotal)
             Me.lblImpuesto.Text = FormatImporteContable(dtImpuesto)

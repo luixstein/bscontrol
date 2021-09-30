@@ -1391,15 +1391,26 @@ Module FacturacionElectronica33
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Conceptos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Dim ConceptoImpuestoTraslados As iConceptoImpuestoTraslados33
-            'Dim ConceptoImpuestoRetenciones As iConceptoImpuestoRetenciones33
+            Dim ConceptoImpuestoRetenciones As iConceptoImpuestoRetenciones33
 
             Dim drImporte As Decimal, drPrecio As Decimal, drCantidad As Decimal, drDESCUENTO_IMPORTE As Decimal, drIMPUESTO_PORCENTAJE As Decimal
             Dim drBASE_IEPS As Decimal, drBASE_IVA As Decimal, drIMPUESTO_IMPORTE As Decimal, drIEPS_IMPORTE As Decimal, drIEPS_PORCENTAJE As Decimal
+
+            Dim drRETENCION_IVA_PORCENTAJE As Decimal = 0, drRETENCION_IVA_BASE As Decimal = 0, drRETENCION_IVA_IMPORTE As Decimal = 0
+            Dim drRETENCION_ISR_PORCENTAJE As Decimal = 0, drRETENCION_ISR_BASE As Decimal = 0, drRETENCION_ISR_IMPORTE As Decimal = 0
 
             For Each row As DataRow In oDevolucion.ObtenerDetalleParaCFDI.Rows
                 drCantidad = CDec(row("CANTIDAD").ToString)
                 drIMPUESTO_PORCENTAJE = CDec(row("IMPUESTO_PORCENTAJE").ToString) / CDec("100.00")
                 drIEPS_PORCENTAJE = CDec(row("IEPS_PORCENTAJE").ToString) / CDec("100.00")
+
+                drRETENCION_IVA_PORCENTAJE = CDec(row("RETENCION_IVA_PORCENTAJE").ToString)
+                drRETENCION_IVA_BASE = CDec(row("RETENCION_IVA_BASE").ToString)
+                drRETENCION_IVA_IMPORTE = CDec(row("RETENCION_IVA_IMPORTE").ToString)
+
+                drRETENCION_ISR_PORCENTAJE = CDec(row("RETENCION_ISR_PORCENTAJE").ToString)
+                drRETENCION_ISR_BASE = CDec(row("RETENCION_ISR_BASE").ToString)
+                drRETENCION_ISR_IMPORTE = CDec(row("RETENCION_ISR_IMPORTE").ToString)
 
                 drPrecio = CDec(row("PRECIO_TOTAL").ToString)
                 drImporte = CDec(row("IMPORTE").ToString)
@@ -1412,6 +1423,7 @@ Module FacturacionElectronica33
                 End If
 
                 ConceptoImpuestoTraslados = New iConceptoImpuestoTraslados33
+                ConceptoImpuestoRetenciones = New iConceptoImpuestoRetenciones33
 
                 '003=IEPS,002=IVA
 
@@ -1453,6 +1465,24 @@ Module FacturacionElectronica33
                     End If
                 End If
 
+                If drRETENCION_IVA_IMPORTE > 0 Then
+                    If oDevolucion.CODIGO_MONEDA_SAT = "USD" Then
+                        drRETENCION_IVA_BASE = RedondearD(drRETENCION_IVA_BASE / dTIPO_DE_CAMBIO, 2)
+                        drRETENCION_IVA_IMPORTE = RedondearD(drRETENCION_IVA_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                    End If
+
+                    ConceptoImpuestoRetenciones.Add(Format(drRETENCION_IVA_BASE, "##0.00"), "002", "Tasa", Format(drRETENCION_IVA_PORCENTAJE, "0.#00000"), Format(drRETENCION_IVA_IMPORTE, "##0.00")) '002=IVA
+                End If
+
+                If drRETENCION_ISR_IMPORTE > 0 Then
+                    If oDevolucion.CODIGO_MONEDA_SAT = "USD" Then
+                        drRETENCION_ISR_BASE = RedondearD(drRETENCION_ISR_BASE / dTIPO_DE_CAMBIO, 2)
+                        drRETENCION_ISR_IMPORTE = RedondearD(drRETENCION_ISR_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                    End If
+
+                    ConceptoImpuestoRetenciones.Add(Format(drRETENCION_ISR_BASE, "##0.00"), "001", "Tasa", Format(drRETENCION_ISR_PORCENTAJE, "0.#00000"), Format(drRETENCION_ISR_IMPORTE, "##0.00")) '001=ISR
+                End If
+
                 'If oDevolucion.IEPS_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
                 '    If CDec(row("IEPS_PORCENTAJE").ToString) > 0 Then 'Este viene como 6,7,9
                 '        drBASE_IEPS = CDec(row("BASE_IEPS").ToString)
@@ -1485,11 +1515,12 @@ Module FacturacionElectronica33
                                   row("CODIGO_UNIDAD").ToString, row("UNIDAD_VENTA").ToString, fElectronicaValidaCampo(row("DESCRIPCION").ToString),
                                   Format(drPrecio, "##0." & StrDup(6, "0")),
                                   Format(drImporte, "##0.00"),
-                                  IIf(drDESCUENTO_IMPORTE > 0, Format(drDESCUENTO_IMPORTE, "##0.00"), "").ToString, ConceptoImpuestoTraslados, )
+                                  IIf(drDESCUENTO_IMPORTE > 0, Format(drDESCUENTO_IMPORTE, "##0.00"), "").ToString, ConceptoImpuestoTraslados, ConceptoImpuestoRetenciones)
             Next
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Impuestos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Dim arr() As iImpuestosTraslado33, dImpuestoIEPSImporte As Decimal, dImpuestoIVAImporte As Decimal, iEncontrados As Integer = 0
+            Dim arr2() As iImpuestosRetencion33, dRetencionIvaImporte As Decimal
 
             ''IEPS, deben acumularse, puede ser que mas de un artículo tenga el mismo % de ieps, de modo que aquí se juntan en uno sólo.
             iEncontrados = 0
@@ -1514,6 +1545,17 @@ Module FacturacionElectronica33
                     dImpuestoIVAImporte = CDec(arr(i).Importe)
 
                     Cfd.Impuestos.Traslados.Add(arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIVAImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                Next
+            End If
+
+            ''RETENCION IVA
+            iEncontrados = 0
+            arr2 = ImpuestosRetenidosAgrupados(Cfd, iEncontrados)
+
+            If iEncontrados > 0 Then
+                For i = 1 To UBound(arr2)
+                    dRetencionIvaImporte = CDec(arr2(i).Importe)
+                    Cfd.Impuestos.Retenciones.Add(arr2(i).Impuesto, Format(dRetencionIvaImporte, "#0.00"))
                 Next
             End If
 
