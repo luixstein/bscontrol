@@ -612,6 +612,11 @@ Enter:
             Else
                 Me.gpVendedor.Visible = False
             End If
+
+            If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO = True Then
+                Me.ckbOcSinRequisicion.Visible = False
+            End If
+
         Catch ex As Exception
             HandleError(Me.Name, "InicializaElemento", ex)
         End Try
@@ -841,6 +846,7 @@ Enter:
                     Me.ckbVerCostos.Checked = CBool(.VER_COSTOS)
                     Me.txtCodigoVendedor.Text = .CODIGO_VENDEDOR
                     Me.ckbVerFormulasConfidenciales.Checked = CBool(.PERMISOS_FORMULAS_CONFIDENCIALES)
+                    Me.ckbOcSinRequisicion.Checked = CBool(.PERMISO_GRABAR_OC_SIN_REQUISICION)
 
                     Me.txtDepartamento.Text = .CODIGO_DEPARTAMENTO
                     Dim oDepartamento As New Class_CatDepartamentos(.CODIGO_DEPARTAMENTO)
@@ -915,6 +921,7 @@ Enter:
                         .CODIGO_VENDEDOR = Me.txtCodigoVendedor.Text
                         .PERMISOS_FORMULAS_CONFIDENCIALES = Me.ckbVerFormulasConfidenciales.Checked
                         .CODIGO_DEPARTAMENTO = Me.txtDepartamento.Text
+                        .PERMISO_GRABAR_OC_SIN_REQUISICION = Convert.ToInt32(Me.ckbOcSinRequisicion.Checked).ToString
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO

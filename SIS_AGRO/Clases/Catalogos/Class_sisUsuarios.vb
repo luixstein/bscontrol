@@ -27,6 +27,7 @@ Public Class Class_sisUsuarios
     Private _CODIGO_VENDEDOR As String
     Private _PERMISO_FORMULAS_CONFIDENCIALES As Boolean
     Private _CODIGO_DEPARTAMENTO As String
+    Private _PERMISO_GRABAR_OC_SIN_REQUISICION As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -250,6 +251,15 @@ Public Class Class_sisUsuarios
             Me._CODIGO_DEPARTAMENTO = Value
         End Set
     End Property
+
+    Public Property PERMISO_GRABAR_OC_SIN_REQUISICION() As String
+        Get
+            Return Me._PERMISO_GRABAR_OC_SIN_REQUISICION
+        End Get
+        Set(value As String)
+            Me._PERMISO_GRABAR_OC_SIN_REQUISICION = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos de sistema"
@@ -345,6 +355,7 @@ Public Class Class_sisUsuarios
             End If
             sqlParametro = .Parameters.Add("@PERMISO_FORMULAS_CONFIDENCIALES", SqlDbType.NVarChar, 1) : sqlParametro.Value = Convert.ToInt32(Me._PERMISO_FORMULAS_CONFIDENCIALES).ToString
             sqlParametro = .Parameters.Add("@CODIGO_DEPARTAMENTO", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_DEPARTAMENTO
+            sqlParametro = .Parameters.Add("@PERMISO_GRABAR_OC_SIN_REQUISICION", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._PERMISO_GRABAR_OC_SIN_REQUISICION
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 15) : sqlParametro.Value = sAccion '"ACTUALIZAR" 'INSERTAR
 
             Try
@@ -398,6 +409,7 @@ Public Class Class_sisUsuarios
                     Me._CODIGO_VENDEDOR = "" & dReader("CODIGO_VENDEDOR").ToString
                     Me._PERMISO_FORMULAS_CONFIDENCIALES = CBool(dReader("PERMISO_FORMULAS_CONFIDENCIALES"))
                     Me._CODIGO_DEPARTAMENTO = dReader("CODIGO_DEPARTAMENTO").ToString
+                    Me._PERMISO_GRABAR_OC_SIN_REQUISICION = "" & dReader("PERMISO_GRABAR_OC_SIN_REQUISICION").ToString
 
                     bResultado = True
                 End If

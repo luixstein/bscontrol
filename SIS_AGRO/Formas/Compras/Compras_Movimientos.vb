@@ -1367,7 +1367,15 @@ Buscar:
             End If
         End If
 
-        If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso Me.chkEsInventariable.Checked And txtLEN(Me.TxtRequisicion.Text) Then
+        If Empresa_Sistema.MODO_REQUISICIONES_INVENTARIO AndAlso Me.chkEsInventariable.Checked Then
+
+            'Valida que tenga folio de requisicion
+            If txtLEN(Me.TxtRequisicion.Text) = False And Usuario.PERMISO_GRABAR_OC_SIN_REQUISICION = "0" Then
+                MsgBox("Asígne un folio de requisición.", MsgBoxStyle.Exclamation, sProcedure)
+                Me.TxtRequisicion.Focus()
+                Return False
+            End If
+
             'Valida pero dejará grabar aunque no haya disponible de requisición, por eso no pregunta por true/false
             Me.ValidaDisponiblesRequisicion(False)
         End If
