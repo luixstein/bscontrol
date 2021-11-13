@@ -53,6 +53,12 @@ Public Class Frm_Contabilidad_Auxiliar_Mayor
             Me.Imprimir()
         End If
     End Sub
+
+    Private Sub tsbImprimirProveedores_Click(sender As Object, e As EventArgs) Handles tsbImprimirProveedores.Click
+        If ValidarCuentaContable() Then
+            Me.ImprimirFormatoProveedores()
+        End If
+    End Sub
 #End Region
 
 #Region "Eventos de objetos"
@@ -274,6 +280,39 @@ BusquedaVisual:
         Dim oReporte As Class_Reporte
         Try
             oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
+
+            If Me.ValidarPeriodo = False Then
+                Exit Sub
+            End If
+
+            If Not oReporte.RptCargado Then
+                Exit Sub
+            End If
+
+            Rpt.SetParameterValue("@CUENTA_CONTABLE1", "" & Me.TxtCuenta1.Text)
+            Rpt.SetParameterValue("@CUENTA_CONTABLE2", "" & Me.TxtCuenta1.Text)
+            Rpt.SetParameterValue("@FECHA1", Format(DtFechaDesde.Value, "yyyy-dd-MM"))
+            Rpt.SetParameterValue("@FECHA2", Format(DtFechaHasta.Value, "yyyy-dd-MM"))
+            Rpt.SetParameterValue("@ID_CON_EJERCICIO", Me.CmbEjercicio.SelectedValue)
+            Rpt.SetParameterValue("@MOSTRAR_SOLO_CUENTAS_CON_SALDO_MAYOR_QUE_CERO", 0)
+            Rpt.SetParameterValue("@FILTRO_CONTRAPOLIZAS", CInt(IIf(Me.cbkFiltoContraPolizas.Checked, "1", "0").ToString).ToString)
+
+            Dim frm As New Reporte(Rpt)
+            frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+            frm.Show()
+        Catch ex As Exception
+            HandleError(Me.Name, "Imprimir", ex)
+        Finally
+            oReporte = Nothing
+        End Try
+    End Sub
+
+    Private Sub ImprimirFormatoProveedores()
+        Dim StrFiltros As String = ""
+        Dim Rpt As New ReportDocument
+        Dim oReporte As Class_Reporte
+        Try
+            oReporte = New Class_Reporte("RPT_CONTABILIDAD_AUXILIAR_DE_MAYOR_PROVEEDORES", Rpt)
 
             If Me.ValidarPeriodo = False Then
                 Exit Sub
