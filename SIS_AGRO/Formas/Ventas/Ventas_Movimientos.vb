@@ -4533,7 +4533,7 @@ buscaCentrosCostos:
                     If txtLEN(StrCod) = False Then
                         Return
                     End If
-                    Dim oPrecio As New VentasSeleccionPrecio(StrCod)
+                    Dim oPrecio As New VentasSeleccionPrecio(StrCod, Me.CboAlmacen.SelectedValue.ToString)
                     oPrecio.ShowDialog()
                     Me.Grid.Cell(Renglon, Me.igyPrecio).Text = oPrecio.PrecioSeleccionado.ToString
                     oPrecio.Dispose()

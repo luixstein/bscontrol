@@ -37,6 +37,8 @@ Partial Class Catalogo_Precios_Venta
         Me.lblArticulo = New System.Windows.Forms.Label()
         Me.cboPlaza = New System.Windows.Forms.ComboBox()
         Me.lblDisplayPlaza = New System.Windows.Forms.Label()
+        Me.lblDisplayAlmacen = New System.Windows.Forms.Label()
+        Me.CboAlmacen = New System.Windows.Forms.ComboBox()
         Me.tsMenu.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -55,7 +57,7 @@ Partial Class Catalogo_Precios_Venta
         Me.Grid.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.Grid.Location = New System.Drawing.Point(16, 164)
         Me.Grid.LockButton = True
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 1
         Me.Grid.Size = New System.Drawing.Size(1257, 466)
@@ -68,7 +70,7 @@ Partial Class Catalogo_Precios_Venta
         Me.cboFamilia.FormattingEnabled = True
         Me.cboFamilia.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
         Me.cboFamilia.Location = New System.Drawing.Point(131, 112)
-        Me.cboFamilia.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboFamilia.Margin = New System.Windows.Forms.Padding(4)
         Me.cboFamilia.Name = "cboFamilia"
         Me.cboFamilia.Size = New System.Drawing.Size(281, 24)
         Me.cboFamilia.TabIndex = 2
@@ -89,7 +91,7 @@ Partial Class Catalogo_Precios_Venta
         Me.cboLinea.FormattingEnabled = True
         Me.cboLinea.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
         Me.cboLinea.Location = New System.Drawing.Point(131, 78)
-        Me.cboLinea.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboLinea.Margin = New System.Windows.Forms.Padding(4)
         Me.cboLinea.Name = "cboLinea"
         Me.cboLinea.Size = New System.Drawing.Size(281, 24)
         Me.cboLinea.TabIndex = 1
@@ -152,7 +154,7 @@ Partial Class Catalogo_Precios_Venta
         'txtCodigoArticulo
         '
         Me.txtCodigoArticulo.Location = New System.Drawing.Point(131, 46)
-        Me.txtCodigoArticulo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoArticulo.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoArticulo.MaxLength = 16
         Me.txtCodigoArticulo.Name = "txtCodigoArticulo"
         Me.txtCodigoArticulo.Size = New System.Drawing.Size(211, 22)
@@ -189,11 +191,33 @@ Partial Class Catalogo_Precios_Venta
         Me.lblDisplayPlaza.TabIndex = 361
         Me.lblDisplayPlaza.Text = "Plaza :"
         '
+        'lblDisplayAlmacen
+        '
+        Me.lblDisplayAlmacen.AutoSize = True
+        Me.lblDisplayAlmacen.Location = New System.Drawing.Point(474, 116)
+        Me.lblDisplayAlmacen.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayAlmacen.Name = "lblDisplayAlmacen"
+        Me.lblDisplayAlmacen.Size = New System.Drawing.Size(70, 17)
+        Me.lblDisplayAlmacen.TabIndex = 363
+        Me.lblDisplayAlmacen.Text = "Almacén :"
+        '
+        'CboAlmacen
+        '
+        Me.CboAlmacen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboAlmacen.FormattingEnabled = True
+        Me.CboAlmacen.Location = New System.Drawing.Point(571, 110)
+        Me.CboAlmacen.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboAlmacen.Name = "CboAlmacen"
+        Me.CboAlmacen.Size = New System.Drawing.Size(281, 24)
+        Me.CboAlmacen.TabIndex = 362
+        '
         'Catalogo_Precios_Venta
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1289, 645)
+        Me.Controls.Add(Me.lblDisplayAlmacen)
+        Me.Controls.Add(Me.CboAlmacen)
         Me.Controls.Add(Me.cboPlaza)
         Me.Controls.Add(Me.lblDisplayPlaza)
         Me.Controls.Add(Me.lblArticulo)
@@ -206,7 +230,7 @@ Partial Class Catalogo_Precios_Venta
         Me.Controls.Add(Me.lblDisplayLinea)
         Me.Controls.Add(Me.Grid)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Precios_Venta"
         Me.Text = "Catálogo de precios de venta"
@@ -230,4 +254,6 @@ Partial Class Catalogo_Precios_Venta
     Friend WithEvents lblArticulo As System.Windows.Forms.Label
     Friend WithEvents cboPlaza As System.Windows.Forms.ComboBox
     Friend WithEvents lblDisplayPlaza As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayAlmacen As System.Windows.Forms.Label
+    Friend WithEvents CboAlmacen As System.Windows.Forms.ComboBox
 End Class
