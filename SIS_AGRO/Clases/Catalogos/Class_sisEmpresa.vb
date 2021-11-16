@@ -99,6 +99,7 @@ Public NotInheritable Class Class_sisEmpresa
     Private _CONTRASEÑA_PRECIO_MENOR_COSTO As String
     Private _PORCENTAJE_UTLIDAD_VENTA_MINIMO As Double
     Private _CODIGO_ALMACEN_POR_CLIENTE As Boolean
+    Private _PRECIOS_VENTA_POR_ALMACEN As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -750,6 +751,12 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
+    Public ReadOnly Property PRECIOS_VENTA_POR_ALMACEN As Boolean
+        Get
+            Return Me._PRECIOS_VENTA_POR_ALMACEN
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1114,6 +1121,7 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._CONTRASEÑA_PRECIO_MENOR_COSTO = "" & dReader("CONTRASEÑA_PRECIO_MENOR_COSTO").ToString
                     Me._PORCENTAJE_UTLIDAD_VENTA_MINIMO = CDbl(dReader("PORCENTAJE_UTLIDAD_VENTA_MINIMO"))
                     Me._CODIGO_ALMACEN_POR_CLIENTE = CBool(dReader("CODIGO_ALMACEN_POR_CLIENTE"))
+                    Me._PRECIOS_VENTA_POR_ALMACEN = CBool(dReader("PRECIOS_VENTA_POR_ALMACEN"))
 
                     dReader.Close()
                     bResultado = True

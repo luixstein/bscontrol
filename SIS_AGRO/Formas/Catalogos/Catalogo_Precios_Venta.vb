@@ -28,7 +28,14 @@ Public Class Catalogo_Precios_Venta
         Me.DesplegarLineas()
         Me.DesplegarFamilias()
         Me.DesplegarPlazas()
+        Me.DesplegarAlmacenes()
         Me.Inicializa()
+
+        If Empresa_Sistema.PRECIOS_VENTA_POR_ALMACEN = False Then
+            Me.CboAlmacen.Visible = False
+            Me.lblDisplayAlmacen.Visible = False
+        End If
+
         Me.Running = True
     End Sub
 
@@ -74,6 +81,10 @@ buscar:
     End Sub
 
     Private Sub cboPlaza_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPlaza.SelectedIndexChanged
+        Me.DesplegarElementos()
+    End Sub
+
+    Private Sub cboAlmacen_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CboAlmacen.SelectedIndexChanged
         Me.DesplegarElementos()
     End Sub
 
@@ -286,11 +297,29 @@ buscar:
         End Try
     End Sub
 
+    Private Sub DesplegarAlmacenes()
+        Try
+            Dim oAlmacenes As New Class_CatAlmacenes
+            With Me.CboAlmacen
+                .DisplayMember = "NOMBRE_ALMACEN"
+                .ValueMember = "CODIGO_ALMACEN"
+                Dim dView As New Data.DataView(oAlmacenes.ObtenerAlmacenes)
+                dView.Sort = "NOMBRE_ALMACEN"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedValue = Plaza.CODIGO_ALMACEN_PRINCIPAL 'Usuario.Codigo_Almacen
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarAlmacenes", ex)
+        End Try
+    End Sub
+
     Private Function DesplegarElementos() As Boolean
         Try
             If Me.Running = True Then
                 Me.Grid.AutoRedraw = False
-                Me.Grid.DataSource = Me.oPrecios.ObtenerElementos(Me.txtCodigoArticulo.Text, Me.cboLinea.SelectedValue.ToString, Me.cboFamilia.SelectedValue.ToString, CInt(Me.cboPlaza.SelectedValue))
+                Me.Grid.DataSource = Me.oPrecios.ObtenerElementos(Me.txtCodigoArticulo.Text, Me.cboLinea.SelectedValue.ToString, Me.cboFamilia.SelectedValue.ToString, CInt(Me.cboPlaza.SelectedValue), Me.CboAlmacen.SelectedValue.ToString)
                 Me.FormateaGrid()
             End If
         Catch ex As Exception
@@ -329,6 +358,7 @@ buscar:
             Me.oPrecios.PRECIO4 = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio4).Text)
             Me.oPrecios.PRECIO5 = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyPrecio5).Text)
             Me.oPrecios.PORCENTAJE_MARGEN_UTILIDAD = valorNumericoD(Me.Grid.Cell(Renglon, Me.igyMargenUtilidad).Text)
+            Me.oPrecios.CODIGO_ALMACEN = Me.CboAlmacen.SelectedValue.ToString
             Me.oPrecios.GrabarCambioPrecio()
             bResultado = True
         Catch ex As Exception

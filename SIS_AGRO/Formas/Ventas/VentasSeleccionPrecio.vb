@@ -5,6 +5,7 @@ Public Class VentasSeleccionPrecio
     Private oPrecio As Class_CatPreciosVenta
     Private _CodigoArticulo As String
     Private _PrecioSeleccionado As Decimal = 0
+    Private _CodigoAlmacen As String
 
     Public ReadOnly Property PrecioSeleccionado() As Decimal
         Get
@@ -17,9 +18,16 @@ Public Class VentasSeleccionPrecio
         InitializeComponent()
     End Sub
 
-    Public Sub New(ByVal CodigoArticulo As String)
+    Public Sub New(ByVal CodigoArticulo As String, Optional ByVal CodigoAlmacen As String = "")
         Me.New()
         Me._CodigoArticulo = CodigoArticulo
+
+        If Empresa_Sistema.PRECIOS_VENTA_POR_ALMACEN = False Then
+            Me._CodigoAlmacen = ""
+        Else
+            Me._CodigoAlmacen = CodigoAlmacen
+        End If
+
         Me.Consultar()
     End Sub
 
@@ -66,7 +74,7 @@ Public Class VentasSeleccionPrecio
 #Region "Métodos y procedimientos"
     Private Function Consultar() As Boolean
         Try
-            Me.oPrecio = New Class_CatPreciosVenta(Me._CodigoArticulo, Plaza.CODIGO_PLAZA)
+            Me.oPrecio = New Class_CatPreciosVenta(Me._CodigoArticulo, Plaza.CODIGO_PLAZA, Me._CodigoAlmacen)
             If Me.oPrecio.Existe = True Then
                 Me.txtPrecio1.Text = FormatPrecio(Me.oPrecio.PRECIO1)
                 Me.txtPrecio2.Text = FormatPrecio(Me.oPrecio.PRECIO2)

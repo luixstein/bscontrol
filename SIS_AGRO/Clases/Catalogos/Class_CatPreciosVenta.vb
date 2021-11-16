@@ -16,6 +16,7 @@ Public Class Class_CatPreciosVenta
     Private _PRECIO5 As Decimal
     Private _PORCENTAJE_MARGEN_UTILIDAD As Decimal
     Private _CODIGO_PLAZA As Integer
+    Private _CODIGO_ALMACEN As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -117,6 +118,16 @@ Public Class Class_CatPreciosVenta
             Me._CODIGO_PLAZA = value
         End Set
     End Property
+
+    Public Property CODIGO_ALMACEN() As String
+        Get
+            Return Me._CODIGO_ALMACEN
+        End Get
+        Set(value As String)
+            Me._CODIGO_ALMACEN = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -207,11 +218,12 @@ Public Class Class_CatPreciosVenta
         Me._QueryOrder = ""
     End Sub
 
-    Public Sub New(ByVal sArticulo As String, ByVal iCodigoPlaza As Integer)
+    Public Sub New(ByVal sArticulo As String, ByVal iCodigoPlaza As Integer, Optional ByVal sCodigoAlmacen As String = "")
         Me.New()
         Try
             Me._CODIGO_ARTICULO = sArticulo
             Me._CODIGO_PLAZA = iCodigoPlaza
+            Me._CODIGO_ALMACEN = sCodigoAlmacen
             If Me.Consultar = True Then
                 Me._Existe = True
                 'Throw New Exception("El artículo no existe.")
@@ -246,6 +258,7 @@ Public Class Class_CatPreciosVenta
             sqlParametro = .Parameters.Add("@PRECIO5", SqlDbType.Money) : sqlParametro.Value = Me._PRECIO5
             sqlParametro = .Parameters.Add("@PORCENTAJE_MARGEN_UTILIDAD", SqlDbType.Decimal) : sqlParametro.Value = Me._PORCENTAJE_MARGEN_UTILIDAD
             sqlParametro = .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_PLAZA
+            sqlParametro = .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ALMACEN
 
             Try
                 Me._Conexion.Open()
@@ -265,16 +278,24 @@ Public Class Class_CatPreciosVenta
 
     Public Function Consultar() As Boolean
         Dim bResultado As Boolean = False
+        Dim filtroAlmacen As String = ""
+
+        If Empresa_Sistema.PRECIOS_VENTA_POR_ALMACEN Then
+            filtroAlmacen = " AND P.CODIGO_ALMACEN='" & Me._CODIGO_ALMACEN & "'"
+        Else
+            filtroAlmacen = " AND P.CODIGO_ALMACEN IS NULL"
+        End If
+
         Dim cmd As New SqlCommand("SELECT P.CODIGO_ARTICULO,A.DESCRIPCION,P.PRECIO1,P.PRECIO2,P.PRECIO3,P.PRECIO4,P.PRECIO5,T.IEPS_PORCENTAJE, " &
                                     "ROUND(P.PRECIO1*(1+(T.IEPS_PORCENTAJE/100.00)),3) PRECIO1_IEPS, " &
                                     "ROUND(P.PRECIO2*(1+(T.IEPS_PORCENTAJE/100.00)),3) PRECIO2_IEPS, " &
                                     "ROUND(P.PRECIO3*(1+(T.IEPS_PORCENTAJE/100.00)),3) PRECIO3_IEPS, " &
                                     "ROUND(P.PRECIO4*(1+(T.IEPS_PORCENTAJE/100.00)),3) PRECIO4_IEPS, " &
                                     "ROUND(P.PRECIO5*(1+(T.IEPS_PORCENTAJE/100.00)),3) PRECIO5_IEPS, " &
-                                    "P.PORCENTAJE_MARGEN_UTILIDAD " &
+                                    "P.PORCENTAJE_MARGEN_UTILIDAD,P.CODIGO_ALMACEN " &
                                     "FROM CAT_PRECIOS_VENTA P INNER JOIN CAT_ARTICULOS A ON(P.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
                                     "LEFT JOIN CAT_GRADOS_TOXICIDAD T ON(A.GRADO_TOXICIDAD=T.GRADO_TOXICIDAD)" &
-                                    "WHERE P.CODIGO_ARTICULO='" & sReplace(Me._CODIGO_ARTICULO) & "' AND P.CODIGO_PLAZA=" & Me._CODIGO_PLAZA.ToString & " ", Me._Conexion)
+                                    "WHERE P.CODIGO_ARTICULO='" & sReplace(Me._CODIGO_ARTICULO) & "' AND P.CODIGO_PLAZA=" & Me._CODIGO_PLAZA.ToString & filtroAlmacen & " ", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -298,6 +319,7 @@ Public Class Class_CatPreciosVenta
                     Me._PRECIO4_IEPS = CDec(dReader("PRECIO4_IEPS").ToString())
                     Me._PRECIO5_IEPS = CDec(dReader("PRECIO5_IEPS").ToString())
                     Me._PORCENTAJE_MARGEN_UTILIDAD = CDec(dReader("PORCENTAJE_MARGEN_UTILIDAD").ToString())
+                    Me._CODIGO_ALMACEN = "" & dReader("CODIGO_ALMACEN").ToString()
                     bResultado = True
                 End If
                 dReader.Close()
@@ -312,7 +334,7 @@ Public Class Class_CatPreciosVenta
         Return bResultado
     End Function
 
-    Public Function ObtenerElementos(ByVal sArticulo As String, ByVal sLinea As String, ByVal sFamilia As String, ByVal iCodigoPlaza As Integer) As System.Data.DataTable
+    Public Function ObtenerElementos(ByVal sArticulo As String, ByVal sLinea As String, ByVal sFamilia As String, ByVal iCodigoPlaza As Integer, ByVal sCodigoAlmacen As String) As System.Data.DataTable
         Dim dt As New DataTable
         Try
             Using da As New SqlDataAdapter("MP_RPT_CAT_PRECIOS_VENTA", Me._Conexion)
@@ -323,6 +345,7 @@ Public Class Class_CatPreciosVenta
                     .Parameters.Add("@CODIGO_LINEA", SqlDbType.NVarChar, 4).Value = sLinea
                     .Parameters.Add("@CODIGO_FAMILIA", SqlDbType.NVarChar, 4).Value = sFamilia
                     .Parameters.Add("@CODIGO_PLAZA", SqlDbType.SmallInt).Value = iCodigoPlaza
+                    .Parameters.Add("@CODIGO_ALMACEN", SqlDbType.NVarChar, 4).Value = sCodigoAlmacen
                 End With
 
                 da.Fill(dt)
