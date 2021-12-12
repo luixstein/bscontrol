@@ -361,10 +361,16 @@ Public Class Class_Contabilidad_Poliza_Global
                                 Me._FECHA_REACTIVACION_SERVIDOR = CDate(dReader("FECHA_REACTIVACION_SERVIDOR"))
                             End If
                         Case "C"
-                            Me._CODIGO_USUARIO_CANCELO = CType(dReader("CODIGO_USUARIO_CANCELO"), Integer)
-                            Me._NOMBRE_USUARIO_CANCELO = CType(dReader("NOMBRE_USUARIO_CANCELO"), String)
-                            Me._FECHA_CANCELACION = CDate(dReader("FECHA_CANCELACION"))
-                            Me._FECHA_CANCELACION_SERVIDOR = CDate(dReader("FECHA_CANCELACION_SERVIDOR"))
+                            If Not (IsDBNull(dReader("CODIGO_USUARIO_CANCELO"))) Then Me._CODIGO_USUARIO_CANCELO = CType(dReader("CODIGO_USUARIO_CANCELO"), Integer)
+                            If Not (IsDBNull(dReader("NOMBRE_USUARIO_CANCELO"))) Then Me._NOMBRE_USUARIO_CANCELO = CType(dReader("NOMBRE_USUARIO_CANCELO"), String)
+                            If Not (IsDBNull(dReader("FECHA_CANCELACION"))) Then Me._FECHA_CANCELACION = CDate(dReader("FECHA_CANCELACION"))
+                            If Not (IsDBNull(dReader("FECHA_CANCELACION_SERVIDOR"))) Then Me._FECHA_CANCELACION_SERVIDOR = CDate(dReader("FECHA_CANCELACION_SERVIDOR"))
+
+                            'Me._CODIGO_USUARIO_CANCELO = CType(dReader("CODIGO_USUARIO_CANCELO"), Integer)
+                            'Me._NOMBRE_USUARIO_CANCELO = CType(dReader("NOMBRE_USUARIO_CANCELO"), String)
+                            'Me._FECHA_CANCELACION = CDate(dReader("FECHA_CANCELACION"))
+                            'Me._FECHA_CANCELACION_SERVIDOR = CDate(dReader("FECHA_CANCELACION_SERVIDOR"))
+
                     End Select
 
                     If Me._CODIGO_TIPO_DOCUMENTO = "E" Then
