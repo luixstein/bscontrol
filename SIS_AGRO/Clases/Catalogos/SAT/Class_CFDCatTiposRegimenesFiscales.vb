@@ -11,6 +11,7 @@ Public Class Class_CFDCatTiposRegimenesFiscales
     Private _APLICA_TIPO_FISICA As Boolean
     Private _APLICA_TIPO_MORAL As Boolean
     Private _PERMITE_SELECCION As Boolean
+    Private _ESTATUS As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -62,11 +63,12 @@ Public Class Class_CFDCatTiposRegimenesFiscales
         End Get
     End Property
 
-    Public ReadOnly Property PERMITE_SELECCION() As Boolean
+    Public ReadOnly Property ESTATUS() As String
         Get
-            Return Me._PERMITE_SELECCION
+            Return Me._ESTATUS
         End Get
     End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -97,6 +99,20 @@ Public Class Class_CFDCatTiposRegimenesFiscales
         Me._QueryOrder = " ORDER BY CODIGO_REGIMEN_FISCAL"
     End Sub
 
+    Public Sub New(ByVal sCodigo As String)
+        Me.New()
+        Me._CODIGO_REGIMEN_FISCAL = sCodigo
+        Try
+            If Me.Consultar = True Then
+                Me._EXISTE = True
+                'Else
+                '    Throw New Exception("El PRODUCTOR no existe.")
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "New", ex)
+        End Try
+    End Sub
+
     Protected Overrides Sub Finalize()
         'Me._Conexion.Dispose()
         MyBase.Finalize()
@@ -122,6 +138,7 @@ Public Class Class_CFDCatTiposRegimenesFiscales
                     Me._APLICA_TIPO_FISICA = CBool(dReader("APLICA_TIPO_FISICA").ToString)
                     Me._APLICA_TIPO_MORAL = CBool(dReader("APLICA_TIPO_MORAL").ToString)
                     Me._PERMITE_SELECCION = CBool(dReader("PERMITE_SELECCION").ToString)
+                    Me._ESTATUS = dReader("ESTATUS").ToString
                     bResultado = True
                 End If
                 dReader.Close()
@@ -159,6 +176,27 @@ Public Class Class_CFDCatTiposRegimenesFiscales
             da.Dispose()
         End Try
         Return dTable
+    End Function
+
+    Public Function BusquedaVisual_PorDescripcion(ByVal sTipoPersona As String) As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+
+        f.Text = "Búsqueda de regímenes fiscales por nombre."
+        f.sCampo = "NOMBRE_REGIMEN_FISCAL"
+        f.sOrder = "NOMBRE_REGIMEN_FISCAL"
+        f.sTable = "CDF_CAT_TIPOS_REGIMENES_FISCALES"
+        f.sQl = "SELECT CODIGO_REGIMEN_FISCAL,NOMBRE_REGIMEN_FISCAL,APLICA_TIPO_FISICA,APLICA_TIPO_MORAL FROM CDF_CAT_TIPOS_REGIMENES_FISCALES WHERE ESTATUS='A' AND " & IIf(sTipoPersona = "F", "APLICA_TIPO_FISICA='1'", "APLICA_TIPO_MORAL='1'").ToString & " AND "
+        f.Inicia("%")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
+        End Try
+        Return Resultado
     End Function
 #End Region
 

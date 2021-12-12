@@ -235,7 +235,7 @@
     <Compile Include="Clases\Catalogos\Class_Cat_UnidadesVenta.vb" />
     <Compile Include="Clases\Catalogos\Class_SisCatImpuestosFlete.vb" />
     <Compile Include="Clases\Catalogos\Class_SisCatImpuestos.vb" />
-    <Compile Include="Clases\Catalogos\Class_CFDCatTiposRegimenesFiscales.vb" />
+    <Compile Include="Clases\Catalogos\SAT\Class_CFDCatTiposRegimenesFiscales.vb" />
     <Compile Include="Clases\Catalogos\Class_SisCatTasaOCuotaSAT.vb" />
     <Compile Include="Clases\Catalogos\Class_sisEmpresas.vb" />
     <Compile Include="Clases\Catalogos\Class_SisEstados.vb" />

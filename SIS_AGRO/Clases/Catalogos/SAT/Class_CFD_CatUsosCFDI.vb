@@ -215,6 +215,29 @@ Public Class Class_CFD_CatUsosCFDI
         Return bResultado
     End Function
 
+    Public Function BusquedaVisual_PorDescripcion(ByVal sTipoPersona As String) As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+
+        f.Text = "Búsqueda de usos de CFDI por nombre."
+        f.sCampo = "NOMBRE_USO_CFDI"
+        f.sOrder = "NOMBRE_USO_CFDI"
+        f.sTable = "CFDI_CAT_USOS_CFDI"
+        f.sQl = "SELECT CODIGO_USO_CFDI,NOMBRE_USO_CFDI,APLICA_TIPO_FISICA,APLICA_TIPO_MORAL,REGIMEN_FISCAL_RECEPTOR " &
+            "FROM CFDI_CAT_USOS_CFDI " &
+            "WHERE ESTATUS='A' AND " & IIf(sTipoPersona = "F", "APLICA_TIPO_FISICA='1'", "APLICA_TIPO_MORAL='1'").ToString & " AND "
+        f.Inicia("%")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
+        End Try
+        Return Resultado
+    End Function
+
 #End Region
 
 End Class

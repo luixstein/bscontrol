@@ -54,6 +54,7 @@ Public Class Class_CatClientes
     Private _CODIGO_GIRO As String
     Private _CODIGO_TIPO_NEGOCIACION As String
     Private _CUENTA_CONTABLE_ANTICIPOS As String
+    Private _CODIGO_REGIMEN_FISCAL As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -483,6 +484,14 @@ Public Class Class_CatClientes
         End Set
     End Property
 
+    Public Property CODIGO_REGIMEN_FISCAL() As String
+        Get
+            Return Me._CODIGO_REGIMEN_FISCAL
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_REGIMEN_FISCAL = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -626,7 +635,7 @@ Public Class Class_CatClientes
             .CommandText = "MP_CAT_CLIENTES_GRABAR"
 
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper : sqlParametro.Direction = ParameterDirection.InputOutput
-            sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._NOMBRE_CLIENTE.ToUpper
+            sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.NVarChar, 254) : sqlParametro.Value = Me._NOMBRE_CLIENTE.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS.ToUpper
             sqlParametro = .Parameters.Add("@RFC", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._RFC.ToString.ToUpper
             sqlParametro = .Parameters.Add("@TIPO_PERSONA", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._TIPO_PERSONA.ToString.ToUpper
@@ -667,6 +676,7 @@ Public Class Class_CatClientes
             sqlParametro = .Parameters.Add("@CORREO_CLIENTE_PAGOS", SqlDbType.NVarChar, 500) : sqlParametro.Value = Me._CORREO_CLIENTE_PAGOS.ToString
             sqlParametro = .Parameters.Add("@CODIGO_GIRO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_GIRO)
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_NEGOCIACION", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_TIPO_NEGOCIACION)
+            sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.NVarChar, 3) : sqlParametro.Value = CInt(Me._CODIGO_REGIMEN_FISCAL)
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._AGREGAR.ToString
             Try
                 Me._Conexion.Open()
@@ -753,6 +763,7 @@ Public Class Class_CatClientes
                     Me._CODIGO_GIRO = "" & dReader("CODIGO_GIRO").ToString
                     Me._CODIGO_TIPO_NEGOCIACION = "" & dReader("CODIGO_TIPO_NEGOCIACION").ToString
                     Me._CUENTA_CONTABLE_ANTICIPOS = "" & dReader("CUENTA_CONTABLE_ANTICIPOS").ToString
+                    Me._CODIGO_REGIMEN_FISCAL = "" & dReader("CODIGO_REGIMEN_FISCAL").ToString
 
                     bResultado = True
                 End If
