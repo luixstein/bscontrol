@@ -221,7 +221,7 @@ Public Class Class_CFD_CatUsosCFDI
 
         f.Text = "Búsqueda de usos de CFDI por nombre."
         f.sCampo = "NOMBRE_USO_CFDI"
-        f.sOrder = "NOMBRE_USO_CFDI"
+        f.sOrder = "CODIGO_USO_CFDI"
         f.sTable = "CFDI_CAT_USOS_CFDI"
         f.sQl = "SELECT CODIGO_USO_CFDI,NOMBRE_USO_CFDI,APLICA_TIPO_FISICA,APLICA_TIPO_MORAL,REGIMEN_FISCAL_RECEPTOR " &
             "FROM CFDI_CAT_USOS_CFDI " &

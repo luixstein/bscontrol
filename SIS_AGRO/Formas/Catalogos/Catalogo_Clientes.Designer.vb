@@ -42,7 +42,6 @@ Partial Class Catalogo_Clientes
         Me.CboGiros = New System.Windows.Forms.ComboBox()
         Me.txtNumeroRegistroIdentificadorExtranjero = New System.Windows.Forms.MaskedTextBox()
         Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
-        Me.cboUsoCFDI = New System.Windows.Forms.ComboBox()
         Me.TxtIdRelacion = New System.Windows.Forms.TextBox()
         Me.LblDisplayCodigoPropietario = New System.Windows.Forms.Label()
         Me.LblNombrePropietario = New System.Windows.Forms.Label()
@@ -118,7 +117,7 @@ Partial Class Catalogo_Clientes
         Me.lblDisplayFechaAlta = New System.Windows.Forms.Label()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
         Me.CboEstatusFiltro = New System.Windows.Forms.ComboBox()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.lblDisplayEstatusFiltro = New System.Windows.Forms.Label()
         Me.rbtCodigoCliente = New System.Windows.Forms.RadioButton()
         Me.rbtNombreCliente = New System.Windows.Forms.RadioButton()
         Me.Grid = New System.Windows.Forms.DataGridView()
@@ -233,7 +232,6 @@ Partial Class Catalogo_Clientes
         Me.gBoxInformacion.Controls.Add(Me.CboGiros)
         Me.gBoxInformacion.Controls.Add(Me.txtNumeroRegistroIdentificadorExtranjero)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayUsoCFDI)
-        Me.gBoxInformacion.Controls.Add(Me.cboUsoCFDI)
         Me.gBoxInformacion.Controls.Add(Me.TxtIdRelacion)
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodigoPropietario)
         Me.gBoxInformacion.Controls.Add(Me.LblNombrePropietario)
@@ -344,17 +342,6 @@ Partial Class Catalogo_Clientes
         Me.lblDisplayUsoCFDI.Size = New System.Drawing.Size(76, 13)
         Me.lblDisplayUsoCFDI.TabIndex = 132
         Me.lblDisplayUsoCFDI.Text = "Uso del CFDI :"
-        '
-        'cboUsoCFDI
-        '
-        Me.cboUsoCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboUsoCFDI.FormattingEnabled = True
-        Me.cboUsoCFDI.Items.AddRange(New Object() {"MORAL", "FISICA"})
-        Me.cboUsoCFDI.Location = New System.Drawing.Point(299, 261)
-        Me.cboUsoCFDI.MaxLength = 1
-        Me.cboUsoCFDI.Name = "cboUsoCFDI"
-        Me.cboUsoCFDI.Size = New System.Drawing.Size(92, 21)
-        Me.cboUsoCFDI.TabIndex = 14
         '
         'TxtIdRelacion
         '
@@ -1045,7 +1032,7 @@ Partial Class Catalogo_Clientes
         'gBoxBusquedaRapida
         '
         Me.gBoxBusquedaRapida.Controls.Add(Me.CboEstatusFiltro)
-        Me.gBoxBusquedaRapida.Controls.Add(Me.Label2)
+        Me.gBoxBusquedaRapida.Controls.Add(Me.lblDisplayEstatusFiltro)
         Me.gBoxBusquedaRapida.Controls.Add(Me.rbtCodigoCliente)
         Me.gBoxBusquedaRapida.Controls.Add(Me.rbtNombreCliente)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
@@ -1068,14 +1055,14 @@ Partial Class Catalogo_Clientes
         Me.CboEstatusFiltro.Size = New System.Drawing.Size(38, 21)
         Me.CboEstatusFiltro.TabIndex = 126
         '
-        'Label2
+        'lblDisplayEstatusFiltro
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(287, 41)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(48, 13)
-        Me.Label2.TabIndex = 126
-        Me.Label2.Text = "Estatus :"
+        Me.lblDisplayEstatusFiltro.AutoSize = True
+        Me.lblDisplayEstatusFiltro.Location = New System.Drawing.Point(287, 41)
+        Me.lblDisplayEstatusFiltro.Name = "lblDisplayEstatusFiltro"
+        Me.lblDisplayEstatusFiltro.Size = New System.Drawing.Size(48, 13)
+        Me.lblDisplayEstatusFiltro.TabIndex = 126
+        Me.lblDisplayEstatusFiltro.Text = "Estatus :"
         '
         'rbtCodigoCliente
         '
@@ -1448,7 +1435,7 @@ Partial Class Catalogo_Clientes
     Friend WithEvents rbtNombreCliente As System.Windows.Forms.RadioButton
     Friend WithEvents rbtCodigoCliente As System.Windows.Forms.RadioButton
     Friend WithEvents CboEstatusFiltro As System.Windows.Forms.ComboBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayEstatusFiltro As System.Windows.Forms.Label
     Friend WithEvents TxtCodigoAlmacen As System.Windows.Forms.TextBox
     Friend WithEvents LblAlmacenCliente As System.Windows.Forms.Label
     Friend WithEvents tsbEliminar As System.Windows.Forms.ToolStripButton
@@ -1463,7 +1450,6 @@ Partial Class Catalogo_Clientes
     Friend WithEvents TxtCodigoPropietario As System.Windows.Forms.TextBox
     Friend WithEvents TxtIdRelacion As System.Windows.Forms.TextBox
     Friend WithEvents lblDisplayUsoCFDI As Label
-    Friend WithEvents cboUsoCFDI As ComboBox
     Friend WithEvents txtNumeroRegistroIdentificadorExtranjero As MaskedTextBox
     Friend WithEvents lblCorreoClientePagos As System.Windows.Forms.Label
     Friend WithEvents txtCorreoClientePagos As System.Windows.Forms.TextBox
