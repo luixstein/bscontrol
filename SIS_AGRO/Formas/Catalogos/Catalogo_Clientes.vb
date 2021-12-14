@@ -1008,67 +1008,76 @@ busca:
                     Me.cboTipoPersona.Focus()
                     Return False
                 End If
-
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 If txtLEN(Me.txtRegimenFiscal.Text) = False Then
                     MsgBox("Seleccione el régimen fiscal.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.lblRegimenFiscal.Text = "" : Return False
                 End If
 
-                Dim oRegimenFiscal As New Class_CFDCatTiposRegimenesFiscales(Me.txtRegimenFiscal.Text)
+                Dim oRegimenFiscalReceptor As New Class_CFDCatTiposRegimenesFiscales(Me.txtRegimenFiscal.Text), bRegimenFiscalReceptorInvalido As Boolean
 
-                If oRegimenFiscal.EXISTE = False Then
+                If oRegimenFiscalReceptor.EXISTE = False Then
                     MsgBox("El régimen fiscal no existe.", MsgBoxStyle.Exclamation, sProcedure)
-                    Me.lblRegimenFiscal.Text = "" : Return False
+                    bRegimenFiscalReceptorInvalido = True
                 ElseIf Me.txtRfc.Text = "XAXX010101000" Or Me.txtRfc.Text = "XEXX010101000" Then
                     If Me.txtRegimenFiscal.Text <> "616" Then 'El SAT así lo exige.
                         MsgBox("El régimen fiscal para clientes con RFC genérico XAXX010101000 ó XEXX010101000 debe ser 616=Sin obligaciones fiscales", MsgBoxStyle.Exclamation, sProcedure)
-                        Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = "" : Return False
+                        bRegimenFiscalReceptorInvalido = True
                     End If
-                ElseIf oRegimenFiscal.ESTATUS = "B" Then
+                ElseIf oRegimenFiscalReceptor.ESTATUS = "B" Then
                     MsgBox("El régimen fiscal " & Me.lblRegimenFiscal.Text & " esta dado de baja.", MsgBoxStyle.Exclamation, sProcedure)
-                    Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = "" : Return False
+                    bRegimenFiscalReceptorInvalido = True
                 Else
                     Select Case Strings.Left(Me.cboTipoPersona.Text, 1)
                         Case "F" 'FISICA
-                            If oRegimenFiscal.APLICA_TIPO_FISICA = False Then
+                            If oRegimenFiscalReceptor.APLICA_TIPO_FISICA = False Then
                                 MsgBox("El régimen " & Me.txtRegimenFiscal.Text & "-" & Me.lblRegimenFiscal.Text & " no aplica para personas físicas.", MsgBoxStyle.Exclamation, sProcedure)
-                                Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = "" : Return False
+                                bRegimenFiscalReceptorInvalido = True
                             End If
                         Case "M" 'MORAL
-                            If oRegimenFiscal.APLICA_TIPO_MORAL = False Then
+                            If oRegimenFiscalReceptor.APLICA_TIPO_MORAL = False Then
                                 MsgBox("El régimen " & Me.txtRegimenFiscal.Text & "-" & Me.lblRegimenFiscal.Text & " no aplica para personas morales.", MsgBoxStyle.Exclamation, sProcedure)
-                                Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = "" : Return False
+                                bRegimenFiscalReceptorInvalido = True
                             End If
                     End Select
                 End If
 
+                If bRegimenFiscalReceptorInvalido = True Then
+                    Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = "" : Return False
+                End If
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 If txtLEN(Me.txtUsoCFDI.Text) = False Then
                     MsgBox("Seleccione el uso del CFDI.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.lblRegimenFiscal.Text = "" : Return False
                 End If
 
-                Dim oUsoCFDI As New Class_CFD_CatUsosCFDI(Me.txtUsoCFDI.Text)
+                Dim oUsoCFDI As New Class_CFD_CatUsosCFDI(Me.txtUsoCFDI.Text), bUsoCFDIInvalido As Boolean
 
                 If oUsoCFDI.EXISTE = False Then
                     MsgBox("El uso del CFDI no existe.", MsgBoxStyle.Exclamation, sProcedure)
-                    Me.lblUsoCFDI.Text = "" : Return False
+                    bUsoCFDIInvalido = True
                 ElseIf oUsoCFDI.ESTATUS = "B" Then
                     MsgBox("El uso del CFDI " & Me.lblUsoCFDI.Text & " esta dado de baja.", MsgBoxStyle.Exclamation, sProcedure)
-                    Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = "" : Return False
+                    bUsoCFDIInvalido = True
                 Else
                     Select Case Strings.Left(Me.cboTipoPersona.Text, 1)
                         Case "F" 'FISICA
                             If oUsoCFDI.APLICA_TIPO_FISICA = False Then
                                 MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas físicas.", MsgBoxStyle.Exclamation, sProcedure)
-                                Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = "" : Return False
+                                bUsoCFDIInvalido = True
                             End If
                         Case "M" 'MORAL
                             If oUsoCFDI.APLICA_TIPO_MORAL = False Then
                                 MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas morales.", MsgBoxStyle.Exclamation, sProcedure)
-                                Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = "" : Return False
+                                bUsoCFDIInvalido = True
                             End If
                     End Select
                 End If
+
+                If bUsoCFDIInvalido = True Then
+                    Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = "" : Return False
+                End If
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             End If
 
             If (Me.cboPais.SelectedValue.ToString = "USA" Or Me.cboPais.SelectedValue.ToString = "CAN") AndAlso txtLEN(Me.txtNumeroRegistroIdentificadorExtranjero.Text) = True Then

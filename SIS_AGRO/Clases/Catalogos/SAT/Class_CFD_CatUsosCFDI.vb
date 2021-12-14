@@ -13,6 +13,7 @@ Public Class Class_CFD_CatUsosCFDI
     Private _ES_DEFAULT As Boolean
     Private _APLICA_TIPO_FISICA As Boolean
     Private _APLICA_TIPO_MORAL As Boolean
+    Private _REGIMEN_FISCAL_RECEPTOR As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -84,6 +85,13 @@ Public Class Class_CFD_CatUsosCFDI
             Return Me._APLICA_TIPO_MORAL
         End Get
     End Property
+
+    Public ReadOnly Property REGIMEN_FISCAL_RECEPTOR As String
+        Get
+            Return Me._REGIMEN_FISCAL_RECEPTOR
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -201,6 +209,7 @@ Public Class Class_CFD_CatUsosCFDI
                     Me._ES_DEFAULT = CBool(dReader("ES_DEFAULT").ToString)
                     Me._APLICA_TIPO_FISICA = CBool(dReader("APLICA_TIPO_FISICA").ToString)
                     Me._APLICA_TIPO_MORAL = CBool(dReader("APLICA_TIPO_MORAL").ToString)
+                    Me._REGIMEN_FISCAL_RECEPTOR = dReader("REGIMEN_FISCAL_RECEPTOR").ToString
 
                     bResultado = True
                 End If
