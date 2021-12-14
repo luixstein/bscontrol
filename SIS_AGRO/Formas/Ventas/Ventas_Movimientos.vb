@@ -342,7 +342,7 @@ Public Class Ventas_Movimientos
 
             If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
                 Me.txtNumeroCuentaPago.Visible = True : Me.lblDisplayNumeroCuentaPago.Visible = True
-                Me.cboUsoCFDI.Visible = False : Me.lblDisplayUsoCFDI.Visible = False
+                Me.txtUsoCFDI.Visible = False : Me.lblDisplayUsoCFDI.Visible = False
                 Me.cboMetodoPago.Visible = False : Me.lblDisplayMetodoPago.Visible = False
                 Me.cboRegimenFiscalEmisor.Visible = False : Me.lblDisplayRegimenFiscalEmisor.Visible = False
             Else '3.3 O Mayores
@@ -796,7 +796,7 @@ Buscar:
     End Sub
 
 
-    Private Sub cboUsoCFDI_KeyDown(sender As Object, e As KeyEventArgs) Handles cboUsoCFDI.KeyDown
+    Private Sub cboUsoCFDI_KeyDown(sender As Object, e As KeyEventArgs)
         txtTAB(e)
     End Sub
 
@@ -1495,7 +1495,8 @@ Buscar:
                     Me.CboTipoCredito.Enabled = True
 
                     Me.cboMoneda.Enabled = True
-                    Me.cboUsoCFDI.Enabled = True
+                    Me.txtRegimenFiscalReceptor.Enabled = True
+                    Me.txtUsoCFDI.Enabled = True
                     'Me.cboMetodoPago.Enabled = True
                     Me.cboRegimenFiscalEmisor.Enabled = True
 
@@ -1618,7 +1619,8 @@ Buscar:
                         Me.lblTipoCredito.Enabled = False
                         Me.CboTipoCredito.Enabled = False
                         Me.cboMoneda.Enabled = False
-                        Me.cboUsoCFDI.Enabled = False
+                        Me.txtRegimenFiscalReceptor.Enabled = False
+                        Me.txtUsoCFDI.Enabled = False
                         'Me.cboMetodoPago.Enabled = False
                         Me.cboRegimenFiscalEmisor.Enabled = False
                     ElseIf Me.oDocumento.AFECTA_INVENTARIOS = True Then
@@ -1743,7 +1745,8 @@ Buscar:
                     Me.txtFolioEmbarque.Enabled = False
                     Me.llblAgregarSeguimiento.Enabled = False
                     Me.cboMoneda.Enabled = False
-                    Me.cboUsoCFDI.Enabled = False
+                    Me.txtRegimenFiscalReceptor.Enabled = False
+                    Me.txtUsoCFDI.Enabled = False
                     Me.cboRegimenFiscalEmisor.Enabled = False
 
                     Me.lblConceptoCancelacion.Visible = True
@@ -4241,12 +4244,12 @@ CANCELAR:
             Me.dpVencimiento.Value = Me.oVenta.FECHA_VENCIMIENTO
             Me.txtPlazo.Text = DateDiff(DateInterval.Day, Me.dpFecha.Value, Me.dpVencimiento.Value.AddDays(1)).ToString
 
-            Select Case Me.oCliente.TIPO_PERSONA
-                Case "F"
-                    Me.DesplegarUsoCFDIPersonasFisicas()
-                Case "M"
-                    Me.DesplegarUsoCFDIPersonasMorales()
-            End Select
+            'Select Case Me.oCliente.TIPO_PERSONA
+            '    Case "F"
+            '        Me.DesplegarUsoCFDIPersonasFisicas()
+            '    Case "M"
+            '        Me.DesplegarUsoCFDIPersonasMorales()
+            'End Select
 
             If txtLEN("" & Me.oVenta.CODIGO_USO_CFDI) = True Then
                 'Me.cboUsoCFDI.SelectedValue = Me.oVenta.CODIGO_USO_CFDI
@@ -5541,39 +5544,39 @@ busca_serie:
         End Try
     End Sub
 
-    Private Sub DesplegarUsoCFDIPersonasFisicas()
-        Try
-            With Me.cboUsoCFDI
-                .DisplayMember = "NOMBRE_USO_CFDI"
-                .ValueMember = "CODIGO_USO_CFDI"
-                Dim dView As New Data.DataView(dtUsosCFDIPersonasFisicas)
-                dView.Sort = "NOMBRE_USO_CFDI"
-                .DataSource = dView
-                If dView.Count > 0 Then
-                    .SelectedIndex = 0
-                End If
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarUsoCFDIPersonasFisicas", ex)
-        End Try
-    End Sub
+    'Private Sub DesplegarUsoCFDIPersonasFisicas()
+    '    Try
+    '        With Me.cboUsoCFDI
+    '            .DisplayMember = "NOMBRE_USO_CFDI"
+    '            .ValueMember = "CODIGO_USO_CFDI"
+    '            Dim dView As New Data.DataView(dtUsosCFDIPersonasFisicas)
+    '            dView.Sort = "NOMBRE_USO_CFDI"
+    '            .DataSource = dView
+    '            If dView.Count > 0 Then
+    '                .SelectedIndex = 0
+    '            End If
+    '        End With
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "DesplegarUsoCFDIPersonasFisicas", ex)
+    '    End Try
+    'End Sub
 
-    Private Sub DesplegarUsoCFDIPersonasMorales()
-        Try
-            With Me.cboUsoCFDI
-                .DisplayMember = "NOMBRE_USO_CFDI"
-                .ValueMember = "CODIGO_USO_CFDI"
-                Dim dView As New Data.DataView(dtUsosCFDIPersonasMorales)
-                dView.Sort = "NOMBRE_USO_CFDI"
-                .DataSource = dView
-                If dView.Count > 0 Then
-                    .SelectedIndex = 0
-                End If
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarUsoCFDIPersonasMorales", ex)
-        End Try
-    End Sub
+    'Private Sub DesplegarUsoCFDIPersonasMorales()
+    '    Try
+    '        With Me.cboUsoCFDI
+    '            .DisplayMember = "NOMBRE_USO_CFDI"
+    '            .ValueMember = "CODIGO_USO_CFDI"
+    '            Dim dView As New Data.DataView(dtUsosCFDIPersonasMorales)
+    '            dView.Sort = "NOMBRE_USO_CFDI"
+    '            .DataSource = dView
+    '            If dView.Count > 0 Then
+    '                .SelectedIndex = 0
+    '            End If
+    '        End With
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "DesplegarUsoCFDIPersonasMorales", ex)
+    '    End Try
+    'End Sub
 
     Private Sub CalculaUtilidad()
         Try

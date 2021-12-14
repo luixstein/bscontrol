@@ -113,7 +113,6 @@ Partial Class Ventas_Movimientos
         Me.TxtConceptoCancelacion = New System.Windows.Forms.TextBox()
         Me.cboFormaPago = New System.Windows.Forms.ComboBox()
         Me.lblVersionCFDI = New System.Windows.Forms.Label()
-        Me.cboUsoCFDI = New System.Windows.Forms.ComboBox()
         Me.lblDisplayMetodoPago = New System.Windows.Forms.Label()
         Me.cboMetodoPago = New System.Windows.Forms.ComboBox()
         Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
@@ -163,6 +162,7 @@ Partial Class Ventas_Movimientos
         Me.lblRegimenFiscalReceptor = New System.Windows.Forms.Label()
         Me.txtUsoCFDI = New System.Windows.Forms.TextBox()
         Me.lblUsoCFDI = New System.Windows.Forms.Label()
+        Me.lblDisplayRegimenFiscalReceptor = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -362,7 +362,7 @@ Partial Class Ventas_Movimientos
         Me.dpFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dpFecha.Name = "dpFecha"
         Me.dpFecha.Size = New System.Drawing.Size(90, 20)
-        Me.dpFecha.TabIndex = 12
+        Me.dpFecha.TabIndex = 15
         '
         'LblFecha
         '
@@ -382,7 +382,7 @@ Partial Class Ventas_Movimientos
         Me.dpVencimiento.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dpVencimiento.Name = "dpVencimiento"
         Me.dpVencimiento.Size = New System.Drawing.Size(90, 20)
-        Me.dpVencimiento.TabIndex = 13
+        Me.dpVencimiento.TabIndex = 16
         '
         'lblDisplayVencimiento
         '
@@ -395,11 +395,12 @@ Partial Class Ventas_Movimientos
         '
         'lblCliente
         '
+        Me.lblCliente.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.lblCliente.Location = New System.Drawing.Point(173, 143)
         Me.lblCliente.Name = "lblCliente"
-        Me.lblCliente.Size = New System.Drawing.Size(410, 13)
+        Me.lblCliente.Size = New System.Drawing.Size(452, 13)
         Me.lblCliente.TabIndex = 233
-        Me.lblCliente.Text = "."
+        Me.lblCliente.Text = "_"
         '
         'LblDisplayCobrador
         '
@@ -421,7 +422,7 @@ Partial Class Ventas_Movimientos
         'LblDisplayDireccionEmpresa
         '
         Me.LblDisplayDireccionEmpresa.AutoSize = True
-        Me.LblDisplayDireccionEmpresa.Location = New System.Drawing.Point(2, 193)
+        Me.LblDisplayDireccionEmpresa.Location = New System.Drawing.Point(2, 209)
         Me.LblDisplayDireccionEmpresa.Name = "LblDisplayDireccionEmpresa"
         Me.LblDisplayDireccionEmpresa.Size = New System.Drawing.Size(59, 13)
         Me.LblDisplayDireccionEmpresa.TabIndex = 235
@@ -429,13 +430,13 @@ Partial Class Ventas_Movimientos
         '
         'TxtConcepto
         '
-        Me.TxtConcepto.Location = New System.Drawing.Point(84, 191)
+        Me.TxtConcepto.Location = New System.Drawing.Point(84, 209)
         Me.TxtConcepto.MaxLength = 4000
         Me.TxtConcepto.Multiline = True
         Me.TxtConcepto.Name = "TxtConcepto"
         Me.TxtConcepto.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TxtConcepto.Size = New System.Drawing.Size(615, 45)
-        Me.TxtConcepto.TabIndex = 10
+        Me.TxtConcepto.Size = New System.Drawing.Size(615, 30)
+        Me.TxtConcepto.TabIndex = 13
         '
         'TxtReferencia
         '
@@ -949,13 +950,17 @@ Partial Class Ventas_Movimientos
         '
         'frmDatos
         '
+        Me.frmDatos.Controls.Add(Me.lblDisplayRegimenFiscalReceptor)
+        Me.frmDatos.Controls.Add(Me.txtRegimenFiscalReceptor)
+        Me.frmDatos.Controls.Add(Me.lblRegimenFiscalReceptor)
+        Me.frmDatos.Controls.Add(Me.txtUsoCFDI)
+        Me.frmDatos.Controls.Add(Me.lblUsoCFDI)
         Me.frmDatos.Controls.Add(Me.ckbMostrarUtilidad)
         Me.frmDatos.Controls.Add(Me.gbUtilidad)
         Me.frmDatos.Controls.Add(Me.lblConceptoCancelacion)
         Me.frmDatos.Controls.Add(Me.TxtConceptoCancelacion)
         Me.frmDatos.Controls.Add(Me.cboFormaPago)
         Me.frmDatos.Controls.Add(Me.lblVersionCFDI)
-        Me.frmDatos.Controls.Add(Me.cboUsoCFDI)
         Me.frmDatos.Controls.Add(Me.lblDisplayMetodoPago)
         Me.frmDatos.Controls.Add(Me.cboMetodoPago)
         Me.frmDatos.Controls.Add(Me.lblDisplayUsoCFDI)
@@ -1071,7 +1076,7 @@ Partial Class Ventas_Movimientos
         'lblConceptoCancelacion
         '
         Me.lblConceptoCancelacion.AutoSize = True
-        Me.lblConceptoCancelacion.Location = New System.Drawing.Point(747, 109)
+        Me.lblConceptoCancelacion.Location = New System.Drawing.Point(841, 110)
         Me.lblConceptoCancelacion.Name = "lblConceptoCancelacion"
         Me.lblConceptoCancelacion.Size = New System.Drawing.Size(135, 13)
         Me.lblConceptoCancelacion.TabIndex = 385
@@ -1092,10 +1097,10 @@ Partial Class Ventas_Movimientos
         '
         Me.cboFormaPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboFormaPago.FormattingEnabled = True
-        Me.cboFormaPago.Location = New System.Drawing.Point(84, 165)
+        Me.cboFormaPago.Location = New System.Drawing.Point(84, 185)
         Me.cboFormaPago.Name = "cboFormaPago"
         Me.cboFormaPago.Size = New System.Drawing.Size(205, 21)
-        Me.cboFormaPago.TabIndex = 9
+        Me.cboFormaPago.TabIndex = 11
         '
         'lblVersionCFDI
         '
@@ -1107,20 +1112,10 @@ Partial Class Ventas_Movimientos
         Me.lblVersionCFDI.TabIndex = 383
         Me.lblVersionCFDI.Text = "0.0"
         '
-        'cboUsoCFDI
-        '
-        Me.cboUsoCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboUsoCFDI.FormattingEnabled = True
-        Me.cboUsoCFDI.Location = New System.Drawing.Point(422, 113)
-        Me.cboUsoCFDI.MaxLength = 1
-        Me.cboUsoCFDI.Name = "cboUsoCFDI"
-        Me.cboUsoCFDI.Size = New System.Drawing.Size(301, 21)
-        Me.cboUsoCFDI.TabIndex = 14
-        '
         'lblDisplayMetodoPago
         '
         Me.lblDisplayMetodoPago.AutoSize = True
-        Me.lblDisplayMetodoPago.Location = New System.Drawing.Point(328, 169)
+        Me.lblDisplayMetodoPago.Location = New System.Drawing.Point(328, 187)
         Me.lblDisplayMetodoPago.Name = "lblDisplayMetodoPago"
         Me.lblDisplayMetodoPago.Size = New System.Drawing.Size(91, 13)
         Me.lblDisplayMetodoPago.TabIndex = 382
@@ -1131,16 +1126,16 @@ Partial Class Ventas_Movimientos
         Me.cboMetodoPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboMetodoPago.Enabled = False
         Me.cboMetodoPago.FormattingEnabled = True
-        Me.cboMetodoPago.Location = New System.Drawing.Point(422, 166)
+        Me.cboMetodoPago.Location = New System.Drawing.Point(422, 185)
         Me.cboMetodoPago.MaxLength = 1
         Me.cboMetodoPago.Name = "cboMetodoPago"
-        Me.cboMetodoPago.Size = New System.Drawing.Size(301, 21)
-        Me.cboMetodoPago.TabIndex = 15
+        Me.cboMetodoPago.Size = New System.Drawing.Size(277, 21)
+        Me.cboMetodoPago.TabIndex = 12
         '
         'lblDisplayUsoCFDI
         '
         Me.lblDisplayUsoCFDI.AutoSize = True
-        Me.lblDisplayUsoCFDI.Location = New System.Drawing.Point(328, 118)
+        Me.lblDisplayUsoCFDI.Location = New System.Drawing.Point(382, 164)
         Me.lblDisplayUsoCFDI.Name = "lblDisplayUsoCFDI"
         Me.lblDisplayUsoCFDI.Size = New System.Drawing.Size(76, 13)
         Me.lblDisplayUsoCFDI.TabIndex = 381
@@ -1226,7 +1221,7 @@ Partial Class Ventas_Movimientos
         Me.txtNumeroCuentaPago.MaxLength = 4
         Me.txtNumeroCuentaPago.Name = "txtNumeroCuentaPago"
         Me.txtNumeroCuentaPago.Size = New System.Drawing.Size(90, 20)
-        Me.txtNumeroCuentaPago.TabIndex = 11
+        Me.txtNumeroCuentaPago.TabIndex = 14
         '
         'lblDisplayNumeroCuentaPago
         '
@@ -1240,7 +1235,7 @@ Partial Class Ventas_Movimientos
         'lblFormaPago
         '
         Me.lblFormaPago.AutoSize = True
-        Me.lblFormaPago.Location = New System.Drawing.Point(2, 169)
+        Me.lblFormaPago.Location = New System.Drawing.Point(2, 187)
         Me.lblFormaPago.Name = "lblFormaPago"
         Me.lblFormaPago.Size = New System.Drawing.Size(84, 13)
         Me.lblFormaPago.TabIndex = 335
@@ -1249,7 +1244,7 @@ Partial Class Ventas_Movimientos
         'llblAgregarSeguimiento
         '
         Me.llblAgregarSeguimiento.AutoSize = True
-        Me.llblAgregarSeguimiento.Location = New System.Drawing.Point(640, 146)
+        Me.llblAgregarSeguimiento.Location = New System.Drawing.Point(880, 209)
         Me.llblAgregarSeguimiento.Name = "llblAgregarSeguimiento"
         Me.llblAgregarSeguimiento.Size = New System.Drawing.Size(103, 13)
         Me.llblAgregarSeguimiento.TabIndex = 333
@@ -1613,35 +1608,46 @@ Partial Class Ventas_Movimientos
         '
         'txtRegimenFiscalReceptor
         '
-        Me.txtRegimenFiscalReceptor.Location = New System.Drawing.Point(1000, 94)
+        Me.txtRegimenFiscalReceptor.Location = New System.Drawing.Point(84, 163)
         Me.txtRegimenFiscalReceptor.MaxLength = 3
         Me.txtRegimenFiscalReceptor.Name = "txtRegimenFiscalReceptor"
-        Me.txtRegimenFiscalReceptor.Size = New System.Drawing.Size(83, 20)
-        Me.txtRegimenFiscalReceptor.TabIndex = 385
+        Me.txtRegimenFiscalReceptor.Size = New System.Drawing.Size(45, 20)
+        Me.txtRegimenFiscalReceptor.TabIndex = 9
         '
         'lblRegimenFiscalReceptor
         '
-        Me.lblRegimenFiscalReceptor.Location = New System.Drawing.Point(1089, 98)
+        Me.lblRegimenFiscalReceptor.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.lblRegimenFiscalReceptor.Location = New System.Drawing.Point(135, 166)
         Me.lblRegimenFiscalReceptor.Name = "lblRegimenFiscalReceptor"
-        Me.lblRegimenFiscalReceptor.Size = New System.Drawing.Size(160, 13)
+        Me.lblRegimenFiscalReceptor.Size = New System.Drawing.Size(226, 13)
         Me.lblRegimenFiscalReceptor.TabIndex = 386
         Me.lblRegimenFiscalReceptor.Text = "_"
         '
         'txtUsoCFDI
         '
-        Me.txtUsoCFDI.Location = New System.Drawing.Point(1000, 120)
+        Me.txtUsoCFDI.Location = New System.Drawing.Point(464, 163)
         Me.txtUsoCFDI.MaxLength = 3
         Me.txtUsoCFDI.Name = "txtUsoCFDI"
-        Me.txtUsoCFDI.Size = New System.Drawing.Size(83, 20)
-        Me.txtUsoCFDI.TabIndex = 387
+        Me.txtUsoCFDI.Size = New System.Drawing.Size(45, 20)
+        Me.txtUsoCFDI.TabIndex = 10
         '
         'lblUsoCFDI
         '
-        Me.lblUsoCFDI.Location = New System.Drawing.Point(1089, 124)
+        Me.lblUsoCFDI.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.lblUsoCFDI.Location = New System.Drawing.Point(515, 166)
         Me.lblUsoCFDI.Name = "lblUsoCFDI"
-        Me.lblUsoCFDI.Size = New System.Drawing.Size(160, 13)
+        Me.lblUsoCFDI.Size = New System.Drawing.Size(187, 13)
         Me.lblUsoCFDI.TabIndex = 388
         Me.lblUsoCFDI.Text = "_"
+        '
+        'lblDisplayRegimenFiscalReceptor
+        '
+        Me.lblDisplayRegimenFiscalReceptor.AutoSize = True
+        Me.lblDisplayRegimenFiscalReceptor.Location = New System.Drawing.Point(2, 164)
+        Me.lblDisplayRegimenFiscalReceptor.Name = "lblDisplayRegimenFiscalReceptor"
+        Me.lblDisplayRegimenFiscalReceptor.Size = New System.Drawing.Size(82, 13)
+        Me.lblDisplayRegimenFiscalReceptor.TabIndex = 390
+        Me.lblDisplayRegimenFiscalReceptor.Text = "Régimen fiscal :"
         '
         'Ventas_Movimientos
         '
@@ -1649,10 +1655,6 @@ Partial Class Ventas_Movimientos
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(1290, 678)
-        Me.Controls.Add(Me.txtUsoCFDI)
-        Me.Controls.Add(Me.lblUsoCFDI)
-        Me.Controls.Add(Me.txtRegimenFiscalReceptor)
-        Me.Controls.Add(Me.lblRegimenFiscalReceptor)
         Me.Controls.Add(Me.lblDisplayRegimenFiscalEmisor)
         Me.Controls.Add(Me.cboRegimenFiscalEmisor)
         Me.Controls.Add(Me.TabControl1)
@@ -1781,7 +1783,6 @@ Partial Class Ventas_Movimientos
     Friend WithEvents ckbMostrarUtilidad As System.Windows.Forms.CheckBox
     Friend WithEvents CboTipoCredito As System.Windows.Forms.ComboBox
     Friend WithEvents lblTipoCredito As System.Windows.Forms.Label
-    Friend WithEvents cboUsoCFDI As ComboBox
     Friend WithEvents lblDisplayMetodoPago As Label
     Friend WithEvents cboMetodoPago As ComboBox
     Friend WithEvents lblDisplayUsoCFDI As Label
@@ -1830,4 +1831,5 @@ Partial Class Ventas_Movimientos
     Friend WithEvents lblRegimenFiscalReceptor As Label
     Friend WithEvents txtUsoCFDI As TextBox
     Friend WithEvents lblUsoCFDI As Label
+    Friend WithEvents lblDisplayRegimenFiscalReceptor As Label
 End Class
