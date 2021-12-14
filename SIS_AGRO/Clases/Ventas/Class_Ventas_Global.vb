@@ -103,6 +103,9 @@ Public Class Class_Ventas_Global
     Private _RETENCION_ISR As Decimal
     Private _RETENCION_ISR_USD As Decimal
     Private _FOLIO_DESCUENTO_ANTICIPO As String
+    Private _CODIGO_REGIMEN_FISCAL_RECEPTOR As String
+    Private _NOMBRE_RECEPTOR As String
+    Private _DOMICILIO_FISCAL_RECEPTOR As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -866,6 +869,32 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
+    Public Property CODIGO_REGIMEN_FISCAL_RECEPTOR() As String
+        Get
+            Return Me._CODIGO_REGIMEN_FISCAL_RECEPTOR
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_REGIMEN_FISCAL_RECEPTOR = Value
+        End Set
+    End Property
+
+    Public Property NOMBRE_RECEPTOR() As String
+        Get
+            Return Me._NOMBRE_RECEPTOR
+        End Get
+        Set(ByVal Value As String)
+            Me._NOMBRE_RECEPTOR = Value
+        End Set
+    End Property
+
+    Public Property DOMICILIO_FISCAL_RECEPTOR() As String
+        Get
+            Return Me._DOMICILIO_FISCAL_RECEPTOR
+        End Get
+        Set(ByVal Value As String)
+            Me._DOMICILIO_FISCAL_RECEPTOR = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1042,6 +1071,9 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
             sqlParametro = .Parameters.Add("@RETENCION_ISR_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_USD
             sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL
+            sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL_RECEPTOR", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL_RECEPTOR
+            sqlParametro = .Parameters.Add("@NOMBRE_RECEPTOR", SqlDbType.NVarChar, 254) : sqlParametro.Value = Me._NOMBRE_RECEPTOR
+            sqlParametro = .Parameters.Add("@DOMICILIO_FISCAL_RECEPTOR", SqlDbType.NVarChar, 5) : sqlParametro.Value = Me._DOMICILIO_FISCAL_RECEPTOR
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion 'INSERTAR,ACTUALIZAR
 
             Try
@@ -1336,6 +1368,9 @@ Public Class Class_Ventas_Global
                     Me._RETENCION_ISR = CDec(dReader("RETENCION_ISR"))
                     Me._RETENCION_ISR_USD = CDec(dReader("RETENCION_ISR_USD"))
                     Me._FOLIO_DESCUENTO_ANTICIPO = "" & dReader("FOLIO_DESCUENTO_ANTICIPO").ToString
+                    Me._CODIGO_REGIMEN_FISCAL_RECEPTOR = "" & dReader("CODIGO_REGIMEN_FISCAL_RECEPTOR").ToString
+                    Me._NOMBRE_RECEPTOR = "" & dReader("NOMBRE_RECEPTOR").ToString
+                    Me._DOMICILIO_FISCAL_RECEPTOR = "" & dReader("DOMICILIO_FISCAL_RECEPTOR").ToString
 
                     bResultado = True
                 End If

@@ -284,7 +284,7 @@ Partial Class Catalogo_Clientes
         'txtUsoCFDI
         '
         Me.txtUsoCFDI.Location = New System.Drawing.Point(88, 264)
-        Me.txtUsoCFDI.MaxLength = 6
+        Me.txtUsoCFDI.MaxLength = 3
         Me.txtUsoCFDI.Name = "txtUsoCFDI"
         Me.txtUsoCFDI.Size = New System.Drawing.Size(41, 20)
         Me.txtUsoCFDI.TabIndex = 11
@@ -292,7 +292,7 @@ Partial Class Catalogo_Clientes
         'txtRegimenFiscal
         '
         Me.txtRegimenFiscal.Location = New System.Drawing.Point(88, 240)
-        Me.txtRegimenFiscal.MaxLength = 6
+        Me.txtRegimenFiscal.MaxLength = 3
         Me.txtRegimenFiscal.Name = "txtRegimenFiscal"
         Me.txtRegimenFiscal.Size = New System.Drawing.Size(41, 20)
         Me.txtRegimenFiscal.TabIndex = 10

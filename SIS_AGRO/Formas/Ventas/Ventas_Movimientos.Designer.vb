@@ -157,8 +157,12 @@ Partial Class Ventas_Movimientos
         Me.btnAceptar = New System.Windows.Forms.Button()
         Me.btnCargarRemisiones = New System.Windows.Forms.Button()
         Me.GridFacturasVariasRemisiones = New FlexCell.Grid()
-        Me.lblDisplayRegimenFiscal = New System.Windows.Forms.Label()
-        Me.cboRegimenFiscal = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayRegimenFiscalEmisor = New System.Windows.Forms.Label()
+        Me.cboRegimenFiscalEmisor = New System.Windows.Forms.ComboBox()
+        Me.txtRegimenFiscalReceptor = New System.Windows.Forms.TextBox()
+        Me.lblRegimenFiscalReceptor = New System.Windows.Forms.Label()
+        Me.txtUsoCFDI = New System.Windows.Forms.TextBox()
+        Me.lblUsoCFDI = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -1588,24 +1592,56 @@ Partial Class Ventas_Movimientos
         Me.GridFacturasVariasRemisiones.TabIndex = 3
         Me.GridFacturasVariasRemisiones.UncheckedImage = CType(resources.GetObject("GridFacturasVariasRemisiones.UncheckedImage"), System.Drawing.Bitmap)
         '
-        'lblDisplayRegimenFiscal
+        'lblDisplayRegimenFiscalEmisor
         '
-        Me.lblDisplayRegimenFiscal.AutoSize = True
-        Me.lblDisplayRegimenFiscal.Location = New System.Drawing.Point(997, 230)
-        Me.lblDisplayRegimenFiscal.Name = "lblDisplayRegimenFiscal"
-        Me.lblDisplayRegimenFiscal.Size = New System.Drawing.Size(82, 13)
-        Me.lblDisplayRegimenFiscal.TabIndex = 384
-        Me.lblDisplayRegimenFiscal.Text = "Régimen fiscal :"
+        Me.lblDisplayRegimenFiscalEmisor.AutoSize = True
+        Me.lblDisplayRegimenFiscalEmisor.Location = New System.Drawing.Point(997, 230)
+        Me.lblDisplayRegimenFiscalEmisor.Name = "lblDisplayRegimenFiscalEmisor"
+        Me.lblDisplayRegimenFiscalEmisor.Size = New System.Drawing.Size(116, 13)
+        Me.lblDisplayRegimenFiscalEmisor.TabIndex = 384
+        Me.lblDisplayRegimenFiscalEmisor.Text = "Régimen fiscal Emisor :"
         '
-        'cboRegimenFiscal
+        'cboRegimenFiscalEmisor
         '
-        Me.cboRegimenFiscal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboRegimenFiscal.FormattingEnabled = True
-        Me.cboRegimenFiscal.Location = New System.Drawing.Point(1000, 246)
-        Me.cboRegimenFiscal.MaxLength = 1
-        Me.cboRegimenFiscal.Name = "cboRegimenFiscal"
-        Me.cboRegimenFiscal.Size = New System.Drawing.Size(281, 21)
-        Me.cboRegimenFiscal.TabIndex = 1
+        Me.cboRegimenFiscalEmisor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboRegimenFiscalEmisor.FormattingEnabled = True
+        Me.cboRegimenFiscalEmisor.Location = New System.Drawing.Point(1000, 246)
+        Me.cboRegimenFiscalEmisor.MaxLength = 1
+        Me.cboRegimenFiscalEmisor.Name = "cboRegimenFiscalEmisor"
+        Me.cboRegimenFiscalEmisor.Size = New System.Drawing.Size(281, 21)
+        Me.cboRegimenFiscalEmisor.TabIndex = 1
+        '
+        'txtRegimenFiscalReceptor
+        '
+        Me.txtRegimenFiscalReceptor.Location = New System.Drawing.Point(1000, 94)
+        Me.txtRegimenFiscalReceptor.MaxLength = 3
+        Me.txtRegimenFiscalReceptor.Name = "txtRegimenFiscalReceptor"
+        Me.txtRegimenFiscalReceptor.Size = New System.Drawing.Size(83, 20)
+        Me.txtRegimenFiscalReceptor.TabIndex = 385
+        '
+        'lblRegimenFiscalReceptor
+        '
+        Me.lblRegimenFiscalReceptor.Location = New System.Drawing.Point(1089, 98)
+        Me.lblRegimenFiscalReceptor.Name = "lblRegimenFiscalReceptor"
+        Me.lblRegimenFiscalReceptor.Size = New System.Drawing.Size(160, 13)
+        Me.lblRegimenFiscalReceptor.TabIndex = 386
+        Me.lblRegimenFiscalReceptor.Text = "_"
+        '
+        'txtUsoCFDI
+        '
+        Me.txtUsoCFDI.Location = New System.Drawing.Point(1000, 120)
+        Me.txtUsoCFDI.MaxLength = 3
+        Me.txtUsoCFDI.Name = "txtUsoCFDI"
+        Me.txtUsoCFDI.Size = New System.Drawing.Size(83, 20)
+        Me.txtUsoCFDI.TabIndex = 387
+        '
+        'lblUsoCFDI
+        '
+        Me.lblUsoCFDI.Location = New System.Drawing.Point(1089, 124)
+        Me.lblUsoCFDI.Name = "lblUsoCFDI"
+        Me.lblUsoCFDI.Size = New System.Drawing.Size(160, 13)
+        Me.lblUsoCFDI.TabIndex = 388
+        Me.lblUsoCFDI.Text = "_"
         '
         'Ventas_Movimientos
         '
@@ -1613,8 +1649,12 @@ Partial Class Ventas_Movimientos
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(1290, 678)
-        Me.Controls.Add(Me.lblDisplayRegimenFiscal)
-        Me.Controls.Add(Me.cboRegimenFiscal)
+        Me.Controls.Add(Me.txtUsoCFDI)
+        Me.Controls.Add(Me.lblUsoCFDI)
+        Me.Controls.Add(Me.txtRegimenFiscalReceptor)
+        Me.Controls.Add(Me.lblRegimenFiscalReceptor)
+        Me.Controls.Add(Me.lblDisplayRegimenFiscalEmisor)
+        Me.Controls.Add(Me.cboRegimenFiscalEmisor)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.gbTotales)
         Me.Controls.Add(Me.frmDatos)
@@ -1784,6 +1824,10 @@ Partial Class Ventas_Movimientos
     Friend WithEvents lblTotalRetencionISR As Label
     Friend WithEvents lblDisplayTotalRetencionISR_USD As Label
     Friend WithEvents lblTotalRetencionISR_USD As Label
-    Friend WithEvents lblDisplayRegimenFiscal As Label
-    Friend WithEvents cboRegimenFiscal As ComboBox
+    Friend WithEvents lblDisplayRegimenFiscalEmisor As Label
+    Friend WithEvents cboRegimenFiscalEmisor As ComboBox
+    Friend WithEvents txtRegimenFiscalReceptor As TextBox
+    Friend WithEvents lblRegimenFiscalReceptor As Label
+    Friend WithEvents txtUsoCFDI As TextBox
+    Friend WithEvents lblUsoCFDI As Label
 End Class

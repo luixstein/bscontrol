@@ -266,105 +266,115 @@ Public Class Catalogo_Clientes
 
     Private Sub txtRegimenFiscal_KeyDown(sender As Object, e As KeyEventArgs) Handles txtRegimenFiscal.KeyDown
         Const sProcedure As String = "txtRegimenFiscal_KeyDown"
-        Dim sText As String = "", oRegimenFiscal As Class_CFDCatTiposRegimenesFiscales
-        Select Case e.KeyCode
-            Case Keys.F6
+        Try
+            Dim sText As String = "", oRegimenFiscal As Class_CFDCatTiposRegimenesFiscales
+            Select Case e.KeyCode
+                Case Keys.F6
 Buscar:
-                If txtLEN(Me.cboTipoPersona.Text) = False Then
-                    MsgBox("Seleccione primero el tipo de persona.", MsgBoxStyle.Exclamation, sProcedure)
-                    Me.cboTipoPersona.Focus()
-                    Return
-                End If
-                oRegimenFiscal = New Class_CFDCatTiposRegimenesFiscales
-                sText = oRegimenFiscal.BusquedaVisual_PorDescripcion(Strings.Left(Me.cboTipoPersona.Text, 1))
-                If txtLEN(sText) = True Then Me.txtRegimenFiscal.Text = sText
-            Case Keys.Enter
-                If txtLEN(Me.txtRegimenFiscal.Text) = False Then
-                    Me.lblRegimenFiscal.Text = "" : GoTo Buscar : Exit Sub
-                End If
-
-                oRegimenFiscal = New Class_CFDCatTiposRegimenesFiscales(Me.txtRegimenFiscal.Text)
-
-                Me.lblRegimenFiscal.Text = oRegimenFiscal.NOMBRE_REGIMEN_FISCAL 'Lo va consultar aunque pudiera no ser válido, mas abajo lo eliminará
-
-                If oRegimenFiscal.EXISTE = False Then
-                    Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = "" : GoTo Buscar : Exit Sub
-                ElseIf Me.txtRfc.Text = "XAXX010101000" Or Me.txtRfc.Text = "XEXX010101000" Then
-                    If Me.txtRegimenFiscal.Text <> "616" Then 'El SAT así lo exige.
-                        MsgBox("El régimen fiscal para clientes con RFC genérico XAXX010101000 ó XEXX010101000 debe ser 616=Sin obligaciones fiscales.", MsgBoxStyle.Exclamation, sProcedure)
-                        Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = ""
+                    If txtLEN(Me.cboTipoPersona.Text) = False Then
+                        MsgBox("Seleccione primero el tipo de persona.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.cboTipoPersona.Focus()
+                        Return
                     End If
-                ElseIf oRegimenFiscal.ESTATUS = "B" Then
-                    MsgBox("El régimen fiscal " & Me.lblRegimenFiscal.Text & " esta dado de baja.", MsgBoxStyle.Exclamation, sProcedure)
-                    Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = ""
-                Else
-                    Select Case Strings.Left(Me.cboTipoPersona.Text, 1)
-                        Case "F" 'FISICA
-                            If oRegimenFiscal.APLICA_TIPO_FISICA = False Then
-                                MsgBox("El régimen " & Me.txtRegimenFiscal.Text & "-" & Me.lblRegimenFiscal.Text & " no aplica para personas físicas.", MsgBoxStyle.Exclamation, sProcedure)
-                                Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = ""
-                            End If
-                        Case "M" 'MORAL
-                            If oRegimenFiscal.APLICA_TIPO_MORAL = False Then
-                                MsgBox("El régimen " & Me.txtRegimenFiscal.Text & "-" & Me.lblRegimenFiscal.Text & " no aplica para personas morales.", MsgBoxStyle.Exclamation, sProcedure)
-                                Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = ""
-                            End If
-                    End Select
-                End If
+                    oRegimenFiscal = New Class_CFDCatTiposRegimenesFiscales
+                    sText = oRegimenFiscal.BusquedaVisual_PorDescripcion(Strings.Left(Me.cboTipoPersona.Text, 1))
+                    If txtLEN(sText) = True Then Me.txtRegimenFiscal.Text = sText
 
-                If txtLEN(Me.lblRegimenFiscal.Text) = False Then GoTo Buscar : Return
+                Case Keys.Enter
+                    If txtLEN(Me.txtRegimenFiscal.Text) = False Then
+                        Me.lblRegimenFiscal.Text = "" : GoTo Buscar : Exit Sub
+                    End If
 
-                SendKeys.Send("{TAB}")
-        End Select
+                    oRegimenFiscal = New Class_CFDCatTiposRegimenesFiscales(Me.txtRegimenFiscal.Text)
+
+                    Me.lblRegimenFiscal.Text = oRegimenFiscal.NOMBRE_REGIMEN_FISCAL 'Lo va consultar aunque pudiera no ser válido, mas abajo lo eliminará
+
+                    If oRegimenFiscal.EXISTE = False Then
+                        Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = ""
+                    ElseIf Me.txtRfc.Text = "XAXX010101000" Or Me.txtRfc.Text = "XEXX010101000" Then
+                        If Me.txtRegimenFiscal.Text <> "616" Then 'El SAT así lo exige.
+                            MsgBox("El régimen fiscal para clientes con RFC genérico XAXX010101000 ó XEXX010101000 debe ser 616=Sin obligaciones fiscales.", MsgBoxStyle.Exclamation, sProcedure)
+                            Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = ""
+                        End If
+                    ElseIf oRegimenFiscal.ESTATUS = "B" Then
+                        MsgBox("El régimen fiscal " & Me.lblRegimenFiscal.Text & " esta dado de baja.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = ""
+                    Else
+                        Select Case Strings.Left(Me.cboTipoPersona.Text, 1)
+                            Case "F" 'FISICA
+                                If oRegimenFiscal.APLICA_TIPO_FISICA = False Then
+                                    MsgBox("El régimen " & Me.txtRegimenFiscal.Text & "-" & Me.lblRegimenFiscal.Text & " no aplica para personas físicas.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = ""
+                                End If
+                            Case "M" 'MORAL
+                                If oRegimenFiscal.APLICA_TIPO_MORAL = False Then
+                                    MsgBox("El régimen " & Me.txtRegimenFiscal.Text & "-" & Me.lblRegimenFiscal.Text & " no aplica para personas morales.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = ""
+                                End If
+                        End Select
+                    End If
+
+                    If txtLEN(Me.lblRegimenFiscal.Text) = False Then GoTo Buscar : Return
+
+                    SendKeys.Send("{TAB}")
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Sub txtUsoCFDI_KeyDown(sender As Object, e As KeyEventArgs) Handles txtUsoCFDI.KeyDown
         Const sProcedure As String = "txtUsoCFDI_KeyDown"
-        Dim sText As String = "", oUsoCFDI As Class_CFD_CatUsosCFDI
-        Select Case e.KeyCode
-            Case Keys.F6
+        Try
+            Dim sText As String = "", oUsoCFDI As Class_CFD_CatUsosCFDI
+            Select Case e.KeyCode
+                Case Keys.F6
 Buscar:
-                If txtLEN(Me.cboTipoPersona.Text) = False Then
-                    MsgBox("Seleccione primero el tipo de persona.", MsgBoxStyle.Exclamation, sProcedure)
-                    Me.cboTipoPersona.Focus()
-                    Return
-                End If
-                oUsoCFDI = New Class_CFD_CatUsosCFDI
-                sText = oUsoCFDI.BusquedaVisual_PorDescripcion(Strings.Left(Me.cboTipoPersona.Text, 1))
-                If txtLEN(sText) = True Then Me.txtUsoCFDI.Text = sText
-            Case Keys.Enter
-                If txtLEN(Me.txtUsoCFDI.Text) = False Then
-                    Me.lblUsoCFDI.Text = "" : GoTo Buscar : Exit Sub
-                End If
+                    If txtLEN(Me.cboTipoPersona.Text) = False Then
+                        MsgBox("Seleccione primero el tipo de persona.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.cboTipoPersona.Focus()
+                        Return
+                    End If
+                    oUsoCFDI = New Class_CFD_CatUsosCFDI
+                    sText = oUsoCFDI.BusquedaVisual_PorDescripcion(Strings.Left(Me.cboTipoPersona.Text, 1))
+                    If txtLEN(sText) = True Then Me.txtUsoCFDI.Text = sText
 
-                oUsoCFDI = New Class_CFD_CatUsosCFDI(Me.txtUsoCFDI.Text)
+                Case Keys.Enter
+                    If txtLEN(Me.txtUsoCFDI.Text) = False Then
+                        Me.lblUsoCFDI.Text = "" : GoTo Buscar : Exit Sub
+                    End If
 
-                Me.lblUsoCFDI.Text = oUsoCFDI.NOMBRE_USO_CFDI 'Lo va consultar aunque pudiera no ser válido, mas abajo lo eliminará
+                    oUsoCFDI = New Class_CFD_CatUsosCFDI(Me.txtUsoCFDI.Text)
 
-                If oUsoCFDI.EXISTE = False Then
-                    Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = "" : GoTo Buscar : Exit Sub
-                ElseIf oUsoCFDI.ESTATUS = "B" Then
-                    MsgBox("El uso del CFDI " & Me.lblUsoCFDI.Text & " esta dado de baja.", MsgBoxStyle.Exclamation, sProcedure)
-                    Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = ""
-                Else
-                    Select Case Strings.Left(Me.cboTipoPersona.Text, 1)
-                        Case "F" 'FISICA
-                            If oUsoCFDI.APLICA_TIPO_FISICA = False Then
-                                MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas físicas.", MsgBoxStyle.Exclamation, sProcedure)
-                                Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = ""
-                            End If
-                        Case "M" 'MORAL
-                            If oUsoCFDI.APLICA_TIPO_MORAL = False Then
-                                MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas morales.", MsgBoxStyle.Exclamation, sProcedure)
-                                Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = ""
-                            End If
-                    End Select
-                End If
+                    Me.lblUsoCFDI.Text = oUsoCFDI.NOMBRE_USO_CFDI 'Lo va consultar aunque pudiera no ser válido, mas abajo lo eliminará
 
-                If txtLEN(Me.lblUsoCFDI.Text) = False Then GoTo Buscar : Return
+                    If oUsoCFDI.EXISTE = False Then
+                        Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = "" : GoTo Buscar : Exit Sub
+                    ElseIf oUsoCFDI.ESTATUS = "B" Then
+                        MsgBox("El uso del CFDI " & Me.lblUsoCFDI.Text & " esta dado de baja.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = ""
+                    Else
+                        Select Case Strings.Left(Me.cboTipoPersona.Text, 1)
+                            Case "F" 'FISICA
+                                If oUsoCFDI.APLICA_TIPO_FISICA = False Then
+                                    MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas físicas.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = ""
+                                End If
+                            Case "M" 'MORAL
+                                If oUsoCFDI.APLICA_TIPO_MORAL = False Then
+                                    MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas morales.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = ""
+                                End If
+                        End Select
+                    End If
 
-                SendKeys.Send("{TAB}")
-        End Select
+                    If txtLEN(Me.lblUsoCFDI.Text) = False Then GoTo Buscar : Return
+
+                    SendKeys.Send("{TAB}")
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 #End Region
 
