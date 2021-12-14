@@ -1865,32 +1865,12 @@ Buscar:
 
             'End If
 
+            Me.oCliente = New Class_CatClientes(Me.TxtCliente.Text)
+
             If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
                 sMetodoPago = ""
                 sUsoCFDI = ""
             Else
-                If Me.cboMetodoPago.SelectedIndex = -1 Then
-                    MsgBox("Seleccione un método de pago.", vbExclamation, sProcedure)
-                    Return False
-                End If
-
-                If Me.cboRegimenFiscalEmisor.SelectedIndex = -1 Then
-                    MsgBox("Seleccione un régimen fiscal del ""Emisor"".", vbExclamation, sProcedure)
-                    Return False
-                End If
-
-                Me.oCliente = New Class_CatClientes(Me.TxtCliente.Text)
-
-                If Me.oCliente.Existe = False Then
-                    MsgBox("El cliente no existe, verifique por favor.", MsgBoxStyle.Exclamation, sProcedure)
-                    Return False
-                End If
-
-                If txtLEN(Me.oCliente.CODIGO_POSTAL) = False Then
-                    MsgBox("El cliente debe tener código postal, verifique por favor.", MsgBoxStyle.Exclamation, sProcedure)
-                    Return False
-                End If
-
                 If Me.chkVentaPublicoGeneral.Checked = True Then
                     sRFCCliente = "XAXX010101000"
                     sNombreReceptor = "PUBLICO GENERAL" 'Ojo no es lo mismo que "PUBLICO EN GENERAL" que tiene la palabra "EN" y SAT lo valida diferente.
@@ -1899,95 +1879,8 @@ Buscar:
                     sNombreReceptor = Me.oCliente.NOMBRE_CLIENTE
                 End If
 
-                If txtLEN(sNombreReceptor) = False Then
-                    MsgBox("El nombre del cliente esta vacío, verifique por favor.", MsgBoxStyle.Exclamation, sProcedure)
-                    Return False
-                End If
-
-                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                If txtLEN(Me.txtRegimenFiscalReceptor.Text) = False Then
-                    MsgBox("Seleccione el régimen fiscal del ""Receptor"".", vbExclamation, sProcedure)
-                    Me.lblRegimenFiscalReceptor.Text = "" : Return False
-                End If
-
-                Dim oRegimenFiscalReceptor As New Class_CFDCatTiposRegimenesFiscales(Me.txtRegimenFiscalReceptor.Text), bRegimenFiscalReceptorInvalido As Boolean
-
-                Me.lblRegimenFiscalReceptor.Text = oRegimenFiscalReceptor.NOMBRE_REGIMEN_FISCAL 'Lo va consultar aunque pudiera no ser válido, mas abajo lo eliminará
-
-                If oRegimenFiscalReceptor.EXISTE = False Then
-                    MsgBox("El régimen fiscal del receptor no existe.", MsgBoxStyle.Exclamation, sProcedure)
-                    bRegimenFiscalReceptorInvalido = True
-                ElseIf sRFCCliente = "XAXX010101000" Or sRFCCliente = "XEXX010101000" Then
-                    If Me.txtRegimenFiscalReceptor.Text <> "616" Then 'El SAT así lo exige.
-                        MsgBox("El régimen fiscal para receptores con RFC genérico XAXX010101000 ó XEXX010101000 debe ser 616=Sin obligaciones fiscales.", MsgBoxStyle.Exclamation, sProcedure)
-                        bRegimenFiscalReceptorInvalido = True
-                    End If
-                ElseIf oRegimenFiscalReceptor.ESTATUS = "B" Then
-                    MsgBox("El régimen fiscal del receptor" & Me.lblRegimenFiscalReceptor.Text & " esta dado de baja.", MsgBoxStyle.Exclamation, sProcedure)
-                    bRegimenFiscalReceptorInvalido = True
-                Else
-                    Select Case Me.oCliente.TIPO_PERSONA
-                        Case "F" 'FISICA
-                            If oRegimenFiscalReceptor.APLICA_TIPO_FISICA = False Then
-                                MsgBox("El régimen fiscal del receptor " & Me.txtRegimenFiscalReceptor.Text & "-" & Me.lblRegimenFiscalReceptor.Text & " no aplica para personas físicas.", MsgBoxStyle.Exclamation, sProcedure)
-                                bRegimenFiscalReceptorInvalido = True
-                            End If
-                        Case "M" 'MORAL
-                            If oRegimenFiscalReceptor.APLICA_TIPO_MORAL = False Then
-                                MsgBox("El régimen fiscal del receptor " & Me.txtRegimenFiscalReceptor.Text & "-" & Me.lblRegimenFiscalReceptor.Text & " no aplica para personas morales.", MsgBoxStyle.Exclamation, sProcedure)
-                                bRegimenFiscalReceptorInvalido = True
-                            End If
-                    End Select
-                End If
-
-                If bRegimenFiscalReceptorInvalido = True Then
-                    Me.txtRegimenFiscalReceptor.Text = "" : Me.lblRegimenFiscalReceptor.Text = "" : Return False
-                End If
-                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                'If Me.cboUsoCFDI.SelectedIndex = -1 Then
-                If txtLEN(Me.txtUsoCFDI.Text) = False Then
-                    MsgBox("Seleccione un uso del CFDI.", vbExclamation, sProcedure)
-                    Me.lblUsoCFDI.Text = "" : Return False
-                End If
-
-                Dim oUsoCFDI As New Class_CFD_CatUsosCFDI(Me.txtUsoCFDI.Text), bUsoCFDIInvalido As Boolean
-
-                Me.lblUsoCFDI.Text = oUsoCFDI.NOMBRE_USO_CFDI 'Lo va consultar aunque pudiera no ser válido, mas abajo lo eliminará
-
-                If oUsoCFDI.EXISTE = False Then
-                    MsgBox("El uso del CFDI no existe.", MsgBoxStyle.Exclamation, sProcedure)
-                    bUsoCFDIInvalido = True
-                ElseIf oUsoCFDI.ESTATUS = "B" Then
-                    MsgBox("El uso del CFDI " & Me.lblUsoCFDI.Text & " esta dado de baja.", MsgBoxStyle.Exclamation, sProcedure)
-                    bUsoCFDIInvalido = True
-                Else
-                    Select Case Me.oCliente.TIPO_PERSONA
-                        Case "F" 'FISICA
-                            If oUsoCFDI.APLICA_TIPO_FISICA = False Then
-                                MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas físicas.", MsgBoxStyle.Exclamation, sProcedure)
-                                bUsoCFDIInvalido = True
-                            ElseIf oUsoCFDI.REGIMEN_FISCAL_RECEPTOR.Contains(Me.txtRegimenFiscalReceptor.Text) = False Then
-                                MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para el régimen fiscal del receptor " & Me.txtRegimenFiscalReceptor.Text & "-" & Me.lblRegimenFiscalReceptor.Text, vbExclamation, sProcedure)
-                                bUsoCFDIInvalido = True
-                            End If
-                        Case "M" 'MORAL
-                            If oUsoCFDI.APLICA_TIPO_MORAL = False Then
-                                MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas morales.", MsgBoxStyle.Exclamation, sProcedure)
-                                bUsoCFDIInvalido = True
-                            ElseIf oUsoCFDI.REGIMEN_FISCAL_RECEPTOR.Contains(Me.txtRegimenFiscalReceptor.Text) = False Then
-                                MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para el régimen fiscal del receptor " & Me.txtRegimenFiscalReceptor.Text & "-" & Me.lblRegimenFiscalReceptor.Text, vbExclamation, sProcedure)
-                                bUsoCFDIInvalido = True
-                            End If
-                    End Select
-                End If
-
-                If bUsoCFDIInvalido = True Then
-                    Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = "" : Return False
-                End If
-
-                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 sMetodoPago = Me.cboMetodoPago.SelectedValue.ToString
-                sUsoCFDI = Me.cboUsoCFDI.SelectedValue.ToString
+                sUsoCFDI = Me.txtUsoCFDI.Text  'Me.cboUsoCFDI.SelectedValue.ToString
             End If
 
             If Me.cboTipoRelacionCFDI.SelectedIndex <> -1 Then
@@ -2563,6 +2456,7 @@ CANCELAR:
     Private Function ValidarVenta() As Boolean
         Const sProcedure As String = "ValidarVenta"
         Dim bResultado As Boolean = False
+        Dim sRFCCliente As String = "", sNombreReceptor As String = ""
 
         Try
             If Plaza.ValidarPeriodoTrabajo(Me.dpFecha.Value) = False Then
@@ -2728,8 +2622,13 @@ CANCELAR:
                         End If
                     End If
                 Else
+                    If Me.cboMetodoPago.SelectedIndex = -1 Then
+                        MsgBox("Seleccione un método de pago.", vbExclamation, sProcedure)
+                        Return False
+                    End If
+
                     If Me.cboFormaPago.SelectedIndex = -1 Then
-                        MsgBox("Seleccione un método de pago.", MsgBoxStyle.Exclamation, sProcedure)
+                        MsgBox("Seleccione una forma de pago.", MsgBoxStyle.Exclamation, sProcedure)
                         If Me.cboFormaPago.Enabled = True Then
                             Me.cboFormaPago.Focus()
                         End If
@@ -2764,8 +2663,117 @@ CANCELAR:
                     '    Return False
                     'End If
 
+                    If Me.cboRegimenFiscalEmisor.SelectedIndex = -1 Then
+                        MsgBox("Seleccione un régimen fiscal del ""Emisor"".", vbExclamation, sProcedure)
+                        Return False
+                    End If
 
-                    mover aqui las validaciones del regimen y del uso fiscal, aunque si dejar que se consulte el cliente para obtener el codigo postal
+                    Me.oCliente = New Class_CatClientes(Me.TxtCliente.Text)
+
+                    If Me.oCliente.Existe = False Then
+                        MsgBox("El cliente no existe, verifique por favor.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                    If txtLEN(Me.oCliente.CODIGO_POSTAL) = False Then
+                        MsgBox("El cliente debe tener código postal, verifique por favor.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                    If Me.chkVentaPublicoGeneral.Checked = True Then
+                        sRFCCliente = "XAXX010101000"
+                        sNombreReceptor = "PUBLICO GENERAL" 'Ojo no es lo mismo que "PUBLICO EN GENERAL" que tiene la palabra "EN" y SAT lo valida diferente.
+                    Else
+                        sRFCCliente = Me.oCliente.RFC
+                        sNombreReceptor = Me.oCliente.NOMBRE_CLIENTE
+                    End If
+
+                    If txtLEN(sNombreReceptor) = False Then
+                        MsgBox("El nombre del cliente esta vacío, verifique por favor.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                    If txtLEN(Me.txtRegimenFiscalReceptor.Text) = False Then
+                        MsgBox("Seleccione el régimen fiscal del ""Receptor"".", vbExclamation, sProcedure)
+                        Me.lblRegimenFiscalReceptor.Text = "" : Return False
+                    End If
+
+                    Dim oRegimenFiscalReceptor As New Class_CFDCatTiposRegimenesFiscales(Me.txtRegimenFiscalReceptor.Text), bRegimenFiscalReceptorInvalido As Boolean
+
+                    Me.lblRegimenFiscalReceptor.Text = oRegimenFiscalReceptor.NOMBRE_REGIMEN_FISCAL 'Lo va consultar aunque pudiera no ser válido, mas abajo lo eliminará
+
+                    If oRegimenFiscalReceptor.EXISTE = False Then
+                        MsgBox("El régimen fiscal del receptor no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                        bRegimenFiscalReceptorInvalido = True
+                    ElseIf sRFCCliente = "XAXX010101000" Or sRFCCliente = "XEXX010101000" Then
+                        If Me.txtRegimenFiscalReceptor.Text <> "616" Then 'El SAT así lo exige.
+                            MsgBox("El régimen fiscal para receptores con RFC genérico XAXX010101000 ó XEXX010101000 debe ser 616=Sin obligaciones fiscales.", MsgBoxStyle.Exclamation, sProcedure)
+                            bRegimenFiscalReceptorInvalido = True
+                        End If
+                    ElseIf oRegimenFiscalReceptor.ESTATUS = "B" Then
+                        MsgBox("El régimen fiscal del receptor" & Me.lblRegimenFiscalReceptor.Text & " esta dado de baja.", MsgBoxStyle.Exclamation, sProcedure)
+                        bRegimenFiscalReceptorInvalido = True
+                    Else
+                        Select Case Me.oCliente.TIPO_PERSONA
+                            Case "F" 'FISICA
+                                If oRegimenFiscalReceptor.APLICA_TIPO_FISICA = False Then
+                                    MsgBox("El régimen fiscal del receptor " & Me.txtRegimenFiscalReceptor.Text & "-" & Me.lblRegimenFiscalReceptor.Text & " no aplica para personas físicas.", MsgBoxStyle.Exclamation, sProcedure)
+                                    bRegimenFiscalReceptorInvalido = True
+                                End If
+                            Case "M" 'MORAL
+                                If oRegimenFiscalReceptor.APLICA_TIPO_MORAL = False Then
+                                    MsgBox("El régimen fiscal del receptor " & Me.txtRegimenFiscalReceptor.Text & "-" & Me.lblRegimenFiscalReceptor.Text & " no aplica para personas morales.", MsgBoxStyle.Exclamation, sProcedure)
+                                    bRegimenFiscalReceptorInvalido = True
+                                End If
+                        End Select
+                    End If
+
+                    If bRegimenFiscalReceptorInvalido = True Then
+                        Me.txtRegimenFiscalReceptor.Text = "" : Me.lblRegimenFiscalReceptor.Text = "" : Return False
+                    End If
+                    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                    'If Me.cboUsoCFDI.SelectedIndex = -1 Then
+                    If txtLEN(Me.txtUsoCFDI.Text) = False Then
+                        MsgBox("Seleccione un uso del CFDI.", vbExclamation, sProcedure)
+                        Me.lblUsoCFDI.Text = "" : Return False
+                    End If
+
+                    Dim oUsoCFDI As New Class_CFD_CatUsosCFDI(Me.txtUsoCFDI.Text), bUsoCFDIInvalido As Boolean
+
+                    Me.lblUsoCFDI.Text = oUsoCFDI.NOMBRE_USO_CFDI 'Lo va consultar aunque pudiera no ser válido, mas abajo lo eliminará
+
+                    If oUsoCFDI.EXISTE = False Then
+                        MsgBox("El uso del CFDI no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                        bUsoCFDIInvalido = True
+                    ElseIf oUsoCFDI.ESTATUS = "B" Then
+                        MsgBox("El uso del CFDI " & Me.lblUsoCFDI.Text & " esta dado de baja.", MsgBoxStyle.Exclamation, sProcedure)
+                        bUsoCFDIInvalido = True
+                    Else
+                        Select Case Me.oCliente.TIPO_PERSONA
+                            Case "F" 'FISICA
+                                If oUsoCFDI.APLICA_TIPO_FISICA = False Then
+                                    MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas físicas.", MsgBoxStyle.Exclamation, sProcedure)
+                                    bUsoCFDIInvalido = True
+                                ElseIf oUsoCFDI.REGIMEN_FISCAL_RECEPTOR.Contains(Me.txtRegimenFiscalReceptor.Text) = False Then
+                                    MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para el régimen fiscal del receptor " & Me.txtRegimenFiscalReceptor.Text & "-" & Me.lblRegimenFiscalReceptor.Text, vbExclamation, sProcedure)
+                                    bUsoCFDIInvalido = True
+                                End If
+                            Case "M" 'MORAL
+                                If oUsoCFDI.APLICA_TIPO_MORAL = False Then
+                                    MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas morales.", MsgBoxStyle.Exclamation, sProcedure)
+                                    bUsoCFDIInvalido = True
+                                ElseIf oUsoCFDI.REGIMEN_FISCAL_RECEPTOR.Contains(Me.txtRegimenFiscalReceptor.Text) = False Then
+                                    MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para el régimen fiscal del receptor " & Me.txtRegimenFiscalReceptor.Text & "-" & Me.lblRegimenFiscalReceptor.Text, vbExclamation, sProcedure)
+                                    bUsoCFDIInvalido = True
+                                End If
+                        End Select
+                    End If
+
+                    If bUsoCFDIInvalido = True Then
+                        Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = "" : Return False
+                    End If
+                    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 End If
             End If
 
