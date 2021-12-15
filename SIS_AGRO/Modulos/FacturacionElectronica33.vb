@@ -14,8 +14,8 @@ Module FacturacionElectronica33
 
     Private tPlazaFacturaElectronica As Class_SisPlazas
 
-    Private Function ValidaDatosGenerales(ByVal dFecha As Date, ByVal sCER As String, ByVal sKEY As String, ByVal sPassCER As String) As Boolean
-        Const sProcedure As String = "ValidaDatosGenerales"
+    Public Function ValidaDatosGeneralesCFDI(ByVal dFecha As Date, ByVal sCER As String, ByVal sKEY As String, ByVal sPassCER As String) As Boolean
+        Const sProcedure As String = "ValidaDatosGeneralesCFDI"
         Dim bResultado As Boolean = False
 
         Try
@@ -74,7 +74,7 @@ Module FacturacionElectronica33
         Dim Cfd As New cComprobante33
 
         Try
-            If ValidaDatosGenerales(oVenta.FECHA, oVenta.FELECTRONICA_CER, oVenta.FELECTRONICA_KEY, oVenta.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
+            If ValidaDatosGeneralesCFDI(oVenta.FECHA, oVenta.FELECTRONICA_CER, oVenta.FELECTRONICA_KEY, oVenta.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
                 Return False
             End If
 
@@ -785,7 +785,7 @@ Module FacturacionElectronica33
             ComprobanteFecha = Format(oBanco.FECHA_EMISION_CFDI, "yyyy-MM-dd") & "T" & Format(oBanco.FECHA_EMISION_CFDI, "HH:mm:ss")
 
             'Debemos validar la fecha del comprobante y no la del pago.
-            If ValidaDatosGenerales(FechaSatAFechaNormal(ComprobanteFecha), oPago.FELECTRONICA_CER, oPago.FELECTRONICA_KEY, oPago.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
+            If ValidaDatosGeneralesCFDI(FechaSatAFechaNormal(ComprobanteFecha), oPago.FELECTRONICA_CER, oPago.FELECTRONICA_KEY, oPago.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
                 Return False
             End If
 
@@ -996,7 +996,7 @@ Module FacturacionElectronica33
         Dim Cfd As New cComprobante33
 
         Try
-            If ValidaDatosGenerales(oDescuento.FECHA, oDescuento.FELECTRONICA_CER, oDescuento.FELECTRONICA_KEY, oDescuento.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
+            If ValidaDatosGeneralesCFDI(oDescuento.FECHA, oDescuento.FELECTRONICA_CER, oDescuento.FELECTRONICA_KEY, oDescuento.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
                 Return False
             End If
 
@@ -1289,7 +1289,7 @@ Module FacturacionElectronica33
         Dim oVenta As Class_Ventas_Global
 
         Try
-            If ValidaDatosGenerales(oDevolucion.FECHA, oDevolucion.FELECTRONICA_CER, oDevolucion.FELECTRONICA_KEY, oDevolucion.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
+            If ValidaDatosGeneralesCFDI(oDevolucion.FECHA, oDevolucion.FELECTRONICA_CER, oDevolucion.FELECTRONICA_KEY, oDevolucion.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
                 Return False
             End If
 

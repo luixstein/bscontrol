@@ -106,6 +106,7 @@ Public Class Class_Ventas_Global
     Private _CODIGO_REGIMEN_FISCAL_RECEPTOR As String
     Private _NOMBRE_RECEPTOR As String
     Private _DOMICILIO_FISCAL_RECEPTOR As String
+    Private _EXPORTACION As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -895,6 +896,16 @@ Public Class Class_Ventas_Global
             Me._DOMICILIO_FISCAL_RECEPTOR = Value
         End Set
     End Property
+
+    Public Property EXPORTACION() As String
+        Get
+            Return Me._EXPORTACION
+        End Get
+        Set(ByVal Value As String)
+            Me._EXPORTACION = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1371,6 +1382,7 @@ Public Class Class_Ventas_Global
                     Me._CODIGO_REGIMEN_FISCAL_RECEPTOR = "" & dReader("CODIGO_REGIMEN_FISCAL_RECEPTOR").ToString
                     Me._NOMBRE_RECEPTOR = "" & dReader("NOMBRE_RECEPTOR").ToString
                     Me._DOMICILIO_FISCAL_RECEPTOR = "" & dReader("DOMICILIO_FISCAL_RECEPTOR").ToString
+                    Me._EXPORTACION = "" & dReader("EXPORTACION").ToString
 
                     bResultado = True
                 End If
