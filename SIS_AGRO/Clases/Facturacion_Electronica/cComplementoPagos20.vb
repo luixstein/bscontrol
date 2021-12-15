@@ -111,7 +111,7 @@ Friend Class cComplementoPagos20
                 End If
 
                 If txtLEN(Me.Totales.TotalTrasladosBaseIVA16) = True Then
-                    .setAttribute("TotalRetencionesIVA", Me.NumOperacion) 'optional
+                    .setAttribute("TotalTrasladosBaseIVA16", Me.Totales.TotalTrasladosBaseIVA16) 'optional
                 End If
 
                 If txtLEN(Me.Totales.TotalTrasladosImpuestoIVA16) = True Then
