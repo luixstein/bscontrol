@@ -836,6 +836,11 @@ Buscar:
 
                     Me.oCliente = New Class_CatClientes(Me.TxtCliente.Text)
 
+                    If Me.oCliente.Existe = False Then
+                        MsgBox("El cliente no existe, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.lblCliente.Text = "" : Return
+                    End If
+
                     oRegimenFiscal = New Class_CFDCatTiposRegimenesFiscales
                     sText = oRegimenFiscal.BusquedaVisual_PorDescripcion(Me.oCliente.TIPO_PERSONA)
                     If txtLEN(sText) = True Then Me.txtRegimenFiscalReceptor.Text = sText
@@ -857,6 +862,11 @@ Buscar:
                     Me.lblRegimenFiscalReceptor.Text = oRegimenFiscal.NOMBRE_REGIMEN_FISCAL 'Lo va consultar aunque pudiera no ser válido, mas abajo lo eliminará
 
                     Me.oCliente = New Class_CatClientes(Me.TxtCliente.Text)
+
+                    If Me.oCliente.Existe = False Then
+                        MsgBox("El cliente no existe, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.lblCliente.Text = "" : Return
+                    End If
 
                     Dim sRFCCliente As String = ""
                     If Me.chkVentaPublicoGeneral.Checked = True Then
@@ -903,9 +913,10 @@ Buscar:
         Const sProcedure As String = "txtUsoCFDI_KeyDown"
         Try
             Dim sText As String = "", oUsoCFDI As Class_CFD_CatUsosCFDI
+
+
             Select Case e.KeyCode
-                Case Keys.F6
-Buscar:
+                Case Keys.F6, Keys.Return
                     If txtLEN(Me.TxtCliente.Text) = False Or txtLEN(Me.lblCliente.Text) = False Then
                         MsgBox("Seleccione primero el cliente.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.txtRegimenFiscalReceptor.Text = "" : Me.lblRegimenFiscalReceptor.Text = ""
@@ -915,22 +926,25 @@ Buscar:
 
                     Me.oCliente = New Class_CatClientes(Me.TxtCliente.Text)
 
+                    If Me.oCliente.Existe = False Then
+                        MsgBox("El cliente no existe, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.lblCliente.Text = "" : Return
+                    End If
+
+                    If txtLEN(Me.txtRegimenFiscalReceptor.Text) = False Then
+                        MsgBox("Seleccione primero el régimen fiscal del cliente.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.lblRegimenFiscalReceptor.Text = "" : Return
+                    End If
+            End Select
+
+            Select Case e.KeyCode 'Nota, se pregunta otra vez para no repetir el código en común.
+                Case Keys.F6
+Buscar:
                     oUsoCFDI = New Class_CFD_CatUsosCFDI
                     sText = oUsoCFDI.BusquedaVisual_PorDescripcion(Me.oCliente.TIPO_PERSONA)
                     If txtLEN(sText) = True Then Me.txtUsoCFDI.Text = sText
 
                 Case Keys.Enter
-                    If txtLEN(Me.TxtCliente.Text) = False Or txtLEN(Me.lblCliente.Text) = False Then
-                        MsgBox("Seleccione primero el cliente.", MsgBoxStyle.Exclamation, sProcedure)
-                        Me.txtRegimenFiscalReceptor.Text = "" : Me.lblRegimenFiscalReceptor.Text = ""
-                        Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = ""
-                        Return
-                    End If
-
-                    If txtLEN(Me.txtUsoCFDI.Text) = False Then
-                        Me.lblUsoCFDI.Text = "" : GoTo Buscar : Exit Sub
-                    End If
-
                     oUsoCFDI = New Class_CFD_CatUsosCFDI(Me.txtUsoCFDI.Text)
 
                     Me.lblUsoCFDI.Text = oUsoCFDI.NOMBRE_USO_CFDI 'Lo va consultar aunque pudiera no ser válido, mas abajo lo eliminará
@@ -1770,7 +1784,7 @@ Buscar:
         Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
         Dim i As Integer, sMetodoPago As String = "", sUsoCFDI As String = "", sListaSeries As String = "", sCodigoTipoRelacionCFDI As String = "", sListaCFDIsRelacionados As String = ""
-        Dim sRFCCliente As String = "", sNombreReceptor As String = ""
+        Dim sRFCReceptor As String = "", sNombreReceptor As String = "", sDomicilioFiscalReceptor As String = ""
 
         Try
             If Me._EsPorEmbarqueExtranjero = True Then
@@ -1875,11 +1889,18 @@ Buscar:
                 sUsoCFDI = ""
             Else
                 If Me.chkVentaPublicoGeneral.Checked = True Then
-                    sRFCCliente = "XAXX010101000"
+                    sRFCReceptor = "XAXX010101000"
                     sNombreReceptor = "PUBLICO GENERAL" 'Ojo no es lo mismo que "PUBLICO EN GENERAL" que tiene la palabra "EN" y SAT lo valida diferente.
                 Else
-                    sRFCCliente = Me.oCliente.RFC
+                    sRFCReceptor = Me.oCliente.RFC
                     sNombreReceptor = Me.oCliente.NOMBRE_CLIENTE
+                End If
+
+                'El SAT dice : Si el valor del atributo Rfc del receptor es "XAXX010101000" o "XEXX010101000", este atributo debe ser igual al valor del atributo LugarExpedicion.
+                If sRFCReceptor = Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL Or sRFCReceptor = Empresa_Sistema.RFC_EXTRANJERO Then
+                    sDomicilioFiscalReceptor = Plaza.CODIGO_POSTAL
+                Else
+                    sDomicilioFiscalReceptor = Me.oCliente.CODIGO_POSTAL
                 End If
 
                 sMetodoPago = Me.cboMetodoPago.SelectedValue.ToString
@@ -1934,7 +1955,6 @@ Buscar:
                 .CODIGO_CLIENTE = Me.TxtCliente.Text.ToUpper
                 .CODIGO_DOCUMENTO = Me.CboDocumento.SelectedValue.ToString
                 .CODIGO_VENDEDOR = CInt(Me.cboVendedor.SelectedValue.ToString)
-
                 .SUBTOTAL = valorNumerico(Me.lblSubtotal.Text)
                 .DESCUENTO = valorNumerico(Me.lblDescuento.Text)
                 .IMPUESTO = valorNumerico(Me.lblImpuesto.Text)
@@ -2014,7 +2034,7 @@ Buscar:
                 .CODIGO_METODO_PAGO = Me.cboFormaPago.SelectedValue.ToString
                 .NUMERO_CUENTA_PAGO = Me.txtNumeroCuentaPago.Text
                 .CODIGO_METODO_PAGO_EVENTO = sMetodoPago
-                .CODIGO_USO_CFDI = sUsoCFDI
+                .CODIGO_USO_CFDI = sUsoCFDI.ToUpper
                 .CODIGO_MONEDA_SAT = Me.cboMoneda.Text
 
                 If .CODIGO_TIPO_NEGOCIACION = 1 Then ' CREDITO
@@ -2029,7 +2049,7 @@ Buscar:
 
                 .CODIGO_REGIMEN_FISCAL_RECEPTOR = Me.txtRegimenFiscalReceptor.Text
                 .NOMBRE_RECEPTOR = sNombreReceptor
-                .DOMICILIO_FISCAL_RECEPTOR = Me.oCliente.CODIGO_POSTAL
+                .DOMICILIO_FISCAL_RECEPTOR = sDomicilioFiscalReceptor
 
                 If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.SUSTITUYENDO Then
                     If .Grabar("INSERTAR") = False Then
