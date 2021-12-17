@@ -303,8 +303,6 @@ Friend Class cComprobante40
 
                 If txtLEN(Trim(Me.Emisor.FacAtrAdquirente)) = True Then
                     .setAttribute("FacAtrAdquirente", Trim(Me.Emisor.FacAtrAdquirente)) 'required
-                Else
-                    MsgBox("El valor de Emisor.FacAtrAdquirente es un dato requerido.", vbExclamation, sProcedure) : Return False
                 End If
             End With
 
@@ -524,6 +522,7 @@ Friend Class cComprobante40
             Dim NodoImpuestos As MSXML2.IXMLDOMElement
             NodoImpuestos = xmlDoc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, AnexoNodo & "Impuestos", xmlns)
 
+            'Retenciones
             If Me.Impuestos.Retenciones.Count > 0 Then
                 Dim NodoRetenciones As MSXML2.IXMLDOMElement
                 NodoRetenciones = xmlDoc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, AnexoNodo & "Retenciones", xmlns)
@@ -552,6 +551,7 @@ Friend Class cComprobante40
                 NodoImpuestos.appendChild(NodoRetenciones)
             End If
 
+            'Traslados
             If Me.Impuestos.Traslados.Count > 0 Then
                 Dim NodoTraslados As MSXML2.IXMLDOMElement
                 NodoTraslados = xmlDoc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, AnexoNodo & "Traslados", xmlns)

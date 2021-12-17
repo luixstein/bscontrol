@@ -795,10 +795,9 @@ Buscar:
         End If
     End Sub
 
-
-    Private Sub cboUsoCFDI_KeyDown(sender As Object, e As KeyEventArgs)
-        txtTAB(e)
-    End Sub
+    'Private Sub cboUsoCFDI_KeyDown(sender As Object, e As KeyEventArgs)
+    '    txtTAB(e)
+    'End Sub
 
     Private Sub cboMetodoPago_KeyDown(sender As Object, e As KeyEventArgs) Handles cboMetodoPago.KeyDown
         txtTAB(e)
@@ -913,7 +912,6 @@ Buscar:
         Const sProcedure As String = "txtUsoCFDI_KeyDown"
         Try
             Dim sText As String = "", oUsoCFDI As Class_CFD_CatUsosCFDI
-
 
             Select Case e.KeyCode
                 Case Keys.F6, Keys.Return
@@ -2045,7 +2043,7 @@ Buscar:
                 .TIENE_IEPS_DESGLOSADO = Me.bClienteEsContribuyenteIEPS
                 .CODIGO_TIPO_RELACION_CFDI = sCodigoTipoRelacionCFDI
                 .LISTA_CFDIS_RELACIONADOS = sListaCFDIsRelacionados
-                .CODIGO_REGIMEN_FISCAL = Me.cboRegimenFiscalEmisor.SelectedValue.ToString
+                .CODIGO_REGIMEN_FISCAL_EMISOR = Me.cboRegimenFiscalEmisor.SelectedValue.ToString
 
                 .CODIGO_REGIMEN_FISCAL_RECEPTOR = Me.txtRegimenFiscalReceptor.Text
                 .NOMBRE_RECEPTOR = sNombreReceptor
@@ -4121,7 +4119,7 @@ CANCELAR:
                 Me.cboMetodoPago.SelectedIndex = -1
             End If
 
-            Me.cboRegimenFiscalEmisor.SelectedValue = Me.oVenta.CODIGO_REGIMEN_FISCAL
+            Me.cboRegimenFiscalEmisor.SelectedValue = Me.oVenta.CODIGO_REGIMEN_FISCAL_EMISOR
 
             If Me.oVenta.ES_VENTA_PUBLICO_GENERAL = "1" Then
                 Me.chkVentaPublicoGeneral.Checked = True

@@ -669,7 +669,7 @@ busca:
             Me.txtTipoCambio.Text = Me.oVenta.TIPO_DE_CAMBIO.ToString
             Me.chkVentaPublicoGeneral.Checked = CBool(Me.oVenta.ES_VENTA_PUBLICO_GENERAL)
             Me.txtSaldo.Text = FormatImporteContable(Me.oVenta.SALDO)
-            Me.cboRegimenFiscal.SelectedValue = Me.oVenta.CODIGO_REGIMEN_FISCAL
+            Me.cboRegimenFiscal.SelectedValue = Me.oVenta.CODIGO_REGIMEN_FISCAL_EMISOR
 
             Dim dTabla As DataTable = Me.oVenta.ObtenerDetalleDisponiblesParaDevolucion
             If dTabla.Rows.Count = 0 Then

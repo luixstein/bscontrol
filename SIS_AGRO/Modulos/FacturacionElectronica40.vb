@@ -132,8 +132,8 @@ Module FacturacionElectronica40
             With Cfd.Emisor
                 .Rfc = fElectronicaValidaCampo(Empresa_Sistema.RFC)
                 .Nombre = fElectronicaValidaCampo(Empresa_Sistema.NOMBRE_EMPRESA)
-                .RegimenFiscal = fElectronicaValidaCampo(oVenta.CODIGO_REGIMEN_FISCAL.ToString)
-                .FacAtrAdquirente = "" 'De momento no existe este campo
+                .RegimenFiscal = fElectronicaValidaCampo(oVenta.CODIGO_REGIMEN_FISCAL_EMISOR.ToString)
+                .FacAtrAdquirente = "" 'De momento no grabamos este dato
             End With
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Receptor''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -145,7 +145,7 @@ Module FacturacionElectronica40
                 Return False
             End If
 
-            With Cfd.Receptor
+            With Cfd.Receptor 'Note que Rfc,Nombre,DomicilioFiscalReceptor,RegimenFiscalReceptor y UsoCFDI salen de la venta(ya están grabados) y no del cliente.
                 .Rfc = oVenta.RFC_RECEPTOR
                 .Nombre = oVenta.NOMBRE_RECEPTOR
                 .DomicilioFiscalReceptor = oVenta.DOMICILIO_FISCAL_RECEPTOR

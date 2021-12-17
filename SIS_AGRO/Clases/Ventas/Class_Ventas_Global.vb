@@ -81,7 +81,7 @@ Public Class Class_Ventas_Global
     Private _TIMBRADO_DESCARTADO As String
     Private _VERSION_ESQUEMA_XML As String
     Private _TIENE_COMPLEMENTO_COMERCIO_EXTERIOR As Boolean
-    Private _CODIGO_REGIMEN_FISCAL As String
+    Private _CODIGO_REGIMEN_FISCAL_EMISOR As String
     Private _CODIGO_METODO_PAGO_EVENTO As String
     Private _CODIGO_USO_CFDI As String
     Private _RFC_RECEPTOR As String
@@ -674,12 +674,12 @@ Public Class Class_Ventas_Global
         End Get
     End Property
 
-    Public Property CODIGO_REGIMEN_FISCAL() As String
+    Public Property CODIGO_REGIMEN_FISCAL_EMISOR() As String
         Get
-            Return Me._CODIGO_REGIMEN_FISCAL
+            Return Me._CODIGO_REGIMEN_FISCAL_EMISOR
         End Get
         Set(ByVal Value As String)
-            Me._CODIGO_REGIMEN_FISCAL = Value
+            Me._CODIGO_REGIMEN_FISCAL_EMISOR = Value
         End Set
     End Property
 
@@ -1081,7 +1081,7 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@RETENCION_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_USD
             sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
             sqlParametro = .Parameters.Add("@RETENCION_ISR_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_USD
-            sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL
+            sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL_EMISOR", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL_EMISOR
             sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL_RECEPTOR", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL_RECEPTOR
             sqlParametro = .Parameters.Add("@NOMBRE_RECEPTOR", SqlDbType.NVarChar, 254) : sqlParametro.Value = Me._NOMBRE_RECEPTOR
             sqlParametro = .Parameters.Add("@DOMICILIO_FISCAL_RECEPTOR", SqlDbType.NVarChar, 5) : sqlParametro.Value = Me._DOMICILIO_FISCAL_RECEPTOR
@@ -1356,7 +1356,7 @@ Public Class Class_Ventas_Global
                     Me._VERSION_ESQUEMA_XML = "" & dReader("VERSION_ESQUEMA_XML").ToString
                     Me._SERIE = "" & Trim(dReader("SERIE").ToString)
                     Me._TIENE_COMPLEMENTO_COMERCIO_EXTERIOR = CBool(dReader("TIENE_COMPLEMENTO_COMERCIO_EXTERIOR").ToString)
-                    Me._CODIGO_REGIMEN_FISCAL = ("" & dReader("CODIGO_REGIMEN_FISCAL").ToString)
+                    Me._CODIGO_REGIMEN_FISCAL_EMISOR = ("" & dReader("CODIGO_REGIMEN_FISCAL").ToString)
                     Me._ES_FACTURA_EMBARQUE_EXTRANJERO = CBool(dReader("ES_FACTURA_EMBARQUE_EXTRANJERO"))
                     Me._Nombre_Formato = "" & Trim(dReader("NOMBRE_FORMATO").ToString)
                     Me._IEPS_TOTAL_DESGLOSADO = CDbl(dReader("IEPS_TOTAL_DESGLOSADO"))
@@ -1501,7 +1501,7 @@ Public Class Class_Ventas_Global
                     Me._VERSION_ESQUEMA_XML = "" & dReader("VERSION_ESQUEMA_XML").ToString
                     Me._SERIE = "" & Trim(dReader("SERIE").ToString)
                     Me._TIENE_COMPLEMENTO_COMERCIO_EXTERIOR = CBool(dReader("TIENE_COMPLEMENTO_COMERCIO_EXTERIOR").ToString)
-                    Me._CODIGO_REGIMEN_FISCAL = "" & Trim(dReader("CODIGO_REGIMEN_FISCAL").ToString)
+                    Me._CODIGO_REGIMEN_FISCAL_EMISOR = "" & Trim(dReader("CODIGO_REGIMEN_FISCAL").ToString)
                     Me._ES_FACTURA_EMBARQUE_EXTRANJERO = CBool(dReader("ES_FACTURA_EMBARQUE_EXTRANJERO"))
                     Me._Nombre_Formato = "" & Trim(dReader("NOMBRE_FORMATO").ToString)
                     Me._IEPS_TOTAL_DESGLOSADO = CDbl(dReader("IEPS_TOTAL_DESGLOSADO"))
@@ -3038,20 +3038,26 @@ Public Class Class_Ventas_Global
             sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me._FOLIO_VENTA & ".xml"
 
             If Me._TIMBRADO_CFDI = "0" Then
-                If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
-                    bResultado = FacturacionElectronica.GeneraFacturaElectronica(Me, bMensajes, sRutaXML)
-                Else
-                    bResultado = FacturacionElectronica33.GeneraFacturaElectronica33(Me, bMensajes, sRutaXML)
-                End If
+                Select Case Empresa_Sistema.VERSION_ESQUEMA_CFD
+                    Case <= "3.2"
+                        bResultado = FacturacionElectronica.GeneraFacturaElectronica(Me, bMensajes, sRutaXML)
+                    Case "3.3"
+                        bResultado = FacturacionElectronica33.GeneraFacturaElectronica33(Me, bMensajes, sRutaXML)
+                    Case "4.0"
+                        bResultado = FacturacionElectronica40.GeneraFacturaElectronica40(Me, bMensajes, sRutaXML)
+                End Select
 
                 If bResultado = False Then
                     MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
                 Else
                     bResultado = True
 
-                    'Actualiza el rfc_receptor en la factura para registrar el rfc exacto con el que la timbraron porque puede ser que hayan grabado con un rfc que no es válido, y ese dato se queda incorrecto para cuando ya lo corrigen
-                    'en el catálgo de clientes.
-                    Me.ActualizaRFCReceptor()
+                    'Actualiza el rfc_receptor en la factura para registrar el rfc exacto con el que la timbraron porque puede ser que hayan grabado con un rfc que no es válido, 
+                    'y ese dato se queda incorrecto para cuando ya lo corrigen en el catálogo de clientes.
+                    'y sólo aplica para la 3.3 porque en ella se determina al timbrar, en la 4.0 no porque se graba junto con otros datos del receptor y ya no cambian.
+                    If Empresa_Sistema.VERSION_ESQUEMA_CFD = "3.3" Then
+                        Me.ActualizaRFCReceptor()
+                    End If
 
                     If bGenerarPDF = True Then
                         Me.ExportarAPdf()
