@@ -37,18 +37,16 @@ Public Class Class_CXC_Devoluciones_Global
     Private _CODIGO_USUARIO_CANCELO As Integer
     Private _FECHA_CANCELACION As Date
     Private _FECHA_CANCELACION_SERVIDOR As Date
-
     Private _FOLIO_NUMERICO As String
     Private _SERIE As String
     Private _ES_A_PUBLICO_GENERAL As String
     Private _ES_COMPROBANTE_ELECTRONICO As String
-    Private _CODIGO_REGIMEN_FISCAL As String
+    Private _CODIGO_REGIMEN_FISCAL_EMISOR As String
     Private _CODIGO_METODO_PAGO As String
     Private _CODIGO_METODO_PAGO_EVENTO As String
     Private _CODIGO_USO_CFDI As String
     Private _CODIGO_MONEDA_SAT As String
     Private _CODIGO_TIPO_RELACION_CFDI As String
-
     'Private _IDCATALOGO_FOLIO_FELECTRONICA As String
     Private _ID_SIS_CFD_CATALOGO_CERTIFICADOS As String
     Private _ENVIADA_POR_CORREO As Boolean
@@ -68,9 +66,13 @@ Public Class Class_CXC_Devoluciones_Global
     Private _FOLIO_FISCAL_CANCELACION_SAT As String
     Private _ESTATUS_CANCELACION_CFDI As String
     Private _TIENE_IEPS_DESGLOSADO As Boolean
-
     Private _RETENCION_IVA As Decimal
     Private _RETENCION_ISR As Decimal
+    Private _EXPORTACION As String
+    Private _RFC_RECEPTOR As String
+    Private _CODIGO_REGIMEN_FISCAL_RECEPTOR As String
+    Private _NOMBRE_RECEPTOR As String
+    Private _DOMICILIO_FISCAL_RECEPTOR As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -322,12 +324,12 @@ Public Class Class_CXC_Devoluciones_Global
         End Set
     End Property
 
-    Public Property CODIGO_REGIMEN_FISCAL() As String
+    Public Property CODIGO_REGIMEN_FISCAL_EMISOR() As String
         Get
-            Return Me._CODIGO_REGIMEN_FISCAL
+            Return Me._CODIGO_REGIMEN_FISCAL_EMISOR
         End Get
         Set(ByVal Value As String)
-            Me._CODIGO_REGIMEN_FISCAL = Value
+            Me._CODIGO_REGIMEN_FISCAL_EMISOR = Value
         End Set
     End Property
 
@@ -497,6 +499,51 @@ Public Class Class_CXC_Devoluciones_Global
             Me._RETENCION_ISR = value
         End Set
     End Property
+
+    Public Property EXPORTACION() As String
+        Get
+            Return Me._EXPORTACION
+        End Get
+        Set(value As String)
+            Me._EXPORTACION = value
+        End Set
+    End Property
+
+    Public Property RFC_RECEPTOR() As String
+        Get
+            Return Me._RFC_RECEPTOR
+        End Get
+        Set(value As String)
+            Me._RFC_RECEPTOR = value
+        End Set
+    End Property
+
+    Public Property CODIGO_REGIMEN_FISCAL_RECEPTOR() As String
+        Get
+            Return Me._CODIGO_REGIMEN_FISCAL_RECEPTOR
+        End Get
+        Set(value As String)
+            Me._CODIGO_REGIMEN_FISCAL_RECEPTOR = value
+        End Set
+    End Property
+
+    Public Property NOMBRE_RECEPTOR() As String
+        Get
+            Return Me._NOMBRE_RECEPTOR
+        End Get
+        Set(value As String)
+            Me._NOMBRE_RECEPTOR = value
+        End Set
+    End Property
+
+    Public Property DOMICILIO_FISCAL_RECEPTOR() As String
+        Get
+            Return Me._DOMICILIO_FISCAL_RECEPTOR
+        End Get
+        Set(value As String)
+            Me._DOMICILIO_FISCAL_RECEPTOR = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -642,9 +689,14 @@ Public Class Class_CXC_Devoluciones_Global
                 sqlParametro = .Parameters.Add("@CODIGO_USO_CFDI", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_USO_CFDI
                 sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
                 sqlParametro = .Parameters.Add("@CODIGO_TIPO_RELACION_CFDI", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_RELACION_CFDI
-                sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL
+                sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL_EMISOR
                 sqlParametro = .Parameters.Add("@RETENCION_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
                 sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
+                sqlParametro = .Parameters.Add("@EXPORTACION", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._EXPORTACION
+                sqlParametro = .Parameters.Add("@RFC_RECEPTOR", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._RFC_RECEPTOR
+                sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL_RECEPTOR", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL_RECEPTOR
+                sqlParametro = .Parameters.Add("@NOMBRE_RECEPTOR", SqlDbType.NVarChar, 254) : sqlParametro.Value = Me._NOMBRE_RECEPTOR
+                sqlParametro = .Parameters.Add("@DOMICILIO_FISCAL_RECEPTOR", SqlDbType.NVarChar, 5) : sqlParametro.Value = Me._DOMICILIO_FISCAL_RECEPTOR
 
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -725,19 +777,17 @@ Public Class Class_CXC_Devoluciones_Global
                     Me._NOMBRE_USUARIO_GRABO = "" & dReader("NOMBRE_USUARIO_GRABO").ToString()
                     Me._CODIGO_ALMACEN = "" & dReader("CODIGO_ALMACEN").ToString()
                     Me._NOMBRE_ALMACEN = "" & dReader("NOMBRE_ALMACEN").ToString()
-
                     Me._FOLIO_NUMERICO = "" & dReader("FOLIO_NUMERICO").ToString()
                     Me._SERIE = "" & Trim(dReader("SERIE").ToString)
                     Me._ES_A_PUBLICO_GENERAL = "" & dReader("ES_A_PUBLICO_GENERAL").ToString()
                     Me._ES_COMPROBANTE_ELECTRONICO = "" & dReader("ES_COMPROBANTE_ELECTRONICO").ToString()
-                    Me._CODIGO_REGIMEN_FISCAL = "" & dReader("CODIGO_REGIMEN_FISCAL").ToString()
+                    Me._CODIGO_REGIMEN_FISCAL_EMISOR = "" & dReader("CODIGO_REGIMEN_FISCAL").ToString()
                     Me._CODIGO_METODO_PAGO = "" & dReader("CODIGO_METODO_PAGO").ToString()
                     Me._CODIGO_METODO_PAGO_EVENTO = "" & dReader("CODIGO_METODO_PAGO_EVENTO").ToString()
                     Me._CODIGO_USO_CFDI = "" & dReader("CODIGO_USO_CFDI").ToString()
                     Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString()
                     Me._CODIGO_TIPO_RELACION_CFDI = "" & dReader("CODIGO_TIPO_RELACION_CFDI").ToString()
-                    Me._CODIGO_REGIMEN_FISCAL = "" & dReader("CODIGO_REGIMEN_FISCAL").ToString()
-
+                    Me._CODIGO_REGIMEN_FISCAL_EMISOR = "" & dReader("CODIGO_REGIMEN_FISCAL").ToString()
                     'Me._IDCATALOGO_FOLIO_FELECTRONICA = "" & dReader("IDCATALOGO_FOLIO_FELECTRONICA").ToString()
                     Me._ID_SIS_CFD_CATALOGO_CERTIFICADOS = "" & dReader("ID_SIS_CFD_CATALOGO_CERTIFICADOS").ToString()
                     Me._ENVIADA_POR_CORREO = CBool(dReader("ENVIADA_POR_CORREO").ToString())
@@ -756,15 +806,17 @@ Public Class Class_CXC_Devoluciones_Global
                     Me._LEYENDA = "" & dReader("LEYENDA").ToString()
                     Me._FOLIO_FISCAL_CANCELACION_SAT = "" & dReader("FOLIO_FISCAL_CANCELACION_SAT").ToString()
                     Me._ESTATUS_CANCELACION_CFDI = dReader("ESTATUS_CANCELACION_CFDI").ToString()
-
                     Me._FELECTRONICA_CER = "" & dReader("FELECTRONICA_CER").ToString
                     Me._FELECTRONICA_KEY = "" & dReader("FELECTRONICA_KEY").ToString
                     Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA = IIf(txtLEN("" & dReader("CONTRASEÑA").ToString) = True, Decrypt("" & dReader("CONTRASEÑA").ToString, "r7"), "").ToString
-
                     Me._TIENE_IEPS_DESGLOSADO = CBool(dReader("TIENE_IEPS_DESGLOSADO").ToString)
-
                     Me._RETENCION_IVA = CDec(dReader("RETENCION_IVA"))
                     Me._RETENCION_ISR = CDec(dReader("RETENCION_ISR"))
+                    Me._EXPORTACION = "" & dReader("EXPORTACION").ToString
+                    Me._RFC_RECEPTOR = "" & dReader("RFC_RECEPTOR").ToString
+                    Me._CODIGO_REGIMEN_FISCAL_RECEPTOR = "" & dReader("CODIGO_REGIMEN_FISCAL_RECEPTOR").ToString
+                    Me._NOMBRE_RECEPTOR = "" & dReader("NOMBRE_RECEPTOR").ToString
+                    Me._DOMICILIO_FISCAL_RECEPTOR = "" & dReader("DOMICILIO_FISCAL_RECEPTOR").ToString
 
                     bResultado = True
                 End If
