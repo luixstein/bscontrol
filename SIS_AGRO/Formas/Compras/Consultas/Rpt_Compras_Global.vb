@@ -98,6 +98,10 @@ buscar:
         txtNoBeep(e)
     End Sub
 
+    Private Sub RadioButton_CheckedChanged(sender As Object, e As EventArgs) Handles RbGlobal.CheckedChanged, RbAgrupadoFamilia.CheckedChanged, RbListadoDocumentos.CheckedChanged, RbDevoluciones.CheckedChanged, RbDescuentos.CheckedChanged
+        Me.OcultarControles()
+    End Sub
+
     'Private Sub RbAgrupadoFamilia_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RbAgrupadoFamilia.CheckedChanged
     'If Me.RbAgrupadoFamilia.Checked = True Then
     '    Me.lblDisplayFamilia.Visible = True
@@ -241,12 +245,14 @@ buscar:
 
             If Me.RbGlobal.Checked = True Then
                 oReporte = New Class_Reporte("RPT_COMPRA_GLOBAL", Rpt, True)
-                'Me.CboFamilia.SelectedValue = "T"
-                'Me.cboLineas.SelectedValue = "T"
             ElseIf Me.RbAgrupadoFamilia.Checked = True Then
                 oReporte = New Class_Reporte("RPT_COMPRA_AGRUPADO_POR_FAMILIA", Rpt, True)
             ElseIf Me.RbListadoDocumentos.Checked = True Then
                 oReporte = New Class_Reporte("RPT_COMPRA_LISTADO", Rpt, True)
+            ElseIf Me.RbDevoluciones.Checked = True Then
+                oReporte = New Class_Reporte("RPT_CXP_DEVOLUCIONES", Rpt, True)
+            ElseIf Me.RbDescuentos.Checked = True Then
+                oReporte = New Class_Reporte("RPT_CXP_DESCUENTOS", Rpt, True)
             Else
                 MsgBox("Formato no válido.", MsgBoxStyle.Exclamation, Me.Text)
                 Return
@@ -257,19 +263,25 @@ buscar:
             End If
 
             Rpt.SetParameterValue("@CODIGO_PROVEEDOR", Me.txtCodigoProveedor.Text.ToUpper)
-            Rpt.SetParameterValue("@CODIGO_DOCUMENTO", Me.CboDocumento.SelectedValue.ToString())
             Rpt.SetParameterValue("@ESTATUS", Me.CboEstatus.SelectedItem.ToString.Substring(0, 1))
-            Rpt.SetParameterValue("@FILTRO_SALDO", IIf(Me.chkMostrarSoloDocumentosSaldoMayorCero.Checked = True, "1", "0"))
-            Rpt.SetParameterValue("@CODIGO_ARTICULO", Me.TxtCodigoArticulo.Text.ToUpper)
-            Rpt.SetParameterValue("@CODIGO_ALMACEN", Me.CboAlmacen.SelectedValue.ToString())
             Rpt.SetParameterValue("@CODIGO_PLAZA", Usuario.Codigo_Plaza)
             Rpt.SetParameterValue("@FECHA1", Format(Me.DtFechaDesde.Value, "yyyy-dd-MM"))
             Rpt.SetParameterValue("@FECHA2", Format(Me.DtFechaHasta.Value, "yyyy-dd-MM"))
-            Rpt.SetParameterValue("@CODIGO_FAMILIA", Me.CboFamilia.SelectedValue.ToString)
-            Rpt.SetParameterValue("@INVENTARIABLES", Me.cboInventariables.Text)
-            Rpt.SetParameterValue("@MONEDA", Me.cboMoneda.Text)
-            Rpt.SetParameterValue("@CODIGO_LINEA", Me.cboLineas.SelectedValue.ToString)
-            Rpt.SetParameterValue("@ES_FISCAL", Me.cboEsFiscal.Text.Substring(0, 1))
+
+            If Me.RbDescuentos.Checked = False Then
+                Rpt.SetParameterValue("@CODIGO_ARTICULO", Me.TxtCodigoArticulo.Text.ToUpper)
+                Rpt.SetParameterValue("@CODIGO_ALMACEN", Me.CboAlmacen.SelectedValue.ToString())
+            End If
+            
+            If Me.RbDescuentos.Checked = False And Me.RbDevoluciones.Checked = False Then
+                Rpt.SetParameterValue("@CODIGO_DOCUMENTO", Me.CboDocumento.SelectedValue.ToString())
+                Rpt.SetParameterValue("@FILTRO_SALDO", IIf(Me.chkMostrarSoloDocumentosSaldoMayorCero.Checked = True, "1", "0"))
+                Rpt.SetParameterValue("@CODIGO_FAMILIA", Me.CboFamilia.SelectedValue.ToString)
+                Rpt.SetParameterValue("@INVENTARIABLES", Me.cboInventariables.Text)
+                Rpt.SetParameterValue("@MONEDA", Me.cboMoneda.Text)
+                Rpt.SetParameterValue("@CODIGO_LINEA", Me.cboLineas.SelectedValue.ToString)
+                Rpt.SetParameterValue("@ES_FISCAL", Me.cboEsFiscal.Text.Substring(0, 1))
+            End If
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
@@ -296,6 +308,61 @@ buscar:
 
         Return True
     End Function
+
+    Private Sub OcultarControles()
+        If Me.RbDevoluciones.Checked Or Me.RbDescuentos.Checked Then
+            Me.chkMostrarSoloDocumentosSaldoMayorCero.Visible = False
+            Me.CboDocumento.Visible = False
+            Me.cboEsFiscal.Visible = False
+            Me.cboMoneda.Visible = False
+            Me.cboLineas.Visible = False
+            Me.CboFamilia.Visible = False
+            Me.cboInventariables.Visible = False
+            Me.CboEstatus.Visible = False
+
+            Me.LblDocumento.Visible = False
+            Me.lblDisplayEsFiscal.Visible = False
+            Me.LblMoneda.Visible = False
+            Me.LblDisplayLinea.Visible = False
+            Me.lblDisplayFamilia.Visible = False
+            Me.lblinventariables.Visible = False
+            Me.LblEstatus.Visible = False
+
+            If Me.RbDescuentos.Checked Then
+                Me.CboAlmacen.Visible = False
+                Me.TxtCodigoArticulo.Visible = False
+                Me.lblArticulo.Visible = False
+                Me.CboEstatus.Visible = True
+
+                Me.LblAlmacen.Visible = False
+                Me.LblEstatus.Visible = True
+            End If
+
+        Else
+            Me.CboAlmacen.Visible = True
+            Me.TxtCodigoArticulo.Visible = True
+            Me.lblArticulo.Visible = True
+            Me.chkMostrarSoloDocumentosSaldoMayorCero.Visible = True
+            Me.CboDocumento.Visible = True
+            Me.cboEsFiscal.Visible = True
+            Me.cboMoneda.Visible = True
+            Me.cboLineas.Visible = True
+            Me.CboFamilia.Visible = True
+            Me.cboInventariables.Visible = True
+            Me.CboEstatus.Visible = True
+
+            Me.LblDocumento.Visible = True
+            Me.lblDisplayEsFiscal.Visible = True
+            Me.LblMoneda.Visible = True
+            Me.LblDisplayLinea.Visible = True
+            Me.lblDisplayFamilia.Visible = True
+            Me.lblinventariables.Visible = True
+            Me.LblEstatus.Visible = True
+            Me.LblAlmacen.Visible = True
+            Me.LblEstatus.Visible = True
+        End If
+    End Sub
+
 #End Region
 
 End Class
