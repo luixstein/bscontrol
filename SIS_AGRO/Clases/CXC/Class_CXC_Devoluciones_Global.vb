@@ -689,7 +689,7 @@ Public Class Class_CXC_Devoluciones_Global
                 sqlParametro = .Parameters.Add("@CODIGO_USO_CFDI", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_USO_CFDI
                 sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
                 sqlParametro = .Parameters.Add("@CODIGO_TIPO_RELACION_CFDI", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_RELACION_CFDI
-                sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL_EMISOR
+                sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL_EMISOR", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL_EMISOR
                 sqlParametro = .Parameters.Add("@RETENCION_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
                 sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
                 sqlParametro = .Parameters.Add("@EXPORTACION", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._EXPORTACION
@@ -999,7 +999,7 @@ Public Class Class_CXC_Devoluciones_Global
         Try
             sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me._FOLIO_DEVOLUCION & ".xml"
 
-            If Me._TIMBRADO_CFDI = "0" Then
+            If Me._TIMBRADO_CFDI = "1" Then
                 MsgBox("La devolución ya esta timbrada.", vbExclamation, sProcedure)
                 Return False
             End If
@@ -1076,7 +1076,7 @@ Public Class Class_CXC_Devoluciones_Global
             sSQL = "SELECT R.CODIGO_ARTICULO,VR.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.PRECIO_TOTAL,VR.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE, " &
                 "R.IMPUESTO_IMPORTE,R.ID_CXC_DEVOLUCION_DETALLE, " &
                 "A.CODIGO_PRODUCTO_SERVICIO,A.CODIGO_UNIDAD,R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.PRECIO_TOTAL, " &
-                "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD,R.RETENCION_IVA_BASE,R.RETENCION_IVA_IMPORTE,R.RETENCION_IVA_PORCENTAJE,R.RETENCION_ISR_BASE,R.RETENCION_ISR_IMPORTE,R.RETENCION_ISR_PORCENTAJE  " &
+                "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD,R.RETENCION_IVA_BASE,R.RETENCION_IVA_IMPORTE,R.RETENCION_IVA_PORCENTAJE,R.RETENCION_ISR_BASE,R.RETENCION_ISR_IMPORTE,R.RETENCION_ISR_PORCENTAJE,R.OBJETO_IMP  " &
                 "FROM CXC_DEVOLUCION_DETALLE R " &
                 "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
                 "INNER JOIN VENTA_DETALLE VR ON(R.ID_VENTA_DETALLE=VR.ID_VENTA_DETALLE) " &

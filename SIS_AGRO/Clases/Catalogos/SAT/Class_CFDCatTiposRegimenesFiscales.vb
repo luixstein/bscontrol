@@ -184,9 +184,10 @@ Public Class Class_CFDCatTiposRegimenesFiscales
 
         f.Text = "Búsqueda de regímenes fiscales por nombre."
         f.sCampo = "NOMBRE_REGIMEN_FISCAL"
-        f.sOrder = "NOMBRE_REGIMEN_FISCAL"
+        f.sOrder = "CODIGO_REGIMEN_FISCAL"
         f.sTable = "CDF_CAT_TIPOS_REGIMENES_FISCALES"
         f.sQl = "SELECT CODIGO_REGIMEN_FISCAL,NOMBRE_REGIMEN_FISCAL,APLICA_TIPO_FISICA,APLICA_TIPO_MORAL FROM CDF_CAT_TIPOS_REGIMENES_FISCALES WHERE ESTATUS='A' AND " & IIf(sTipoPersona = "F", "APLICA_TIPO_FISICA='1'", "APLICA_TIPO_MORAL='1'").ToString & " AND "
+        f.arrayWidthColumns = New Integer() {100, 350, 130, 130}
         f.Inicia("%")
         f.ShowDialog()
         Try

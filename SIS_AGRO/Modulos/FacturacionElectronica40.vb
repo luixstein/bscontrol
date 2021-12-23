@@ -283,11 +283,11 @@ Module FacturacionElectronica40
                 End If
 
                 If drRETENCION_IVA_IMPORTE > 0 Then
-                    ConceptoImpuestoRetenciones.Add(Format(drRETENCION_IVA_BASE, "##0.00"), "002", "Tasa", Format(drRETENCION_IVA_PORCENTAJE, "0.#00000"), Format(drRETENCION_IVA_IMPORTE, "##0.00")) '002=IVA
+                    ConceptoImpuestoRetenciones.Add(Format(drRETENCION_IVA_BASE, "##0.000000"), "002", "Tasa", Format(drRETENCION_IVA_PORCENTAJE, "0.#00000"), Format(drRETENCION_IVA_IMPORTE, "##0.00")) '002=IVA
                 End If
 
                 If drRETENCION_ISR_IMPORTE > 0 Then
-                    ConceptoImpuestoRetenciones.Add(Format(drRETENCION_ISR_BASE, "##0.00"), "001", "Tasa", Format(drRETENCION_ISR_PORCENTAJE, "0.#00000"), Format(drRETENCION_ISR_IMPORTE, "##0.00")) '001=ISR
+                    ConceptoImpuestoRetenciones.Add(Format(drRETENCION_ISR_BASE, "##0.000000"), "001", "Tasa", Format(drRETENCION_ISR_PORCENTAJE, "0.#00000"), Format(drRETENCION_ISR_IMPORTE, "##0.00")) '001=ISR
                 End If
 
                 'If oVenta.IEPS_TOTAL_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
@@ -333,6 +333,7 @@ Module FacturacionElectronica40
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Impuestos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Dim arr() As iImpuestosTraslado40, dImpuestoIEPSImporte As Decimal, dImpuestoIVAImporte As Decimal, iEncontrados As Integer = 0
             Dim arr2() As iImpuestosRetencion40, dRetencionIvaImporte As Decimal
+            Dim dBaseIEPS As Decimal, dBaseIVA As Decimal
 
             ''IEPS, deben acumularse, puede ser que mas de un artículo tenga el mismo % de ieps, de modo que aquí se juntan en uno sólo.
             iEncontrados = 0
@@ -341,10 +342,11 @@ Module FacturacionElectronica40
             If iEncontrados > 0 Then
                 For i = 1 To UBound(arr)
                     dImpuestoIEPSImporte = CDec(arr(i).Importe)
+                    dBaseIEPS = CDec(arr(i).Base)
 
                     'Nota, no es necesario preguntar si es en USD y dividir por el tipo de cambio porque este valor se llena con el desglose x concepto el cual ya esta en USD
 
-                    Cfd.Impuestos.Traslados.Add(arr(i).Base, arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIEPSImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                    Cfd.Impuestos.Traslados.Add(Format(dBaseIEPS, "##0.000000"), arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIEPSImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
                 Next
             End If
 
@@ -355,8 +357,9 @@ Module FacturacionElectronica40
             If iEncontrados > 0 Then
                 For i = 1 To UBound(arr)
                     dImpuestoIVAImporte = CDec(arr(i).Importe)
+                    dBaseIVA = CDec(arr(i).Base)
 
-                    Cfd.Impuestos.Traslados.Add(arr(i).Base, arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIVAImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                    Cfd.Impuestos.Traslados.Add(Format(dBaseIVA, "##0.000000"), arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIVAImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
                 Next
             End If
 
@@ -721,7 +724,7 @@ Module FacturacionElectronica40
                         drRETENCION_IVA_IMPORTE = RedondearD(drRETENCION_IVA_IMPORTE / dTIPO_DE_CAMBIO, 2)
                     End If
 
-                    ConceptoImpuestoRetenciones.Add(Format(drRETENCION_IVA_BASE, "##0.00"), "002", "Tasa", Format(drRETENCION_IVA_PORCENTAJE, "0.#00000"), Format(drRETENCION_IVA_IMPORTE, "##0.00")) '002=IVA
+                    ConceptoImpuestoRetenciones.Add(Format(drRETENCION_IVA_BASE, "##0.000000"), "002", "Tasa", Format(drRETENCION_IVA_PORCENTAJE, "0.#00000"), Format(drRETENCION_IVA_IMPORTE, "##0.00")) '002=IVA
                 End If
 
                 If drRETENCION_ISR_IMPORTE > 0 Then
@@ -730,7 +733,7 @@ Module FacturacionElectronica40
                         drRETENCION_ISR_IMPORTE = RedondearD(drRETENCION_ISR_IMPORTE / dTIPO_DE_CAMBIO, 2)
                     End If
 
-                    ConceptoImpuestoRetenciones.Add(Format(drRETENCION_ISR_BASE, "##0.00"), "001", "Tasa", Format(drRETENCION_ISR_PORCENTAJE, "0.#00000"), Format(drRETENCION_ISR_IMPORTE, "##0.00")) '001=ISR
+                    ConceptoImpuestoRetenciones.Add(Format(drRETENCION_ISR_BASE, "##0.000000"), "001", "Tasa", Format(drRETENCION_ISR_PORCENTAJE, "0.#00000"), Format(drRETENCION_ISR_IMPORTE, "##0.00")) '001=ISR
                 End If
 
                 'If oDevolucion.IEPS_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
@@ -777,6 +780,7 @@ Module FacturacionElectronica40
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Impuestos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Dim arr() As iImpuestosTraslado40, dImpuestoIEPSImporte As Decimal, dImpuestoIVAImporte As Decimal, iEncontrados As Integer = 0
             Dim arr2() As iImpuestosRetencion40, dRetencionIvaImporte As Decimal
+            Dim dBaseIEPS As Decimal, dBaseIVA As Decimal
 
             ''IEPS, deben acumularse, puede ser que mas de un artículo tenga el mismo % de ieps, de modo que aquí se juntan en uno sólo.
             iEncontrados = 0
@@ -785,10 +789,11 @@ Module FacturacionElectronica40
             If iEncontrados > 0 Then
                 For i = 1 To UBound(arr)
                     dImpuestoIEPSImporte = CDec(arr(i).Importe)
+                    dBaseIEPS = CDec(arr(i).Base)
 
                     'Nota, no es necesario preguntar si es en USD y dividir por el tipo de cambio porque este valor se llena con el desglose x concepto el cual ya esta en USD
 
-                    Cfd.Impuestos.Traslados.Add(arr(i).Base, arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIEPSImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                    Cfd.Impuestos.Traslados.Add(Format(dBaseIEPS, "##0.000000"), arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIEPSImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
                 Next
             End If
 
@@ -799,8 +804,9 @@ Module FacturacionElectronica40
             If iEncontrados > 0 Then
                 For i = 1 To UBound(arr)
                     dImpuestoIVAImporte = CDec(arr(i).Importe)
+                    dBaseIVA = CDec(arr(i).Base)
 
-                    Cfd.Impuestos.Traslados.Add(arr(i).Base, arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIVAImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                    Cfd.Impuestos.Traslados.Add(Format(dBaseIVA, "##0.000000"), arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIVAImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
                 Next
             End If
 

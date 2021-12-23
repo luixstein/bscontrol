@@ -3037,7 +3037,7 @@ Public Class Class_Ventas_Global
         Try
             sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me._FOLIO_VENTA & ".xml"
 
-            If Me._TIMBRADO_CFDI = "0" Then
+            If Me._TIMBRADO_CFDI = "1" Then
                 MsgBox("La factura ya esta timbrada.", vbExclamation, sProcedure)
                 Return False
             End If

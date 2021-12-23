@@ -1882,6 +1882,11 @@ Buscar:
 
             Me.oCliente = New Class_CatClientes(Me.TxtCliente.Text)
 
+            If Me.oCliente.Existe = False Then
+                MsgBox("El cliente no existe.", vbExclamation, sProcedure)
+                Return False
+            End If
+
             If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
                 sMetodoPago = ""
                 sUsoCFDI = ""
@@ -2477,7 +2482,7 @@ CANCELAR:
     Private Function ValidarVenta() As Boolean
         Const sProcedure As String = "ValidarVenta"
         Dim bResultado As Boolean = False
-        Dim sRFCCliente As String = "", sNombreReceptor As String = ""
+        Dim sRFCReceptor As String = "", sNombreReceptor As String = "", sDomicilioFiscalReceptor As String = ""
 
         Try
             If Plaza.ValidarPeriodoTrabajo(Me.dpFecha.Value) = False Then
@@ -2696,22 +2701,35 @@ CANCELAR:
                         Return False
                     End If
 
-                    If txtLEN(Me.oCliente.CODIGO_POSTAL) = False Then
-                        MsgBox("El cliente debe tener código postal, verifique por favor.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
-
                     If Me.chkVentaPublicoGeneral.Checked = True Then
-                        sRFCCliente = "XAXX010101000"
+                        sRFCReceptor = "XAXX010101000"
                         sNombreReceptor = "PUBLICO GENERAL" 'Ojo no es lo mismo que "PUBLICO EN GENERAL" que tiene la palabra "EN" y SAT lo valida diferente.
                     Else
-                        sRFCCliente = Me.oCliente.RFC
+                        sRFCReceptor = Me.oCliente.RFC
                         sNombreReceptor = Me.oCliente.NOMBRE_CLIENTE
                     End If
 
                     If txtLEN(sNombreReceptor) = False Then
                         MsgBox("El nombre del cliente esta vacío, verifique por favor.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
+                    End If
+
+                    'El SAT dice : Si el valor del atributo Rfc del receptor es "XAXX010101000" o "XEXX010101000", este atributo debe ser igual al valor del atributo LugarExpedicion.
+                    If sRFCReceptor = Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL Or sRFCReceptor = Empresa_Sistema.RFC_EXTRANJERO Then
+                        sDomicilioFiscalReceptor = Plaza.CODIGO_POSTAL
+
+                        If txtLEN(sDomicilioFiscalReceptor) = False Then
+                            MsgBox("El cliente al tener el rfc XAXX010101000 ó XEXX010101000 el código postal debe ser igual que LugarExpedicion(Plaza para nosotros), y la plaza no tiene código postal.", MsgBoxStyle.Exclamation, sProcedure)
+                            Return False
+                        End If
+
+                    Else
+                        sDomicilioFiscalReceptor = Me.oCliente.CODIGO_POSTAL
+
+                        If txtLEN(sDomicilioFiscalReceptor) = False Then
+                            MsgBox("El cliente debe tener código postal, verifique por favor.", MsgBoxStyle.Exclamation, sProcedure)
+                            Return False
+                        End If
                     End If
 
                     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2727,7 +2745,7 @@ CANCELAR:
                     If oRegimenFiscalReceptor.EXISTE = False Then
                         MsgBox("El régimen fiscal del receptor no existe.", MsgBoxStyle.Exclamation, sProcedure)
                         bRegimenFiscalReceptorInvalido = True
-                    ElseIf sRFCCliente = "XAXX010101000" Or sRFCCliente = "XEXX010101000" Then
+                    ElseIf sRFCReceptor = "XAXX010101000" Or sRFCReceptor = "XEXX010101000" Then
                         If Me.txtRegimenFiscalReceptor.Text <> "616" Then 'El SAT así lo exige.
                             MsgBox("El régimen fiscal para receptores con RFC genérico XAXX010101000 ó XEXX010101000 debe ser 616=Sin obligaciones fiscales.", MsgBoxStyle.Exclamation, sProcedure)
                             bRegimenFiscalReceptorInvalido = True

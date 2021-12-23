@@ -235,6 +235,7 @@ Public Class Class_CFD_CatUsosCFDI
         f.sQl = "SELECT CODIGO_USO_CFDI,NOMBRE_USO_CFDI,APLICA_TIPO_FISICA,APLICA_TIPO_MORAL,REGIMEN_FISCAL_RECEPTOR " &
             "FROM CFDI_CAT_USOS_CFDI " &
             "WHERE ESTATUS='A' AND " & IIf(sTipoPersona = "F", "APLICA_TIPO_FISICA='1'", "APLICA_TIPO_MORAL='1'").ToString & " AND "
+        f.arrayWidthColumns = New Integer() {100, 350, 130, 130, 450}
         f.Inicia("%")
         f.ShowDialog()
         Try
