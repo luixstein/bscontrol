@@ -1000,24 +1000,38 @@ Public Class Class_CXC_Devoluciones_Global
             sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me._FOLIO_DEVOLUCION & ".xml"
 
             If Me._TIMBRADO_CFDI = "0" Then
-                bResultado = FacturacionElectronica33.GeneraDevolucionElectronica33(Me, bMensajes, sRutaXML)
-
-                If bResultado = False Then
-                    MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
-                Else
-                    bResultado = True
-                    If bGenerarPDF = True Then
-                        Me.ExportarAPdf()
-                    End If
-                End If
-                'Else
-                '    Me.RecuperarFacturaElectronicaLocal(bMensajes)
-            Else
                 MsgBox("La devolución ya esta timbrada.", vbExclamation, sProcedure)
+                Return False
             End If
+
+            Select Case Empresa_Sistema.VERSION_ESQUEMA_CFD
+                Case <= "3.2"
+                    MsgBox("La versión del cfdi " & Empresa_Sistema.VERSION_ESQUEMA_CFD & " no esta soportada.", MsgBoxStyle.Exclamation, sProcedure)
+                        'Nota nunca se desarrolló
+                Case "3.3"
+                    bResultado = FacturacionElectronica33.GeneraDevolucionElectronica33(Me, bMensajes, sRutaXML)
+                Case "4.0"
+                    bResultado = FacturacionElectronica40.GeneraDevolucionElectronica40(Me, bMensajes, sRutaXML)
+                Case Else
+                    MsgBox("La versión del cfdi " & Empresa_Sistema.VERSION_ESQUEMA_CFD & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+            End Select
+
+            If bResultado = False Then
+                MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+            Else
+                bResultado = True
+                If bGenerarPDF = True Then
+                    Me.ExportarAPdf()
+                End If
+            End If
+            'Else
+            '    Me.RecuperarFacturaElectronicaLocal(bMensajes)
+
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
+
         Return bResultado
     End Function
 

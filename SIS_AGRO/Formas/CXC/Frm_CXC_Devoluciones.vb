@@ -124,7 +124,7 @@ Public Class Frm_CXC_Devoluciones
             Me.DesplegarMetodosPago()
             Me.DesplegarMonedas()
             Me.DesplegarFormasPago(False)
-            Me.DesplegarUsoCFDIPersonasFisicas()
+            'Me.DesplegarUsoCFDIPersonasFisicas()
             Me.DesplegarTiposRelacionCFDI()
             Me.DesplegarRegimenesFiscales()
 
@@ -725,7 +725,7 @@ Buscar:
         Try
             Me.Estado = pEstado
 
-            Me.cboUsoCFDI.Enabled = False
+            'Me.cboUsoCFDI.Enabled = False
             Me.cboFormaPago.Enabled = False
             Me.cboMetodoPago.Enabled = False
             Me.cboTipoRelacionCFDI.Enabled = False
@@ -1078,11 +1078,12 @@ Buscar:
                 .ES_A_PUBLICO_GENERAL = Convert.ToInt32(Me.chkVentaPublicoGeneral.Checked).ToString
                 .CODIGO_METODO_PAGO = Me.cboFormaPago.SelectedValue.ToString
                 .CODIGO_METODO_PAGO_EVENTO = Me.cboMetodoPago.SelectedValue.ToString
-                .CODIGO_USO_CFDI = Me.cboUsoCFDI.SelectedValue.ToString
+                .CODIGO_USO_CFDI = Me.txtUsoCFDI.Text
                 .CODIGO_MONEDA_SAT = Me.cboMoneda.Text
                 .CODIGO_TIPO_RELACION_CFDI = Me.cboTipoRelacionCFDI.SelectedValue.ToString
                 .CODIGO_REGIMEN_FISCAL_EMISOR = Me.cboRegimenFiscalEmisor.SelectedValue.ToString
 
+                MsgBox("falta")
                 .EXPORTACION = "01"
                 .RFC_RECEPTOR = ""
                 .CODIGO_REGIMEN_FISCAL_RECEPTOR = ""
@@ -1514,11 +1515,13 @@ busca_serie:
     End Function
 
     Private Function Validar() As Boolean
-        Dim sProcedure As String = "Validar"
+        Const sProcedure As String = "Validar"
         Dim bResultado As Boolean = False
+        Dim sRFCCliente As String = "", sNombreReceptor As String = ""
+
         Try
             If Usuario.ValidaPermisoUsuarioDocumentoConAfectacionInventarios(Me.oDocumento.CODIGO_DOCUMENTO, Me.txtAlmacen.Text) = False Then
-                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, Me.Text)
+                MsgBox("El usuario " & Usuario.Nombre_Usuario & " no tiene permiso para realizar el movimiento.", MsgBoxStyle.Information, sProcedure)
                 Return False
             End If
 
@@ -1534,7 +1537,7 @@ busca_serie:
             End If
 
             If txtLEN(Me.txtConcepto.Text) = False Then
-                MsgBox("Captúre por favor un concepto.", MsgBoxStyle.Exclamation, sProcedure)
+                MsgBox("Captúre un concepto por favor.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtConcepto.Focus()
                 Return False
             End If
@@ -1557,6 +1560,48 @@ busca_serie:
             'End If
 
             'FALTA:Validaciones de datos fiscales si se va timbrar
+
+            If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
+                Dim oDocumentoReferencia As New Class_CatDocumentos(Me.oVenta.CODIGO_DOCUMENTO)
+
+                'Validamos si el documento de venta es timbrable(puede ser rem que no timbra y no entraria aqui)
+                If oDocumentoReferencia.TIMBRA_DOCUMENTO = True Then
+
+
+                    If Me.cboRegimenFiscalEmisor.SelectedIndex = -1 Then
+                        MsgBox("Seleccione un régimen fiscal del ""Emisor"".", vbExclamation, sProcedure)
+                        Return False
+                    End If
+
+                    Me.oCliente = New Class_CatClientes(Me.txtCliente.Text)
+
+                    If Me.oCliente.Existe = False Then
+                        MsgBox("El cliente no existe, verifique por favor.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                    If txtLEN(Me.oCliente.CODIGO_POSTAL) = False Then
+                        MsgBox("El cliente debe tener código postal, verifique por favor.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                    If Me.chkVentaPublicoGeneral.Checked = True Then
+                        sRFCCliente = "XAXX010101000"
+                        sNombreReceptor = "PUBLICO GENERAL" 'Ojo no es lo mismo que "PUBLICO EN GENERAL" que tiene la palabra "EN" y SAT lo valida diferente.
+                    Else
+                        sRFCCliente = Me.oCliente.RFC
+                        sNombreReceptor = Me.oCliente.NOMBRE_CLIENTE
+                    End If
+
+                    If txtLEN(sNombreReceptor) = False Then
+                        MsgBox("El nombre del cliente esta vacío, verifique por favor.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+
+                End If
+            End If
+
 
             bResultado = True
         Catch ex As Exception
@@ -1651,22 +1696,22 @@ busca_serie:
         End Try
     End Sub
 
-    Private Sub DesplegarUsoCFDIPersonasFisicas()
-        Try
-            With Me.cboUsoCFDI
-                .DisplayMember = "NOMBRE_USO_CFDI"
-                .ValueMember = "CODIGO_USO_CFDI"
-                Dim dView As New Data.DataView(dtUsosCFDIPersonasFisicas)
-                dView.Sort = "NOMBRE_USO_CFDI"
-                .DataSource = dView
-                If dView.Count > 0 Then
-                    .SelectedIndex = 0
-                End If
-            End With
-        Catch ex As Exception
-            HandleError(Me.Name, "DesplegarUsoCFDIPersonasFisicas", ex)
-        End Try
-    End Sub
+    'Private Sub DesplegarUsoCFDIPersonasFisicas()
+    '    Try
+    '        With Me.cboUsoCFDI
+    '            .DisplayMember = "NOMBRE_USO_CFDI"
+    '            .ValueMember = "CODIGO_USO_CFDI"
+    '            Dim dView As New Data.DataView(dtUsosCFDIPersonasFisicas)
+    '            dView.Sort = "NOMBRE_USO_CFDI"
+    '            .DataSource = dView
+    '            If dView.Count > 0 Then
+    '                .SelectedIndex = 0
+    '            End If
+    '        End With
+    '    Catch ex As Exception
+    '        HandleError(Me.Name, "DesplegarUsoCFDIPersonasFisicas", ex)
+    '    End Try
+    'End Sub
 
     Private Sub EnviarCorreo()
         Try

@@ -3038,37 +3038,42 @@ Public Class Class_Ventas_Global
             sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me._FOLIO_VENTA & ".xml"
 
             If Me._TIMBRADO_CFDI = "0" Then
-                Select Case Empresa_Sistema.VERSION_ESQUEMA_CFD
-                    Case <= "3.2"
-                        bResultado = FacturacionElectronica.GeneraFacturaElectronica(Me, bMensajes, sRutaXML)
-                    Case "3.3"
-                        bResultado = FacturacionElectronica33.GeneraFacturaElectronica33(Me, bMensajes, sRutaXML)
-                    Case "4.0"
-                        bResultado = FacturacionElectronica40.GeneraFacturaElectronica40(Me, bMensajes, sRutaXML)
-                End Select
-
-                If bResultado = False Then
-                    MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
-                Else
-                    bResultado = True
-
-                    'Actualiza el rfc_receptor en la factura para registrar el rfc exacto con el que la timbraron porque puede ser que hayan grabado con un rfc que no es válido, 
-                    'y ese dato se queda incorrecto para cuando ya lo corrigen en el catálogo de clientes.
-                    'y sólo aplica para la 3.3 porque en ella se determina al timbrar, en la 4.0 no porque se graba junto con otros datos del receptor y ya no cambian.
-                    If Empresa_Sistema.VERSION_ESQUEMA_CFD = "3.3" Then
-                        Me.ActualizaRFCReceptor()
-                    End If
-
-                    If bGenerarPDF = True Then
-                        Me.ExportarAPdf()
-                    End If
-
-                End If
-                'Else
-                '    Me.RecuperarFacturaElectronicaLocal(bMensajes)
-            Else
                 MsgBox("La factura ya esta timbrada.", vbExclamation, sProcedure)
+                Return False
             End If
+
+            Select Case Empresa_Sistema.VERSION_ESQUEMA_CFD
+                Case <= "3.2"
+                    bResultado = FacturacionElectronica.GeneraFacturaElectronica(Me, bMensajes, sRutaXML)
+                Case "3.3"
+                    bResultado = FacturacionElectronica33.GeneraFacturaElectronica33(Me, bMensajes, sRutaXML)
+                Case "4.0"
+                    bResultado = FacturacionElectronica40.GeneraFacturaElectronica40(Me, bMensajes, sRutaXML)
+                Case Else
+                    MsgBox("La versión del cfdi " & Empresa_Sistema.VERSION_ESQUEMA_CFD & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+            End Select
+
+            If bResultado = False Then
+                MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+            Else
+                bResultado = True
+
+                'Actualiza el rfc_receptor en la factura para registrar el rfc exacto con el que la timbraron porque puede ser que hayan grabado con un rfc que no es válido, 
+                'y ese dato se queda incorrecto para cuando ya lo corrigen en el catálogo de clientes.
+                'y sólo aplica para la 3.3 porque en ella se determina al timbrar, en la 4.0 no porque se graba junto con otros datos del receptor y ya no cambian.
+                If Empresa_Sistema.VERSION_ESQUEMA_CFD = "3.3" Then
+                    Me.ActualizaRFCReceptor()
+                End If
+
+                If bGenerarPDF = True Then
+                    Me.ExportarAPdf()
+                End If
+
+            End If
+            'Else
+            '    Me.RecuperarFacturaElectronicaLocal(bMensajes)
+
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         End Try

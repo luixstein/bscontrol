@@ -96,7 +96,6 @@ Partial Class Frm_CXC_Devoluciones
         Me.cboMoneda = New System.Windows.Forms.ComboBox()
         Me.LblDisplayMoneda = New System.Windows.Forms.Label()
         Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
-        Me.cboUsoCFDI = New System.Windows.Forms.ComboBox()
         Me.lblFormaPago = New System.Windows.Forms.Label()
         Me.cboMetodoPago = New System.Windows.Forms.ComboBox()
         Me.lblDisplayMetodoPago = New System.Windows.Forms.Label()
@@ -854,16 +853,6 @@ Partial Class Frm_CXC_Devoluciones
         Me.lblDisplayUsoCFDI.TabIndex = 383
         Me.lblDisplayUsoCFDI.Text = "Uso del CFDI :"
         '
-        'cboUsoCFDI
-        '
-        Me.cboUsoCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboUsoCFDI.FormattingEnabled = True
-        Me.cboUsoCFDI.Location = New System.Drawing.Point(744, 172)
-        Me.cboUsoCFDI.MaxLength = 1
-        Me.cboUsoCFDI.Name = "cboUsoCFDI"
-        Me.cboUsoCFDI.Size = New System.Drawing.Size(232, 21)
-        Me.cboUsoCFDI.TabIndex = 6
-        '
         'lblFormaPago
         '
         Me.lblFormaPago.AutoSize = True
@@ -993,7 +982,6 @@ Partial Class Frm_CXC_Devoluciones
         Me.frmDatos.Controls.Add(Me.lblDisplayMetodoPago)
         Me.frmDatos.Controls.Add(Me.cboMetodoPago)
         Me.frmDatos.Controls.Add(Me.lblFormaPago)
-        Me.frmDatos.Controls.Add(Me.cboUsoCFDI)
         Me.frmDatos.Controls.Add(Me.LblDisplayMoneda)
         Me.frmDatos.Controls.Add(Me.cboMoneda)
         Me.frmDatos.Controls.Add(Me.txtSaldo)
@@ -1153,7 +1141,6 @@ Partial Class Frm_CXC_Devoluciones
     Friend WithEvents cboMoneda As ComboBox
     Friend WithEvents LblDisplayMoneda As Label
     Friend WithEvents lblDisplayUsoCFDI As Label
-    Friend WithEvents cboUsoCFDI As ComboBox
     Friend WithEvents lblFormaPago As Label
     Friend WithEvents cboMetodoPago As ComboBox
     Friend WithEvents lblDisplayMetodoPago As Label
