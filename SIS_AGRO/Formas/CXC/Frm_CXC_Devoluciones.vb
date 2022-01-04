@@ -1068,7 +1068,6 @@ Buscar:
                 End If
             End If
 
-
             Me.GeneraFolio()
 
             Me.oDevolucion = New Class_CXC_Devoluciones_Global
@@ -1629,7 +1628,6 @@ busca_serie:
                             MsgBox("El cliente al tener el rfc XAXX010101000 ó XEXX010101000 el código postal debe ser igual que LugarExpedicion(Plaza para nosotros), y la plaza no tiene código postal.", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
-
                     Else
                         sDomicilioFiscalReceptor = Me.oCliente.CODIGO_POSTAL
 
@@ -1723,7 +1721,6 @@ busca_serie:
 
                 End If
             End If
-
 
             bResultado = True
         Catch ex As Exception

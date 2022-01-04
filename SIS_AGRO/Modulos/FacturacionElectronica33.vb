@@ -1089,7 +1089,7 @@ Module FacturacionElectronica33
             With Cfd.Emisor
                 .Rfc = fElectronicaValidaCampo(Empresa_Sistema.RFC)
                 .Nombre = fElectronicaValidaCampo(Empresa_Sistema.NOMBRE_EMPRESA)
-                .RegimenFiscal = fElectronicaValidaCampo(oDescuento.CODIGO_REGIMEN_FISCAL.ToString)
+                .RegimenFiscal = fElectronicaValidaCampo(oDescuento.CODIGO_REGIMEN_FISCAL_EMISOR.ToString)
             End With
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Receptor''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

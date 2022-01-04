@@ -49,7 +49,7 @@ Public Class Class_CXC_Descuento
     Private _IMPUESTO_PORCENTAJE As Double
     Private _RETENCION As Double
     Private _CODIGO_METODO_PAGO As String
-    Private _CODIGO_REGIMEN_FISCAL As String
+    Private _CODIGO_REGIMEN_FISCAL_EMISOR As String
     Private _FOLIO_FISCAL_SAT As String
     Private _FECHA_TIMBRADO_SAT As String
     Private _NUMERO_SERIE_CERTIFICADO_SAT As String
@@ -71,6 +71,11 @@ Public Class Class_CXC_Descuento
     Private _IVA_USD As Decimal
     Private _TOTAL_USD As Decimal
     Private _SUBTOTAL_MXN_ANTICIPO As Decimal
+    Private _EXPORTACION As String
+    Private _RFC_RECEPTOR As String
+    Private _CODIGO_REGIMEN_FISCAL_RECEPTOR As String
+    Private _NOMBRE_RECEPTOR As String
+    Private _DOMICILIO_FISCAL_RECEPTOR As String
 #End Region
 
 #Region "Campos de control"
@@ -390,12 +395,12 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
-    Public Property CODIGO_REGIMEN_FISCAL() As String
+    Public Property CODIGO_REGIMEN_FISCAL_EMISOR() As String
         Get
-            Return Me._CODIGO_REGIMEN_FISCAL
+            Return Me._CODIGO_REGIMEN_FISCAL_EMISOR
         End Get
         Set(ByVal Value As String)
-            Me._CODIGO_REGIMEN_FISCAL = Value
+            Me._CODIGO_REGIMEN_FISCAL_EMISOR = Value
         End Set
     End Property
 
@@ -558,6 +563,50 @@ Public Class Class_CXC_Descuento
         End Set
     End Property
 
+    Public Property EXPORTACION() As String
+        Get
+            Return Me._EXPORTACION
+        End Get
+        Set(value As String)
+            Me._EXPORTACION = value
+        End Set
+    End Property
+
+    Public Property RFC_RECEPTOR() As String
+        Get
+            Return Me._RFC_RECEPTOR
+        End Get
+        Set(value As String)
+            Me._RFC_RECEPTOR = value
+        End Set
+    End Property
+
+    Public Property CODIGO_REGIMEN_FISCAL_RECEPTOR() As String
+        Get
+            Return Me._CODIGO_REGIMEN_FISCAL_RECEPTOR
+        End Get
+        Set(value As String)
+            Me._CODIGO_REGIMEN_FISCAL_RECEPTOR = value
+        End Set
+    End Property
+
+    Public Property NOMBRE_RECEPTOR() As String
+        Get
+            Return Me._NOMBRE_RECEPTOR
+        End Get
+        Set(value As String)
+            Me._NOMBRE_RECEPTOR = value
+        End Set
+    End Property
+
+    Public Property DOMICILIO_FISCAL_RECEPTOR() As String
+        Get
+            Return Me._DOMICILIO_FISCAL_RECEPTOR
+        End Get
+        Set(value As String)
+            Me._DOMICILIO_FISCAL_RECEPTOR = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedad Nombre de Clase"
@@ -652,9 +701,11 @@ Public Class Class_CXC_Descuento
 #Region "Métodos y procedimientos"
 
     Public Function Grabar() As Boolean
+        Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
+
         With cmd
             .Connection = _Conexion
             .CommandTimeout = 0
@@ -685,7 +736,12 @@ Public Class Class_CXC_Descuento
             sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
             sqlParametro = .Parameters.Add("@IMPUESTO_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._IMPUESTO_PORCENTAJE
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_RELACION_CFDI", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_RELACION_CFDI
-            sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL
+            sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL_EMISOR", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL_EMISOR
+            sqlParametro = .Parameters.Add("@EXPORTACION", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._EXPORTACION
+            sqlParametro = .Parameters.Add("@RFC_RECEPTOR", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._RFC_RECEPTOR
+            sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL_RECEPTOR", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL_RECEPTOR
+            sqlParametro = .Parameters.Add("@NOMBRE_RECEPTOR", SqlDbType.NVarChar, 254) : sqlParametro.Value = Me._NOMBRE_RECEPTOR
+            sqlParametro = .Parameters.Add("@DOMICILIO_FISCAL_RECEPTOR", SqlDbType.NVarChar, 5) : sqlParametro.Value = Me._DOMICILIO_FISCAL_RECEPTOR
 
             Try
                 Me._Conexion.Open()
@@ -693,7 +749,7 @@ Public Class Class_CXC_Descuento
                 bResultado = True
                 Me._FOLIO_DESCUENTO = "" & .Parameters("@FOLIO_DESCUENTO").Value.ToString
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Grabar", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -704,9 +760,11 @@ Public Class Class_CXC_Descuento
     End Function
 
     Public Function InsertaDescuentoDetalle(ByVal sFolio As String) As Boolean
+        Const sProcedure As String = "InsertaDescuentoDetalle"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
+
         With cmd
             .Connection = _Conexion
             .CommandTimeout = 0
@@ -721,7 +779,7 @@ Public Class Class_CXC_Descuento
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "InsertaDescuentoDetalle", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -732,9 +790,11 @@ Public Class Class_CXC_Descuento
     End Function
 
     Public Function InsertaDescuentoCultivoDetalle(ByVal sFolio As String, ByVal dImporteDescuento As Double, Optional ByVal sCodigoCultivo As String = "") As Boolean
+        Const sProcedure As String = "InsertaDescuentoCultivoDetalle"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
+
         With cmd
             .Connection = _Conexion
             .CommandTimeout = 0
@@ -750,7 +810,7 @@ Public Class Class_CXC_Descuento
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "InsertaDescuentoCultivoDetalle", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -761,6 +821,7 @@ Public Class Class_CXC_Descuento
     End Function
 
     Public Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
 
         Dim cmd As New SqlCommand("SELECT V.* " &
@@ -815,7 +876,7 @@ Public Class Class_CXC_Descuento
                         Me._FECHA_CANCELACION_SERVIDOR = CType(dReader("FECHA_CANCELACION_SERVIDOR"), Date)
                     End If
                     Me._CODIGO_METODO_PAGO = dReader("CODIGO_METODO_PAGO").ToString
-                    Me._CODIGO_REGIMEN_FISCAL = "" & dReader("CODIGO_REGIMEN_FISCAL").ToString
+                    Me._CODIGO_REGIMEN_FISCAL_EMISOR = "" & dReader("CODIGO_REGIMEN_FISCAL").ToString
                     Me._NOMBRE_METODO_PAGO = "" & dReader("NOMBRE_METODO_PAGO").ToString
                     Me._NOMBRE_REGIMEN_FISCAL = "" & dReader("NOMBRE_REGIMEN_FISCAL").ToString
                     Me._FELECTRONICA_CER = "" & dReader("FELECTRONICA_CER").ToString
@@ -848,13 +909,18 @@ Public Class Class_CXC_Descuento
                     Me._IVA_USD = CType(dReader("IVA_USD"), Decimal)
                     Me._TOTAL_USD = CType(dReader("TOTAL_USD"), Decimal)
                     Me._SUBTOTAL_MXN_ANTICIPO = CType(dReader("SUBTOTAL_MXN_ANTICIPO"), Decimal)
+                    Me._EXPORTACION = "" & dReader("EXPORTACION").ToString
+                    Me._RFC_RECEPTOR = "" & dReader("RFC_RECEPTOR").ToString
+                    Me._CODIGO_REGIMEN_FISCAL_RECEPTOR = "" & dReader("CODIGO_REGIMEN_FISCAL_RECEPTOR").ToString
+                    Me._NOMBRE_RECEPTOR = "" & dReader("NOMBRE_RECEPTOR").ToString
+                    Me._DOMICILIO_FISCAL_RECEPTOR = "" & dReader("DOMICILIO_FISCAL_RECEPTOR").ToString
 
                     bResultado = True
 
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Consultar", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -865,6 +931,7 @@ Public Class Class_CXC_Descuento
     End Function
 
     Public Function ObtenerDetalle() As DataTable
+        Const sProcedure As String = "ObtenerDetalle"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
         '"INNER JOIN CAT_ARTICULOS P ON(R.CODIGO_ARTICULO=P.CODIGO_ARTICULO AND C.CODIGO_CULTIVO=P.CODIGO_CULTIVO) " & _
@@ -899,13 +966,14 @@ Public Class Class_CXC_Descuento
 
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerDetalle", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return dTabla
     End Function
 
     Public Function CancelaDescuentoCXC() As Boolean
+        Const sProcedure As String = "CancelaDescuentoCXC"
         Dim bResultado As Boolean = False
         Dim Conexion As New SqlConnection(Empresa_Sistema.conexion), Error1 As String = ""
 
@@ -929,7 +997,7 @@ Public Class Class_CXC_Descuento
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "CancelaDescuentoCXC", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Conexion.Close()
                 cmd.Dispose()
@@ -969,9 +1037,11 @@ Public Class Class_CXC_Descuento
     End Function
 
     Public Function ActualizaFolioPoliza() As Boolean
+        Const sProcedure As String = "ActualizaFolioPoliza"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
+
         With cmd
             .Connection = Me._Conexion
             .CommandTimeout = 0
@@ -986,7 +1056,7 @@ Public Class Class_CXC_Descuento
                 Me._FOLIO_POLIZA = Me._FOLIO_DESCUENTO
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "ActualizaFolioPoliza", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -997,6 +1067,7 @@ Public Class Class_CXC_Descuento
     End Function
 
     Public Function GeneraFolio() As String
+        Const sProcedure As String = "GeneraFolio"
         Dim sResultado As String = ""
         Try
             Me._oDocumento.CODIGO_DOCUMENTO = "NCG_CXC" & Usuario.Codigo_Plaza
@@ -1005,12 +1076,13 @@ Public Class Class_CXC_Descuento
             Me._FOLIO_DESCUENTO = _oDocumento.FOLIO
             Me._FOLIO_NUMERICO = CInt(_oDocumento.FOLIO_NUMERICO)
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "New", ex)
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         End Try
         Return sResultado
     End Function
 
     Public Function DistribucionDescuentos(ByVal sFolioCxc As String, ByVal dImporteDescuento As Double) As System.Data.DataTable
+        Const sProcedure As String = "DistribucionDescuentos"
         Dim dt As New DataTable
         Try
             Dim da As New SqlDataAdapter("MP_CXC_DESCUENTOS_PROMEDIA_DESCUENTO", Me._Conexion)
@@ -1028,16 +1100,18 @@ Public Class Class_CXC_Descuento
             dt.Columns.Remove("SUBIMPORTE")
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "DistribucionDescuentos", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return dt
     End Function
 
     Public Function Enviado(ByVal sFolio As String) As Boolean
+        Const sProcedure As String = "Enviado"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
+
         With cmd
             .Connection = Me._Conexion
             .CommandTimeout = 0
@@ -1051,7 +1125,7 @@ Public Class Class_CXC_Descuento
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Enviado", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -1063,6 +1137,7 @@ Public Class Class_CXC_Descuento
     End Function
 
     Public Function RecuperaXML(ByVal sRutaXML As String) As Boolean
+        Const sProcedure As String = "RecuperaXML"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -1095,7 +1170,7 @@ Public Class Class_CXC_Descuento
                 bResultado = True
 
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "RecuperaXML", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -1107,6 +1182,7 @@ Public Class Class_CXC_Descuento
     End Function
 
     Public Function RecuperaXML() As String
+        Const sProcedure As String = "RecuperaXML"
         Dim sResultado As String = ""
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -1136,7 +1212,7 @@ Public Class Class_CXC_Descuento
                 sResultado = docXml.InnerXml
 
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "RecuperaXML", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -1148,6 +1224,7 @@ Public Class Class_CXC_Descuento
     End Function
 
     Public Sub Imprimir()
+        Const sProcedure As String = "Imprimir"
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
 
@@ -1169,13 +1246,14 @@ Public Class Class_CXC_Descuento
             frm.Show()
 
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "Imprimir", ex)
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         Finally
             oReporte = Nothing
         End Try
     End Sub
 
     Public Function ExportarAPdf(Optional ByVal sRutaPDF As String = "") As Boolean
+        Const sProcedure As String = "ExportarAPdf"
         Dim bResultado As Boolean = False
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
@@ -1202,7 +1280,7 @@ Public Class Class_CXC_Descuento
             bResultado = True
 
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ExportarAPdf", ex)
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         Finally
             oReporte = Nothing
         End Try
@@ -1210,6 +1288,7 @@ Public Class Class_CXC_Descuento
     End Function
 
     Public Function ObtenerEstatusParaReportes() As DataTable
+        Const sProcedure As String = "ObtenerEstatusParaReportes"
         Dim dTable As New DataTable
         'Dim dRow As DataRow
         Try
@@ -1222,12 +1301,13 @@ Public Class Class_CXC_Descuento
             dTable.Rows.Add("T", "TODOS")
             dTable.AcceptChanges()
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerEstatusParaReportes", ex)
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         End Try
         Return dTable
     End Function
 
     Public Function ObtieneVentasConSaldo(ByVal CodigoCliente As String, ByVal Moneda As String, ByVal VentaPublicoGeneral As Boolean, ByVal CodigoTipoDocumento As String) As DataTable
+        Const sProcedure As String = "ObtieneVentasConSaldo"
         Dim dt As New DataTable, sSQLDocs As String = ""
         Try
             Select Case CodigoTipoDocumento
@@ -1257,14 +1337,14 @@ Public Class Class_CXC_Descuento
             End Using
 
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtieneVentasConSaldo", ex)
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         End Try
         Return dt
     End Function
 
     Public Function GeneraNotaCreditoElectronica(ByVal bMensajes As Boolean, ByVal bGenerarPDF As Boolean) As Boolean
+        Const sProcedure As String = "GeneraNotaCreditoElectronica"
         Dim bResultado As Boolean = False
-        Dim sProcedure As String = "GeneraNotaCreditoElectronica"
         Dim sRutaXML As String
 
         Try
@@ -1296,7 +1376,7 @@ Public Class Class_CXC_Descuento
     End Function
 
     Public Function RecuperarXMLyPDF() As Boolean
-        Dim sProcedure As String = "RecuperarXMLyPDF"
+        Const sProcedure As String = "RecuperarXMLyPDF"
         Dim bResultado As Boolean = False
 
         Dim oCliente As Class_CatClientes
@@ -1342,7 +1422,7 @@ Public Class Class_CXC_Descuento
     End Function
 
     Public Function EnviarCorreo() As Boolean
-        Dim sProcedure As String = "EnviarCorreo"
+        Const sProcedure As String = "EnviarCorreo"
         Dim Ret As Long, tabla() As String, n As Integer, archivos As String = sFelectronicaCarpetaXMLPDF & "\"
         Dim oCliente As Class_CatClientes
         Dim MyMailMsg As New Net.Mail.MailMessage
@@ -1447,9 +1527,11 @@ Public Class Class_CXC_Descuento
     End Function
 
     Private Function MarcaEnviadoxCorreo(ByVal sFolio As String) As Boolean
+        Const sProcedure As String = "MarcaEnviadoxCorreo"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
+
         With cmd
             .Connection = Me._Conexion
             .CommandTimeout = 0
@@ -1463,7 +1545,7 @@ Public Class Class_CXC_Descuento
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "MarcaEnviadoxCorreo", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()

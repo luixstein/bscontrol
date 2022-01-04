@@ -40,6 +40,8 @@ Partial Class Frm_CXC_Descuentos
         Me.gbFacturas = New System.Windows.Forms.GroupBox()
         Me.Grid = New FlexCell.Grid()
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
+        Me.cboRegimenFiscalEmisor = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayRegimenFiscalEmisor = New System.Windows.Forms.Label()
         Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
         Me.lblDisplayTipoRelacionCFDI = New System.Windows.Forms.Label()
         Me.lblVersionCFDI = New System.Windows.Forms.Label()
@@ -53,7 +55,6 @@ Partial Class Frm_CXC_Descuentos
         Me.cboFormaPago = New System.Windows.Forms.ComboBox()
         Me.lblMetodoPago = New System.Windows.Forms.Label()
         Me.cboMoneda = New System.Windows.Forms.ComboBox()
-        Me.cboUsoCFDI = New System.Windows.Forms.ComboBox()
         Me.btnNotaSiguiente = New System.Windows.Forms.Button()
         Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
         Me.btnNotaAnterior = New System.Windows.Forms.Button()
@@ -93,8 +94,11 @@ Partial Class Frm_CXC_Descuentos
         Me.lblDisplaySubtotalDolares = New System.Windows.Forms.Label()
         Me.lblDisplayImpuestoDolares = New System.Windows.Forms.Label()
         Me.lblImpuestoPorcentaje = New System.Windows.Forms.Label()
-        Me.lblDisplayRegimenFiscal = New System.Windows.Forms.Label()
-        Me.cboRegimenFiscal = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayRegimenFiscalReceptor = New System.Windows.Forms.Label()
+        Me.txtRegimenFiscalReceptor = New System.Windows.Forms.TextBox()
+        Me.lblRegimenFiscalReceptor = New System.Windows.Forms.Label()
+        Me.txtUsoCFDI = New System.Windows.Forms.TextBox()
+        Me.lblUsoCFDI = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.StatusStripEstado.SuspendLayout()
         Me.gbFacturas.SuspendLayout()
@@ -193,7 +197,7 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssEstado, Me.tssElaboro, Me.tssCancelo})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 519)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 613)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Size = New System.Drawing.Size(868, 24)
         Me.StatusStripEstado.TabIndex = 241
@@ -229,9 +233,9 @@ Partial Class Frm_CXC_Descuentos
         'gbFacturas
         '
         Me.gbFacturas.Controls.Add(Me.Grid)
-        Me.gbFacturas.Location = New System.Drawing.Point(12, 255)
+        Me.gbFacturas.Location = New System.Drawing.Point(15, 317)
         Me.gbFacturas.Name = "gbFacturas"
-        Me.gbFacturas.Size = New System.Drawing.Size(844, 141)
+        Me.gbFacturas.Size = New System.Drawing.Size(844, 174)
         Me.gbFacturas.TabIndex = 1
         Me.gbFacturas.TabStop = False
         Me.gbFacturas.Text = "Facturas"
@@ -250,15 +254,20 @@ Partial Class Frm_CXC_Descuentos
         Me.Grid.Location = New System.Drawing.Point(12, 19)
         Me.Grid.LockButton = True
         Me.Grid.Name = "Grid"
-        Me.Grid.Rows = 20
-        Me.Grid.Size = New System.Drawing.Size(826, 119)
+        Me.Grid.Rows = 6
+        Me.Grid.Size = New System.Drawing.Size(826, 150)
         Me.Grid.TabIndex = 0
         Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
         '
         'gbGlobal
         '
-        Me.gbGlobal.Controls.Add(Me.cboRegimenFiscal)
-        Me.gbGlobal.Controls.Add(Me.lblDisplayRegimenFiscal)
+        Me.gbGlobal.Controls.Add(Me.txtUsoCFDI)
+        Me.gbGlobal.Controls.Add(Me.lblUsoCFDI)
+        Me.gbGlobal.Controls.Add(Me.lblDisplayRegimenFiscalReceptor)
+        Me.gbGlobal.Controls.Add(Me.txtRegimenFiscalReceptor)
+        Me.gbGlobal.Controls.Add(Me.lblRegimenFiscalReceptor)
+        Me.gbGlobal.Controls.Add(Me.cboRegimenFiscalEmisor)
+        Me.gbGlobal.Controls.Add(Me.lblDisplayRegimenFiscalEmisor)
         Me.gbGlobal.Controls.Add(Me.cboTipoRelacionCFDI)
         Me.gbGlobal.Controls.Add(Me.lblDisplayTipoRelacionCFDI)
         Me.gbGlobal.Controls.Add(Me.lblVersionCFDI)
@@ -272,7 +281,6 @@ Partial Class Frm_CXC_Descuentos
         Me.gbGlobal.Controls.Add(Me.cboFormaPago)
         Me.gbGlobal.Controls.Add(Me.lblMetodoPago)
         Me.gbGlobal.Controls.Add(Me.cboMoneda)
-        Me.gbGlobal.Controls.Add(Me.cboUsoCFDI)
         Me.gbGlobal.Controls.Add(Me.btnNotaSiguiente)
         Me.gbGlobal.Controls.Add(Me.lblDisplayUsoCFDI)
         Me.gbGlobal.Controls.Add(Me.btnNotaAnterior)
@@ -295,10 +303,29 @@ Partial Class Frm_CXC_Descuentos
         Me.gbGlobal.Controls.Add(Me.LblStatus)
         Me.gbGlobal.Location = New System.Drawing.Point(12, 28)
         Me.gbGlobal.Name = "gbGlobal"
-        Me.gbGlobal.Size = New System.Drawing.Size(844, 224)
+        Me.gbGlobal.Size = New System.Drawing.Size(844, 283)
         Me.gbGlobal.TabIndex = 0
         Me.gbGlobal.TabStop = False
         Me.gbGlobal.Text = "Datos"
+        '
+        'cboRegimenFiscalEmisor
+        '
+        Me.cboRegimenFiscalEmisor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboRegimenFiscalEmisor.FormattingEnabled = True
+        Me.cboRegimenFiscalEmisor.Location = New System.Drawing.Point(575, 143)
+        Me.cboRegimenFiscalEmisor.MaxLength = 1
+        Me.cboRegimenFiscalEmisor.Name = "cboRegimenFiscalEmisor"
+        Me.cboRegimenFiscalEmisor.Size = New System.Drawing.Size(249, 21)
+        Me.cboRegimenFiscalEmisor.TabIndex = 11
+        '
+        'lblDisplayRegimenFiscalEmisor
+        '
+        Me.lblDisplayRegimenFiscalEmisor.AutoSize = True
+        Me.lblDisplayRegimenFiscalEmisor.Location = New System.Drawing.Point(463, 146)
+        Me.lblDisplayRegimenFiscalEmisor.Name = "lblDisplayRegimenFiscalEmisor"
+        Me.lblDisplayRegimenFiscalEmisor.Size = New System.Drawing.Size(115, 13)
+        Me.lblDisplayRegimenFiscalEmisor.TabIndex = 399
+        Me.lblDisplayRegimenFiscalEmisor.Text = "Régimen fiscal emisor :"
         '
         'cboTipoRelacionCFDI
         '
@@ -308,12 +335,12 @@ Partial Class Frm_CXC_Descuentos
         Me.cboTipoRelacionCFDI.MaxLength = 1
         Me.cboTipoRelacionCFDI.Name = "cboTipoRelacionCFDI"
         Me.cboTipoRelacionCFDI.Size = New System.Drawing.Size(338, 21)
-        Me.cboTipoRelacionCFDI.TabIndex = 5
+        Me.cboTipoRelacionCFDI.TabIndex = 4
         '
         'lblDisplayTipoRelacionCFDI
         '
         Me.lblDisplayTipoRelacionCFDI.AutoSize = True
-        Me.lblDisplayTipoRelacionCFDI.Location = New System.Drawing.Point(389, 69)
+        Me.lblDisplayTipoRelacionCFDI.Location = New System.Drawing.Point(387, 69)
         Me.lblDisplayTipoRelacionCFDI.Name = "lblDisplayTipoRelacionCFDI"
         Me.lblDisplayTipoRelacionCFDI.Size = New System.Drawing.Size(101, 13)
         Me.lblDisplayTipoRelacionCFDI.TabIndex = 393
@@ -332,7 +359,7 @@ Partial Class Frm_CXC_Descuentos
         'lblDisplayMetodoPago
         '
         Me.lblDisplayMetodoPago.AutoSize = True
-        Me.lblDisplayMetodoPago.Location = New System.Drawing.Point(389, 120)
+        Me.lblDisplayMetodoPago.Location = New System.Drawing.Point(432, 120)
         Me.lblDisplayMetodoPago.Name = "lblDisplayMetodoPago"
         Me.lblDisplayMetodoPago.Size = New System.Drawing.Size(91, 13)
         Me.lblDisplayMetodoPago.TabIndex = 390
@@ -340,7 +367,7 @@ Partial Class Frm_CXC_Descuentos
         '
         'btnCargarFacturas
         '
-        Me.btnCargarFacturas.Location = New System.Drawing.Point(12, 170)
+        Me.btnCargarFacturas.Location = New System.Drawing.Point(12, 218)
         Me.btnCargarFacturas.Name = "btnCargarFacturas"
         Me.btnCargarFacturas.Size = New System.Drawing.Size(164, 23)
         Me.btnCargarFacturas.TabIndex = 7
@@ -379,16 +406,16 @@ Partial Class Frm_CXC_Descuentos
         Me.cboMetodoPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboMetodoPago.Enabled = False
         Me.cboMetodoPago.FormattingEnabled = True
-        Me.cboMetodoPago.Location = New System.Drawing.Point(486, 117)
+        Me.cboMetodoPago.Location = New System.Drawing.Point(523, 117)
         Me.cboMetodoPago.MaxLength = 1
         Me.cboMetodoPago.Name = "cboMetodoPago"
         Me.cboMetodoPago.Size = New System.Drawing.Size(301, 21)
-        Me.cboMetodoPago.TabIndex = 8
+        Me.cboMetodoPago.TabIndex = 10
         '
         'chkVentaPublicoGeneral
         '
         Me.chkVentaPublicoGeneral.AutoSize = True
-        Me.chkVentaPublicoGeneral.Location = New System.Drawing.Point(324, 147)
+        Me.chkVentaPublicoGeneral.Location = New System.Drawing.Point(12, 247)
         Me.chkVentaPublicoGeneral.Name = "chkVentaPublicoGeneral"
         Me.chkVentaPublicoGeneral.Size = New System.Drawing.Size(164, 17)
         Me.chkVentaPublicoGeneral.TabIndex = 10
@@ -400,15 +427,15 @@ Partial Class Frm_CXC_Descuentos
         Me.cboFormaPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboFormaPago.Enabled = False
         Me.cboFormaPago.FormattingEnabled = True
-        Me.cboFormaPago.Location = New System.Drawing.Point(103, 117)
+        Me.cboFormaPago.Location = New System.Drawing.Point(103, 165)
         Me.cboFormaPago.Name = "cboFormaPago"
         Me.cboFormaPago.Size = New System.Drawing.Size(258, 21)
-        Me.cboFormaPago.TabIndex = 7
+        Me.cboFormaPago.TabIndex = 8
         '
         'lblMetodoPago
         '
         Me.lblMetodoPago.AutoSize = True
-        Me.lblMetodoPago.Location = New System.Drawing.Point(9, 120)
+        Me.lblMetodoPago.Location = New System.Drawing.Point(9, 168)
         Me.lblMetodoPago.Name = "lblMetodoPago"
         Me.lblMetodoPago.Size = New System.Drawing.Size(84, 13)
         Me.lblMetodoPago.TabIndex = 389
@@ -423,19 +450,9 @@ Partial Class Frm_CXC_Descuentos
         Me.cboMoneda.Size = New System.Drawing.Size(83, 21)
         Me.cboMoneda.TabIndex = 2
         '
-        'cboUsoCFDI
-        '
-        Me.cboUsoCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboUsoCFDI.FormattingEnabled = True
-        Me.cboUsoCFDI.Location = New System.Drawing.Point(486, 40)
-        Me.cboUsoCFDI.MaxLength = 1
-        Me.cboUsoCFDI.Name = "cboUsoCFDI"
-        Me.cboUsoCFDI.Size = New System.Drawing.Size(338, 21)
-        Me.cboUsoCFDI.TabIndex = 4
-        '
         'btnNotaSiguiente
         '
-        Me.btnNotaSiguiente.Location = New System.Drawing.Point(231, 39)
+        Me.btnNotaSiguiente.Location = New System.Drawing.Point(261, 39)
         Me.btnNotaSiguiente.Name = "btnNotaSiguiente"
         Me.btnNotaSiguiente.Size = New System.Drawing.Size(48, 21)
         Me.btnNotaSiguiente.TabIndex = 374
@@ -445,7 +462,7 @@ Partial Class Frm_CXC_Descuentos
         'lblDisplayUsoCFDI
         '
         Me.lblDisplayUsoCFDI.AutoSize = True
-        Me.lblDisplayUsoCFDI.Location = New System.Drawing.Point(389, 43)
+        Me.lblDisplayUsoCFDI.Location = New System.Drawing.Point(9, 146)
         Me.lblDisplayUsoCFDI.Name = "lblDisplayUsoCFDI"
         Me.lblDisplayUsoCFDI.Size = New System.Drawing.Size(76, 13)
         Me.lblDisplayUsoCFDI.TabIndex = 388
@@ -453,7 +470,7 @@ Partial Class Frm_CXC_Descuentos
         '
         'btnNotaAnterior
         '
-        Me.btnNotaAnterior.Location = New System.Drawing.Point(177, 39)
+        Me.btnNotaAnterior.Location = New System.Drawing.Point(213, 39)
         Me.btnNotaAnterior.Name = "btnNotaAnterior"
         Me.btnNotaAnterior.Size = New System.Drawing.Size(48, 21)
         Me.btnNotaAnterior.TabIndex = 373
@@ -471,7 +488,7 @@ Partial Class Frm_CXC_Descuentos
         '
         'TxtConcepto2
         '
-        Me.TxtConcepto2.Location = New System.Drawing.Point(257, 198)
+        Me.TxtConcepto2.Location = New System.Drawing.Point(257, 246)
         Me.TxtConcepto2.MaxLength = 200
         Me.TxtConcepto2.Name = "TxtConcepto2"
         Me.TxtConcepto2.Size = New System.Drawing.Size(530, 20)
@@ -490,7 +507,7 @@ Partial Class Frm_CXC_Descuentos
         'lblDisplayConcepto2
         '
         Me.lblDisplayConcepto2.AutoSize = True
-        Me.lblDisplayConcepto2.Location = New System.Drawing.Point(192, 200)
+        Me.lblDisplayConcepto2.Location = New System.Drawing.Point(192, 248)
         Me.lblDisplayConcepto2.Name = "lblDisplayConcepto2"
         Me.lblDisplayConcepto2.Size = New System.Drawing.Size(65, 13)
         Me.lblDisplayConcepto2.TabIndex = 320
@@ -507,7 +524,7 @@ Partial Class Frm_CXC_Descuentos
         'LblDisplayFecha
         '
         Me.LblDisplayFecha.AutoSize = True
-        Me.LblDisplayFecha.Location = New System.Drawing.Point(9, 148)
+        Me.LblDisplayFecha.Location = New System.Drawing.Point(9, 196)
         Me.LblDisplayFecha.Name = "LblDisplayFecha"
         Me.LblDisplayFecha.Size = New System.Drawing.Size(43, 13)
         Me.LblDisplayFecha.TabIndex = 175
@@ -516,7 +533,7 @@ Partial Class Frm_CXC_Descuentos
         'lblDisplayPoliza
         '
         Me.lblDisplayPoliza.AutoSize = True
-        Me.lblDisplayPoliza.Location = New System.Drawing.Point(659, 17)
+        Me.lblDisplayPoliza.Location = New System.Drawing.Point(672, 17)
         Me.lblDisplayPoliza.Name = "lblDisplayPoliza"
         Me.lblDisplayPoliza.Size = New System.Drawing.Size(41, 13)
         Me.lblDisplayPoliza.TabIndex = 287
@@ -524,7 +541,7 @@ Partial Class Frm_CXC_Descuentos
         '
         'dtFecha
         '
-        Me.dtFecha.Location = New System.Drawing.Point(103, 144)
+        Me.dtFecha.Location = New System.Drawing.Point(103, 192)
         Me.dtFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtFecha.Name = "dtFecha"
         Me.dtFecha.Size = New System.Drawing.Size(215, 20)
@@ -540,7 +557,7 @@ Partial Class Frm_CXC_Descuentos
         '
         'TxtConcepto
         '
-        Me.TxtConcepto.Location = New System.Drawing.Point(257, 173)
+        Me.TxtConcepto.Location = New System.Drawing.Point(257, 221)
         Me.TxtConcepto.MaxLength = 200
         Me.TxtConcepto.Name = "TxtConcepto"
         Me.TxtConcepto.Size = New System.Drawing.Size(530, 20)
@@ -558,7 +575,7 @@ Partial Class Frm_CXC_Descuentos
         'LblDisplayConcepto
         '
         Me.LblDisplayConcepto.AutoSize = True
-        Me.LblDisplayConcepto.Location = New System.Drawing.Point(192, 175)
+        Me.LblDisplayConcepto.Location = New System.Drawing.Point(192, 223)
         Me.LblDisplayConcepto.Name = "LblDisplayConcepto"
         Me.LblDisplayConcepto.Size = New System.Drawing.Size(59, 13)
         Me.LblDisplayConcepto.TabIndex = 185
@@ -570,7 +587,7 @@ Partial Class Frm_CXC_Descuentos
         Me.TxtCodigoCliente.MaxLength = 8
         Me.TxtCodigoCliente.Name = "TxtCodigoCliente"
         Me.TxtCodigoCliente.Size = New System.Drawing.Size(105, 20)
-        Me.TxtCodigoCliente.TabIndex = 6
+        Me.TxtCodigoCliente.TabIndex = 5
         '
         'LblDisplayFolio
         '
@@ -618,7 +635,7 @@ Partial Class Frm_CXC_Descuentos
         Me.gbTotales.Controls.Add(Me.TxtSubTotal)
         Me.gbTotales.Controls.Add(Me.LblDisplayIVA)
         Me.gbTotales.Controls.Add(Me.TxtImpuesto)
-        Me.gbTotales.Location = New System.Drawing.Point(646, 402)
+        Me.gbTotales.Location = New System.Drawing.Point(646, 498)
         Me.gbTotales.Name = "gbTotales"
         Me.gbTotales.Size = New System.Drawing.Size(204, 106)
         Me.gbTotales.TabIndex = 244
@@ -704,7 +721,7 @@ Partial Class Frm_CXC_Descuentos
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(464, 442)
+        Me.Label2.Location = New System.Drawing.Point(464, 538)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(76, 13)
         Me.Label2.TabIndex = 324
@@ -713,7 +730,7 @@ Partial Class Frm_CXC_Descuentos
         'txtIEPSIncluido
         '
         Me.txtIEPSIncluido.Enabled = False
-        Me.txtIEPSIncluido.Location = New System.Drawing.Point(541, 439)
+        Me.txtIEPSIncluido.Location = New System.Drawing.Point(541, 535)
         Me.txtIEPSIncluido.MaxLength = 160
         Me.txtIEPSIncluido.Name = "txtIEPSIncluido"
         Me.txtIEPSIncluido.Size = New System.Drawing.Size(99, 20)
@@ -728,7 +745,7 @@ Partial Class Frm_CXC_Descuentos
         Me.gbDolares.Controls.Add(Me.lblDisplayTotalDolares)
         Me.gbDolares.Controls.Add(Me.lblDisplaySubtotalDolares)
         Me.gbDolares.Controls.Add(Me.lblDisplayImpuestoDolares)
-        Me.gbDolares.Location = New System.Drawing.Point(282, 430)
+        Me.gbDolares.Location = New System.Drawing.Point(282, 526)
         Me.gbDolares.Name = "gbDolares"
         Me.gbDolares.Size = New System.Drawing.Size(176, 78)
         Me.gbDolares.TabIndex = 325
@@ -800,37 +817,60 @@ Partial Class Frm_CXC_Descuentos
         '
         Me.lblImpuestoPorcentaje.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.lblImpuestoPorcentaje.ForeColor = System.Drawing.Color.Crimson
-        Me.lblImpuestoPorcentaje.Location = New System.Drawing.Point(12, 399)
+        Me.lblImpuestoPorcentaje.Location = New System.Drawing.Point(12, 498)
         Me.lblImpuestoPorcentaje.Name = "lblImpuestoPorcentaje"
         Me.lblImpuestoPorcentaje.Size = New System.Drawing.Size(44, 13)
         Me.lblImpuestoPorcentaje.TabIndex = 326
         Me.lblImpuestoPorcentaje.Text = "0.00"
         Me.lblImpuestoPorcentaje.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'lblDisplayRegimenFiscal
+        'lblDisplayRegimenFiscalReceptor
         '
-        Me.lblDisplayRegimenFiscal.AutoSize = True
-        Me.lblDisplayRegimenFiscal.Location = New System.Drawing.Point(494, 148)
-        Me.lblDisplayRegimenFiscal.Name = "lblDisplayRegimenFiscal"
-        Me.lblDisplayRegimenFiscal.Size = New System.Drawing.Size(82, 13)
-        Me.lblDisplayRegimenFiscal.TabIndex = 399
-        Me.lblDisplayRegimenFiscal.Text = "Régimen fiscal :"
+        Me.lblDisplayRegimenFiscalReceptor.Location = New System.Drawing.Point(9, 118)
+        Me.lblDisplayRegimenFiscalReceptor.Name = "lblDisplayRegimenFiscalReceptor"
+        Me.lblDisplayRegimenFiscalReceptor.Size = New System.Drawing.Size(82, 29)
+        Me.lblDisplayRegimenFiscalReceptor.TabIndex = 403
+        Me.lblDisplayRegimenFiscalReceptor.Text = "Régimen fiscal receptor :"
         '
-        'cboRegimenFiscal
+        'txtRegimenFiscalReceptor
         '
-        Me.cboRegimenFiscal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboRegimenFiscal.FormattingEnabled = True
-        Me.cboRegimenFiscal.Location = New System.Drawing.Point(575, 144)
-        Me.cboRegimenFiscal.MaxLength = 1
-        Me.cboRegimenFiscal.Name = "cboRegimenFiscal"
-        Me.cboRegimenFiscal.Size = New System.Drawing.Size(249, 21)
-        Me.cboRegimenFiscal.TabIndex = 11
+        Me.txtRegimenFiscalReceptor.Location = New System.Drawing.Point(103, 117)
+        Me.txtRegimenFiscalReceptor.MaxLength = 3
+        Me.txtRegimenFiscalReceptor.Name = "txtRegimenFiscalReceptor"
+        Me.txtRegimenFiscalReceptor.Size = New System.Drawing.Size(45, 20)
+        Me.txtRegimenFiscalReceptor.TabIndex = 6
+        '
+        'lblRegimenFiscalReceptor
+        '
+        Me.lblRegimenFiscalReceptor.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.lblRegimenFiscalReceptor.Location = New System.Drawing.Point(154, 120)
+        Me.lblRegimenFiscalReceptor.Name = "lblRegimenFiscalReceptor"
+        Me.lblRegimenFiscalReceptor.Size = New System.Drawing.Size(226, 13)
+        Me.lblRegimenFiscalReceptor.TabIndex = 402
+        Me.lblRegimenFiscalReceptor.Text = "_"
+        '
+        'txtUsoCFDI
+        '
+        Me.txtUsoCFDI.Location = New System.Drawing.Point(103, 141)
+        Me.txtUsoCFDI.MaxLength = 3
+        Me.txtUsoCFDI.Name = "txtUsoCFDI"
+        Me.txtUsoCFDI.Size = New System.Drawing.Size(45, 20)
+        Me.txtUsoCFDI.TabIndex = 7
+        '
+        'lblUsoCFDI
+        '
+        Me.lblUsoCFDI.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.lblUsoCFDI.Location = New System.Drawing.Point(152, 146)
+        Me.lblUsoCFDI.Name = "lblUsoCFDI"
+        Me.lblUsoCFDI.Size = New System.Drawing.Size(226, 13)
+        Me.lblUsoCFDI.TabIndex = 405
+        Me.lblUsoCFDI.Text = "_"
         '
         'Frm_CXC_Descuentos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(868, 543)
+        Me.ClientSize = New System.Drawing.Size(868, 637)
         Me.Controls.Add(Me.lblImpuestoPorcentaje)
         Me.Controls.Add(Me.gbDolares)
         Me.Controls.Add(Me.Label2)
@@ -928,8 +968,12 @@ Partial Class Frm_CXC_Descuentos
     Friend WithEvents lblImpuestoPorcentaje As Label
     Friend WithEvents cboTipoRelacionCFDI As ComboBox
     Friend WithEvents lblDisplayTipoRelacionCFDI As Label
-    Friend WithEvents cboUsoCFDI As ComboBox
     Friend WithEvents lblDisplayUsoCFDI As Label
-    Friend WithEvents lblDisplayRegimenFiscal As Label
-    Friend WithEvents cboRegimenFiscal As ComboBox
+    Friend WithEvents lblDisplayRegimenFiscalEmisor As Label
+    Friend WithEvents cboRegimenFiscalEmisor As ComboBox
+    Friend WithEvents lblDisplayRegimenFiscalReceptor As Label
+    Friend WithEvents txtRegimenFiscalReceptor As TextBox
+    Friend WithEvents lblRegimenFiscalReceptor As Label
+    Friend WithEvents txtUsoCFDI As TextBox
+    Friend WithEvents lblUsoCFDI As Label
 End Class

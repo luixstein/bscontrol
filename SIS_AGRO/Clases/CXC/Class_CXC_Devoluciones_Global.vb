@@ -656,6 +656,8 @@ Public Class Class_CXC_Devoluciones_Global
 
 #Region "Métodos y procedimientos"
     Public Function GrabaDevolucionGlobal() As Boolean
+        Const sProcedure As String = "GrabaDevolucionGlobal"
+
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -705,7 +707,7 @@ Public Class Class_CXC_Devoluciones_Global
                 Me._FOLIO_DEVOLUCION = "" & .Parameters("@FOLIO_DEVOLUCION").Value.ToString
                 Me._FOLIO_DESCUENTO_DEVOLUCION = "" & .Parameters("@FOLIO_DESCUENTO_DEVOLUCION_APLICADO").Value.ToString
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "GrabaDevolucionGlobal", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -716,6 +718,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand("SELECT DG.*," &
                                   "S1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO," &
@@ -822,7 +825,7 @@ Public Class Class_CXC_Devoluciones_Global
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Consultar", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -833,6 +836,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function Cancelar() As Boolean
+        Const sProcedure As String = "Cancelar"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -852,7 +856,7 @@ Public Class Class_CXC_Devoluciones_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Cancelar", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -863,6 +867,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function AfectaInventarios() As Boolean
+        Const sProcedure As String = "AfectaInventarios"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -878,7 +883,7 @@ Public Class Class_CXC_Devoluciones_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "AfectaInventarios", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -889,6 +894,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function AplicarPoliza() As Boolean
+        Const sProcedure As String = "AplicarPoliza"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -904,7 +910,7 @@ Public Class Class_CXC_Devoluciones_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "AplicarPoliza", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -916,6 +922,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function BusquedaVisual_PorFolio() As String
+        Const sProcedure As String = "BusquedaVisual_PorFolio"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de devoluciones en CXC."
@@ -932,12 +939,13 @@ Public Class Class_CXC_Devoluciones_Global
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "BusquedaVisual_PorFolio", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
         Return Resultado
     End Function
 
     Public Function ObtenerDetalle() As DataTable
+        Const sProcedure As String = "ObtenerDetalle"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
@@ -957,7 +965,7 @@ Public Class Class_CXC_Devoluciones_Global
 
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerDetalle", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return dTabla
@@ -968,6 +976,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Sub
 
     Public Sub Imprimir()
+        Const sProcedure As String = "Imprimir"
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
 
@@ -985,15 +994,15 @@ Public Class Class_CXC_Devoluciones_Global
             frm.Show()
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "Imprimir", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         Finally
             oReporte = Nothing
         End Try
     End Sub
 
     Public Function GeneraDevolucionElectronica(ByVal bMensajes As Boolean, ByVal bGenerarPDF As Boolean) As Boolean
+        Const sProcedure As String = "GeneraDevolucionElectronica"
         Dim bResultado As Boolean = False
-        Dim sProcedure As String = "GeneraDevolucionElectronica"
         Dim sRutaXML As String
 
         Try
@@ -1036,6 +1045,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function ExportarAPdf(Optional ByVal sRutaPDF As String = "") As Boolean
+        Const sProcedure As String = "ExportarAPdf"
         Dim bResultado As Boolean = False
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
@@ -1060,7 +1070,7 @@ Public Class Class_CXC_Devoluciones_Global
             bResultado = True
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ExportarAPdf", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         Finally
             oReporte = Nothing
         End Try
@@ -1069,6 +1079,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function ObtenerDetalleParaCFDI(Optional ByVal bSinComentarios As Boolean = True) As DataTable
+        Const sProcedure As String = "ObtenerDetalleParaCFDI"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
@@ -1089,14 +1100,14 @@ Public Class Class_CXC_Devoluciones_Global
             da.Dispose()
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerDetalleParaCFDI", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return dTabla
     End Function
 
     Public Function EnviarCorreo() As Boolean
-        Dim sProcedure As String = "EnviarCorreo"
+        Const sProcedure As String = "EnviarCorreo"
         Dim Ret As Long, tabla() As String, n As Integer, archivos As String = sFelectronicaCarpetaXMLPDF & "\"
         Dim oCliente As Class_CatClientes
         Dim MyMailMsg As New Net.Mail.MailMessage
@@ -1201,9 +1212,11 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Private Function MarcaEnviadoxCorreo(ByVal sFolio As String) As Boolean
+        Const sProcedure As String = "MarcaEnviadoxCorreo"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
+
         With cmd
             .Connection = Me._Conexion
             .CommandTimeout = 0
@@ -1217,7 +1230,7 @@ Public Class Class_CXC_Devoluciones_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "MarcaEnviadoxCorreo", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -1229,6 +1242,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function RecuperaXML(ByVal sRutaXML As String) As Boolean
+        Const sProcedure As String = "RecuperaXML"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -1260,7 +1274,7 @@ Public Class Class_CXC_Devoluciones_Global
 
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "RecuperaXML", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -1272,6 +1286,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function RecuperaXML() As String
+        Const sProcedure As String = "RecuperaXML"
         Dim sResultado As String = ""
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -1300,7 +1315,7 @@ Public Class Class_CXC_Devoluciones_Global
 
                 sResultado = docXml.InnerXml
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "RecuperaXML", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -1312,7 +1327,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function RecuperarXMLyPDF() As Boolean
-        Dim sProcedure As String = "RecuperarXMLyPDF"
+        Const sProcedure As String = "RecuperarXMLyPDF"
         Dim bResultado As Boolean = False
 
         Dim oCliente As Class_CatClientes
@@ -1357,8 +1372,9 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function CancelarTimbre() As Boolean
+        Const sProcedure As String = "CancelarTimbre"
         Dim bResultado As Boolean = False
-        Dim sProcedure As String = "CancelarTimbre"
+
         Try
             If Me.Consultar() = False Then 'Refrescamos la factura para tener los datos mas nuevos.
                 Return False
@@ -1400,6 +1416,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function BusquedaVisualSeriesDevolucion(ByVal FolioVenta As String, ByVal sCodigoArticulo As String) As String
+        Const sProcedure As String = "BusquedaVisualSeriesDevolucion"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         Dim oArticulo As New Class_CatArticulos(sCodigoArticulo)
@@ -1421,22 +1438,21 @@ Public Class Class_CXC_Devoluciones_Global
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "BusquedaVisualSeriesDevolucion", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
         Return Resultado
     End Function
 
     Public Function ObtenerDetalleSeries(ByVal sFolio As String) As DataTable
+        Const sProcedure As String = "ObtenerDetalleSeries"
         Dim dTabla As New DataTable, da As SqlDataAdapter
 
         Try
-
             da = New SqlDataAdapter("EXEC MP_CXC_DEVOLUCIONES_CONSULTA_TABLA_SERIES @FOLIO_DEVOLUCION='" & sFolio & "'", Me._Conexion)
             da.Fill(dTabla)
             da.Dispose()
-
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerDetalleSeries", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
         Return dTabla
     End Function
