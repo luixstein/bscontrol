@@ -1351,11 +1351,17 @@ Public Class Class_CXC_Descuento
             sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me._FOLIO_DESCUENTO & ".xml"
 
             If Me._TIMBRADO_CFDI = "0" Then
-                If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
-                    bResultado = GeneraNotaCreditoCXCElectronica(Me, bMensajes, sRutaXML)
-                Else
-                    bResultado = GeneraNotaCreditoCXCElectronica33(Me, bMensajes, sRutaXML)
-                End If
+                Select Case Empresa_Sistema.VERSION_ESQUEMA_CFD
+                    Case <= "3.2"
+                        bResultado = GeneraNotaCreditoCXCElectronica(Me, bMensajes, sRutaXML)
+                    Case "3.3"
+                        bResultado = GeneraNotaCreditoCXCElectronica33(Me, bMensajes, sRutaXML)
+                    Case "4.0"
+                        bResultado = GeneraNotaCreditoCXCElectronica40(Me, bMensajes, sRutaXML)
+                    Case Else
+                        MsgBox("La versión del cfdi " & Empresa_Sistema.VERSION_ESQUEMA_CFD & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                End Select
 
                 If bResultado = False Then
                     MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
