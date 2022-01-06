@@ -78,11 +78,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\cadenaoriginal_3_3.dll</HintPath>
     </Reference>
+    <Reference Include="cadenaoriginal_4_0, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\cadenaoriginal_4_0.dll</HintPath>
+    </Reference>
     <Reference Include="CatalogoCuentas_1_2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\CatalogoCuentas_1_2.dll</HintPath>
     </Reference>
-    <Reference Include="cfdi, Version=1.0.0.7, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="cfdi, Version=1.0.0.8, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\cfdi.dll</HintPath>
     </Reference>
