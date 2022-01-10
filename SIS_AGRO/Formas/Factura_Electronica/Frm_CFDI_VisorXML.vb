@@ -261,7 +261,7 @@ Public Class Frm_CFDI_VisorXML
 
                                 Select Case oCFDI.Comprobante.Version
 
-                                    Case "3.3"
+                                    Case "3.3", "4.0"
                                         concepto.ClaveProdServ = xmlDoc.DocumentElement.ChildNodes.Item(i).ChildNodes(j).Attributes("ClaveProdServ").Value
 
                                         Try 'Es opcional
