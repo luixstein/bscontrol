@@ -182,9 +182,9 @@ Buscar:
                 Exit Function
             End If
 
-            dfecha = CDate(Format(Me.DtpFecha.Value, "yyyy/dd/MM ") + Format(Me.DtpHora.Value, "hh:mm"))
+            dfecha = CDate(Format(Me.DtpFecha.Value, "dd/MM/yyyy ") + Format(Me.DtpHora.Value, "hh:mm"))
 
-            If dfecha < CDate(Format(Now, "yyyy/dd/MM hh:mm")) Then
+            If dfecha < CDate(Format(Now, "dd/MM/yyyy hh:mm")) Then
                 MsgBox("La fecha y hora deben de ser mayores a la actual.", MsgBoxStyle.Exclamation, Me.Text)
                 Me.DtpFecha.Focus()
                 Exit Function

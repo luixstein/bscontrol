@@ -256,3 +256,6 @@ paket-files/
 *.sln.iml
 
 SIS_AGRO/Formas/Nomina/Frm_Nomina_Credenciales antes.rar
+SIS_AGRO/bin/Debug/BsControl.exe
+SIS_AGRO/bin/Debug/BsControl.rar
+*.exe
