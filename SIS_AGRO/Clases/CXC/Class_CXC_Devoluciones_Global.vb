@@ -1342,11 +1342,10 @@ Public Class Class_CXC_Devoluciones_Global
         f.sCampo = "NUMERO_SERIE"
         f.sOrder = "S.ID_INVENTARIO_LOTES_SALIDAS"
         f.sTable = "INVENTARIO_MOVIMIENTOS_DETALLE"
-        f.sQl = "SELECT S.ID_INVENTARIO_LOTES_COSTOS,C.NUMERO_SERIE,DBO.FN_FORMAT_FECHA_CORTO(C.FECHA) " &
+        f.sQl = "SELECT S.ID_INVENTARIO_LOTES_COSTOS,C.NUMERO_SERIE,DBO.FN_FORMAT_FECHA_CORTO(C.FECHA) FECHA " &
                 "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " &
                 "INNER JOIN INVENTARIO_LOTES_SALIDAS S ON(I.ID_INVENTARIO_MOVIMIENTOS_DETALLE=S.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " &
                 "INNER JOIN VW_INVENTARIO_LOTES_COSTOS_EXTENDIDO C ON(S.ID_INVENTARIO_LOTES_COSTOS=C.ID_INVENTARIO_LOTES_COSTOS) " &
-                "INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
                 "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & sReplace(FolioVenta) & "' AND LEN(C.NUMERO_SERIE)>0 AND I.CODIGO_ARTICULO = '" & sReplace(sCodigoArticulo) & "' AND "
         f.Inicia("%")
         f.ShowDialog()
@@ -1358,6 +1357,36 @@ Public Class Class_CXC_Devoluciones_Global
             HandleError(Me.Nombre_Clase, "BusquedaVisualSeriesDevolucion", ex)
         End Try
         Return Resultado
+    End Function
+
+    Public Function BusquedaVisualMultiplesSeriesDevolucion(ByVal sFolioVenta As String, ByVal sCodigoArticulo As String) As Class_Inventarios_Lotes_Series.Lote
+        Dim f As New BusquedaVisual
+        Dim oArticulo As New Class_CatArticulos(sCodigoArticulo)
+        Dim lote As New Class_Inventarios_Lotes_Series.Lote
+
+        f.Text = "Búsqueda de series del artículo : " & oArticulo.DESCRIPCION
+        f.sCampo = "FOLIO_MOVIMIENTO_INVENTARIO"
+        f.sOrder = "FOLIO_MOVIMIENTO_INVENTARIO"
+        f.sTable = "INVENTARIO_MOVIMIENTOS_DETALLE"
+
+        f.sQl = "SELECT FOLIO_MOVIMIENTO_INVENTARIO,FECHA,CANTIDAD FROM (SELECT I.FOLIO_MOVIMIENTO_INVENTARIO,DBO.FN_FORMAT_FECHA_CORTO(MAX(C.FECHA)) FECHA,COUNT(C.NUMERO_SERIE) CANTIDAD " & _
+                "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " & _
+                "INNER JOIN INVENTARIO_LOTES_SALIDAS S ON(I.ID_INVENTARIO_MOVIMIENTOS_DETALLE=S.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " & _
+                "INNER JOIN VW_INVENTARIO_LOTES_COSTOS_EXTENDIDO C ON(S.ID_INVENTARIO_LOTES_COSTOS=C.ID_INVENTARIO_LOTES_COSTOS) " & _
+                "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & sReplace(sFolioVenta) & "' AND LEN(C.NUMERO_SERIE)>0 AND I.CODIGO_ARTICULO = '" & sReplace(sCodigoArticulo) & "' AND C.CANTIDAD_DISPONIBLE=0 " & _
+                "GROUP BY I.FOLIO_MOVIMIENTO_INVENTARIO) SERIES_DEVOLUCION WHERE 1=1 AND " 'CANTIDAD_DISPONIBLE=0 porque solo mostrara las que se pueden devolver
+
+        f.Inicia("%")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                lote.FolioMovimiento = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+                lote.Cantidad = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 2), Double)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "BusquedaVisualMultiplesSeriesDevolucion", ex)
+        End Try
+        Return lote
     End Function
 
     Public Function ObtenerDetalleSeries(ByVal sFolio As String) As DataTable
@@ -1373,6 +1402,26 @@ Public Class Class_CXC_Devoluciones_Global
             HandleError(Me.Nombre_Clase, "ObtenerDetalleSeries", ex)
         End Try
         Return dTabla
+    End Function
+
+    Public Function ObtieneRenglonesSeriesDevolucion(ByVal sFolio As String, ByVal sCodigoArticulo As String) As DataTable
+        Dim dt As New DataTable
+        Try
+
+            Using da As New SqlDataAdapter("SELECT S.ID_INVENTARIO_LOTES_COSTOS,C.NUMERO_SERIE FROM INVENTARIO_MOVIMIENTOS_DETALLE I " & _
+                                            "INNER JOIN INVENTARIO_LOTES_SALIDAS S ON(I.ID_INVENTARIO_MOVIMIENTOS_DETALLE=S.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " & _
+                                            "INNER JOIN VW_INVENTARIO_LOTES_COSTOS_EXTENDIDO C ON(S.ID_INVENTARIO_LOTES_COSTOS=C.ID_INVENTARIO_LOTES_COSTOS) " & _
+                                            "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & sReplace(sFolio) & "' AND LEN(C.NUMERO_SERIE)>0 AND I.CODIGO_ARTICULO = '" & sReplace(sCodigoArticulo) & "' AND C.CANTIDAD_DISPONIBLE=0 ", Me._Conexion) 'CANTIDAD_DISPONIBLE=0 porque solo mostrara las que se pueden devolver
+
+                da.Fill(dt)
+            End Using
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, "ObtieneRenglonesSeriesDevolucion", ex)
+        Finally
+
+        End Try
+        Return dt
     End Function
 #End Region
 

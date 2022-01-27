@@ -1254,6 +1254,43 @@ busca_serie:
                             End If
                         End If
 
+                    Case Keys.F7
+                        If Columna = Me.igySerieNumeroSerie AndAlso txtLEN(.Cell(Renglon, Me.igySeriePosicion).Text) = True Then
+                            sCodigoArticulo = .Cell(Renglon, Me.igySerieCodigo).Text
+                            If txtLEN(sCodigoArticulo) = False Then
+                                Return
+                            End If
+
+                            Dim lote As New Class_Inventarios_Lotes_Series.Lote
+                            lote = oDevolucion.BusquedaVisualMultiplesSeriesDevolucion(Me.txtFolioVenta.Text, sCodigoArticulo)
+
+                            If txtLEN(lote.FolioMovimiento) = True Then
+                                Dim oSerie As New Class_Inventarios_Lotes_Series
+                                Dim dtSeries As DataTable = oDevolucion.ObtieneRenglonesSeriesDevolucion(lote.FolioMovimiento, sCodigoArticulo)
+
+                                If dtSeries.Rows.Count = 0 Then
+                                    MsgBox("No se encontraron series disponibles del artículo " & sCodigoArticulo & " del folio " & lote.FolioMovimiento, MsgBoxStyle.Exclamation, Me.Text)
+                                    Return
+                                End If
+
+                                Dim i As Integer, iArticulosPendientes As Integer = Me.CantidadArticulosPendientesSerie(sCodigoArticulo)
+                                Dim iSeriesUsadas As Double = lote.Cantidad, iRowEncontrado As Integer = 0
+                                For i = 1 To Me.GridSeries.Rows - 1
+                                    If iArticulosPendientes <= 0 Or iSeriesUsadas <= 0 Then
+                                        Exit For
+                                    End If
+                                    If Me.GridSeries.Cell(i, Me.igySerieCodigo).Text = sCodigoArticulo AndAlso txtLEN(Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text) = False Then
+                                        iArticulosPendientes -= 1
+                                        iSeriesUsadas -= 1
+                                        Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text = dtSeries.Rows(iRowEncontrado)("ID_INVENTARIO_LOTES_COSTOS").ToString
+                                        Me.GridSeries.Cell(i, Me.igySerieNumeroSerie).Text = dtSeries.Rows(iRowEncontrado)("NUMERO_SERIE").ToString
+                                        iRowEncontrado += 1 'empieza desde el 0
+                                    End If
+                                Next
+
+                            End If
+                        End If
+
                     Case Keys.Delete
                         e.SuppressKeyPress = True
                 End Select
