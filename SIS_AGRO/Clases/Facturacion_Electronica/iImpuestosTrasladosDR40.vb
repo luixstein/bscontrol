@@ -21,7 +21,7 @@ Friend Class iImpuestosTrasladosDR40
                 .ImporteDR = ImporteDR
             End With
 
-            Partidas.Add(objObjeto, "N" & CStr(ImpuestoDR) & TasaOCuotaDR)
+            Partidas.Add(objObjeto, "N" & CStr(ImpuestoDR) & TasaOCuotaDR & TipoFactorDR)
 
         Catch ex As Exception
             HandleError(NombreClase, sProcedure, ex)

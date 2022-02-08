@@ -590,13 +590,13 @@ Friend Class cComplementoPagos20
                 End If
             End If
 
-            If Not (Me.MonedaP = "MXN" Or Me.MonedaP = "XXX") Then
-                If valorNumerico(Me.TipoCambioP) <= 0 Then
-                    MsgBox("MonedaP : Si es diferente de MXN o XXX, debe existir información en el atributo TipoCambioP.", vbExclamation, sProcedure) : Exit Function
+            If Me.MonedaP <> "MXN" Then
+                If txtLEN(Me.TipoCambioP) = False Then
+                    MsgBox("MonedaP : Si el atributo MonedaP es diferente de MXN, debe existir información en el atributo TipoCambioP.", vbExclamation, sProcedure) : Exit Function
                 End If
-            Else
-                If txtLEN(Me.TipoCambioP) = True Then
-                    MsgBox("MonedaP : Si es MXN o XXX, no debe existir información en el atributo TipoCambioP.", vbExclamation, sProcedure) : Exit Function
+            Else 'Entonces es igual a MXN
+                If valorNumerico(Me.TipoCambioP) <> 1 Then
+                    MsgBox("MonedaP : Si el atributo MonedaP es MXN, se debe registrar el valor 1 en el atributo TipoCambioP.", vbExclamation, sProcedure) : Exit Function
                 End If
             End If
 
@@ -689,12 +689,13 @@ Friend Class cComplementoPagos20
 
                 If Me.DoctoRelacionados.Item(i).MonedaDR <> Me.MonedaP Then
                     If valorNumerico(Me.DoctoRelacionados.Item(i).EquivalenciaDR) <= 0 Then
-                        MsgBox("DoctoRelacionados.ModenaDR : si el valor de este campo es diferente al valor registrado en el campo MonedaP, " &
-                            "se debe registrar información en el campo TipoCambioDR.", vbExclamation, sProcedure) : Exit Function
+                        MsgBox("DoctoRelacionados.EquivalenciaDR : Si el valor del atributo MonedaDR es diferente al valor registrado en el atributo MonedaP, " &
+                        "se debe registrar información en el atributo EquivalenciaDR.", vbExclamation, sProcedure) : Exit Function
                     End If
-                ElseIf Me.DoctoRelacionados.Item(i).MonedaDR = "MXN" And Me.MonedaP = "MXN" Then
-                    If txtLEN(Me.DoctoRelacionados.Item(i).EquivalenciaDR) = True Then
-                        MsgBox("DoctoRelacionados.ModenaDR : si el valor de este campo y el campo MonedaP es MXN(Pesos Mexicanos) no debe registrar inforamación en el campo TipoCambioDR.", vbExclamation, sProcedure) : Exit Function
+                ElseIf Me.DoctoRelacionados.Item(i).MonedaDR = Me.MonedaP Then
+                    If valorNumerico(Me.DoctoRelacionados.Item(i).EquivalenciaDR) <> "1" Then
+                        MsgBox("DoctoRelacionados.EquivalenciaDR : Si el valor del atributo MonedaDR es igual al valor registrado en el atributo MonedaP, " &
+                        "se debe registrar el valor 1 en el atributo EquivalenciaDR.", vbExclamation, sProcedure) : Exit Function
                     End If
                 End If
 
