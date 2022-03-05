@@ -103,6 +103,7 @@ Public Class Class_Ventas_Global
     Private _RETENCION_ISR As Decimal
     Private _RETENCION_ISR_USD As Decimal
     Private _FOLIO_DESCUENTO_ANTICIPO As String
+    Private _TIENE_COMPLEMENTO_CARTA_PORTE As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -868,6 +869,14 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
+    Public Property TIENE_COMPLEMENTO_CARTA_PORTE() As Boolean
+        Get
+            Return Me._TIENE_COMPLEMENTO_CARTA_PORTE
+        End Get
+        Set(ByVal Value As Boolean)
+            Me._TIENE_COMPLEMENTO_CARTA_PORTE = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1344,6 +1353,7 @@ Public Class Class_Ventas_Global
                     Me._RETENCION_ISR_USD = CDec(dReader("RETENCION_ISR_USD"))
                     Me._FOLIO_DESCUENTO_ANTICIPO = "" & dReader("FOLIO_DESCUENTO_ANTICIPO").ToString
                     Me._CODIGO_TIPO_DOCUMENTO = dReader("CODIGO_TIPO_DOCUMENTO").ToString
+                    Me._TIENE_COMPLEMENTO_CARTA_PORTE = CBool(dReader("TIENE_COMPLEMENTO_CARTA_PORTE"))
 
                     bResultado = True
                 End If
@@ -3443,6 +3453,177 @@ Public Class Class_Ventas_Global
             End Try
         End With
         Return bResultado
+    End Function
+
+    Friend Function ComplementoCartaPorte20() As cComplementoCartaPorte20
+        Const sProcedure As String = "ComplementoCartaPorte20"
+        Dim CCP As New cComplementoCartaPorte20
+
+        Try
+
+            'Crear clases de carta porte, o hacer selects simulando que esta en si es la clase
+
+            Dim sSQL As String = ""
+
+            sSQL = "SELECT G.* " &
+            "FROM CFDI_CARTA_PORTE_GLOBAL G " &
+            "WHERE G.FOLIO_VENTA='" & Replace(Me._FOLIO_VENTA, "'", "''") & "' "
+
+            Dim cmd As New SqlCommand(sSQL, Me._Conexion)
+            Dim drCartaPorte As SqlDataReader
+            With cmd
+                .CommandTimeout = 0
+                .CommandType = CommandType.Text
+
+                Me._Conexion.Open()
+                drCartaPorte = .ExecuteReader()
+            End With
+
+            If drCartaPorte.Read = False Then
+                MsgBox("Error al tratar de obtener los datos globales de la carta porte.", MsgBoxStyle.Exclamation, sProcedure)
+                Return CCP
+            End If
+
+            sSQL = "SELECT D.FECHA_HORA_SALIDA_LLEGADA,D.DISTANCIA_RECORRIDA," &
+                    "U.TIPO_UBICACION,U.ID_UBICACION,U.RFC_REMITENTE_DESTINATARIO,U.NOMBRE_REMITENTE_DESTINATARIO,U.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO,U.CODIGO_PAIS_SAT_RESIDENCIA_FISCAL " &
+                    "U.CALLE,U.NUMERO_EXTERIOR,U.NUMERO_INTERIOR,COL.CODIGO_COLONIA,LOC.CODIGO_LOCALIDAD,U.REFERENCIA,MUN.CODIGO_MUNICIPIO_SAT,EST.CODIGO_ESTADO_SAT,U.CODIGO_PAIS_SAT_DOMICILIO,U.CODIGO_POSTAL," &
+                    "FROM CFDI_CARTA_PORTE_DETALLE_UBICACIONES D " &
+                    "INNER JOIN CFDI_CAT_UBICACIONES U ON(D.CODIGO_UBICACION=U.CODIGO_UBICACION) " &
+                    "LEFT JOIN CFDI_CAT_COLONIAS COL ON(U.ID_COLONIA=COL.ID_COLONIA) " &
+                    "LEFT JOIN CFDI_CAT_LOCALIDADES LOC ON(U.ID_LOCALIDAD=LOC.ID_LOCALIDAD) " &
+                    "LEFT JOIN CAT_MUNICIPIOS MUN ON(U.CODIGO_MUNICIPIO=MUN.CODIGO_MUNICIPIO) " &
+                    "LEFT JOIN SIS_ESTADOS EST ON(U.CODIGO_ESTADO=EST.CODIGO_ESTADO) " &
+                    "WHERE D.ID_CFDI_CARTA_PORTE_GLOBAL=" & drCartaPorte("ID_CFDI_CARTA_PORTE_GLOBAL").ToString()
+
+            Dim da As New SqlDataAdapter(sSQL, Me._Conexion)
+            Dim dtUbicaciones As New DataTable("")
+            da.Fill(dtUbicaciones)
+            da.Dispose()
+
+
+            With CCP
+                .Version = "" & drCartaPorte("VERSION").ToString()
+                .TranspInternac = "" & drCartaPorte("TRASPORTE_INTERNACIONAL").ToString()
+                .EntradaSalidaMerc = "" & drCartaPorte("ENTRADA_SALIDA_MERCANCIA").ToString()
+                .PaisOrigenDestino = "" & drCartaPorte("CODIGO_PAIS_SAT").ToString()
+                .ViaEntradaSalida = "" & drCartaPorte("CODIGO_TRANSPORTE").ToString()
+                .TotalDistRec = Format(valorNumericoD(drCartaPorte("TOTAL_DISTANCIA_RECORRIDA").ToString()), "#0.00")
+            End With
+
+            'Ciclo ubicaciones
+            For Each dRow As DataRow In dtUbicaciones.Rows
+                Dim oUbicacion As New cCCPUbicacion
+                With oUbicacion
+                    .TipoUbicacion = "" & dRow("TIPO_UBICACION").ToString
+                    .IDUbicacion = "" & dRow("ID_UBICACION").ToString
+                    .RFCRemitenteDestinatario = "" & dRow("RFC_REMITENTE_DESTINATARIO").ToString
+                    .NombreRemitenteDestinatario = "" & dRow("NOMBRE_REMITENTE_DESTINATARIO").ToString
+                    .NumRegIdTrib = "" & dRow("NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO").ToString
+                    .ResidenciaFiscal = "" & dRow("CODIGO_PAIS_SAT_RESIDENCIA_FISCAL").ToString
+                    .NumEstacion = "" 'Omitido
+                    .NombreEstacion = "" 'Omitido
+                    .NavegacionTrafico = "" 'Omitido
+                    .FechaHoraSalidaLlegada = "" & dRow("FECHA_HORA_SALIDA_LLEGADA").ToString
+                    .TipoEstacion = "" 'Omitido
+                    .DistanciaRecorrida = "" & dRow("DISTANCIA_RECORRIDA").ToString
+
+                    .Domicilio.Calle = "" & dRow("CALLE").ToString
+                    .Domicilio.NumeroExterior = "" & dRow("NUMERO_EXTERIOR").ToString
+                    .Domicilio.NumeroInterior = "" & dRow("NUMERO_INTERIOR").ToString
+                    .Domicilio.Colonia = "" & dRow("CODIGO_COLONIA").ToString
+                    .Domicilio.Localidad = "" & dRow("CODIGO_LOCALIDAD").ToString
+                    .Domicilio.Referencia = "" & dRow("REFERENCIA").ToString
+                    .Domicilio.Municipio = "" & dRow("CODIGO_MUNICIPIO_SAT").ToString
+                    .Domicilio.Estado = "" & dRow("CODIGO_ESTADO_SAT").ToString
+                    .Domicilio.Pais = "" & dRow("CODIGO_PAIS_SAT_DOMICILIO").ToString
+                    .Domicilio.CodigoPostal = "" & dRow("CODIGO_POSTAL").ToString
+                End With
+
+                CCP.Ubicaciones.Add(oUbicacion)
+            Next
+
+            'Estos campos aunque sean tipo global mercancia estan en el global de la tabla carta porte.
+            With CCP.Mercancias
+                .PesoBrutoTotal = Format(valorNumericoD(drCartaPorte("PESO_BRUTO_TOTAL").ToString()), "#0.000")
+                .UnidadPeso = "" & drCartaPorte("CODIGO_UNIDAD_PESO").ToString()
+                .PesoNetoTotal = "" 'Omitido
+                .NumTotalMercancias = "" & drCartaPorte("NUMERO_TOTAL_MERCANCIAS").ToString()
+                .CargoPorTasacion = "" 'Omitido
+
+                For i = 0 To 10
+                    Dim oMercancia As New cCCPMercancia
+                    With oMercancia
+                        .BienesTransp = ""
+                        .ClaveSTCC = ""
+                        .Descripcion = ""
+                        .Cantidad = "" ' format 3
+                        .Unidad = ""
+                        .Dimensiones = ""
+                        .MaterialPeligroso = ""
+                        .CveMaterialPeligroso = ""
+                        .Embalaje = ""
+                        .DescripEmbalaje = ""
+                        .PesoEnKg = ""
+                        .ValorMercancia = ""
+                        .Moneda = ""
+                        .FraccionArancelaria = ""
+                        .UUIDComercioExt = ""
+                    End With
+                    .Add(oMercancia)
+                Next
+
+            End With
+
+
+
+
+
+            With CCP
+                .Version = "2.0"
+                .TranspInternac = ""
+                .EntradaSalidaMerc = ""
+                .PaisOrigenDestino = ""
+                .ViaEntradaSalida = ""
+                .TotalDistRec = ""
+
+                'Ciclo ubicaciones
+                For i = 0 To 10
+                    Dim oUbicacion As New cCCPUbicacion
+                    With oUbicacion
+                        .TipoUbicacion = ""
+                        .IDUbicacion = ""
+                        .RFCRemitenteDestinatario = ""
+                        .NombreRemitenteDestinatario = ""
+                        .NumRegIdTrib = ""
+                        .ResidenciaFiscal = ""
+                        .NumEstacion = ""
+                        .NombreEstacion = ""
+                        .NavegacionTrafico = ""
+                        .FechaHoraSalidaLlegada = ""
+                        .TipoEstacion = ""
+                        .DistanciaRecorrida = ""
+
+                        .Domicilio.Calle = ""
+                        .Domicilio.NumeroExterior = ""
+                        .Domicilio.NumeroInterior = ""
+                        .Domicilio.Colonia = ""
+                        .Domicilio.Localidad = ""
+                        .Domicilio.Referencia = ""
+                        .Domicilio.Municipio = ""
+                        .Domicilio.Estado = ""
+                        .Domicilio.Pais = ""
+                        .Domicilio.CodigoPostal = ""
+                    End With
+
+                    .Ubicaciones.Add(oUbicacion)
+                Next
+
+            End With
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
+        End Try
+
+        Return CCP
     End Function
 #End Region
 

@@ -2018,6 +2018,11 @@ ImpuestosConceptos:
                 Cfd.XmlComplementoComercioExterior = sXmlComercioExterior
             End If
 
+            'If oVenta.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado, omitimos los impuestos
+            If oVenta.TIENE_COMPLEMENTO_CARTA_PORTE = True Then
+                Cfd.ComplementoCartaPorte20 = oVenta.ComplementoCartaPorte20
+            End If
+
             'Fin de llenado de nodos del comprobante''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
             If Cfd.GeneraCFD(TipoComprobante.FACTURA_VENTA, sRutaXML) = True Then
