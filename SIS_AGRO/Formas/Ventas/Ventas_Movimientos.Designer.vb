@@ -159,6 +159,7 @@ Partial Class Ventas_Movimientos
         Me.GridFacturasVariasRemisiones = New FlexCell.Grid()
         Me.lblDisplayRegimenFiscal = New System.Windows.Forms.Label()
         Me.cboRegimenFiscal = New System.Windows.Forms.ComboBox()
+        Me.btnTimbradoTrasladoPrueba = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -1607,12 +1608,22 @@ Partial Class Ventas_Movimientos
         Me.cboRegimenFiscal.Size = New System.Drawing.Size(281, 21)
         Me.cboRegimenFiscal.TabIndex = 1
         '
+        'btnTimbradoTrasladoPrueba
+        '
+        Me.btnTimbradoTrasladoPrueba.Location = New System.Drawing.Point(1130, 562)
+        Me.btnTimbradoTrasladoPrueba.Name = "btnTimbradoTrasladoPrueba"
+        Me.btnTimbradoTrasladoPrueba.Size = New System.Drawing.Size(148, 32)
+        Me.btnTimbradoTrasladoPrueba.TabIndex = 385
+        Me.btnTimbradoTrasladoPrueba.Text = "TimbradoTrasladoPrueba"
+        Me.btnTimbradoTrasladoPrueba.UseVisualStyleBackColor = True
+        '
         'Ventas_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(1290, 678)
+        Me.Controls.Add(Me.btnTimbradoTrasladoPrueba)
         Me.Controls.Add(Me.lblDisplayRegimenFiscal)
         Me.Controls.Add(Me.cboRegimenFiscal)
         Me.Controls.Add(Me.TabControl1)
@@ -1786,4 +1797,5 @@ Partial Class Ventas_Movimientos
     Friend WithEvents lblTotalRetencionISR_USD As Label
     Friend WithEvents lblDisplayRegimenFiscal As Label
     Friend WithEvents cboRegimenFiscal As ComboBox
+    Friend WithEvents btnTimbradoTrasladoPrueba As Button
 End Class

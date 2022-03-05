@@ -4,11 +4,7 @@ Friend Class cComplementoCartaPorte20
 
     Private Const NombreClase As String = "cComplementoCartaPorte20"
 
-    Private xmlns As String
-    Private xmlnsCartaPorte20 As String
-    Private xsischemaLocation As String
-    Private AnexoNodo As String
-
+#Region "Atributos y Nodos"
     Public Version As String
     Public TranspInternac As String
     Public EntradaSalidaMerc As String
@@ -19,6 +15,12 @@ Friend Class cComplementoCartaPorte20
     Public Ubicaciones As cCCPUbicaciones
     Public Mercancias As cCCPMercancias
     Public FiguraTransporte As cCCPFiguraTransporte
+#End Region
+
+    Private xmlns As String
+    Private xmlnsCartaPorte20 As String
+    Private xsischemaLocation As String
+    Private AnexoNodo As String
 
     Public ComplementoGenerado As Boolean
     Public Complemento As MSXML2.IXMLDOMElement

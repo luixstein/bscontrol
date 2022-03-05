@@ -51,6 +51,7 @@ Friend Class cComprobante33
 
     'Public ComplementoCCE10 As cComplementoCCE10
     Public ComplementoPagos10 As cComplementoPagos
+    Public ComplementoCartaPorte20 As cComplementoCartaPorte20
 
     Public XmlComplementoComercioExterior As String
 #End Region
@@ -570,13 +571,17 @@ Friend Class cComprobante33
                 Else
                     Return False
                 End If
-
-                'If Me.ComplementoPagos10.ComplementoGenerado = False Then
-                '    MsgBox("No se pudo generar el complemento de pagos.", vbExclamation, sProcedure)
-                '    Return False
-                'End If
             End If
 
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'Complemento Carta Porte
+            If Not (Me.ComplementoCartaPorte20 Is Nothing) Then 'Si le pasó el complemento de pagos
+                If Me.ComplementoCartaPorte20.GenerarNodoComplementoCartaPorte20 = True Then
+                    NodoComplemento.appendChild(Me.ComplementoCartaPorte20.Complemento)
+                Else
+                    Return False
+                End If
+            End If
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             'Si hubiera mas complementos, aqui se agregarian
             'If Not (Me.ComplementoXX Is Nothing) Then

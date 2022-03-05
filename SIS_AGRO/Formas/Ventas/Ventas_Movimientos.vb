@@ -5881,4 +5881,13 @@ BuscaVentas:
     End Function
 #End Region
 
+    Private Sub btnTimbradoTrasladoPrueba_Click(sender As Object, e As EventArgs) Handles btnTimbradoTrasladoPrueba.Click
+        'If Me.oVenta.GeneraFacturaElectronica(True, True) = True Then
+        Dim oVenta As New Class_Ventas_Global("F-613")
+        Dim sRutaXML As String = "C:\BsControl\FELECTRONICA\SEIN_ACU\Xmls_Pdfs\CULIACAN\F-613.xml"
+        If FacturacionElectronica33.GeneraFacturaTrasladoElectronica33(oVenta, True, sRutaXML) Then
+            MsgBox("bien")
+        End If
+    End Sub
+
 End Class
