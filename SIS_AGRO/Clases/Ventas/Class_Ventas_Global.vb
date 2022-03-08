@@ -3462,52 +3462,107 @@ Public Class Class_Ventas_Global
         Try
 
             'Crear clases de carta porte, o hacer selects simulando que esta en si es la clase
-
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Dim da As SqlDataAdapter
             Dim sSQL As String = ""
 
             sSQL = "SELECT G.* " &
             "FROM CFDI_CARTA_PORTE_GLOBAL G " &
             "WHERE G.FOLIO_VENTA='" & Replace(Me._FOLIO_VENTA, "'", "''") & "' "
 
-            Dim cmd As New SqlCommand(sSQL, Me._Conexion)
-            Dim drCartaPorte As SqlDataReader
-            With cmd
-                .CommandTimeout = 0
-                .CommandType = CommandType.Text
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            Dim dtCartaPorte As New DataTable(""), dRowCartaPorte As DataRow
+            da.Fill(dtCartaPorte)
+            da.Dispose()
 
-                Me._Conexion.Open()
-                drCartaPorte = .ExecuteReader()
-            End With
-
-            If drCartaPorte.Read = False Then
-                MsgBox("Error al tratar de obtener los datos globales de la carta porte.", MsgBoxStyle.Exclamation, sProcedure)
+            If dtCartaPorte.Rows.Count = 0 Then
+                MsgBox("No se encontraron los datos globales de la carta porte.", MsgBoxStyle.Exclamation, sProcedure)
                 Return CCP
             End If
 
+            dRowCartaPorte = dtCartaPorte.Rows(0)
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             sSQL = "SELECT D.FECHA_HORA_SALIDA_LLEGADA,D.DISTANCIA_RECORRIDA," &
-                    "U.TIPO_UBICACION,U.ID_UBICACION,U.RFC_REMITENTE_DESTINATARIO,U.NOMBRE_REMITENTE_DESTINATARIO,U.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO,U.CODIGO_PAIS_SAT_RESIDENCIA_FISCAL " &
-                    "U.CALLE,U.NUMERO_EXTERIOR,U.NUMERO_INTERIOR,COL.CODIGO_COLONIA,LOC.CODIGO_LOCALIDAD,U.REFERENCIA,MUN.CODIGO_MUNICIPIO_SAT,EST.CODIGO_ESTADO_SAT,U.CODIGO_PAIS_SAT_DOMICILIO,U.CODIGO_POSTAL," &
+                    "U.TIPO_UBICACION,U.ID_UBICACION,U.RFC_REMITENTE_DESTINATARIO,U.NOMBRE_REMITENTE_DESTINATARIO,U.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO,U.CODIGO_PAIS_SAT_RESIDENCIA_FISCAL," &
+                    "U.CALLE,U.NUMERO_EXTERIOR,U.NUMERO_INTERIOR,COL.CODIGO_COLONIA,LOC.CODIGO_LOCALIDAD,U.REFERENCIA,MUN.CODIGO_MUNICIPIO_SAT,EST.CODIGO_ESTADO_SAT,U.CODIGO_PAIS_SAT_DOMICILIO,U.CODIGO_POSTAL " &
                     "FROM CFDI_CARTA_PORTE_DETALLE_UBICACIONES D " &
                     "INNER JOIN CFDI_CAT_UBICACIONES U ON(D.CODIGO_UBICACION=U.CODIGO_UBICACION) " &
                     "LEFT JOIN CFDI_CAT_COLONIAS COL ON(U.ID_COLONIA=COL.ID_COLONIA) " &
                     "LEFT JOIN CFDI_CAT_LOCALIDADES LOC ON(U.ID_LOCALIDAD=LOC.ID_LOCALIDAD) " &
                     "LEFT JOIN CAT_MUNICIPIOS MUN ON(U.CODIGO_MUNICIPIO=MUN.CODIGO_MUNICIPIO) " &
                     "LEFT JOIN SIS_ESTADOS EST ON(U.CODIGO_ESTADO=EST.CODIGO_ESTADO) " &
-                    "WHERE D.ID_CFDI_CARTA_PORTE_GLOBAL=" & drCartaPorte("ID_CFDI_CARTA_PORTE_GLOBAL").ToString()
+                    "WHERE D.ID_CFDI_CARTA_PORTE_GLOBAL=" & dRowCartaPorte("ID_CFDI_CARTA_PORTE_GLOBAL").ToString  ' drCartaPorte("ID_CFDI_CARTA_PORTE_GLOBAL").ToString
 
-            Dim da As New SqlDataAdapter(sSQL, Me._Conexion)
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
             Dim dtUbicaciones As New DataTable("")
             da.Fill(dtUbicaciones)
             da.Dispose()
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            sSQL = "SELECT D.* " &
+                    "FROM CFDI_CARTA_PORTE_DETALLE_MERCANCIAS D " &
+                    "WHERE D.ID_CFDI_CARTA_PORTE_GLOBAL=" & dRowCartaPorte("ID_CFDI_CARTA_PORTE_GLOBAL").ToString & " " &
+                    "ORDER BY ID_CFDI_CARTA_PORTE_DETALLE_MERCANCIAS"
 
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            Dim dtMercancias As New DataTable("")
+            da.Fill(dtMercancias)
+            da.Dispose()
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            sSQL = "SELECT V.* " &
+                    "FROM CAT_VEHICULOS V " &
+                    "WHERE V.CODIGO_VEHICULO=" & dRowCartaPorte("CODIGO_VEHICULO").ToString
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            Dim dtVehiculo As New DataTable("")
+            da.Fill(dtVehiculo)
+            da.Dispose()
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Dim dtRemolque1 As New DataTable("")
+            If txtLEN(dRowCartaPorte("CODIGO_REMOLQUE_1").ToString) = True Then
+                sSQL = "SELECT R.* " &
+                        "FROM CAT_REMOLQUES R " &
+                        "WHERE R.CODIGO_REMOLQUE=" & dRowCartaPorte("CODIGO_REMOLQUE_1").ToString
+
+                da = New SqlDataAdapter(sSQL, Me._Conexion)
+                da.Fill(dtRemolque1)
+                da.Dispose()
+            End If
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Dim dtRemolque2 As New DataTable("")
+            If txtLEN(dRowCartaPorte("CODIGO_REMOLQUE_2").ToString) = True Then
+                sSQL = "SELECT R.* " &
+                        "FROM CAT_REMOLQUES R " &
+                        "WHERE R.CODIGO_REMOLQUE=" & dRowCartaPorte("CODIGO_REMOLQUE_2").ToString
+
+                da = New SqlDataAdapter(sSQL, Me._Conexion)
+                da.Fill(dtRemolque2)
+                da.Dispose()
+            End If
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            sSQL = "SELECT D.ID_CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE,F.*, " &
+                    "COL.CODIGO_COLONIA,LOC.CODIGO_LOCALIDAD,MUN.CODIGO_MUNICIPIO_SAT,EST.CODIGO_ESTADO_SAT " &
+                    "FROM CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE D " &
+                    "INNER JOIN CFDI_CAT_FIGURAS_TRANSPORTE F ON(D.CODIGO_FIGURA_TRANSPORTE=F.CODIGO_FIGURA_TRANSPORTE) " &
+                    "LEFT JOIN CFDI_CAT_COLONIAS COL ON(D.ID_COLONIA=COL.ID_COLONIA) " &
+                    "LEFT JOIN CFDI_CAT_LOCALIDADES LOC ON(D.ID_LOCALIDAD=LOC.ID_LOCALIDAD) " &
+                    "LEFT JOIN CAT_MUNICIPIOS MUN ON(D.CODIGO_MUNICIPIO=MUN.CODIGO_MUNICIPIO) " &
+                    "LEFT JOIN SIS_ESTADOS EST ON(D.CODIGO_ESTADO=EST.CODIGO_ESTADO) " &
+                    "WHERE D.ID_CFDI_CARTA_PORTE_GLOBAL=" & dRowCartaPorte("ID_CFDI_CARTA_PORTE_GLOBAL").ToString & " " &
+                    "ORDER BY D.ID_CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE"
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            Dim dtFiguras As New DataTable("")
+            da.Fill(dtFiguras)
+            da.Dispose()
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
             With CCP
-                .Version = "" & drCartaPorte("VERSION").ToString()
-                .TranspInternac = "" & drCartaPorte("TRASPORTE_INTERNACIONAL").ToString()
-                .EntradaSalidaMerc = "" & drCartaPorte("ENTRADA_SALIDA_MERCANCIA").ToString()
-                .PaisOrigenDestino = "" & drCartaPorte("CODIGO_PAIS_SAT").ToString()
-                .ViaEntradaSalida = "" & drCartaPorte("CODIGO_TRANSPORTE").ToString()
-                .TotalDistRec = Format(valorNumericoD(drCartaPorte("TOTAL_DISTANCIA_RECORRIDA").ToString()), "#0.00")
+                .Version = "" & dRowCartaPorte("VERSION").ToString
+                .TranspInternac = "" & dRowCartaPorte("TRASPORTE_INTERNACIONAL").ToString
+                .EntradaSalidaMerc = "" & dRowCartaPorte("ENTRADA_SALIDA_MERCANCIA").ToString
+                .PaisOrigenDestino = "" & dRowCartaPorte("CODIGO_PAIS_SAT").ToString
+                .ViaEntradaSalida = "" & dRowCartaPorte("CODIGO_TRANSPORTE").ToString
+                .TotalDistRec = Format(valorNumericoD(dRowCartaPorte("TOTAL_DISTANCIA_RECORRIDA").ToString), "#0.00")
             End With
 
             'Ciclo ubicaciones
@@ -3520,23 +3575,25 @@ Public Class Class_Ventas_Global
                     .NombreRemitenteDestinatario = "" & dRow("NOMBRE_REMITENTE_DESTINATARIO").ToString
                     .NumRegIdTrib = "" & dRow("NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO").ToString
                     .ResidenciaFiscal = "" & dRow("CODIGO_PAIS_SAT_RESIDENCIA_FISCAL").ToString
-                    .NumEstacion = "" 'Omitido
-                    .NombreEstacion = "" 'Omitido
-                    .NavegacionTrafico = "" 'Omitido
-                    .FechaHoraSalidaLlegada = "" & dRow("FECHA_HORA_SALIDA_LLEGADA").ToString
-                    .TipoEstacion = "" 'Omitido
-                    .DistanciaRecorrida = "" & dRow("DISTANCIA_RECORRIDA").ToString
+                    .NumEstacion = "" 'Omitido de momento
+                    .NombreEstacion = "" 'Omitido de momento
+                    .NavegacionTrafico = "" 'Omitido de momento
+                    .FechaHoraSalidaLlegada = FormateaFechaSAT(CType(dRow("FECHA_HORA_SALIDA_LLEGADA"), Date))
+                    .TipoEstacion = "" 'Omitido de momento
+                    .DistanciaRecorrida = Format(valorNumericoD(dRow("DISTANCIA_RECORRIDA").ToString), "#0.00")
 
-                    .Domicilio.Calle = "" & dRow("CALLE").ToString
-                    .Domicilio.NumeroExterior = "" & dRow("NUMERO_EXTERIOR").ToString
-                    .Domicilio.NumeroInterior = "" & dRow("NUMERO_INTERIOR").ToString
-                    .Domicilio.Colonia = "" & dRow("CODIGO_COLONIA").ToString
-                    .Domicilio.Localidad = "" & dRow("CODIGO_LOCALIDAD").ToString
-                    .Domicilio.Referencia = "" & dRow("REFERENCIA").ToString
-                    .Domicilio.Municipio = "" & dRow("CODIGO_MUNICIPIO_SAT").ToString
-                    .Domicilio.Estado = "" & dRow("CODIGO_ESTADO_SAT").ToString
-                    .Domicilio.Pais = "" & dRow("CODIGO_PAIS_SAT_DOMICILIO").ToString
-                    .Domicilio.CodigoPostal = "" & dRow("CODIGO_POSTAL").ToString
+                    With .Domicilio
+                        .Calle = "" & dRow("CALLE").ToString
+                        .NumeroExterior = "" & dRow("NUMERO_EXTERIOR").ToString
+                        .NumeroInterior = "" & dRow("NUMERO_INTERIOR").ToString
+                        .Colonia = "" & dRow("CODIGO_COLONIA").ToString
+                        .Localidad = "" & dRow("CODIGO_LOCALIDAD").ToString
+                        .Referencia = "" & dRow("REFERENCIA").ToString
+                        .Municipio = "" & dRow("CODIGO_MUNICIPIO_SAT").ToString
+                        .Estado = "" & dRow("CODIGO_ESTADO_SAT").ToString
+                        .Pais = "" & dRow("CODIGO_PAIS_SAT_DOMICILIO").ToString
+                        .CodigoPostal = "" & dRow("CODIGO_POSTAL").ToString
+                    End With
                 End With
 
                 CCP.Ubicaciones.Add(oUbicacion)
@@ -3544,81 +3601,122 @@ Public Class Class_Ventas_Global
 
             'Estos campos aunque sean tipo global mercancia estan en el global de la tabla carta porte.
             With CCP.Mercancias
-                .PesoBrutoTotal = Format(valorNumericoD(drCartaPorte("PESO_BRUTO_TOTAL").ToString()), "#0.000")
-                .UnidadPeso = "" & drCartaPorte("CODIGO_UNIDAD_PESO").ToString()
-                .PesoNetoTotal = "" 'Omitido
-                .NumTotalMercancias = "" & drCartaPorte("NUMERO_TOTAL_MERCANCIAS").ToString()
-                .CargoPorTasacion = "" 'Omitido
+                .PesoBrutoTotal = Format(valorNumericoD(dRowCartaPorte("PESO_BRUTO_TOTAL").ToString), "#0.000")
+                .UnidadPeso = "" & dRowCartaPorte("CODIGO_UNIDAD_PESO").ToString
+                .PesoNetoTotal = "" 'Omitido de momento  "#0.000"
+                .NumTotalMercancias = "" & dRowCartaPorte("NUMERO_TOTAL_MERCANCIAS").ToString
+                .CargoPorTasacion = "" 'Omitido de momento  "#0.00"
 
-                For i = 0 To 10
+                For Each dRow As DataRow In dtMercancias.Rows
                     Dim oMercancia As New cCCPMercancia
                     With oMercancia
-                        .BienesTransp = ""
-                        .ClaveSTCC = ""
-                        .Descripcion = ""
-                        .Cantidad = "" ' format 3
-                        .Unidad = ""
-                        .Dimensiones = ""
-                        .MaterialPeligroso = ""
-                        .CveMaterialPeligroso = ""
-                        .Embalaje = ""
-                        .DescripEmbalaje = ""
-                        .PesoEnKg = ""
-                        .ValorMercancia = ""
-                        .Moneda = ""
-                        .FraccionArancelaria = ""
-                        .UUIDComercioExt = ""
+                        .BienesTransp = "" & dRow("CODIGO_PRODUCTO_SERVICIO").ToString
+                        .ClaveSTCC = "" 'Omitido de momento
+                        .Descripcion = "" & dRow("DESCRIPCION").ToString
+                        .Cantidad = Format(valorNumericoD(dRow("CANTIDAD").ToString), "#0.000")
+                        .ClaveUnidad = "" & dRow("CODIGO_UNIDAD").ToString
+                        .Unidad = "" & dRow("UNIDAD").ToString
+                        .Dimensiones = "" 'Omitido de momento
+                        .MaterialPeligroso = "" 'Omitido de momento
+                        .CveMaterialPeligroso = "" 'Omitido de momento
+                        .Embalaje = "" 'Omitido de momento
+                        .DescripEmbalaje = "" 'Omitido de momento
+                        .PesoEnKg = Format(valorNumericoD(dRow("PESO_EN_KG").ToString), "#0.000")
+                        .ValorMercancia = IIf(valorNumericoD(dRow("VALOR_MERCANCIA").ToString) > 0, Format(valorNumericoD(dRow("VALOR_MERCANCIA").ToString), "#0.00"), "").ToString
+                        .Moneda = "" & dRow("CODIGO_MONEDA_SAT").ToString
+                        .FraccionArancelaria = "" 'Omitido de momento
+                        .UUIDComercioExt = "" 'Omitido de momento
+
+                        '.Pedimentos 'Omitido de momento Nodo
+                        '.GuiasIdentificacion 'Omitido de momento Nodo
+                        '.CantidadesTransporta 'Omitido de momento Nodo
+                        '.DetalleMercancia 'Omitido de momento Nodo
                     End With
                     .Add(oMercancia)
                 Next
 
-            End With
+                For Each dRow As DataRow In dtVehiculo.Rows 'Siempre va leer un sólo registro
+                    With .Autotransporte
+                        .PermSCT = "" & dRow("CODIGO_PERMISO_SCT").ToString
+                        .NumPermisoSCT = "" & dRow("NUMERO_PERMISO_SCT").ToString
 
+                        .IdentificacionVehicular.ConfigVehicular = "" & dRow("CODIGO_AUTOTRANSPORTE").ToString
+                        .IdentificacionVehicular.PlacaVM = "" & dRow("PLACA").ToString
+                        .IdentificacionVehicular.AnioModeloVM = "" & dRow("ANIO").ToString
 
+                        .Seguros.AseguraRespCivil = "" & dRow("NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL").ToString
+                        .Seguros.PolizaRespCivil = "" & dRow("POLIZA_RESPONSABILIDAD_CIVIL").ToString
+                        .Seguros.AseguraMedAmbiente = "" & dRow("NOMBRE_ASEGURADORA_MEDIO_AMBIENTE").ToString
+                        .Seguros.PolizaMedAmbiente = "" & dRow("POLIZA_MEDIO_AMBIENTE").ToString
+                        .Seguros.AseguraCarga = "" & dRow("NOMBRE_ASEGURADORA_CARGA").ToString
+                        .Seguros.PolizaCarga = "" & dRow("POLIZA_CARGA").ToString
+                        .Seguros.PrimaSeguro = IIf(valorNumericoD(dRow("PRIMA_SEGURO").ToString) > 0, Format(valorNumericoD(dRow("PRIMA_SEGURO").ToString), "#0.00"), "").ToString
 
+                        If txtLEN("" & dRowCartaPorte("CODIGO_REMOLQUE_1").ToString) = True Then
+                            .Remolques.Add(dtRemolque1.Rows(0)("CODIGO_TIPO_REMOLQUE").ToString, dtRemolque1.Rows(0)("PLACA").ToString)
+                        End If
 
-
-            With CCP
-                .Version = "2.0"
-                .TranspInternac = ""
-                .EntradaSalidaMerc = ""
-                .PaisOrigenDestino = ""
-                .ViaEntradaSalida = ""
-                .TotalDistRec = ""
-
-                'Ciclo ubicaciones
-                For i = 0 To 10
-                    Dim oUbicacion As New cCCPUbicacion
-                    With oUbicacion
-                        .TipoUbicacion = ""
-                        .IDUbicacion = ""
-                        .RFCRemitenteDestinatario = ""
-                        .NombreRemitenteDestinatario = ""
-                        .NumRegIdTrib = ""
-                        .ResidenciaFiscal = ""
-                        .NumEstacion = ""
-                        .NombreEstacion = ""
-                        .NavegacionTrafico = ""
-                        .FechaHoraSalidaLlegada = ""
-                        .TipoEstacion = ""
-                        .DistanciaRecorrida = ""
-
-                        .Domicilio.Calle = ""
-                        .Domicilio.NumeroExterior = ""
-                        .Domicilio.NumeroInterior = ""
-                        .Domicilio.Colonia = ""
-                        .Domicilio.Localidad = ""
-                        .Domicilio.Referencia = ""
-                        .Domicilio.Municipio = ""
-                        .Domicilio.Estado = ""
-                        .Domicilio.Pais = ""
-                        .Domicilio.CodigoPostal = ""
+                        If txtLEN("" & dRowCartaPorte("CODIGO_REMOLQUE_2").ToString) = True Then
+                            .Remolques.Add(dtRemolque2.Rows(0)("CODIGO_TIPO_REMOLQUE").ToString, dtRemolque1.Rows(0)("PLACA").ToString)
+                        End If
                     End With
-
-                    .Ubicaciones.Add(oUbicacion)
                 Next
 
-            End With
+            End With 'Fin CCP.Mercancias
+
+            For Each dRow As DataRow In dtFiguras.Rows
+                Dim oFigura As New cCCPTipoFigura
+
+                With oFigura
+                    .TipoFigura = "" & dRow("CODIGO_TIPO_FIGURA_TRANSPORTE").ToString
+                    .RFCFigura = "" & dRow("RFC").ToString
+                    .NumLicencia = "" & dRow("NUMERO_LICENCIA").ToString
+                    .NombreFigura = "" & dRow("NOMBRE_FIGURA_TRANSPORTE").ToString
+                    .NumRegIdTribFigura = "" & dRow("NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO").ToString
+                    .ResidenciaFiscalFigura = "" & dRow("CODIGO_PAIS_SAT_RESIDENCIA_FISCAL").ToString
+
+                    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                    sSQL = "SELECT PT.CODIGO_PARTE_TRANSPORTE " &
+                    "FROM CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE D " &
+                    "INNER JOIN CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE_DETALLE_PARTES_TRANSPORTE PT ON(D.ID_CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE=PT.ID_CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE) " &
+                    "WHERE PT.ID_CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE=" & dRow("ID_CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE").ToString & " " &
+                    "ORDER BY PT.ID_CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE_DETALLE_PARTES_TRANSPORTE"
+
+                    da = New SqlDataAdapter(sSQL, Me._Conexion)
+                    Dim dtFigurasPartesTransporte As New DataTable("")
+                    da.Fill(dtFigurasPartesTransporte)
+                    da.Dispose()
+
+                    For Each dRowParte As DataRow In dtFigurasPartesTransporte.Rows
+                        .PartesTransporte.Add(dRowParte("CODIGO_PARTE_TRANSPORTE").ToString)
+                    Next
+
+                    dtFigurasPartesTransporte.Dispose()
+                    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                    With .Domicilio
+                        .Calle = "" & dRow("CALLE").ToString
+                        .NumeroExterior = "" & dRow("NUMERO_EXTERIOR").ToString
+                        .NumeroInterior = "" & dRow("NUMERO_INTERIOR").ToString
+                        .Colonia = "" & dRow("CODIGO_COLONIA").ToString
+                        .Localidad = "" & dRow("CODIGO_LOCALIDAD").ToString
+                        .Referencia = "" & dRow("REFERENCIA").ToString
+                        .Municipio = "" & dRow("CODIGO_MUNICIPIO_SAT").ToString
+                        .Estado = "" & dRow("CODIGO_ESTADO_SAT").ToString
+                        .Pais = "" & dRow("CODIGO_PAIS_SAT_DOMICILIO").ToString
+                        .CodigoPostal = "" & dRow("CODIGO_POSTAL").ToString
+                    End With
+                End With
+
+                CCP.FiguraTransporte.TiposFigura.Add(oFigura)
+            Next
+
+            dtUbicaciones.Dispose()
+            dtMercancias.Dispose()
+            dtVehiculo.Dispose()
+            dtRemolque1.Dispose()
+            dtRemolque2.Dispose()
+            dtFiguras.Dispose()
+
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         End Try

@@ -1313,4 +1313,8 @@ otra_forma:
             HandleError(nombreModulo, "AbrirArchivo", ex)
         End Try
     End Function
+
+    Public Function FormateaFechaSAT(ByVal dFecha As Date) As String
+        Return Format(dFecha, "yyyy-MM-dd") & "T" & Format(dFecha, "HH:mm:ss")
+    End Function
 End Module

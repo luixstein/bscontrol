@@ -6,67 +6,80 @@ Friend Class cCCPTiposFigura
 
     Private Const NombreClase As String = "cCCPTiposFigura"
 
-    Public Function Add(
-        ByVal TipoFigura As String,
-        ByVal RFCFigura As String,
-        ByVal NumLicencia As String,
-        ByVal NombreFigura As String,
-        ByVal NumRegIdTribFigura As String,
-        ByVal ResidenciaFiscalFigura As String,
-        Optional ByVal PartesTransporte As cCCPPartesTransporte = Nothing,
-        Optional ByVal bTieneDomicilio As Boolean = False,
-        Optional ByVal Domicilio As cCCPDomicilio = Nothing
-                       ) As cCCPTipoFigura
-
+    Public Function Add(ByVal TipoFigura As cCCPTipoFigura) As cCCPTipoFigura
         Const sProcedure As String = "Add"
 
-        Dim objObjeto As New cCCPTipoFigura, i As Integer
+        Dim objObjeto As New cCCPTipoFigura
         Try
-            With objObjeto
-                .TipoFigura = TipoFigura
-                .RFCFigura = RFCFigura
-                .NumLicencia = NumLicencia
-                .NombreFigura = NombreFigura
-                .NumRegIdTribFigura = NumRegIdTribFigura
-                .ResidenciaFiscalFigura = ResidenciaFiscalFigura
-
-                .bTieneDomicilio = bTieneDomicilio
-
-                If Not (PartesTransporte Is Nothing) Then
-                    With PartesTransporte
-                        For i = 1 To PartesTransporte.Count
-                            .Add(PartesTransporte.Item(i).ParteTransporte)
-                            '.Add.Item(i).ParteTransporte
-                        Next
-                    End With
-                End If
-
-                If Not (Domicilio Is Nothing) And bTieneDomicilio = True Then
-                    With .Domicilio
-                        .Calle = Domicilio.Calle
-                        .NumeroExterior = Domicilio.NumeroExterior
-                        .NumeroInterior = Domicilio.NumeroInterior
-                        .Colonia = Domicilio.Colonia
-                        .Localidad = Domicilio.Localidad
-                        .Referencia = Domicilio.Referencia
-                        .Municipio = Domicilio.Municipio
-                        .Estado = Domicilio.Estado
-                        .Pais = Domicilio.Pais
-                        .CodigoPostal = Domicilio.CodigoPostal
-                    End With
-                End If
-
-                '.PartesTransporte = PartesTransporte
-                '.Domicilio = Domicilio
-            End With
-
-            Partidas.Add(objObjeto, Partidas.Count + 1)
+            Partidas.Add(TipoFigura, Partidas.Count + 1)
         Catch ex As Exception
             HandleError(NombreClase, sProcedure, ex)
         End Try
 
         Return objObjeto
     End Function
+
+    'Public Function Add(
+    '    ByVal TipoFigura As String,
+    '    ByVal RFCFigura As String,
+    '    ByVal NumLicencia As String,
+    '    ByVal NombreFigura As String,
+    '    ByVal NumRegIdTribFigura As String,
+    '    ByVal ResidenciaFiscalFigura As String,
+    '    Optional ByVal PartesTransporte As cCCPPartesTransporte = Nothing,
+    '    Optional ByVal bTieneDomicilio As Boolean = False,
+    '    Optional ByVal Domicilio As cCCPDomicilio = Nothing
+    '                   ) As cCCPTipoFigura
+
+    '    Const sProcedure As String = "Add"
+
+    '    Dim objObjeto As New cCCPTipoFigura, i As Integer
+    '    Try
+    '        With objObjeto
+    '            .TipoFigura = TipoFigura
+    '            .RFCFigura = RFCFigura
+    '            .NumLicencia = NumLicencia
+    '            .NombreFigura = NombreFigura
+    '            .NumRegIdTribFigura = NumRegIdTribFigura
+    '            .ResidenciaFiscalFigura = ResidenciaFiscalFigura
+
+    '            .bTieneDomicilio = bTieneDomicilio
+
+    '            If Not (PartesTransporte Is Nothing) Then
+    '                With PartesTransporte
+    '                    For i = 1 To PartesTransporte.Count
+    '                        .Add(PartesTransporte.Item(i).ParteTransporte)
+    '                        '.Add.Item(i).ParteTransporte
+    '                    Next
+    '                End With
+    '            End If
+
+    '            If Not (Domicilio Is Nothing) And bTieneDomicilio = True Then
+    '                With .Domicilio
+    '                    .Calle = Domicilio.Calle
+    '                    .NumeroExterior = Domicilio.NumeroExterior
+    '                    .NumeroInterior = Domicilio.NumeroInterior
+    '                    .Colonia = Domicilio.Colonia
+    '                    .Localidad = Domicilio.Localidad
+    '                    .Referencia = Domicilio.Referencia
+    '                    .Municipio = Domicilio.Municipio
+    '                    .Estado = Domicilio.Estado
+    '                    .Pais = Domicilio.Pais
+    '                    .CodigoPostal = Domicilio.CodigoPostal
+    '                End With
+    '            End If
+
+    '            '.PartesTransporte = PartesTransporte
+    '            '.Domicilio = Domicilio
+    '        End With
+
+    '        Partidas.Add(objObjeto, Partidas.Count + 1)
+    '    Catch ex As Exception
+    '        HandleError(NombreClase, sProcedure, ex)
+    '    End Try
+
+    '    Return objObjeto
+    'End Function
 
     Public Sub RemoveAll()
         Partidas = New Collection
