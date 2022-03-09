@@ -23,6 +23,7 @@ Friend Class cComprobante33
     Private xmlnsxsi As String
     Private xsischemaLocation As String
     Private xmlnscfdi As String
+    Private xmlnsCartaPorte20 As String
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Version As String
     Public Serie As String
@@ -72,6 +73,7 @@ Friend Class cComprobante33
         Me.xmlnsxsi = "http://www.w3.org/2001/XMLSchema-instance"
         Me.xsischemaLocation = "http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd"
         Me.xmlnscfdi = "http://www.sat.gob.mx/cfd/3"
+        Me.xmlnsCartaPorte20 = "http://www.sat.gob.mx/CartaPorte20"
 
         Me.xmlDoc = New MSXML2.DOMDocument60
     End Sub
@@ -146,6 +148,12 @@ Friend Class cComprobante33
             With NodoComprobante
                 .setAttribute("xmlns:xsi", xmlnsxsi)
                 .setAttribute("xmlns:cfdi", xmlnscfdi)
+
+                If Not (Me.ComplementoCartaPorte20 Is Nothing) Then 'Si le pasó el complemento de pagos
+                    .setAttribute("xmlns:cartaporte20", xmlnsCartaPorte20)
+                    Me.xsischemaLocation = Me.xsischemaLocation & " http://www.sat.gob.mx/CartaPorte20 http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte20.xsd"
+                End If
+
                 .setAttribute("xsi:schemaLocation", xsischemaLocation)
 
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -199,7 +207,11 @@ Friend Class cComprobante33
                 End If
 
                 If txtLEN(Trim(Me.SubTotal)) = True Then
-                    .setAttribute("SubTotal", Trim(Me.SubTotal)) 'required
+                    If valorNumericoD(Me.SubTotal) = 0 Then
+                        .setAttribute("SubTotal", "0") 'required
+                    Else
+                        .setAttribute("SubTotal", Trim(Me.SubTotal)) 'required
+                    End If
                 Else
                     MsgBox("El valor de Comprobante.SubTotal es un dato requerido.", vbExclamation, sProcedure) : Return False
                 End If
@@ -219,7 +231,11 @@ Friend Class cComprobante33
                 End If
 
                 If txtLEN(Trim(Me.Total)) = True Then
-                    .setAttribute("Total", Trim(Me.Total)) 'required
+                    If valorNumericoD(Me.SubTotal) = 0 Then
+                        .setAttribute("Total", "0") 'required
+                    Else
+                        .setAttribute("Total", Trim(Me.Total)) 'required
+                    End If
                 Else
                     MsgBox("El valor de Comprobante.Total es un dato requerido.", vbExclamation, sProcedure) : Return False
                 End If
