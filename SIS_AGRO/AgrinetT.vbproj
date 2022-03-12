@@ -1417,6 +1417,12 @@
     <Compile Include="Formas\Ventas\VentasSeleccionPrecio.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Ventas\Ventas_CartaPorte.Designer.vb">
+      <DependentUpon>Ventas_CartaPorte.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Ventas\Ventas_CartaPorte.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Ventas\Ventas_Comentarios.Designer.vb">
       <DependentUpon>Ventas_Comentarios.vb</DependentUpon>
     </Compile>
@@ -2567,6 +2573,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Ventas\VentasSeleccionPrecio.resx">
       <DependentUpon>VentasSeleccionPrecio.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Ventas\Ventas_CartaPorte.resx">
+      <DependentUpon>Ventas_CartaPorte.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Ventas\Ventas_Comentarios.resx">
       <DependentUpon>Ventas_Comentarios.vb</DependentUpon>
