@@ -44,6 +44,7 @@ Partial Class Ventas_CartaPorte
         Me.GridUbicaciones = New FlexCell.Grid()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.gbPartesTransporte = New System.Windows.Forms.GroupBox()
+        Me.TextBox2 = New System.Windows.Forms.TextBox()
         Me.GridPartesTransporte = New FlexCell.Grid()
         Me.gbAutoTransporte = New System.Windows.Forms.GroupBox()
         Me.lblDisplayPrimaSeguro = New System.Windows.Forms.Label()
@@ -83,6 +84,7 @@ Partial Class Ventas_CartaPorte
         Me.lblDisplayVehiculo = New System.Windows.Forms.Label()
         Me.txtCodigoVehiculo = New System.Windows.Forms.TextBox()
         Me.gbFigurasTransporte = New System.Windows.Forms.GroupBox()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.GridFigurasTransporte = New FlexCell.Grid()
         Me.tsMenu = New System.Windows.Forms.ToolStrip()
         Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
@@ -327,6 +329,7 @@ Partial Class Ventas_CartaPorte
         '
         'gbPartesTransporte
         '
+        Me.gbPartesTransporte.Controls.Add(Me.TextBox2)
         Me.gbPartesTransporte.Controls.Add(Me.GridPartesTransporte)
         Me.gbPartesTransporte.Location = New System.Drawing.Point(3, 332)
         Me.gbPartesTransporte.Name = "gbPartesTransporte"
@@ -334,6 +337,15 @@ Partial Class Ventas_CartaPorte
         Me.gbPartesTransporte.TabIndex = 227
         Me.gbPartesTransporte.TabStop = False
         Me.gbPartesTransporte.Text = "Partes de transporte"
+        '
+        'TextBox2
+        '
+        Me.TextBox2.Location = New System.Drawing.Point(72, 19)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.ReadOnly = True
+        Me.TextBox2.Size = New System.Drawing.Size(992, 20)
+        Me.TextBox2.TabIndex = 260
+        Me.TextBox2.Text = "|CodigoFigura|NombreFigura|CodigoParteTransporte|NombreParteTransporte|"
         '
         'GridPartesTransporte
         '
@@ -708,6 +720,7 @@ Partial Class Ventas_CartaPorte
         'gbFigurasTransporte
         '
         Me.gbFigurasTransporte.BackColor = System.Drawing.SystemColors.Control
+        Me.gbFigurasTransporte.Controls.Add(Me.TextBox1)
         Me.gbFigurasTransporte.Controls.Add(Me.GridFigurasTransporte)
         Me.gbFigurasTransporte.Location = New System.Drawing.Point(6, 165)
         Me.gbFigurasTransporte.Name = "gbFigurasTransporte"
@@ -715,6 +728,15 @@ Partial Class Ventas_CartaPorte
         Me.gbFigurasTransporte.TabIndex = 225
         Me.gbFigurasTransporte.TabStop = False
         Me.gbFigurasTransporte.Text = "Figuras de transporte"
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Location = New System.Drawing.Point(69, 19)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.ReadOnly = True
+        Me.TextBox1.Size = New System.Drawing.Size(992, 20)
+        Me.TextBox1.TabIndex = 259
+        Me.TextBox1.Text = "|Codigo|Tipo|Nombre|Rfc|Licencia|Domicilio|"
         '
         'GridFigurasTransporte
         '
@@ -787,9 +809,11 @@ Partial Class Ventas_CartaPorte
         Me.gbUbicaciones.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
         Me.gbPartesTransporte.ResumeLayout(False)
+        Me.gbPartesTransporte.PerformLayout()
         Me.gbAutoTransporte.ResumeLayout(False)
         Me.gbAutoTransporte.PerformLayout()
         Me.gbFigurasTransporte.ResumeLayout(False)
+        Me.gbFigurasTransporte.PerformLayout()
         Me.tsMenu.ResumeLayout(False)
         Me.tsMenu.PerformLayout()
         Me.ResumeLayout(False)
@@ -862,4 +886,6 @@ Partial Class Ventas_CartaPorte
     Friend WithEvents txtNombreUnidadPeso As TextBox
     Friend WithEvents txtEncabezadoMercanciasFake As TextBox
     Friend WithEvents txtEncabezadoUbicacionesaFake As TextBox
+    Friend WithEvents TextBox2 As TextBox
+    Friend WithEvents TextBox1 As TextBox
 End Class
