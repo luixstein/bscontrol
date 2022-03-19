@@ -429,7 +429,7 @@ Public Class Class_CatCfdiFigurasTransporte
 
                 If dReader.Read Then
                     Me._CODIGO_FIGURA_TRANSPORTE = CType(dReader("CODIGO_FIGURA_TRANSPORTE").ToString, Integer)
-                    Me._NOMBRE_FIGURA_TRANSPORTE = "" & dReader("NOMBRE_FIGURA_TRANSPORTE").ToString)
+                    Me._NOMBRE_FIGURA_TRANSPORTE = "" & dReader("NOMBRE_FIGURA_TRANSPORTE").ToString
                     Me._CODIGO_TIPO_FIGURA_TRANSPORTE = "" & dReader("CODIGO_TIPO_FIGURA_TRANSPORTE").ToString
                     Me._RFC = "" & dReader("RFC").ToString
                     Me._NUMERO_LICENCIA = "" & dReader("NUMERO_LICENCIA").ToString

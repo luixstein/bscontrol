@@ -248,7 +248,7 @@ Public Class Class_CfdiCatConfigAutotransporte
 
     Public Overrides Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("Select * from CFDI_CAT_UBICACIONES Where CODIGO_UBICACION='" & sReplace(Me._CODIGO_UBICACION) & "'", Me._Conexion)
+        Dim cmd As New SqlCommand("Select * from CFDI_CAT_CONFIG_AUTOTRANSPORTE Where CODIGO_AUTOTRANSPORTE='" & sReplace(Me._CODIGO_AUTOTRANSPORTE) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0

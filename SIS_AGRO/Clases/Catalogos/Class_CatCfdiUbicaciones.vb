@@ -453,7 +453,7 @@ Public Class Class_CatCfdiUbicaciones
 
                 If dReader.Read Then
                     Me._CODIGO_UBICACION = CType(dReader("CODIGO_UBICACION").ToString, Integer)
-                    Me._CODIGO_CLIENTE = "" & dReader("CODIGO_CLIENTE").ToString)
+                    Me._CODIGO_CLIENTE = "" & dReader("CODIGO_CLIENTE").ToString
                     Me.Estatus = "" & dReader("ESTATUS")
                     Me._TIPO_UBICACION = "" & dReader("TIPO_UBICACION").ToString
                     Me._ID_UBICACION = "" & dReader("ID_UBICACION").ToString
