@@ -139,7 +139,7 @@ Partial Class Ventas_CartaPorte
         Me.gbMercancias.Location = New System.Drawing.Point(6, 209)
         Me.gbMercancias.Name = "gbMercancias"
         Me.gbMercancias.Size = New System.Drawing.Size(1157, 283)
-        Me.gbMercancias.TabIndex = 224
+        Me.gbMercancias.TabIndex = 2
         Me.gbMercancias.TabStop = False
         Me.gbMercancias.Text = "Mercancias"
         '
@@ -151,6 +151,7 @@ Partial Class Ventas_CartaPorte
         Me.txtEncabezadoMercanciasFake.Size = New System.Drawing.Size(992, 20)
         Me.txtEncabezadoMercanciasFake.TabIndex = 260
         Me.txtEncabezadoMercanciasFake.Text = "| BienTransportado | Descripcion | Cantidad | ClaveUnidad | Unidad | PesoEnKG |"
+        Me.txtEncabezadoMercanciasFake.Visible = False
         '
         'txtNombreUnidadPeso
         '
@@ -167,7 +168,7 @@ Partial Class Ventas_CartaPorte
         Me.txtTotalPesoBruto.ReadOnly = True
         Me.txtTotalPesoBruto.Size = New System.Drawing.Size(100, 20)
         Me.txtTotalPesoBruto.TabIndex = 258
-        Me.txtTotalPesoBruto.Text = "0.00"
+        Me.txtTotalPesoBruto.Text = "0.000"
         Me.txtTotalPesoBruto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'txtTotalMercancias
@@ -186,7 +187,7 @@ Partial Class Ventas_CartaPorte
         Me.txtCodigoUnidadPeso.MaxLength = 10
         Me.txtCodigoUnidadPeso.Name = "txtCodigoUnidadPeso"
         Me.txtCodigoUnidadPeso.Size = New System.Drawing.Size(100, 20)
-        Me.txtCodigoUnidadPeso.TabIndex = 255
+        Me.txtCodigoUnidadPeso.TabIndex = 1
         '
         'lblDisplayUnidadPeso
         '
@@ -232,7 +233,7 @@ Partial Class Ventas_CartaPorte
         Me.GridMercancias.Name = "GridMercancias"
         Me.GridMercancias.Rows = 9
         Me.GridMercancias.Size = New System.Drawing.Size(1137, 234)
-        Me.GridMercancias.TabIndex = 3
+        Me.GridMercancias.TabIndex = 0
         Me.GridMercancias.UncheckedImage = CType(resources.GetObject("GridMercancias.UncheckedImage"), System.Drawing.Bitmap)
         '
         'cboTransporteInternacional
@@ -242,7 +243,7 @@ Partial Class Ventas_CartaPorte
         Me.cboTransporteInternacional.Location = New System.Drawing.Point(143, 19)
         Me.cboTransporteInternacional.Name = "cboTransporteInternacional"
         Me.cboTransporteInternacional.Size = New System.Drawing.Size(53, 21)
-        Me.cboTransporteInternacional.TabIndex = 222
+        Me.cboTransporteInternacional.TabIndex = 0
         '
         'lblDisplayTransporteInternacional
         '
@@ -262,7 +263,7 @@ Partial Class Ventas_CartaPorte
         Me.gbUbicaciones.Location = New System.Drawing.Point(6, 46)
         Me.gbUbicaciones.Name = "gbUbicaciones"
         Me.gbUbicaciones.Size = New System.Drawing.Size(1157, 154)
-        Me.gbUbicaciones.TabIndex = 0
+        Me.gbUbicaciones.TabIndex = 1
         Me.gbUbicaciones.TabStop = False
         Me.gbUbicaciones.Text = "Ubicaciones"
         '
@@ -273,12 +274,13 @@ Partial Class Ventas_CartaPorte
         Me.txtEncabezadoUbicacionesaFake.ReadOnly = True
         Me.txtEncabezadoUbicacionesaFake.Size = New System.Drawing.Size(992, 20)
         Me.txtEncabezadoUbicacionesaFake.TabIndex = 258
-        Me.txtEncabezadoUbicacionesaFake.Text = "| TipoUbicacion | CodigoUbicacion | DistRecorrida | FechaHoraSalidaLlegada | Nomb" &
-    "re | Domicilio(pegar calle,num,etc) |"
+        Me.txtEncabezadoUbicacionesaFake.Text = "| TipoUbicacion | CodigoUbicacion | Nombre | DistRecorrida | FechaHoraSalidaLlega" &
+    "da | Domicilio(pegar calle,num,etc) |"
+        Me.txtEncabezadoUbicacionesaFake.Visible = False
         '
         'txtTotalDistanciaRecorrida
         '
-        Me.txtTotalDistanciaRecorrida.Location = New System.Drawing.Point(449, 126)
+        Me.txtTotalDistanciaRecorrida.Location = New System.Drawing.Point(320, 126)
         Me.txtTotalDistanciaRecorrida.Name = "txtTotalDistanciaRecorrida"
         Me.txtTotalDistanciaRecorrida.ReadOnly = True
         Me.txtTotalDistanciaRecorrida.Size = New System.Drawing.Size(100, 20)
@@ -289,7 +291,7 @@ Partial Class Ventas_CartaPorte
         'lblDisplayTotalDistanciaRecorrida
         '
         Me.lblDisplayTotalDistanciaRecorrida.AutoSize = True
-        Me.lblDisplayTotalDistanciaRecorrida.Location = New System.Drawing.Point(293, 129)
+        Me.lblDisplayTotalDistanciaRecorrida.Location = New System.Drawing.Point(171, 129)
         Me.lblDisplayTotalDistanciaRecorrida.Name = "lblDisplayTotalDistanciaRecorrida"
         Me.lblDisplayTotalDistanciaRecorrida.Size = New System.Drawing.Size(150, 13)
         Me.lblDisplayTotalDistanciaRecorrida.TabIndex = 248
@@ -311,7 +313,7 @@ Partial Class Ventas_CartaPorte
         Me.GridUbicaciones.Name = "GridUbicaciones"
         Me.GridUbicaciones.Rows = 4
         Me.GridUbicaciones.Size = New System.Drawing.Size(1137, 101)
-        Me.GridUbicaciones.TabIndex = 3
+        Me.GridUbicaciones.TabIndex = 0
         Me.GridUbicaciones.UncheckedImage = CType(resources.GetObject("GridUbicaciones.UncheckedImage"), System.Drawing.Bitmap)
         '
         'TabPage2
@@ -334,7 +336,7 @@ Partial Class Ventas_CartaPorte
         Me.gbPartesTransporte.Location = New System.Drawing.Point(3, 332)
         Me.gbPartesTransporte.Name = "gbPartesTransporte"
         Me.gbPartesTransporte.Size = New System.Drawing.Size(1169, 140)
-        Me.gbPartesTransporte.TabIndex = 227
+        Me.gbPartesTransporte.TabIndex = 2
         Me.gbPartesTransporte.TabStop = False
         Me.gbPartesTransporte.Text = "Partes de transporte"
         '
@@ -346,6 +348,7 @@ Partial Class Ventas_CartaPorte
         Me.TextBox2.Size = New System.Drawing.Size(992, 20)
         Me.TextBox2.TabIndex = 260
         Me.TextBox2.Text = "|CodigoFigura|NombreFigura|CodigoParteTransporte|NombreParteTransporte|"
+        Me.TextBox2.Visible = False
         '
         'GridPartesTransporte
         '
@@ -363,7 +366,7 @@ Partial Class Ventas_CartaPorte
         Me.GridPartesTransporte.Name = "GridPartesTransporte"
         Me.GridPartesTransporte.Rows = 4
         Me.GridPartesTransporte.Size = New System.Drawing.Size(1157, 111)
-        Me.GridPartesTransporte.TabIndex = 3
+        Me.GridPartesTransporte.TabIndex = 0
         Me.GridPartesTransporte.UncheckedImage = CType(resources.GetObject("GridPartesTransporte.UncheckedImage"), System.Drawing.Bitmap)
         '
         'gbAutoTransporte
@@ -408,7 +411,7 @@ Partial Class Ventas_CartaPorte
         Me.gbAutoTransporte.Location = New System.Drawing.Point(6, 6)
         Me.gbAutoTransporte.Name = "gbAutoTransporte"
         Me.gbAutoTransporte.Size = New System.Drawing.Size(1169, 153)
-        Me.gbAutoTransporte.TabIndex = 226
+        Me.gbAutoTransporte.TabIndex = 0
         Me.gbAutoTransporte.TabStop = False
         Me.gbAutoTransporte.Text = "Autotransporte"
         '
@@ -579,7 +582,7 @@ Partial Class Ventas_CartaPorte
         Me.txtCodigoRemolque2.MaxLength = 10
         Me.txtCodigoRemolque2.Name = "txtCodigoRemolque2"
         Me.txtCodigoRemolque2.Size = New System.Drawing.Size(83, 20)
-        Me.txtCodigoRemolque2.TabIndex = 241
+        Me.txtCodigoRemolque2.TabIndex = 2
         '
         'lblDisplayRemolque1
         '
@@ -596,7 +599,7 @@ Partial Class Ventas_CartaPorte
         Me.txtCodigoRemolque1.MaxLength = 10
         Me.txtCodigoRemolque1.Name = "txtCodigoRemolque1"
         Me.txtCodigoRemolque1.Size = New System.Drawing.Size(83, 20)
-        Me.txtCodigoRemolque1.TabIndex = 239
+        Me.txtCodigoRemolque1.TabIndex = 1
         '
         'lblDisplayAseguradoraResponsabilidadCivil
         '
@@ -715,7 +718,7 @@ Partial Class Ventas_CartaPorte
         Me.txtCodigoVehiculo.MaxLength = 10
         Me.txtCodigoVehiculo.Name = "txtCodigoVehiculo"
         Me.txtCodigoVehiculo.Size = New System.Drawing.Size(83, 20)
-        Me.txtCodigoVehiculo.TabIndex = 225
+        Me.txtCodigoVehiculo.TabIndex = 0
         '
         'gbFigurasTransporte
         '
@@ -725,7 +728,7 @@ Partial Class Ventas_CartaPorte
         Me.gbFigurasTransporte.Location = New System.Drawing.Point(6, 165)
         Me.gbFigurasTransporte.Name = "gbFigurasTransporte"
         Me.gbFigurasTransporte.Size = New System.Drawing.Size(1170, 161)
-        Me.gbFigurasTransporte.TabIndex = 225
+        Me.gbFigurasTransporte.TabIndex = 1
         Me.gbFigurasTransporte.TabStop = False
         Me.gbFigurasTransporte.Text = "Figuras de transporte"
         '
@@ -737,6 +740,7 @@ Partial Class Ventas_CartaPorte
         Me.TextBox1.Size = New System.Drawing.Size(992, 20)
         Me.TextBox1.TabIndex = 259
         Me.TextBox1.Text = "|Codigo|Tipo|Nombre|Rfc|Licencia|Domicilio|"
+        Me.TextBox1.Visible = False
         '
         'GridFigurasTransporte
         '
@@ -754,7 +758,7 @@ Partial Class Ventas_CartaPorte
         Me.GridFigurasTransporte.Name = "GridFigurasTransporte"
         Me.GridFigurasTransporte.Rows = 5
         Me.GridFigurasTransporte.Size = New System.Drawing.Size(1158, 131)
-        Me.GridFigurasTransporte.TabIndex = 3
+        Me.GridFigurasTransporte.TabIndex = 0
         Me.GridFigurasTransporte.UncheckedImage = CType(resources.GetObject("GridFigurasTransporte.UncheckedImage"), System.Drawing.Bitmap)
         '
         'tsMenu
@@ -764,7 +768,7 @@ Partial Class Ventas_CartaPorte
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1196, 27)
-        Me.tsMenu.TabIndex = 5
+        Me.tsMenu.TabIndex = 1
         Me.tsMenu.Text = "tsMenu"
         '
         'tsbNuevo
@@ -799,6 +803,7 @@ Partial Class Ventas_CartaPorte
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.TabControl1)
         Me.Name = "Ventas_CartaPorte"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Carta Porte"
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)

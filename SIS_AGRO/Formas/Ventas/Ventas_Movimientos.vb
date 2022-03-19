@@ -5890,4 +5890,8 @@ BuscaVentas:
         End If
     End Sub
 
+    Private Sub btnCartaPortePrueba_Click(sender As Object, e As EventArgs) Handles btnCartaPortePrueba.Click
+        Dim oCartaPorte As New Ventas_CartaPorte("F-613")
+        oCartaPorte.Show()
+    End Sub
 End Class

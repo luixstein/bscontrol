@@ -18,8 +18,8 @@ Public Class Class_CartaPorte
     Private _CODIGO_UNIDAD_PESO As String
     Private _NUMERO_TOTAL_MERCANCIAS As Integer
     Private _CODIGO_VEHICULO As Integer
-    Private _CODIGO_REMOLQUE_1 As Integer
-    Private _CODIGO_REMOLQUE_2 As Integer
+    Private _CODIGO_REMOLQUE_1 As String
+    Private _CODIGO_REMOLQUE_2 As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -143,20 +143,20 @@ Public Class Class_CartaPorte
         End Set
     End Property
 
-    Public Property CODIGO_REMOLQUE_1() As Integer
+    Public Property CODIGO_REMOLQUE_1() As String
         Get
             Return Me._CODIGO_REMOLQUE_1
         End Get
-        Set(ByVal Value As Integer)
+        Set(ByVal Value As String)
             Me._CODIGO_REMOLQUE_1 = Value
         End Set
     End Property
 
-    Public Property CODIGO_REMOLQUE_2() As Integer
+    Public Property CODIGO_REMOLQUE_2() As String
         Get
             Return Me._CODIGO_REMOLQUE_2
         End Get
-        Set(ByVal Value As Integer)
+        Set(ByVal Value As String)
             Me._CODIGO_REMOLQUE_2 = Value
         End Set
     End Property
@@ -243,8 +243,8 @@ Public Class Class_CartaPorte
                 sqlParametro = .Parameters.Add("@CODIGO_UNIDAD_PESO", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_UNIDAD_PESO
                 sqlParametro = .Parameters.Add("@NUMERO_TOTAL_MERCANCIAS", SqlDbType.Int) : sqlParametro.Value = Me._NUMERO_TOTAL_MERCANCIAS
                 sqlParametro = .Parameters.Add("@CODIGO_VEHICULO", SqlDbType.Int) : sqlParametro.Value = Me._CODIGO_VEHICULO
-                sqlParametro = .Parameters.Add("@CODIGO_REMOLQUE_1", SqlDbType.Int) : sqlParametro.Value = Me._CODIGO_REMOLQUE_1
-                sqlParametro = .Parameters.Add("@CODIGO_REMOLQUE_2", SqlDbType.Int) : sqlParametro.Value = Me._CODIGO_REMOLQUE_2
+                sqlParametro = .Parameters.Add("@CODIGO_REMOLQUE_1", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_REMOLQUE_1
+                sqlParametro = .Parameters.Add("@CODIGO_REMOLQUE_2", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_REMOLQUE_2
                 sqlParametro = .Parameters.Add("@LISTA_UBICACIONES", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_UBICACIONES
                 sqlParametro = .Parameters.Add("@LISTA_MERCANCIAS", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_MERCANCIAS
                 sqlParametro = .Parameters.Add("@LISTA_FIGURAS_TRANSPORTE", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_FIGURAS_TRANSPORTE

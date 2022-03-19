@@ -160,6 +160,7 @@ Partial Class Ventas_Movimientos
         Me.lblDisplayRegimenFiscal = New System.Windows.Forms.Label()
         Me.cboRegimenFiscal = New System.Windows.Forms.ComboBox()
         Me.btnTimbradoTrasladoPrueba = New System.Windows.Forms.Button()
+        Me.btnCartaPortePrueba = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -1617,12 +1618,22 @@ Partial Class Ventas_Movimientos
         Me.btnTimbradoTrasladoPrueba.Text = "TimbradoTrasladoPrueba"
         Me.btnTimbradoTrasladoPrueba.UseVisualStyleBackColor = True
         '
+        'btnCartaPortePrueba
+        '
+        Me.btnCartaPortePrueba.Location = New System.Drawing.Point(1130, 600)
+        Me.btnCartaPortePrueba.Name = "btnCartaPortePrueba"
+        Me.btnCartaPortePrueba.Size = New System.Drawing.Size(148, 32)
+        Me.btnCartaPortePrueba.TabIndex = 386
+        Me.btnCartaPortePrueba.Text = "CartaPortePrueba"
+        Me.btnCartaPortePrueba.UseVisualStyleBackColor = True
+        '
         'Ventas_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(1290, 678)
+        Me.Controls.Add(Me.btnCartaPortePrueba)
         Me.Controls.Add(Me.btnTimbradoTrasladoPrueba)
         Me.Controls.Add(Me.lblDisplayRegimenFiscal)
         Me.Controls.Add(Me.cboRegimenFiscal)
@@ -1798,4 +1809,5 @@ Partial Class Ventas_Movimientos
     Friend WithEvents lblDisplayRegimenFiscal As Label
     Friend WithEvents cboRegimenFiscal As ComboBox
     Friend WithEvents btnTimbradoTrasladoPrueba As Button
+    Friend WithEvents btnCartaPortePrueba As Button
 End Class
