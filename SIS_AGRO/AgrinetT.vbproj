@@ -224,6 +224,8 @@
     <Compile Include="Clases\Catalogos\Class_CatPreciosVenta.vb" />
     <Compile Include="Clases\Catalogos\Class_CatRelParametrosAcuicolaDocumentos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatTiposCreditos.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatRemolques.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatCfdiUbicaciones.vb" />
     <Compile Include="Clases\Catalogos\Class_CatVehiculos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatCategorias.vb" />
     <Compile Include="Clases\Catalogos\Class_CatChoferes.vb" />
