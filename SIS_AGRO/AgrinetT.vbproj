@@ -240,6 +240,14 @@
     <Compile Include="Clases\Catalogos\Class_CatMonedas.vb" />
     <Compile Include="Clases\Catalogos\Class_CatTiposCambio.vb" />
     <Compile Include="Clases\Catalogos\Class_Cat_UnidadesVenta.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatTiposPermisosSCT.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatPartesTransporte.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatTiposRemolques.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatCodigosPostales.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatLocalidades.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatColonias.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatClavesTransporte.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatTiposFiguraTransporte.vb" />
     <Compile Include="Clases\Catalogos\Class_SisCatImpuestosFlete.vb" />
     <Compile Include="Clases\Catalogos\Class_SisCatImpuestos.vb" />
     <Compile Include="Clases\Catalogos\Class_CFDCatTiposRegimenesFiscales.vb" />
