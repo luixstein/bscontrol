@@ -121,7 +121,6 @@ Buscar:
 
     Private Sub txtCodigoVehiculo_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoVehiculo.KeyDown
         Const sProcedure As String = "txtCodigoVehiculo_KeyDown"
-        'FALTA
         Try
             Dim sText As String, oVehiculo As Class_CatVehiculos
             Select Case e.KeyCode
@@ -149,7 +148,8 @@ Enter:
                         Me.txtAño.Text = oVehiculo.ANIO
                         Me.txtPlacaAutotransporte.Text = oVehiculo.PLACA
                         Me.txtCodigoAutotransporte.Text = oVehiculo.CODIGO_AUTOTRANSPORTE
-                        Me.txtNombreAutotransporte.Text = "" 'clase autotransporte?
+                        Dim oAutoTransporte As New Class_CfdiCatConfigAutotransporte(oVehiculo.CODIGO_AUTOTRANSPORTE)
+                        Me.txtNombreAutotransporte.Text = oAutoTransporte.NOMBRE_AUTOTRANSPORTE
                         Me.txtCodigoPermisoSCT.Text = oVehiculo.CODIGO_PERMISO_SCT
                         Me.txtNumeroPermisoSCT.Text = oVehiculo.NUMERO_PERMISO_SCT
                         Me.txtAseguradoraResponsabilidadCivil.Text = oVehiculo.NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL
@@ -166,13 +166,12 @@ Enter:
 
     Private Sub txtCodigoRemolque1_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoRemolque1.KeyDown
         Const sProcedure As String = "txtCodigoRemolque1_KeyDown"
-        'FALTA
         Try
-            Dim sText As String, oRemolque As Class_CFD_CatRemolques
+            Dim sText As String, oRemolque As Class_CatRemolques
             Select Case e.KeyCode
                 Case Keys.F6
 F6:
-                    oRemolque = New Class_CFD_CatRemolques
+                    oRemolque = New Class_CatRemolques
                     sText = oRemolque.BusquedaVisual_PorDescripcion
                     If txtLEN(sText) = True Then
                         Me.txtCodigoRemolque1.Text = sText
@@ -185,14 +184,14 @@ F6:
                         GoTo F6 : Exit Sub
                     End If
 Enter:
-                    oRemolque = New Class_CFD_CatRemolques(Me.txtCodigoRemolque1.Text)
+                    oRemolque = New Class_CatRemolques(Me.txtCodigoRemolque1.Text)
 
-                    If oRemolque.EXISTE = False Then
+                    If oRemolque.Existe = False Then
                         Me.InicializaRemolque1() : GoTo F6 : Exit Sub
                     Else
                         Me.txtPlacaRemolque1.Text = oRemolque.PLACA
                         Me.txtTipoRemolque1.Text = oRemolque.CODIGO_TIPO_REMOLQUE
-                        Dim oTipoRemolque As New Class_CFD_CatTiposRemolques(Me.txtTipoRemolque1.Text)
+                        Dim oTipoRemolque As New Class_CfdiCatTiposRemolques(Me.txtTipoRemolque1.Text)
                         Me.txtNombreTipoRemolque1.Text = oTipoRemolque.NOMBRE_TIPO_REMOLQUE
                     End If
 
@@ -205,13 +204,12 @@ Enter:
 
     Private Sub txtCodigoRemolque2_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoRemolque2.KeyDown
         Const sProcedure As String = "txtCodigoRemolque2_KeyDown"
-        'FALTA
         Try
-            Dim sText As String, oRemolque As Class_CFD_CatRemolques
+            Dim sText As String, oRemolque As Class_CatRemolques
             Select Case e.KeyCode
                 Case Keys.F6
 F6:
-                    oRemolque = New Class_CFD_CatRemolques
+                    oRemolque = New Class_CatRemolques
                     sText = oRemolque.BusquedaVisual_PorDescripcion
                     If txtLEN(sText) = True Then
                         Me.txtCodigoRemolque2.Text = sText
@@ -224,14 +222,14 @@ F6:
                         GoTo F6 : Exit Sub
                     End If
 Enter:
-                    oRemolque = New Class_CFD_CatRemolques(Me.txtCodigoRemolque2.Text)
+                    oRemolque = New Class_CatRemolques(Me.txtCodigoRemolque2.Text)
 
-                    If oRemolque.EXISTE = False Then
+                    If oRemolque.Existe = False Then
                         Me.InicializaRemolque2() : GoTo F6 : Exit Sub
                     Else
                         Me.txtPlacaRemolque2.Text = oRemolque.PLACA
                         Me.txtTipoRemolque2.Text = oRemolque.CODIGO_TIPO_REMOLQUE
-                        Dim oTipoRemolque As New Class_CFD_CatTiposRemolques(Me.txtTipoRemolque2.Text)
+                        Dim oTipoRemolque As New Class_CfdiCatTiposRemolques(Me.txtTipoRemolque2.Text)
                         Me.txtNombreTipoRemolque2.Text = oTipoRemolque.NOMBRE_TIPO_REMOLQUE
                     End If
 
@@ -366,6 +364,9 @@ Enter:
                 Return False
             End If
 
+            MsgBox("FALTA")
+            Return False
+
             With Me.oCartaPorte
                 '.ID_CFDI_CARTA_PORTE_GLOBAL = 0
                 .FOLIO_VENTA = Me.FolioVenta
@@ -405,39 +406,44 @@ Enter:
         Const sProcedure As String = "Validar"
         Dim bResultado As Boolean = False
         Try
-            'FALTA
-            Dim i As Integer = 0
+            Dim i As Integer = 0, j As Integer = 0
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             'Validar que hayan puesto 2 ubicaciones, una origen y destino y la de destino validar que distancia recorrida>0
-            Dim oUbicacion As Class_CFD_CatUbicaciones, bUbicacionOrigenEncontrada As Boolean = False, bUbicacionDestinoEncontrada As Boolean = False
+            Dim oUbicacion As Class_CatCfdiUbicaciones, bUbicacionOrigenEncontrada As Boolean = False, bUbicacionDestinoEncontrada As Boolean = False
 
             For i = 1 To Me.GridUbicaciones.Rows - 1
                 Dim sCodigoUbicacion As String = Me.GridUbicaciones.Cell(i, Me.iGyUbCodigo).Text
 
-                If txtLEN(sCodigoUbicacion) = True Then
-                    oUbicacion = New Class_CFD_CatUbicaciones(sCodigoUbicacion)
-                    If oUbicacion.Existe = False Then
-                        MsgBox("La ubicación del renglón #" & i.ToString & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                If txtLEN(sCodigoUbicacion) = False Then
+                    Continue For
+                End If
+
+                oUbicacion = New Class_CatCfdiUbicaciones(sCodigoUbicacion)
+                If oUbicacion.Existe = False Then
+                    MsgBox("La ubicación del renglón #" & i.ToString & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                If oUbicacion.TIPO_UBICACION = "Origen" Then
+                    bUbicacionOrigenEncontrada = True
+
+                    If valorNumericoD(Me.GridUbicaciones.Cell(i, Me.iGyUbDistanciaRecorrida).Text) <> 0 Then
+                        MsgBox("La distancia recorrida de la ubicación del renglón #" & i.ToString & " debe ser cero al ser tipo origen.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
                     End If
+                ElseIf oUbicacion.TIPO_UBICACION = "Destino" Then
+                    bUbicacionDestinoEncontrada = True
 
-                    If oUbicacion.TIPO_UBICACION = "Origen" Then
-                        bUbicacionOrigenEncontrada = True
-
-                        If valorNumericoD(Me.GridUbicaciones.Cell(i, Me.iGyUbDistanciaRecorrida).Text) <> 0 Then
-                            MsgBox("La distancia recorrida de ubicación del renglón #" & i.ToString & " debe ser cero al ser tipo origen.", MsgBoxStyle.Exclamation, sProcedure)
-                            Return False
-                        End If
-                    ElseIf oUbicacion.TIPO_UBICACION = "Destino" Then
-                        bUbicacionDestinoEncontrada = True
-
-                        If valorNumericoD(Me.GridUbicaciones.Cell(i, Me.iGyUbDistanciaRecorrida).Text) <= 0 Then
-                            MsgBox("La distancia recorrida de ubicación del renglón #" & i.ToString & " debe ser mayor que cero al ser tipo destino.", MsgBoxStyle.Exclamation, sProcedure)
-                            Return False
-                        End If
+                    If valorNumericoD(Me.GridUbicaciones.Cell(i, Me.iGyUbDistanciaRecorrida).Text) <= 0 Then
+                        MsgBox("La distancia recorrida de la ubicación del renglón #" & i.ToString & " debe ser mayor que cero al ser tipo destino.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
                     End If
+                End If
 
+                If IsDate(Me.GridUbicaciones.Cell(i, Me.iGyUbFechaHoraSalidaLlegada).Text) = False Then
+                    MsgBox("Falta indicar la fecha/hora del renglón #" & i.ToString & " de ubicaciones.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
                 End If
             Next
 
@@ -451,67 +457,250 @@ Enter:
                 Return False
             End If
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            If valorNumericoD(Me.txtTotalDistanciaRecorrida.Text) <= 0 Then
+                MsgBox("La distancia recorrida total debe ser mayor que cero.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             'Validar que hayan puesto al menos una mercancia con cantidad, codigo_unidad,unidad y peso_kg>0
             Dim bHayMercancias As Boolean = False
 
             For i = 1 To Me.GridMercancias.Rows - 1
                 Dim sBienTransportado As String = Me.GridMercancias.Cell(i, Me.iGyMerBienTransportado).Text
 
-                If txtLEN(sBienTransportado) = True Then
-                    Dim oBienTransportado As New Class_CFD_CatProductosServicios(sBienTransportado)
-
-                    If oBienTransportado.EXISTE = False Then
-                        MsgBox("La mercancía del renglón #" & i.ToString & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
-
-                    If valorNumericoD(Me.GridMercancias.Cell(i, Me.iGyMerCantidad).Text) <= 0 Then
-                        MsgBox("La cantidad de la mercancía del renglón #" & i.ToString & " debe ser mayor que cero.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
-
-                    If txtLEN(Me.GridMercancias.Cell(i, Me.iGyMerClaveUnidad).Text) = False Then
-                        MsgBox("La clave de la unidad de la mercancía del renglón #" & i.ToString & " no debe quedar en blanco.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    Else
-                        Dim oUnidad As New Class_CFD_CatUnidades(Me.GridMercancias.Cell(i, Me.iGyMerClaveUnidad).Text)
-
-                        If oUnidad.EXISTE = False Then
-                            MsgBox("La clave de la unidad de la mercancía del renglón #" & i.ToString & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
-                            Return False
-                        End If
-                    End If
-
-                    If txtLEN(Me.GridMercancias.Cell(i, Me.iGyMerUnidad).Text) = False Then
-                        MsgBox("La unidad de la mercancía del renglón #" & i.ToString & " no debe quedar en blanco.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
-
-                    If valorNumericoD(Me.GridMercancias.Cell(i, Me.iGyMerPesoEnKG).Text) <= 0 Then
-                        MsgBox("El peso en Kg de la mercancía del renglón #" & i.ToString & " debe ser mayor que cero.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
-
-                    bHayMercancias = True
+                If txtLEN(sBienTransportado) = False Then
+                    Continue For
                 End If
+
+                Dim oBienTransportado As New Class_CFD_CatProductosServicios(sBienTransportado)
+
+                If oBienTransportado.EXISTE = False Then
+                    MsgBox("La mercancía del renglón #" & i.ToString & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                If valorNumericoD(Me.GridMercancias.Cell(i, Me.iGyMerCantidad).Text) <= 0 Then
+                    MsgBox("La cantidad de la mercancía del renglón #" & i.ToString & " debe ser mayor que cero.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                If txtLEN(Me.GridMercancias.Cell(i, Me.iGyMerClaveUnidad).Text) = False Then
+                    MsgBox("La clave de la unidad de la mercancía del renglón #" & i.ToString & " no debe quedar en blanco.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                Else
+                    Dim oUnidad As New Class_CFD_CatUnidades(Me.GridMercancias.Cell(i, Me.iGyMerClaveUnidad).Text)
+
+                    If oUnidad.EXISTE = False Then
+                        MsgBox("La clave de la unidad de la mercancía del renglón #" & i.ToString & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+                End If
+
+                If txtLEN(Me.GridMercancias.Cell(i, Me.iGyMerUnidad).Text) = False Then
+                    MsgBox("La unidad de la mercancía del renglón #" & i.ToString & " no debe quedar en blanco.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                If valorNumericoD(Me.GridMercancias.Cell(i, Me.iGyMerPesoEnKG).Text) <= 0 Then
+                    MsgBox("El peso en Kg de la mercancía del renglón #" & i.ToString & " debe ser mayor que cero.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                bHayMercancias = True
             Next
 
             If bHayMercancias = False Then
                 MsgBox("Debe de indicar al menos una mercancía.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            If valorNumericoD(Me.txtTotalMercancias.Text) <= 0 Then
+                MsgBox("Debe de indicar al menos una mercancía.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If valorNumericoD(Me.txtTotalPesoBruto.Text) <= 0 Then
+                MsgBox("El peso bruto total debe ser mayor que cero.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If txtLEN(Me.txtCodigoUnidadPeso.Text) = False Then
+                MsgBox("Debe indicar la unidad de peso(va abajo de las mercancias).", MsgBoxStyle.Exclamation, sProcedure)
+                Me.txtNombreUnidadPeso.Text = "" : Return False
+            Else
+                Dim oUnidadSAT As New Class_CFD_CatUnidades(Me.txtCodigoUnidadPeso.Text)
+                If oUnidadSAT.EXISTE = False Then
+                    MsgBox("La unidad de peso indicada no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                    Me.txtNombreUnidadPeso.Text = "" : Return False
+                End If
+            End If
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'Validar vehículo
+            If txtLEN(Me.txtCodigoVehiculo.Text) = False Then
+                MsgBox("Debe indicar el vehículo usado.", MsgBoxStyle.Exclamation, sProcedure)
+                Me.InicializaVehiculo() : Return False
+            End If
+
+            Dim oVehiculo = New Class_CatVehiculos(Me.txtCodigoVehiculo.Text)
+            If oVehiculo.Existe = False Then
+                MsgBox("El vehículo indicado no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                Me.InicializaVehiculo() : Return False
+            End If
+
+            If txtLEN(Me.txtCodigoPermisoSCT.Text) = False Then
+                MsgBox("El vehículo indicado no tiene el código de permiso de la SCT.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If txtLEN(Me.txtNumeroPermisoSCT.Text) = False Then
+                MsgBox("El vehículo indicado no tiene el número de permiso de la SCT.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If txtLEN(Me.txtCodigoAutotransporte.Text) = False Then
+                MsgBox("El vehículo indicado no tiene el código de autotransporte.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If txtLEN(Me.txtPlacaAutotransporte.Text) = False Then
+                MsgBox("El vehículo indicado no tiene número de placa.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If txtLEN(Me.txtAño.Text) = False Then
+                MsgBox("El vehículo indicado no tiene el año.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If txtLEN(Me.txtAseguradoraResponsabilidadCivil.Text) = False Then
+                MsgBox("El vehículo indicado no tiene la aseguradora.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If txtLEN(Me.txtAseguradoraResponsabilidadCivil.Text) = False Then
+                MsgBox("El vehículo indicado no tiene el número de póliza de seguro.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            Dim oAutoTransporte As New Class_CfdiCatConfigAutotransporte(oVehiculo.CODIGO_AUTOTRANSPORTE)
+
+            Select Case oAutoTransporte.REMOLQUE
+                Case "0" 'Significa que no lleva ningún remolque
+                    If txtLEN(Me.txtCodigoRemolque1.Text) = True Or txtLEN(Me.txtCodigoRemolque1.Text) = True Then
+                        MsgBox("El vehículo indicado no soporta que se le indiquen remolques.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                Case "1" 'Significa que debe llevar al menos el remolque #1 y el #2 de forma opcional
+                    If txtLEN(Me.txtCodigoRemolque1.Text) = False Then
+                        MsgBox("El vehículo indicado debe llevar al menos el remolque #1.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.InicializaRemolque1() : Return False
+                    End If
+
+                    Dim oRemolque1 As New Class_CatRemolques(Me.txtCodigoRemolque1.Text)
+                    If oRemolque1.Existe = False Then
+                        MsgBox("El remolque #1 indicado no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.InicializaRemolque1() : Return False
+                    End If
+
+                    If txtLEN(Me.txtCodigoRemolque2.Text) = True Then
+                        Dim oRemolque2 As New Class_CatRemolques(Me.txtCodigoRemolque2.Text)
+                        If oRemolque2.Existe = False Then
+                            MsgBox("El remolque #2 indicado no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                            Me.InicializaRemolque2() : Return False
+                        End If
+                    End If
+
+                    If Me.txtCodigoRemolque1.Text = Me.txtCodigoRemolque2.Text Then
+                        MsgBox("Los remolque #1 y #2 no pueden ser los mismos.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                Case "0,1" 'Significa que puede o no llevar remolque.
+                    If txtLEN(Me.txtCodigoRemolque1.Text) = True Then
+                        Dim oRemolque1 As New Class_CatRemolques(Me.txtCodigoRemolque1.Text)
+                        If oRemolque1.Existe = False Then
+                            MsgBox("El remolque #1 indicado no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                            Me.InicializaRemolque1() : Return False
+                        End If
+                    End If
+
+                    If txtLEN(Me.txtCodigoRemolque2.Text) = True Then
+                        Dim oRemolque2 As New Class_CatRemolques(Me.txtCodigoRemolque2.Text)
+                        If oRemolque2.Existe = False Then
+                            MsgBox("El remolque #2 indicado no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                            Me.InicializaRemolque2() : Return False
+                        End If
+                    End If
+
+                    If Me.txtCodigoRemolque1.Text = Me.txtCodigoRemolque2.Text Then
+                        MsgBox("Los remolque #1 y #2 no pueden ser los mismos.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+            End Select
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            'Validar que haya puesto al menos una figura de transporte tipo operador y si es operador que tenga licencia
-            Dim bHayFiguras As Boolean = False
+            'Validar que hayan puesto al menos una figura de transporte tipo operador y si es operador que tenga licencia
+            Dim bHayFiguraTipoOperador As Boolean = False
 
-            For i = 1 To Me.GridMercancias.Rows - 1
+            For i = 1 To Me.GridFigurasTransporte.Rows - 1
+                Dim sCodigoFigura As String = Me.GridFigurasTransporte.Cell(i, Me.iGyFtCodigo).Text
 
+                If txtLEN(sCodigoFigura) = False Then
+                    Continue For
+                End If
+
+                Dim oFiguraTransporte As New Class_CatCfdiFigurasTransporte(sCodigoFigura)
+
+                If oFiguraTransporte.Existe = False Then
+                    MsgBox("La figura de transporte del renglón #" & i.ToString & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                Dim oTipoFiguraTransporte As New Class_CfdiCatTiposFiguraTransporte(oFiguraTransporte.CODIGO_TIPO_FIGURA_TRANSPORTE)
+
+                If oFiguraTransporte.CODIGO_TIPO_FIGURA_TRANSPORTE = "01" Then '01=Operador
+                    bHayFiguraTipoOperador = True
+
+                    If oTipoFiguraTransporte.VALIDA_LICENCIA = True AndAlso txtLEN(oFiguraTransporte.NUMERO_LICENCIA) = False Then
+                        MsgBox("La figura de transporte del renglón #" & i.ToString & " al ser tipo operador debe tener número de licencia en el catálogo de figuras.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+                End If
+
+                Dim bHayParteTransporte As Boolean = False
+                If oTipoFiguraTransporte.VALIDA_PARTE_TRANSPORTE = True Then
+                    'Validar que si pusieron figuras que les aplique poner parte de transporte que hayan puesto al menos una figura por cada figura que le aplique
+                    For j = 1 To Me.GridPartesTransporte.Rows - 1
+                        If sCodigoFigura = Me.GridPartesTransporte.Cell(j, Me.iGyPtCodigoFigura).Text Then
+                            Dim sCodigoParteTransporte As String = Me.GridPartesTransporte.Cell(j, Me.iGyPtCodigoParte).Text
+
+                            If txtLEN(sCodigoParteTransporte) = False Then
+                                MsgBox("La parte de transporte del renglón #" & j.ToString & " no debe quedar vacia.", MsgBoxStyle.Exclamation, sProcedure)
+                                Return False
+                            End If
+
+                            Dim oParteTransporte As New Class_CfdiCatPartesTransporte(sCodigoParteTransporte)
+                            If oParteTransporte.Existe = False Then
+                                MsgBox("La parte de transporte del renglón #" & j.ToString & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                                Return False
+                            End If
+
+                            bHayParteTransporte = True
+                        End If
+                    Next
+
+                    If bHayParteTransporte = False Then
+                        MsgBox("La figura de transporte del renglón #" & i.ToString & " debe tener relacionada al menos una parte de transporte.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+                End If
             Next
 
-            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-            'Validar que si pusieron figuras que les aplique poner parte de transporte que hayan puesto al menos una figura por cada figura que le aplique
+            If bHayFiguraTipoOperador = False Then
+                MsgBox("Debe de indicar al menos una figura que sea tipo operador.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             bResultado = True
@@ -636,10 +825,10 @@ Enter:
 
                 .Column(Me.iGyUbTipo).Width = 75
                 .Column(Me.iGyUbCodigo).Width = 75
-                .Column(Me.iGyUbNombre).Width = 100
-                .Column(Me.iGyUbDistanciaRecorrida).Width = 120
+                .Column(Me.iGyUbNombre).Width = 320
+                .Column(Me.iGyUbDistanciaRecorrida).Width = 100
                 .Column(Me.iGyUbFechaHoraSalidaLlegada).Width = 130
-                .Column(Me.iGyUbDomicilio).Width = 300
+                .Column(Me.iGyUbDomicilio).Width = 320
 
                 .Column(Me.iGyUbTipo).CellType = FlexCell.CellTypeEnum.ComboBox
                 .Column(Me.iGyUbFechaHoraSalidaLlegada).CellType = FlexCell.CellTypeEnum.DateTime
@@ -781,49 +970,48 @@ Enter:
     Private Sub GestionaGridUbicaciones(ByVal e As System.Windows.Forms.KeyEventArgs)
         Const sProcedure As String = "GestionaGridUbicaciones"
         Try
-            'FALTA
-
             Dim Columna As Integer, Renglon As Integer
-            'Dim sText As String = "", oUbicacion As Class_CFD_CatUbicaciones
+            Dim sText As String = "", oUbicacion As Class_CatCfdiUbicaciones
 
             Columna = Me.GridUbicaciones.Selection.FirstCol
             Renglon = Me.GridUbicaciones.Selection.FirstRow
 
             Select Case e.KeyCode
                 Case Keys.Enter
-                    '                    Select Case Columna
-                    '                        Case Me.iGyUbCodigo
-                    '                            If txtLEN(Me.GridUbicaciones.Cell(Renglon, Me.iGyMerBienTransportado).Text) = False Then
-                    'NoExiste_Codigo:
-                    '                                Me.GridUbicaciones.Cell(Renglon, Me.iGyUbNombre).Text = ""
-                    '                                GoTo F6_Codigo : Return
-                    '                            End If
-                    'Enter_Codigo:
-                    '                            oUbicacion = New Class_CFD_CatUbicaciones(Me.GridUbicaciones.Cell(Renglon, Me.iGyUbCodigo).Text)
+                    Select Case Columna
+                        Case Me.iGyUbCodigo
+                            If txtLEN(Me.GridUbicaciones.Cell(Renglon, Me.iGyUbCodigo).Text) = False Then
+NoExiste_Codigo:
+                                Me.GridUbicaciones.Cell(Renglon, Me.iGyUbNombre).Text = ""
+                                GoTo F6_Codigo : Return
+                            End If
+Enter_Codigo:
 
-                    '                            If oUbicacion.EXISTE = True Then
-                    '                                Me.GridUbicaciones.Cell(Renglon, Me.iGyUbNombre).Text = oUbicacion.NOMBRE_REMITENTE_DESTINATARIO
-                    '                            Else
-                    '                                GoTo NoExiste_Codigo : Return
-                    '                            End If
+                            oUbicacion = New Class_CatCfdiUbicaciones(Me.GridUbicaciones.Cell(Renglon, Me.iGyUbCodigo).Text)
 
-                    '                    End Select
+                            If oUbicacion.EXISTE = True Then
+                                Me.GridUbicaciones.Cell(Renglon, Me.iGyUbNombre).Text = oUbicacion.NOMBRE_REMITENTE_DESTINATARIO
+                            Else
+                                GoTo NoExiste_Codigo : Return
+                            End If
+
+                    End Select
 
                     If Columna = Me.iGyUbDomicilio AndAlso Me.GridUbicaciones.Rows = Renglon + 1 Then
                         Me.GridUbicaciones.Rows += 1
                     End If
 
                 Case Keys.F6
-                    '                    Select Case Columna
-                    '                        Case Me.iGyUbCodigo
-                    'F6_Codigo:
-                    '                            oUbicacion = New Class_CFD_CatUbicaciones
-                    '                            sText = oUbicacion.BusquedaVisual_PorDescripcion
+                    Select Case Columna
+                        Case Me.iGyUbCodigo
+F6_Codigo:
+                            oUbicacion = New Class_CatCfdiUbicaciones
+                            sText = oUbicacion.BusquedaVisual_PorDescripcion
 
-                    '                            If txtLEN(sText) = True Then
-                    '                                Me.GridUbicaciones.Cell(Renglon, Me.iGyUbCodigo).Text = sText : GoTo Enter_Codigo : Return
-                    '                            End If
-                    '                    End Select
+                            If txtLEN(sText) = True Then
+                                Me.GridUbicaciones.Cell(Renglon, Me.iGyUbCodigo).Text = sText : GoTo Enter_Codigo : Return
+                            End If
+                    End Select
             End Select
 
             Me.Totaliza()
@@ -1022,6 +1210,8 @@ F6_ClaveUnidad:
             HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
+
+
 #End Region
 
 End Class

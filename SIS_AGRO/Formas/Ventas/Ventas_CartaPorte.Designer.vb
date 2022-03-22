@@ -239,6 +239,7 @@ Partial Class Ventas_CartaPorte
         'cboTransporteInternacional
         '
         Me.cboTransporteInternacional.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTransporteInternacional.Enabled = False
         Me.cboTransporteInternacional.FormattingEnabled = True
         Me.cboTransporteInternacional.Location = New System.Drawing.Point(143, 19)
         Me.cboTransporteInternacional.Name = "cboTransporteInternacional"
@@ -418,7 +419,7 @@ Partial Class Ventas_CartaPorte
         'lblDisplayPrimaSeguro
         '
         Me.lblDisplayPrimaSeguro.AutoSize = True
-        Me.lblDisplayPrimaSeguro.Location = New System.Drawing.Point(348, 74)
+        Me.lblDisplayPrimaSeguro.Location = New System.Drawing.Point(492, 74)
         Me.lblDisplayPrimaSeguro.Name = "lblDisplayPrimaSeguro"
         Me.lblDisplayPrimaSeguro.Size = New System.Drawing.Size(74, 13)
         Me.lblDisplayPrimaSeguro.TabIndex = 260
@@ -426,7 +427,7 @@ Partial Class Ventas_CartaPorte
         '
         'txtPrimaSeguro
         '
-        Me.txtPrimaSeguro.Location = New System.Drawing.Point(428, 71)
+        Me.txtPrimaSeguro.Location = New System.Drawing.Point(566, 71)
         Me.txtPrimaSeguro.Name = "txtPrimaSeguro"
         Me.txtPrimaSeguro.ReadOnly = True
         Me.txtPrimaSeguro.Size = New System.Drawing.Size(83, 20)
@@ -520,7 +521,7 @@ Partial Class Ventas_CartaPorte
         'lblDisplayPolizaResposabilidadCivil
         '
         Me.lblDisplayPolizaResposabilidadCivil.AutoSize = True
-        Me.lblDisplayPolizaResposabilidadCivil.Location = New System.Drawing.Point(198, 74)
+        Me.lblDisplayPolizaResposabilidadCivil.Location = New System.Drawing.Point(341, 74)
         Me.lblDisplayPolizaResposabilidadCivil.Name = "lblDisplayPolizaResposabilidadCivil"
         Me.lblDisplayPolizaResposabilidadCivil.Size = New System.Drawing.Size(41, 13)
         Me.lblDisplayPolizaResposabilidadCivil.TabIndex = 248
@@ -528,7 +529,7 @@ Partial Class Ventas_CartaPorte
         '
         'txtPolizaResposabilidadCivil
         '
-        Me.txtPolizaResposabilidadCivil.Location = New System.Drawing.Point(245, 71)
+        Me.txtPolizaResposabilidadCivil.Location = New System.Drawing.Point(388, 71)
         Me.txtPolizaResposabilidadCivil.Name = "txtPolizaResposabilidadCivil"
         Me.txtPolizaResposabilidadCivil.ReadOnly = True
         Me.txtPolizaResposabilidadCivil.Size = New System.Drawing.Size(83, 20)
@@ -536,7 +537,7 @@ Partial Class Ventas_CartaPorte
         '
         'txtNumeroPermisoSCT
         '
-        Me.txtNumeroPermisoSCT.Location = New System.Drawing.Point(655, 45)
+        Me.txtNumeroPermisoSCT.Location = New System.Drawing.Point(734, 45)
         Me.txtNumeroPermisoSCT.Name = "txtNumeroPermisoSCT"
         Me.txtNumeroPermisoSCT.ReadOnly = True
         Me.txtNumeroPermisoSCT.Size = New System.Drawing.Size(143, 20)
@@ -545,7 +546,7 @@ Partial Class Ventas_CartaPorte
         'lblDisplayCodigoPermisoSCT
         '
         Me.lblDisplayCodigoPermisoSCT.AutoSize = True
-        Me.lblDisplayCodigoPermisoSCT.Location = New System.Drawing.Point(492, 48)
+        Me.lblDisplayCodigoPermisoSCT.Location = New System.Drawing.Point(571, 48)
         Me.lblDisplayCodigoPermisoSCT.Name = "lblDisplayCodigoPermisoSCT"
         Me.lblDisplayCodigoPermisoSCT.Size = New System.Drawing.Size(74, 13)
         Me.lblDisplayCodigoPermisoSCT.TabIndex = 245
@@ -553,7 +554,7 @@ Partial Class Ventas_CartaPorte
         '
         'txtCodigoPermisoSCT
         '
-        Me.txtCodigoPermisoSCT.Location = New System.Drawing.Point(566, 45)
+        Me.txtCodigoPermisoSCT.Location = New System.Drawing.Point(645, 45)
         Me.txtCodigoPermisoSCT.Name = "txtCodigoPermisoSCT"
         Me.txtCodigoPermisoSCT.ReadOnly = True
         Me.txtCodigoPermisoSCT.Size = New System.Drawing.Size(83, 20)
@@ -564,7 +565,7 @@ Partial Class Ventas_CartaPorte
         Me.txtNombreAutotransporte.Location = New System.Drawing.Point(177, 45)
         Me.txtNombreAutotransporte.Name = "txtNombreAutotransporte"
         Me.txtNombreAutotransporte.ReadOnly = True
-        Me.txtNombreAutotransporte.Size = New System.Drawing.Size(294, 20)
+        Me.txtNombreAutotransporte.Size = New System.Drawing.Size(389, 20)
         Me.txtNombreAutotransporte.TabIndex = 243
         '
         'lblDisplayRemolque2
@@ -615,7 +616,7 @@ Partial Class Ventas_CartaPorte
         Me.txtAseguradoraResponsabilidadCivil.Location = New System.Drawing.Point(88, 71)
         Me.txtAseguradoraResponsabilidadCivil.Name = "txtAseguradoraResponsabilidadCivil"
         Me.txtAseguradoraResponsabilidadCivil.ReadOnly = True
-        Me.txtAseguradoraResponsabilidadCivil.Size = New System.Drawing.Size(83, 20)
+        Me.txtAseguradoraResponsabilidadCivil.Size = New System.Drawing.Size(240, 20)
         Me.txtAseguradoraResponsabilidadCivil.TabIndex = 237
         '
         'lblDisplayAutotransporte
@@ -638,7 +639,7 @@ Partial Class Ventas_CartaPorte
         'lblDisplayPlacaAutotransporte
         '
         Me.lblDisplayPlacaAutotransporte.AutoSize = True
-        Me.lblDisplayPlacaAutotransporte.Location = New System.Drawing.Point(804, 22)
+        Me.lblDisplayPlacaAutotransporte.Location = New System.Drawing.Point(870, 22)
         Me.lblDisplayPlacaAutotransporte.Name = "lblDisplayPlacaAutotransporte"
         Me.lblDisplayPlacaAutotransporte.Size = New System.Drawing.Size(40, 13)
         Me.lblDisplayPlacaAutotransporte.TabIndex = 234
@@ -646,7 +647,7 @@ Partial Class Ventas_CartaPorte
         '
         'txtPlacaAutotransporte
         '
-        Me.txtPlacaAutotransporte.Location = New System.Drawing.Point(850, 19)
+        Me.txtPlacaAutotransporte.Location = New System.Drawing.Point(916, 19)
         Me.txtPlacaAutotransporte.Name = "txtPlacaAutotransporte"
         Me.txtPlacaAutotransporte.ReadOnly = True
         Me.txtPlacaAutotransporte.Size = New System.Drawing.Size(83, 20)
@@ -655,7 +656,7 @@ Partial Class Ventas_CartaPorte
         'lblDisplayAño
         '
         Me.lblDisplayAño.AutoSize = True
-        Me.lblDisplayAño.Location = New System.Drawing.Point(674, 22)
+        Me.lblDisplayAño.Location = New System.Drawing.Point(740, 22)
         Me.lblDisplayAño.Name = "lblDisplayAño"
         Me.lblDisplayAño.Size = New System.Drawing.Size(32, 13)
         Me.lblDisplayAño.TabIndex = 232
@@ -663,7 +664,7 @@ Partial Class Ventas_CartaPorte
         '
         'txtAño
         '
-        Me.txtAño.Location = New System.Drawing.Point(715, 19)
+        Me.txtAño.Location = New System.Drawing.Point(781, 19)
         Me.txtAño.Name = "txtAño"
         Me.txtAño.ReadOnly = True
         Me.txtAño.Size = New System.Drawing.Size(83, 20)
@@ -683,7 +684,7 @@ Partial Class Ventas_CartaPorte
         Me.txtMarca.Location = New System.Drawing.Point(566, 19)
         Me.txtMarca.Name = "txtMarca"
         Me.txtMarca.ReadOnly = True
-        Me.txtMarca.Size = New System.Drawing.Size(83, 20)
+        Me.txtMarca.Size = New System.Drawing.Size(168, 20)
         Me.txtMarca.TabIndex = 229
         '
         'lblDisplayNombreVehiculo

@@ -1,29 +1,29 @@
 ﻿Imports System.Data
 Imports System.Data.SqlClient
 
-Public Class Class_CatVehiculos
+Public Class Class_CatCfdiFigurasTransporte
     Inherits Class_Catalogos
 
 #Region "Campos"
 
 #Region "Campos de la tabla"
-    Private _CODIGO_VEHICULO As String
-    Private _Nombre_Vehiculo As String
-    Private _CODIGO_CATEGORIA As String
-    'Private _ESTATUS As String
-    Private _MARCA As String
-    Private _PLACA As String
-    Private _ANIO As String
-    Private _CODIGO_AUTOTRANSPORTE As String
-    Private _CODIGO_PERMISO_SCT As String
-    Private _NUMERO_PERMISO_SCT As String
-    Private _NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL As String
-    Private _POLIZA_RESPONSABILIDAD_CIVIL As String
-    Private _NOMBRE_ASEGURADORA_MEDIO_AMBIENTE As String
-    Private _POLIZA_MEDIO_AMBIENTE As String
-    Private _NOMBRE_ASEGURADORA_CARGA As String
-    Private _POLIZA_CARGA As String
-    Private _PRIMA_SEGURO As String
+    Private _CODIGO_FIGURA_TRANSPORTE As Integer
+    Private _NOMBRE_FIGURA_TRANSPORTE As String
+    Private _CODIGO_TIPO_FIGURA_TRANSPORTE As String
+    Private _RFC As String
+    Private _NUMERO_LICENCIA As String
+    Private _NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO As String
+    Private _CODIGO_PAIS_SAT_RESIDENCIA_FISCAL As String
+    Private _CALLE As String
+    Private _NUMERO_EXTERIOR As String
+    Private _NUMERO_INTERIOR As String
+    Private _ID_COLONIA As Integer
+    Private _ID_LOCALIDAD As Integer
+    Private _REFERENCIA As String
+    Private _CODIGO_MUNICIPIO As Integer
+    Private _CODIGO_ESTADO_SAT As String
+    Private _CODIGO_PAIS_SAT_DOMICILIO As String
+    Private _CODIGO_POSTAL As String
     Private _CODIGO_USUARIO_CREO As String
     Private _FECHA_CREO As Date
     Private _CODIGO_USUARIO_MODIFICO As String
@@ -32,8 +32,6 @@ Public Class Class_CatVehiculos
 
 #Region "Campos ligados a la tabla"
     Private _Existe As Boolean
-    Private _GENERAR_CATEGORIA As Boolean
-    Private _CODIGO_TIPO_CATEGORIA As String
 #End Region
 
 #Region "Campos públicos"
@@ -58,147 +56,156 @@ Public Class Class_CatVehiculos
 #Region "Propiedades"
 
 #Region "Propiedades Campos de la tabla"
-    Public Property CODIGO_VEHICULO() As String
+    Public Property CODIGO_FIGURA_TRANSPORTE() As Integer
         Get
-            Return Me._CODIGO_VEHICULO
+            Return Me._CODIGO_FIGURA_TRANSPORTE
+        End Get
+        Set(ByVal Value As Integer)
+            Me._CODIGO_FIGURA_TRANSPORTE = Value
+        End Set
+    End Property
+
+    Public Property NOMBRE_FIGURA_TRANSPORTE() As String
+        Get
+            Return Me._NOMBRE_FIGURA_TRANSPORTE
         End Get
         Set(ByVal Value As String)
-            Me._CODIGO_VEHICULO = Value
+            Me._NOMBRE_FIGURA_TRANSPORTE = Value
         End Set
     End Property
 
-    Public Property Nombre_Vehiculo() As String
+    Public Property CODIGO_TIPO_FIGURA_TRANSPORTE() As String
         Get
-            Return Me._Nombre_Vehiculo
+            Return Me._CODIGO_TIPO_FIGURA_TRANSPORTE
         End Get
         Set(ByVal Value As String)
-            Me._Nombre_Vehiculo = Value
+            Me._CODIGO_TIPO_FIGURA_TRANSPORTE = Value
         End Set
     End Property
 
-    Public Property CODIGO_CATEGORIA() As String
+    Public Property RFC() As String
         Get
-            Return Me._CODIGO_CATEGORIA
-        End Get
-        Set(ByVal Value As String)
-            Me._CODIGO_CATEGORIA = Value
-        End Set
-    End Property
-
-    Public Property MARCA() As String
-        Get
-            Return Me._MARCA
+            Return Me._RFC
         End Get
         Set(value As String)
-            Me._MARCA = value
+            Me._RFC = value
         End Set
     End Property
 
-    Public Property PLACA() As String
+    Public Property NUMERO_LICENCIA() As String
         Get
-            Return Me._PLACA
+            Return Me._NUMERO_LICENCIA
         End Get
         Set(value As String)
-            Me._PLACA = value
+            Me._NUMERO_LICENCIA = value
         End Set
     End Property
 
-    Public Property ANIO() As String
+    Public Property NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO() As String
         Get
-            Return Me._ANIO
+            Return Me._NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO
         End Get
         Set(value As String)
-            Me._ANIO = value
+            Me._NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO = value
         End Set
     End Property
 
-    Public Property CODIGO_AUTOTRANSPORTE() As String
+    Public Property CODIGO_PAIS_SAT_RESIDENCIA_FISCAL() As String
         Get
-            Return Me._CODIGO_AUTOTRANSPORTE
+            Return Me._CODIGO_PAIS_SAT_RESIDENCIA_FISCAL
         End Get
         Set(value As String)
-            Me._CODIGO_AUTOTRANSPORTE = value
+            Me._CODIGO_PAIS_SAT_RESIDENCIA_FISCAL = value
         End Set
     End Property
 
-    Public Property CODIGO_PERMISO_SCT() As String
+    Public Property CALLE() As String
         Get
-            Return Me._CODIGO_PERMISO_SCT
+            Return Me._CALLE
         End Get
         Set(value As String)
-            Me._CODIGO_PERMISO_SCT = value
+            Me._CALLE = value
         End Set
     End Property
 
-    Public Property NUMERO_PERMISO_SCT() As String
+    Public Property NUMERO_EXTERIOR() As String
         Get
-            Return Me._NUMERO_PERMISO_SCT
+            Return Me._NUMERO_EXTERIOR
         End Get
         Set(value As String)
-            Me._NUMERO_PERMISO_SCT = value
+            Me._NUMERO_EXTERIOR = value
         End Set
     End Property
 
-    Public Property NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL() As String
+    Public Property NUMERO_INTERIOR() As String
         Get
-            Return Me._NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL
+            Return Me._NUMERO_INTERIOR
         End Get
         Set(value As String)
-            Me._NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL = value
+            Me._NUMERO_INTERIOR = value
         End Set
     End Property
 
-    Public Property POLIZA_RESPONSABILIDAD_CIVIL() As String
+    Public Property ID_COLONIA() As Integer
         Get
-            Return Me._POLIZA_RESPONSABILIDAD_CIVIL
+            Return Me._ID_COLONIA
         End Get
-        Set(value As String)
-            Me._POLIZA_RESPONSABILIDAD_CIVIL = value
+        Set(value As Integer)
+            Me._ID_COLONIA = value
         End Set
     End Property
 
-    Public Property NOMBRE_ASEGURADORA_MEDIO_AMBIENTE() As String
+    Public Property ID_LOCALIDAD() As Integer
         Get
-            Return Me._NOMBRE_ASEGURADORA_MEDIO_AMBIENTE
+            Return Me._ID_LOCALIDAD
         End Get
-        Set(value As String)
-            Me._NOMBRE_ASEGURADORA_MEDIO_AMBIENTE = value
+        Set(value As Integer)
+            Me._ID_LOCALIDAD = value
         End Set
     End Property
 
-    Public Property POLIZA_MEDIO_AMBIENTE() As String
+    Public Property REFERENCIA() As String
         Get
-            Return Me._POLIZA_MEDIO_AMBIENTE
+            Return Me._REFERENCIA
         End Get
         Set(value As String)
-            Me._POLIZA_MEDIO_AMBIENTE = value
+            Me._REFERENCIA = value
         End Set
     End Property
 
-    Public Property NOMBRE_ASEGURADORA_CARGA() As String
+    Public Property CODIGO_MUNICIPIO() As Integer
         Get
-            Return Me._NOMBRE_ASEGURADORA_CARGA
+            Return Me._CODIGO_MUNICIPIO
         End Get
-        Set(value As String)
-            Me._NOMBRE_ASEGURADORA_CARGA = value
+        Set(value As Integer)
+            Me._CODIGO_MUNICIPIO = value
         End Set
     End Property
 
-    Public Property POLIZA_CARGA() As String
+    Public Property CODIGO_ESTADO_SAT() As String
         Get
-            Return Me._POLIZA_CARGA
+            Return Me._CODIGO_ESTADO_SAT
         End Get
         Set(value As String)
-            Me._POLIZA_CARGA = value
+            Me._CODIGO_ESTADO_SAT = value
         End Set
     End Property
 
-    Public Property PRIMA_SEGURO() As String
+    Public Property CODIGO_PAIS_SAT_DOMICILIO() As String
         Get
-            Return Me._PRIMA_SEGURO
+            Return Me._CODIGO_PAIS_SAT_DOMICILIO
         End Get
         Set(value As String)
-            Me._PRIMA_SEGURO = value
+            Me._CODIGO_PAIS_SAT_DOMICILIO = value
+        End Set
+    End Property
+
+    Public Property CODIGO_POSTAL() As String
+        Get
+            Return Me._CODIGO_POSTAL
+        End Get
+        Set(value As String)
+            Me._CODIGO_POSTAL = value
         End Set
     End Property
 
@@ -246,18 +253,6 @@ Public Class Class_CatVehiculos
             Return Me._Existe
         End Get
     End Property
-
-    Public WriteOnly Property GENERAR_CATEGORIA() As Boolean
-        Set(ByVal Value As Boolean)
-            Me._GENERAR_CATEGORIA = Value
-        End Set
-    End Property
-
-    Public WriteOnly Property CODIGO_TIPO_CATEGORIA() As String
-        Set(ByVal Value As String)
-            Me._CODIGO_TIPO_CATEGORIA = Value
-        End Set
-    End Property
 #End Region
 
 #Region "Propiedades públicos"
@@ -291,18 +286,18 @@ Public Class Class_CatVehiculos
 #Region "Constructor y destructor"
 
     Public Sub New()
-        Me._Nombre_Catalogo = "CAT_VEHICULOS"
-        Me._Nombre_Reporte = "RPT_CATALOGO_VEHICULOS"
+        Me._Nombre_Catalogo = "CFDI_CAT_FIGURAS_TRANSPORTE"
+        Me._Nombre_Reporte = "RPT_CATALOGO_CFDI_FIGURAS_TRANSPORTE"
         Me._Conexion = New SqlConnection
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
-        Me._QuerySelect = "Select * From CAT_VEHICULOS"
-        Me._QueryOrder = " Order by Nombre_Vehiculo"
+        Me._QuerySelect = "Select * From CFDI_CAT_FIGURAS_TRANSPORTE"
+        Me._QueryOrder = " Order by NOMBRE_FIGURA_TRANSPORTE"
     End Sub                                                         'Inicializa al objeto.
 
-    Public Sub New(ByVal sCodigoVehiculo As String)
+    Public Sub New(ByVal sCodigoFiguraTransporte As String)
         Me.New()
         Try
-            Me._CODIGO_VEHICULO = sCodigoVehiculo
+            Me._CODIGO_FIGURA_TRANSPORTE = sCodigoFiguraTransporte
             If Me.Consultar = True Then
                 Me._Existe = True
 
@@ -332,26 +327,26 @@ Public Class Class_CatVehiculos
             .Connection = Me._Conexion
             .CommandTimeout = 0
             .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_CAT_VEHICULOS_GRABA"
+            .CommandText = "MP_CFDI_CAT_FIGURAS_TRANSPORTE_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_VEHICULO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_VEHICULO) : sqlParametro.Direction = ParameterDirection.InputOutput
-            sqlParametro = .Parameters.Add("@NOMBRE_VEHICULO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._Nombre_Vehiculo.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_FIGURA_TRANSPORTE", SqlDbType.Int) : sqlParametro.Value = CInt(Me._CODIGO_FIGURA_TRANSPORTE) : sqlParametro.Direction = ParameterDirection.InputOutput
+            sqlParametro = .Parameters.Add("@NOMBRE_FIGURA_TRANSPORTE", SqlDbType.NVarChar, 254) : sqlParametro.Value = Me._NOMBRE_FIGURA_TRANSPORTE.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus
-            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_CATEGORIA)) : sqlParametro.Direction = ParameterDirection.InputOutput
-            sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._GENERAR_CATEGORIA)
-            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = CInt(valorNumerico(Me._CODIGO_TIPO_CATEGORIA))
-            sqlParametro = .Parameters.Add("@MARCA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._MARCA.ToUpper
-            sqlParametro = .Parameters.Add("@PLACA", SqlDbType.NVarChar, 7) : sqlParametro.Value = Me._PLACA.ToUpper
-            sqlParametro = .Parameters.Add("@ANIO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._ANIO.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_AUTOTRANSPORTE", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_AUTOTRANSPORTE.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_PERMISO_SCT", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_PERMISO_SCT.ToUpper
-            sqlParametro = .Parameters.Add("@NUMERO_PERMISO_SCT", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NUMERO_PERMISO_SCT.ToUpper
-            sqlParametro = .Parameters.Add("@NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL.ToUpper
-            sqlParametro = .Parameters.Add("@POLIZA_RESPONSABILIDAD_CIVIL", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._POLIZA_RESPONSABILIDAD_CIVIL.ToUpper
-            sqlParametro = .Parameters.Add("@NOMBRE_ASEGURADORA_MEDIO_AMBIENTE", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_ASEGURADORA_MEDIO_AMBIENTE.ToUpper
-            sqlParametro = .Parameters.Add("@POLIZA_MEDIO_AMBIENTE", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._POLIZA_MEDIO_AMBIENTE.ToUpper
-            sqlParametro = .Parameters.Add("@NOMBRE_ASEGURADORA_CARGA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_ASEGURADORA_CARGA.ToUpper
-            sqlParametro = .Parameters.Add("@PRIMA_SEGURO", SqlDbType.Decimal) : sqlParametro.Value = Me._PRIMA_SEGURO.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_FIGURA_TRANSPORTE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_FIGURA_TRANSPORTE.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@RFC", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._RFC.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@NUMERO_LICENCIA", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._NUMERO_LICENCIA.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO", SqlDbType.NVarChar, 40) : sqlParametro.Value = Me._NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT_RESIDENCIA_FISCAL", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT_RESIDENCIA_FISCAL.ToUpper
+            sqlParametro = .Parameters.Add("@CALLE", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._CALLE.ToUpper
+            sqlParametro = .Parameters.Add("@NUMERO_EXTERIOR", SqlDbType.NVarChar, 55) : sqlParametro.Value = Me._NUMERO_EXTERIOR.ToUpper
+            sqlParametro = .Parameters.Add("@NUMERO_INTERIOR", SqlDbType.NVarChar, 55) : sqlParametro.Value = Me._NUMERO_INTERIOR.ToUpper
+            sqlParametro = .Parameters.Add("@ID_COLONIA", SqlDbType.Int) : sqlParametro.Value = CInt(Me._ID_COLONIA)
+            sqlParametro = .Parameters.Add("@ID_LOCALIDAD", SqlDbType.Int) : sqlParametro.Value = CInt(Me._ID_LOCALIDAD)
+            sqlParametro = .Parameters.Add("@REFERENCIA", SqlDbType.NVarChar, 250) : sqlParametro.Value = Me._REFERENCIA.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_MUNICIPIO)
+            sqlParametro = .Parameters.Add("@CODIGO_ESTADO_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ESTADO_SAT.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT_DOMICILIO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT_DOMICILIO.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_POSTAL", SqlDbType.NVarChar, 12) : sqlParametro.Value = Me._CODIGO_POSTAL.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CREO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_USUARIO_CREO)
             sqlParametro = .Parameters.Add("@FECHA_CREO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CREO
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_MODIFICO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_USUARIO_MODIFICO)
@@ -361,8 +356,7 @@ Public Class Class_CatVehiculos
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 bResultado = True
-                Me._CODIGO_VEHICULO = "" & .Parameters("@CODIGO_VEHICULO").Value.ToString
-                Me._CODIGO_CATEGORIA = "" & .Parameters("@CODIGO_CATEGORIA").Value.ToString
+                Me._CODIGO_FIGURA_TRANSPORTE = "" & .Parameters("@CODIGO_FIGURA_TRANSPORTE").Value.ToString
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, "Insertar", ex)
             Finally
@@ -384,24 +378,24 @@ Public Class Class_CatVehiculos
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CAT_VEHICULOS_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_VEHICULO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_VEHICULO)
-            sqlParametro = .Parameters.Add("@NOMBRE_VEHICULO", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._Nombre_Vehiculo.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_FIGURA_TRANSPORTE", SqlDbType.Int) : sqlParametro.Value = CInt(Me._CODIGO_FIGURA_TRANSPORTE)
+            sqlParametro = .Parameters.Add("@NOMBRE_FIGURA_TRANSPORTE", SqlDbType.NVarChar, 254) : sqlParametro.Value = Me._NOMBRE_FIGURA_TRANSPORTE.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus
-            sqlParametro = .Parameters.Add("@CODIGO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_CATEGORIA
-            sqlParametro = .Parameters.Add("@GENERAR_CATEGORIA", SqlDbType.Char, 1) : sqlParametro.Value = "0"
-            sqlParametro = .Parameters.Add("@CODIGO_TIPO_CATEGORIA", SqlDbType.SmallInt) : sqlParametro.Value = 0
-            sqlParametro = .Parameters.Add("@MARCA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._MARCA.ToUpper
-            sqlParametro = .Parameters.Add("@PLACA", SqlDbType.NVarChar, 7) : sqlParametro.Value = Me._PLACA.ToUpper
-            sqlParametro = .Parameters.Add("@ANIO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._ANIO.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_AUTOTRANSPORTE", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_AUTOTRANSPORTE.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_PERMISO_SCT", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_PERMISO_SCT.ToUpper
-            sqlParametro = .Parameters.Add("@NUMERO_PERMISO_SCT", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NUMERO_PERMISO_SCT.ToUpper
-            sqlParametro = .Parameters.Add("@NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL.ToUpper
-            sqlParametro = .Parameters.Add("@POLIZA_RESPONSABILIDAD_CIVIL", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._POLIZA_RESPONSABILIDAD_CIVIL.ToUpper
-            sqlParametro = .Parameters.Add("@NOMBRE_ASEGURADORA_MEDIO_AMBIENTE", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_ASEGURADORA_MEDIO_AMBIENTE.ToUpper
-            sqlParametro = .Parameters.Add("@POLIZA_MEDIO_AMBIENTE", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._POLIZA_MEDIO_AMBIENTE.ToUpper
-            sqlParametro = .Parameters.Add("@NOMBRE_ASEGURADORA_CARGA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_ASEGURADORA_CARGA.ToUpper
-            sqlParametro = .Parameters.Add("@PRIMA_SEGURO", SqlDbType.Decimal) : sqlParametro.Value = Me._PRIMA_SEGURO.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_TIPO_FIGURA_TRANSPORTE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_FIGURA_TRANSPORTE.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@RFC", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._RFC.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@NUMERO_LICENCIA", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._NUMERO_LICENCIA.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO", SqlDbType.NVarChar, 40) : sqlParametro.Value = Me._NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT_RESIDENCIA_FISCAL", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT_RESIDENCIA_FISCAL.ToUpper
+            sqlParametro = .Parameters.Add("@CALLE", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._CALLE.ToUpper
+            sqlParametro = .Parameters.Add("@NUMERO_EXTERIOR", SqlDbType.NVarChar, 55) : sqlParametro.Value = Me._NUMERO_EXTERIOR.ToUpper
+            sqlParametro = .Parameters.Add("@NUMERO_INTERIOR", SqlDbType.NVarChar, 55) : sqlParametro.Value = Me._NUMERO_INTERIOR.ToUpper
+            sqlParametro = .Parameters.Add("@ID_COLONIA", SqlDbType.Int) : sqlParametro.Value = CInt(Me._ID_COLONIA)
+            sqlParametro = .Parameters.Add("@ID_LOCALIDAD", SqlDbType.Int) : sqlParametro.Value = CInt(Me._ID_LOCALIDAD)
+            sqlParametro = .Parameters.Add("@REFERENCIA", SqlDbType.NVarChar, 250) : sqlParametro.Value = Me._REFERENCIA.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_MUNICIPIO)
+            sqlParametro = .Parameters.Add("@CODIGO_ESTADO_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ESTADO_SAT.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT_DOMICILIO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT_DOMICILIO.ToUpper
+            sqlParametro = .Parameters.Add("@CODIGO_POSTAL", SqlDbType.NVarChar, 12) : sqlParametro.Value = Me._CODIGO_POSTAL.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CREO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_USUARIO_CREO)
             sqlParametro = .Parameters.Add("@FECHA_CREO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CREO
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_MODIFICO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_USUARIO_MODIFICO)
@@ -424,7 +418,7 @@ Public Class Class_CatVehiculos
 
     Public Overrides Function Consultar() As Boolean
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("Select * from CAT_VEHICULOS Where CODIGO_VEHICULO='" & sReplace(Me._CODIGO_VEHICULO) & "'", Me._Conexion)
+        Dim cmd As New SqlCommand("Select * from CFDI_CAT_FIGURAS_TRANSPORTE Where CODIGO_FIGURA_TRANSPORTE='" & sReplace(Me._CODIGO_FIGURA_TRANSPORTE) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -434,23 +428,25 @@ Public Class Class_CatVehiculos
                 dReader = .ExecuteReader()
 
                 If dReader.Read Then
-                    Me._CODIGO_VEHICULO = "" & dReader("CODIGO_VEHICULO").ToString
-                    Me._Nombre_Vehiculo = Trim("" & dReader("NOMBRE_VEHICULO").ToString)
+                    Me._CODIGO_FIGURA_TRANSPORTE = CType(dReader("CODIGO_FIGURA_TRANSPORTE").ToString, Integer)
+                    Me._NOMBRE_FIGURA_TRANSPORTE = "" & dReader("NOMBRE_FIGURA_TRANSPORTE").ToString
+                    Me._CODIGO_TIPO_FIGURA_TRANSPORTE = "" & dReader("CODIGO_TIPO_FIGURA_TRANSPORTE").ToString
+                    Me._RFC = "" & dReader("RFC").ToString
+                    Me._NUMERO_LICENCIA = "" & dReader("NUMERO_LICENCIA").ToString
                     Me.Estatus = "" & dReader("ESTATUS")
-                    Me._CODIGO_CATEGORIA = "" & dReader("CODIGO_CATEGORIA").ToString
-                    Me._MARCA = "" & dReader("MARCA").ToString
-                    Me._PLACA = "" & dReader("PLACA").ToString
-                    Me._ANIO = "" & dReader("ANIO").ToString
-                    Me._CODIGO_AUTOTRANSPORTE = "" & dReader("CODIGO_AUTOTRANSPORTE").ToString
-                    Me._CODIGO_PERMISO_SCT = "" & dReader("CODIGO_PERMISO_SCT").ToString
-                    Me._NUMERO_PERMISO_SCT = "" & dReader("NUMERO_PERMISO_SCT").ToString
-                    Me._NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL = "" & dReader("NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL").ToString
-                    Me._POLIZA_RESPONSABILIDAD_CIVIL = "" & dReader("POLIZA_RESPONSABILIDAD_CIVIL").ToString
-                    Me._NOMBRE_ASEGURADORA_MEDIO_AMBIENTE = "" & dReader("NOMBRE_ASEGURADORA_MEDIO_AMBIENTE").ToString
-                    Me._POLIZA_MEDIO_AMBIENTE = "" & dReader("POLIZA_MEDIO_AMBIENTE").ToString
-                    Me._NOMBRE_ASEGURADORA_CARGA = "" & dReader("NOMBRE_ASEGURADORA_CARGA").ToString
-                    Me._POLIZA_CARGA = "" & dReader("POLIZA_CARGA").ToString
-                    Me._PRIMA_SEGURO = "" & dReader("PRIMA_SEGURO").ToString
+                    Me._NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO = "" & dReader("NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO").ToString
+                    Me._CODIGO_PAIS_SAT_RESIDENCIA_FISCAL = "" & dReader("CODIGO_PAIS_SAT_RESIDENCIA_FISCAL").ToString
+                    Me._CALLE = "" & dReader("CALLE").ToString
+                    Me._NUMERO_EXTERIOR = "" & dReader("NUMERO_EXTERIOR").ToString
+                    Me._NUMERO_INTERIOR = "" & dReader("NUMERO_INTERIOR").ToString
+                    Me._ID_COLONIA = CType(dReader("ID_COLONIA").ToString, Integer)
+                    Me._ID_LOCALIDAD = CType(dReader("ID_LOCALIDAD").ToString, Integer)
+                    Me._REFERENCIA = "" & dReader("REFERENCIA").ToString
+                    Me._CODIGO_MUNICIPIO = CType(dReader("CODIGO_MUNICIPIO").ToString, Integer)
+                    Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT").ToString
+                    Me._CODIGO_PAIS_SAT_DOMICILIO = "" & dReader("CODIGO_PAIS_SAT_DOMICILIO").ToString
+                    Me._CODIGO_POSTAL = "" & dReader("CODIGO_POSTAL").ToString
+
                     Me._CODIGO_USUARIO_CREO = "" & dReader("CODIGO_USUARIO_CREO").ToString
                     Me._FECHA_CREO = CDate(dReader("FECHA_CREO")).ToString
                     Me._CODIGO_USUARIO_MODIFICO = "" & dReader("CODIGO_USUARIO_MODIFICO").ToString
@@ -498,7 +494,7 @@ Public Class Class_CatVehiculos
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String, ByVal ESTATUS As String) As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_VEHICULO, NOMBRE_VEHICULO FROM CAT_VEHICULOS WHERE NOMBRE_VEHICULO LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & ESTATUS & "' ORDER BY NOMBRE_VEHICULO", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_FIGURA_TRANSPORTE, NOMBRE_FIGURA_TRANSPORTE FROM CFDI_CAT_FIGURAS_TRANSPORTE WHERE NOMBRE_FIGURA_TRANSPORTE LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & ESTATUS & "' ORDER BY NOMBRE_FIGURA_TRANSPORTE", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
@@ -512,11 +508,11 @@ Public Class Class_CatVehiculos
     Public Overrides Function BusquedaVisual_PorCodigo() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de categoria por codigo."
-        f.sCampo = "CODIGO_VEHICULO"
-        f.sOrder = "Nombre_VEHICULO"
-        f.sTable = "CAT_VEHICULOS"
-        f.sQl = "Select CODIGO_VEHICULO,Nombre_VEHICULO From CAT_VEHICULOS Where 1=1 And"
+        f.Text = "Búsqueda de Figuras de transporte por codigo."
+        f.sCampo = "CODIGO_FIGURA_TRANSPORTE"
+        f.sOrder = "NOMBRE_FIGURA_TRANSPORTE"
+        f.sTable = "CFDI_CAT_FIGURAS_TRANSPORTE"
+        f.sQl = "Select CODIGO_FIGURA_TRANSPORTE,NOMBRE_FIGURA_TRANSPORTE From CFDI_CAT_FIGURAS_TRANSPORTE Where 1=1 And"
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -532,11 +528,11 @@ Public Class Class_CatVehiculos
     Public Overrides Function BusquedaVisual_PorDescripcion() As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de categorias por nombre."
-        f.sCampo = "Nombre_VEHICULO"
-        f.sOrder = "Nombre_VEHICULO"
-        f.sTable = "CAT_VEHICULOS"
-        f.sQl = "Select CODIGO_VEHICULO,Nombre_VEHICULO From CAT_VEHICULOS Where 1=1 And"
+        f.Text = "Búsqueda de Figuras de transporte por nombre."
+        f.sCampo = "NOMBRE_FIGURA_TRANSPORTE"
+        f.sOrder = "NOMBRE_FIGURA_TRANSPORTE"
+        f.sTable = "CFDI_CAT_FIGURAS_TRANSPORTE"
+        f.sQl = "Select CODIGO_FIGURA_TRANSPORTE,NOMBRE_FIGURA_TRANSPORTE From CFDI_CAT_FIGURAS_TRANSPORTE Where 1=1 And"
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -552,7 +548,7 @@ Public Class Class_CatVehiculos
     Public Function CodigoSiguiente() As String
         Dim Resultado As Integer
         Try
-            Dim sql As New Class_find("SELECT ISNULL(MAX(CODIGO_VEHICULO),0) FROM CAT_VEHICULOS")
+            Dim sql As New Class_find("SELECT ISNULL(MAX(CODIGO_FIGURA_TRANSPORTE),0) FROM CFDI_CAT_FIGURAS_TRANSPORTE")
             Resultado = CType(sql.Result1, Integer) + 1
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "CodigoSiguiente", ex)
