@@ -337,7 +337,7 @@ Public Class Class_CatCfdiUbicaciones
 
             sqlParametro = .Parameters.Add("@CODIGO_UBICACION", SqlDbType.Int) : sqlParametro.Value = Me._CODIGO_UBICACION : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.ESTATUS
+            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS.ToUpper
             sqlParametro = .Parameters.Add("@TIPO_UBICACION", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._TIPO_UBICACION.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ID_UBICACION", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._ID_UBICACION.ToString.ToUpper
             sqlParametro = .Parameters.Add("@RFC_REMITENTE_DESTINATARIO", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._RFC_REMITENTE_DESTINATARIO.ToString.ToUpper
@@ -395,7 +395,7 @@ Public Class Class_CatCfdiUbicaciones
                 If dReader.Read = True Then
                     Me._CODIGO_UBICACION = CType(dReader("CODIGO_UBICACION").ToString, Integer)
                     Me._CODIGO_CLIENTE = "" & dReader("CODIGO_CLIENTE").ToString
-                    Me.ESTATUS = "" & dReader("ESTATUS")
+                    Me._ESTATUS = "" & dReader("ESTATUS")
                     Me._TIPO_UBICACION = "" & dReader("TIPO_UBICACION").ToString
                     Me._ID_UBICACION = "" & dReader("ID_UBICACION").ToString
                     Me._RFC_REMITENTE_DESTINATARIO = "" & dReader("RFC_REMITENTE_DESTINATARIO").ToString

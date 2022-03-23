@@ -284,14 +284,14 @@ Public Class Catalogo_Vehiculos
                             Case enumEstados.NUEVO
                                 .GENERAR_CATEGORIA = Me.chkCrearCategoria.Checked
                                 .CODIGO_TIPO_CATEGORIA = Me.txtTipoCategoria.Text
-                                If .Insertar() = True Then
+                                If .Grabar("INSERTAR") = True Then
                                     Grabado = True
                                     Me.Estado = enumEstados.NUEVO
                                 End If
                             Case enumEstados.EDICION
                                 .GENERAR_CATEGORIA = False
                                 .CODIGO_TIPO_CATEGORIA = ""
-                                If .Actualizar() = True Then
+                                If .Grabar("ACTUALIZAR") = True Then
                                     Grabado = True
                                 End If
                         End Select
