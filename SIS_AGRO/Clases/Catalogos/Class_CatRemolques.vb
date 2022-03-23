@@ -1,20 +1,15 @@
-﻿
-Option Strict On
-Imports System.Data
+﻿Option Strict On
+
 Imports System.Data.SqlClient
 
 Public Class Class_CatRemolques
-
-    Inherits Class_Catalogos
-
 #Region "Campos"
-
 #Region "Campos de la tabla"
     Private _CODIGO_REMOLQUE As String
     Private _NOMBRE_REMOLQUE As String
     Private _CODIGO_TIPO_REMOLQUE As String
-    Private _ESTATUS As String
     Private _PLACA As String
+    Private _ESTATUS As String
     Private _CODIGO_USUARIO_CREO As String
     Private _FECHA_CREO As Date
     Private _CODIGO_USUARIO_MODIFICO As String
@@ -31,9 +26,7 @@ Public Class Class_CatRemolques
     Private _Conexion As SqlConnection
     Private _QuerySelect As String
     Private _QueryOrder As String
-
 #End Region
-
 #End Region
 
 #Region "Propiedades"
@@ -57,12 +50,30 @@ Public Class Class_CatRemolques
         End Set
     End Property
 
+    Public Property CODIGO_TIPO_REMOLQUE() As String
+        Get
+            Return Me._CODIGO_TIPO_REMOLQUE
+        End Get
+        Set(ByVal VALUE As String)
+            Me._CODIGO_TIPO_REMOLQUE = VALUE
+        End Set
+    End Property
+
     Public Property PLACA() As String
         Get
             Return Me._PLACA
         End Get
         Set(ByVal VALUE As String)
             Me._PLACA = VALUE
+        End Set
+    End Property
+
+    Public Property ESTATUS() As String
+        Get
+            Return Me._ESTATUS
+        End Get
+        Set(ByVal VALUE As String)
+            Me._ESTATUS = VALUE
         End Set
     End Property
 
@@ -114,14 +125,13 @@ Public Class Class_CatRemolques
 #End Region
 
 #Region "Propiedades de campos de sistema"
-
-    Public Overrides ReadOnly Property Nombre_Catalogo() As String
+    Public ReadOnly Property Nombre_Catalogo() As String
         Get
             Return Me._Nombre_Catalogo
         End Get
     End Property
 
-    Public Overrides Property Nombre_Reporte() As String
+    Public Property Nombre_Reporte() As String
         Get
             Return Me._Nombre_Reporte
         End Get
@@ -129,21 +139,10 @@ Public Class Class_CatRemolques
             Me._Nombre_Reporte = value
         End Set
     End Property
-    'Public Property Estatus() As String
-    '    Get
-    '        Return Me._Estatus
-    '    End Get
-    '    Set(ByVal value As String)
-    '        Me._Estatus = value
-    '    End Set
-    'End Property
-
 #End Region
-
 #End Region
 
 #Region "Constructor y destructor"
-
     Public Sub New()
         Me._Nombre_Catalogo = "CAT_REMOLQUES"
         Me._Nombre_Reporte = "RPT_CATALOGO_REMOLQUES"
@@ -151,7 +150,7 @@ Public Class Class_CatRemolques
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "Select * From CAT_REMOLQUES"
         Me._QueryOrder = " Order by NOMBRE_REMOLQUE"
-    End Sub                                                         'Inicializa al objeto.
+    End Sub
 
     Public Sub New(ByVal sCodigoRemolque As String)
         Me.New()
@@ -173,13 +172,10 @@ Public Class Class_CatRemolques
     End Sub
 #End Region
 
-#Region "Opciones"
-
-#End Region
-
 #Region "Métodos y procedimientos"
-
-    Public Overrides Function Insertar() As Boolean
+    Public Function Grabar(ByVal bAgregar As Boolean) As Boolean
+        Const sProcedure As String = "Grabar"
+        Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
         With cmd
@@ -192,66 +188,37 @@ Public Class Class_CatRemolques
             sqlParametro = .Parameters.Add("@NOMBRE_REMOLQUE", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._NOMBRE_REMOLQUE.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_REMOLQUE", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_TIPO_REMOLQUE.ToString.ToUpper
             sqlParametro = .Parameters.Add("@PLACA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._PLACA.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS.ToString.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CREO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(CODIGO_USUARIO_CREO)
             sqlParametro = .Parameters.Add("@FECHA_CREO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CREO
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_MODIFICO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_USUARIO_MODIFICO)
             sqlParametro = .Parameters.Add("@FECHA_MODIFICO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_MODIFICO
-            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "1"
+            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(bAgregar).ToString
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-                Me._CODIGO_REMOLQUE = .Parameters("@CODIGO_REMOLQUE").Value.ToString
-                Insertar = True
+
+                If bAgregar = True Then
+                    Me._CODIGO_REMOLQUE = .Parameters("@CODIGO_REMOLQUE").Value.ToString
+                End If
+
+                bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Insertar", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
-
         End With
-    End Function                          'Inserta un elemento al catálogo.
+        Return bResultado
+    End Function
 
-    Public Overrides Function Actualizar() As Boolean
-        Dim cmd As New SqlCommand
-        Dim sqlParametro As SqlParameter
-        With cmd
-            .Connection = Me._Conexion
-            .CommandTimeout = 0
-            .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_CAT_TRANSPORTES_GRABA"
-
-            sqlParametro = .Parameters.Add("@CODIGO_REMOLQUE", SqlDbType.Int) : sqlParametro.Value = CInt(Me._CODIGO_REMOLQUE)
-            sqlParametro = .Parameters.Add("@NOMBRE_REMOLQUE", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._NOMBRE_REMOLQUE.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_TIPO_REMOLQUE", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._CODIGO_TIPO_REMOLQUE.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@PLACA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._PLACA.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CREO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(CODIGO_USUARIO_CREO)
-            sqlParametro = .Parameters.Add("@FECHA_CREO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CREO
-            sqlParametro = .Parameters.Add("@CODIGO_USUARIO_MODIFICO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_USUARIO_MODIFICO)
-            sqlParametro = .Parameters.Add("@FECHA_MODIFICO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_MODIFICO
-            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = "0"
-            Try
-                Me._Conexion.Open()
-                .ExecuteNonQuery()
-                Me._CODIGO_REMOLQUE = .Parameters("@CODIGO_REMOLQUE").Value.ToString
-                Actualizar = True
-            Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
-            Finally
-                Me._Conexion.Close()
-                cmd.Dispose()
-                sqlParametro = Nothing
-            End Try
-
-        End With
-    End Function                        'Actualiza un elemento del catálogo.
-
-    Public Overrides Function Consultar() As Boolean
-        Dim cmd As New SqlCommand("Select * from CAT_REMOLQUES " & _
-                                  " Where CODIGO_REMOLQUE='" & Replace(Me._CODIGO_REMOLQUE, "'", "''") & "' " & Usuario.Codigo_Plaza, Me._Conexion)
+    Public Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand("SELECT * FROM CAT_REMOLQUES " &
+                                  " WHERE CODIGO_REMOLQUE='" & Replace(Me._CODIGO_REMOLQUE, "'", "''") & "' ", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -265,141 +232,106 @@ Public Class Class_CatRemolques
                     Me._NOMBRE_REMOLQUE = "" & dReader("NOMBRE_REMOLQUE").ToString
                     Me._CODIGO_TIPO_REMOLQUE = "" & dReader("CODIGO_TIPO_REMOLQUE").ToString
                     Me._PLACA = "" & dReader("PLACA").ToString
-                    Me.Estatus = "" & dReader("ESTATUS").ToString
+                    Me._ESTATUS = "" & dReader("ESTATUS").ToString
                     Me._CODIGO_USUARIO_CREO = "" & dReader("CODIGO_USUARIO_CREO").ToString
                     Me._FECHA_CREO = CDate(dReader("FECHA_CREO").ToString)
                     Me._CODIGO_USUARIO_MODIFICO = "" & dReader("CODIGO_USUARIO_MODIFICO").ToString
                     If Not (IsDBNull(dReader("FECHA_MODIFICO"))) Then Me._FECHA_MODIFICO = CDate(dReader("FECHA_MODIFICO"))
-                    Consultar = True
+
+                    bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Consultar", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
             End Try
         End With
+        Return bResultado
+    End Function
 
-    End Function        'Consulta un elemento del catálogo.
-
-    Public Overrides Function ObtenerElementos() As System.Data.DataTable
+    Public Function ObtenerElementos() As System.Data.DataTable
+        Const sProcedure As String = "ObtenerElementos"
         Dim dTable As New DataTable
-        Dim dsCAT_Lineas As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_REMOLQUE,NOMBRE_REMOLQUE,PLACA FROM CAT_REMOLQUES ORDER BY PLACA", Me._Conexion)
         Try
-            dsCAT_Lineas.Fill(dTable)
+            da.Fill(dTable)
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         Finally
-            dsCAT_Lineas.Dispose()
-        End Try
-        Return dTable
-    End Function    'Obtiene una lita completa de los elementos del catalogo en un datatable.
-    Public Function ObtenerElementosN() As System.Data.DataTable
-        Dim dTable As New DataTable
-        Dim dsCAT_Lineas As New SqlDataAdapter("SELECT CODIGO_REMOLQUE,NOMBRE_REMOLQUE, PLACA FROM CAT_REMOLQUES ORDER BY PLACA", Me._Conexion)
-        Try
-            dsCAT_Lineas.Fill(dTable)
-        Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
-        Finally
-            dsCAT_Lineas.Dispose()
-        End Try
-        Return dTable
-    End Function    'Obtiene una lita completa de los elementos del catalogo en un datatable.
-
-    Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
-        Dim dTable As New DataTable
-        Dim dA As New SqlDataAdapter("SELECT CODIGO_REMOLQUE,NOMBRE_REMOLQUE, PLACA FROM CAT_REMOLQUES WHERE PLACA LIKE '" & Filtro.ToString & "%' ORDER BY PLACA", Me._Conexion)
-        Try
-            dA.Fill(dTable)
-        Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltro", ex)
-        Finally
-            dA.Dispose()
+            da.Dispose()
         End Try
         Return dTable
     End Function
 
-    Public Overrides Function BusquedaVisual_PorCodigo() As String
+    Public Function ObtenerElementosFiltro(ByVal Filtro As String) As System.Data.DataTable
+        Const sProcedure As String = "ObtenerElementosFiltro"
+        Dim dTable As New DataTable
+        Dim da As New SqlDataAdapter("SELECT CODIGO_REMOLQUE,NOMBRE_REMOLQUE,PLACA FROM CAT_REMOLQUES WHERE NOMBRE_REMOLQUE LIKE '" & Filtro.ToString & "%' ORDER BY PLACA", Me._Conexion)
+        Try
+            da.Fill(dTable)
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
+        Finally
+            da.Dispose()
+        End Try
+        Return dTable
+    End Function
+
+    Public Function BusquedaVisual_PorCodigo() As String
+        Const sProcedure As String = "BusquedaVisual_PorCodigo"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda por codigo de remolques."
+        f.Text = "Búsqueda de remolques por código."
         f.sCampo = "CODIGO_REMOLQUE"
         f.sOrder = "NOMBRE_REMOLQUE"
-        f.sTable = "PLACA"
-        f.sQl = "Select CODIGO_REMOLQUE,NOMBRE_REMOLQUE,PLACA From CAT_REMOLQUES Where 1=1 AND "
-        f.Inicia("")
+        f.sTable = "CAT_REMOLQUES"
+        f.sQl = "Select CODIGO_REMOLQUE,NOMBRE_REMOLQUE,PLACA FROM CAT_REMOLQUES WHERE 1=1 AND "
+        f.Inicia("%")
         f.ShowDialog()
         Try
             If f.iRows > 0 Then
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorCodigo", ex)
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
         End Try
         Return Resultado
     End Function
 
-    Public Overrides Function BusquedaVisual_PorDescripcion() As String
+    Public Function BusquedaVisual_PorDescripcion() As String
+        Const sProcedure As String = "BusquedaVisual_PorDescripcion"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de placa del remolque."
-        f.sCampo = "PLACA "
-        f.sOrder = "PLACA"
+        f.Text = "Búsqueda de remolques por descripción."
+        f.sCampo = "NOMBRE_REMOLQUE "
+        f.sOrder = "NOMBRE_REMOLQUE"
         f.sTable = "CAT_REMOLQUES"
-        f.sQl = "SELECT CODIGO_REMOLQUE,NOMBRE_REMOLQUE,PLACA From CAT_REMOLQUES Where 1=1 AND "
-        f.Inicia("")
+        f.sQl = "SELECT CODIGO_REMOLQUE,NOMBRE_REMOLQUE,PLACA FROM CAT_REMOLQUES Where 1=1 AND "
+        f.Inicia("%")
         f.ShowDialog()
         Try
             If f.iRows > 0 Then
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
         End Try
         Return Resultado
     End Function
 
     Public Function CodigoSiguiente() As String
+        Const sProcedure As String = "CodigoSiguiente"
         Dim Resultado As Integer
         Try
             Dim sql As New Class_find("SELECT ISNULL(MAX(CODIGO_REMOLQUE),0) FROM CAT_REMOLQUES")
             Resultado = CType(sql.Result1, Integer) + 1
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "CodigoSiguiente", ex)
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
         End Try
         Return Resultado.ToString
     End Function
-#End Region
-
-#Region "Eventos de objetos"
-
-
-#Region "Eventos de la lista de elementos"
-
-#End Region
-
-#Region " Eventos de TxtFiltro"
-
-#End Region
-
-#Region "Eventos Genericos"
-
-#End Region
-
-
-#Region "Keydown específicos"
-
-
-#End Region
-
-#Region "Validating específicos"
-
-#End Region
-
-
-
 #End Region
 
 End Class
