@@ -34,12 +34,13 @@ Public Class Ventas_CartaPorte
 #End Region
 
 #Region "Columnas grid figuras de transporte"
-    Private iGyFtCodigo As Integer = 1
-    Private iGyFtTipo As Integer = 2
-    Private iGyFtNombre As Integer = 3
-    Private iGyFtRFC As Integer = 4
-    Private iGyFtLicencia As Integer = 5
-    Private iGyFtDomicilio As Integer = 6
+    Private iGyFtCodigoFigura As Integer = 1
+    Private iGyFtCodigoTipo As Integer = 2
+    Private iGyFtNombreTipo As Integer = 3
+    Private iGyFtNombreFigura As Integer = 4
+    Private iGyFtRFC As Integer = 5
+    Private iGyFtLicencia As Integer = 6
+    Private iGyFtDomicilio As Integer = 7
 #End Region
 
 #Region "Columnas grid partes de transporte"
@@ -143,7 +144,7 @@ Enter:
                     If oVehiculo.Existe = False Then
                         Me.InicializaVehiculo() : GoTo Buscar : Return
                     Else
-                        Me.txtNombreVehiculo.Text = oVehiculo.Nombre_Vehiculo
+                        Me.txtNombreVehiculo.Text = oVehiculo.NOMBRE_VEHICULO
                         Me.txtMarca.Text = oVehiculo.MARCA
                         Me.txtAño.Text = oVehiculo.ANIO
                         Me.txtPlacaAutotransporte.Text = oVehiculo.PLACA
@@ -413,13 +414,13 @@ Enter:
             Dim oUbicacion As Class_CatCfdiUbicaciones, bUbicacionOrigenEncontrada As Boolean = False, bUbicacionDestinoEncontrada As Boolean = False
 
             For i = 1 To Me.GridUbicaciones.Rows - 1
-                Dim sCodigoUbicacion As String = Me.GridUbicaciones.Cell(i, Me.iGyUbCodigo).Text
-
-                If txtLEN(sCodigoUbicacion) = False Then
+                If txtLEN(Me.GridUbicaciones.Cell(i, Me.iGyUbCodigo).Text) = False Then
                     Continue For
                 End If
 
-                oUbicacion = New Class_CatCfdiUbicaciones(sCodigoUbicacion)
+                Dim iCodigoUbicacion As Integer = CInt(Me.GridUbicaciones.Cell(i, Me.iGyUbCodigo).Text)
+
+                oUbicacion = New Class_CatCfdiUbicaciones(iCodigoUbicacion)
                 If oUbicacion.Existe = False Then
                     MsgBox("La ubicación del renglón #" & i.ToString & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
@@ -644,7 +645,7 @@ Enter:
             Dim bHayFiguraTipoOperador As Boolean = False
 
             For i = 1 To Me.GridFigurasTransporte.Rows - 1
-                Dim sCodigoFigura As String = Me.GridFigurasTransporte.Cell(i, Me.iGyFtCodigo).Text
+                Dim sCodigoFigura As String = Me.GridFigurasTransporte.Cell(i, Me.iGyFtCodigoFigura).Text
 
                 If txtLEN(sCodigoFigura) = False Then
                     Continue For
@@ -754,7 +755,7 @@ Enter:
             Me.GridUbicaciones.Rows = 2
             Me.GridUbicaciones.Cols = 7
             Me.GridUbicaciones.DisplayRowNumber = True
-            
+
             Me.FormateaGridUbicaciones()
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -782,7 +783,7 @@ Enter:
             Me.GridFigurasTransporte.DataSource = Nothing
             FG_Grid_Limpiar(Me.GridFigurasTransporte)
             Me.GridFigurasTransporte.Rows = 2
-            Me.GridFigurasTransporte.Cols = 7
+            Me.GridFigurasTransporte.Cols = 8
             Me.GridFigurasTransporte.DisplayRowNumber = True
 
             Me.FormateaGridFigurasTransporte()
@@ -824,11 +825,11 @@ Enter:
                 .Cell(0, Me.iGyUbDomicilio).Text = "Domicilio"
 
                 .Column(Me.iGyUbTipo).Width = 75
-                .Column(Me.iGyUbCodigo).Width = 75
+                .Column(Me.iGyUbCodigo).Width = 65
                 .Column(Me.iGyUbNombre).Width = 320
                 .Column(Me.iGyUbDistanciaRecorrida).Width = 100
                 .Column(Me.iGyUbFechaHoraSalidaLlegada).Width = 130
-                .Column(Me.iGyUbDomicilio).Width = 320
+                .Column(Me.iGyUbDomicilio).Width = 420
 
                 .Column(Me.iGyUbTipo).CellType = FlexCell.CellTypeEnum.ComboBox
                 .Column(Me.iGyUbFechaHoraSalidaLlegada).CellType = FlexCell.CellTypeEnum.DateTime
@@ -905,22 +906,25 @@ Enter:
                 .BorderStyle = FlexCell.BorderStyleEnum.FixedSingle
                 .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
 
-                .Cell(0, Me.iGyFtCodigo).Text = "Código"
-                .Cell(0, Me.iGyFtTipo).Text = "Tipo"
-                .Cell(0, Me.iGyFtNombre).Text = "Nombre"
+                .Cell(0, Me.iGyFtCodigoFigura).Text = "Código"
+                .Cell(0, Me.iGyFtCodigoTipo).Text = "CodTipo"
+                .Cell(0, Me.iGyFtNombreTipo).Text = "NomTipo"
+                .Cell(0, Me.iGyFtNombreFigura).Text = "Nombre"
                 .Cell(0, Me.iGyFtRFC).Text = "RFC"
                 .Cell(0, Me.iGyFtLicencia).Text = "Licencia"
                 .Cell(0, Me.iGyFtDomicilio).Text = "Domicilio"
 
-                .Column(Me.iGyFtCodigo).Width = 100
-                .Column(Me.iGyFtTipo).Width = 100
-                .Column(Me.iGyFtNombre).Width = 250
+                .Column(Me.iGyFtCodigoFigura).Width = 100
+                .Column(Me.iGyFtCodigoTipo).Width = 100
+                .Column(Me.iGyFtNombreTipo).Width = 100
+                .Column(Me.iGyFtNombreFigura).Width = 250
                 .Column(Me.iGyFtRFC).Width = 100
                 .Column(Me.iGyFtLicencia).Width = 100
                 .Column(Me.iGyFtDomicilio).Width = 300
 
-                .Column(Me.iGyFtTipo).Locked = True
-                .Column(Me.iGyFtNombre).Locked = True
+                .Column(Me.iGyFtCodigoTipo).Locked = True
+                .Column(Me.iGyFtNombreTipo).Locked = True
+                .Column(Me.iGyFtNombreFigura).Locked = True
                 .Column(Me.iGyFtDomicilio).Locked = True
                 .Column(Me.iGyFtLicencia).Locked = True
                 .Column(Me.iGyFtDomicilio).Locked = True
@@ -987,14 +991,14 @@ NoExiste_Codigo:
                             End If
 Enter_Codigo:
 
-                            oUbicacion = New Class_CatCfdiUbicaciones(Me.GridUbicaciones.Cell(Renglon, Me.iGyUbCodigo).Text)
+                            oUbicacion = New Class_CatCfdiUbicaciones(CInt(Me.GridUbicaciones.Cell(Renglon, Me.iGyUbCodigo).Text))
 
-                            If oUbicacion.EXISTE = True Then
-                                Me.GridUbicaciones.Cell(Renglon, Me.iGyUbNombre).Text = oUbicacion.NOMBRE_REMITENTE_DESTINATARIO
-                            Else
+                            If oUbicacion.Existe = False Then
                                 GoTo NoExiste_Codigo : Return
                             End If
 
+                            Me.GridUbicaciones.Cell(Renglon, Me.iGyUbNombre).Text = oUbicacion.NOMBRE_REMITENTE_DESTINATARIO
+                            Me.GridUbicaciones.Cell(Renglon, Me.iGyUbDomicilio).Text = oUbicacion.DOMICILIO_COMPLETO
                     End Select
 
                     If Columna = Me.iGyUbDomicilio AndAlso Me.GridUbicaciones.Rows = Renglon + 1 Then
@@ -1115,24 +1119,66 @@ F6_ClaveUnidad:
         End Try
     End Sub
 
+    Private Sub InicializaRenglonGridFiguraTransporte(ByVal iRenglon As Integer)
+        Const sProcedure As String = "InicializaFiguraTransporte"
+        Try
+            Me.GridFigurasTransporte.Cell(iRenglon, Me.iGyFtCodigoTipo).Text = ""
+            Me.GridFigurasTransporte.Cell(iRenglon, Me.iGyFtNombreFigura).Text = ""
+            Me.GridFigurasTransporte.Cell(iRenglon, Me.iGyFtRFC).Text = ""
+            Me.GridFigurasTransporte.Cell(iRenglon, Me.iGyFtLicencia).Text = ""
+            Me.GridFigurasTransporte.Cell(iRenglon, Me.iGyFtDomicilio).Text = ""
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
     Private Sub GestionaGridFigurasTransporte(ByVal e As System.Windows.Forms.KeyEventArgs)
         Const sProcedure As String = "GestionaGridFigurasTransporte"
         Try
-            'FALTA
             Dim Columna As Integer, Renglon As Integer
+            Dim sText As String = "", oFigura As Class_CatCfdiFigurasTransporte
 
             Columna = Me.GridFigurasTransporte.Selection.FirstCol
             Renglon = Me.GridFigurasTransporte.Selection.FirstRow
-            'StrCod = Me.Grid1.Cell(Renglon, iGyCodigo).Text
 
             Select Case e.KeyCode
                 Case Keys.Enter
+                    Select Case Columna
+                        Case Me.iGyFtCodigoFigura
+                            If txtLEN(Me.GridFigurasTransporte.Cell(Renglon, Me.iGyFtCodigoFigura).Text) = False Then
+NoExiste_Codigo:
+                                Me.InicializaRenglonGridFiguraTransporte(Renglon)
+                                GoTo F6_Codigo : Return
+                            End If
+Enter_Codigo:
+                            oFigura = New Class_CatCfdiFigurasTransporte(Me.GridFigurasTransporte.Cell(Renglon, Me.iGyFtCodigoFigura).Text)
+
+                            If oFigura.Existe = True Then
+                                Dim oTipoFigura As New Class_CfdiCatTiposFiguraTransporte(oFigura.CODIGO_TIPO_FIGURA_TRANSPORTE)
+
+                                Me.GridFigurasTransporte.Cell(Renglon, Me.iGyFtCodigoTipo).Text = oFigura.CODIGO_TIPO_FIGURA_TRANSPORTE
+                                Me.GridFigurasTransporte.Cell(Renglon, Me.iGyFtNombreTipo).Text = oTipoFigura.NOMBRE_TIPO_FIGURA_TRANSPORTE
+                                Me.GridFigurasTransporte.Cell(Renglon, Me.iGyFtNombreFigura).Text = oFigura.NOMBRE_FIGURA_TRANSPORTE
+                                Me.GridFigurasTransporte.Cell(Renglon, Me.iGyFtRFC).Text = oFigura.RFC
+                                Me.GridFigurasTransporte.Cell(Renglon, Me.iGyFtLicencia).Text = oFigura.NUMERO_LICENCIA
+                                Me.GridFigurasTransporte.Cell(Renglon, Me.iGyFtDomicilio).Text = oFigura.DOMICILIO_COMPLETO
+                            Else
+                                GoTo NoExiste_Codigo : Return
+                            End If
+                    End Select
 
                 Case Keys.F6
                     Select Case Columna
-                        Case Me.iGyFtCodigo
+                        Case Me.iGyFtCodigoFigura
+F6_Codigo:
+                            oFigura = New Class_CatCfdiFigurasTransporte
+                            sText = oFigura.BusquedaVisual_PorDescripcion
 
+                            If txtLEN(sText) = True Then
+                                Me.GridFigurasTransporte.Cell(Renglon, Me.iGyFtCodigoTipo).Text = sText : GoTo Enter_Codigo : Return
+                            End If
                     End Select
+
             End Select
 
         Catch ex As Exception
@@ -1141,25 +1187,92 @@ F6_ClaveUnidad:
     End Sub
 
     Private Sub GestionaGridPartesTransporte(ByVal e As System.Windows.Forms.KeyEventArgs)
+        'FALTA
         Const sProcedure As String = "GestionaGridPartesTransporte"
         Try
-            'FALTA
             Dim Columna As Integer, Renglon As Integer
+            Dim sText As String = "", oParteTransporte As Class_CfdiCatPartesTransporte, oFigura As Class_CatCfdiFigurasTransporte
 
-            Columna = Me.GridFigurasTransporte.Selection.FirstCol
-            Renglon = Me.GridFigurasTransporte.Selection.FirstRow
-            'StrCod = Me.Grid1.Cell(Renglon, iGyCodigo).Text
+            Columna = Me.GridPartesTransporte.Selection.FirstCol
+            Renglon = Me.GridPartesTransporte.Selection.FirstRow
+
+            'Private iGyPtCodigoFigura As Integer = 1
+            'Private iGyPtNombreFigura As Integer = 2
+            'Private iGyPtCodigoParte As Integer = 3
+            'Private iGyPtNombreParte As Integer = 4
 
             Select Case e.KeyCode
                 Case Keys.Enter
+                    Select Case Columna
+                        Case Me.iGyPtCodigoFigura
+                            If txtLEN(Me.GridFigurasTransporte.Cell(Renglon, Me.iGyPtCodigoFigura).Text) = False Then
+NoExiste_CodigoFigura:
+                                Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtNombreFigura).Text = ""
+                                GoTo F6_CodigoFigura : Return
+                            End If
+
+                            Dim bFiguraEncontrada As Boolean = False
+                            For i = 1 To Me.GridFigurasTransporte.Rows - 1
+                                If Me.GridFigurasTransporte.Cell(i, Me.iGyFtCodigoFigura).Text = Me.GridPartesTransporte.Cell(i, Me.iGyPtCodigoFigura).Text Then
+                                    bFiguraEncontrada = True
+                                    Continue For
+                                End If
+                            Next
+
+Enter_CodigoFigura:
+                            If bFiguraEncontrada = False Then
+                                MsgBox("Esta figura que indicó en las partes de figuras no esta en la lista de figuras.", MsgBoxStyle.Exclamation, sProcedure)
+                                Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtCodigoFigura).Text = ""
+                                Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtNombreFigura).Text = ""
+                                Return
+                            End If
+
+                            oFigura = New Class_CatCfdiFigurasTransporte(Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtCodigoFigura).Text)
+
+                            If oFigura.Existe = True Then
+                                Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtNombreFigura).Text = oFigura.NOMBRE_FIGURA_TRANSPORTE
+                            Else
+                                GoTo NoExiste_CodigoFigura : Return
+                            End If
+
+                        Case Me.iGyPtCodigoParte
+                            If txtLEN(Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtCodigoParte).Text) = False Then
+NoExiste_CodigoParte:
+                                Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtNombreParte).Text = ""
+                                GoTo F6_CodigoParte : Return
+                            End If
+Enter_CodigoParte:
+                            oParteTransporte = New Class_CfdiCatPartesTransporte(Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtCodigoParte).Text)
+
+                            If oParteTransporte.Existe = True Then
+                                Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtNombreParte).Text = oParteTransporte.NOMBRE_PARTE_TRANSPORTE
+                            Else
+                                GoTo NoExiste_CodigoParte : Return
+                            End If
+                    End Select
 
                 Case Keys.F6
                     Select Case Columna
-                        Case Me.iGyPtCodigoFigura
+                        Case Me.iGyPtCodigoFigura 'La figura que seleccionen debe de existir en el grid de figuras previo a este, esto se hace en Enter_CodigoFigura
+F6_CodigoFigura:
+                            oFigura = New Class_CatCfdiFigurasTransporte
+                            sText = oFigura.BusquedaVisual_PorDescripcion
+
+                            If txtLEN(sText) = True Then
+                                Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtCodigoFigura).Text = sText : GoTo Enter_CodigoFigura : Return
+                            End If
 
                         Case Me.iGyPtCodigoParte
+F6_CodigoParte:
+                            oParteTransporte = New Class_CfdiCatPartesTransporte
+                            sText = oParteTransporte.BusquedaVisual_PorDescripcion
+
+                            If txtLEN(sText) = True Then
+                                Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtCodigoParte).Text = sText : GoTo Enter_CodigoParte : Return
+                            End If
 
                     End Select
+
             End Select
 
         Catch ex As Exception
@@ -1210,7 +1323,6 @@ F6_ClaveUnidad:
             HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
-
 
 #End Region
 

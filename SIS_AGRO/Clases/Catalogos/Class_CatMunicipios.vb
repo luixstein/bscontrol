@@ -1,4 +1,5 @@
-﻿Imports System.Data
+﻿Option Strict On
+
 Imports System.Data.SqlClient
 
 Public Class Class_CatMunicipios
@@ -37,7 +38,6 @@ Public Class Class_CatMunicipios
 #End Region
 
 #Region "Propiedades"
-
 #Region "Propiedades Campos de la tabla"
     Public Property CODIGO_MUNICIPIO() As String
         Get
@@ -93,15 +93,7 @@ Public Class Class_CatMunicipios
     End Property
 #End Region
 
-#Region "Propiedades públicos"
-
-#End Region
-
-#Region "Propiedades de campos privados"
-
-#End Region
 #Region "Propiedades de campos de sistema"
-
     Public ReadOnly Property Nombre_Catalogo() As String
         Get
             Return Me._Nombre_Catalogo
@@ -121,7 +113,6 @@ Public Class Class_CatMunicipios
 #End Region
 
 #Region "Constructor y destructor"
-
     Public Sub New()
         Me._Nombre_Catalogo = "CAT_MUNICIPIOS"
         Me._Nombre_Reporte = "RPT_CATALOGO_MUNICIPIOS"
@@ -150,16 +141,13 @@ Public Class Class_CatMunicipios
     End Sub
 #End Region
 
-#Region "Opciones"
-
-#End Region
-
 #Region "Métodos y procedimientos"
     Public Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("SELECT M.CODIGO_MUNICIPIO,M.CODIGO_MUNICIPIO_SAT,M.NOMBRE_MUNICIPIO,M.CODIGO_ESTADO,M.ESTATUS" & _
-                                  "FROM CAT_MUNICIPIOS M " & _
-                                  "INNER JOIN SIS_ESTADOS E ON(M.CODIGO_ESTADO=E.CODIGO_ESTADO)" & _
+        Dim cmd As New SqlCommand("SELECT M.CODIGO_MUNICIPIO,M.CODIGO_MUNICIPIO_SAT,M.NOMBRE_MUNICIPIO,M.CODIGO_ESTADO,M.ESTATUS,E.CODIGO_ESTADO_SAT " &
+                                  "FROM CAT_MUNICIPIOS M " &
+                                  "INNER JOIN SIS_ESTADOS E ON(M.CODIGO_ESTADO=E.CODIGO_ESTADO) " &
                                   "WHERE M.CODIGO_MUNICIPIO=" & Replace(Me._CODIGO_MUNICIPIO, "'", "''") & "", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
@@ -169,19 +157,19 @@ Public Class Class_CatMunicipios
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
-                    Me._CODIGO_MUNICIPIO = "" & dReader("CODIGO_MUNICIPIO")
-                    Me._CODIGO_MUNICIPIO_SAT = "" & dReader("CODIGO_MUNICIPIO_SAT")
-                    Me._NOMBRE_MUNICIPIO = Trim("" & dReader("NOMBRE_MUNICIPIO").ToString)
-                    Me._CODIGO_ESTADO = "" & dReader("CODIGO_ESTADO")
-                    Me.ESTATUS = "" & dReader("ESTATUS").ToString
-                    Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT")
+                If dReader.Read = True Then
+                    Me._CODIGO_MUNICIPIO = "" & dReader("CODIGO_MUNICIPIO").ToString
+                    Me._CODIGO_MUNICIPIO_SAT = "" & dReader("CODIGO_MUNICIPIO_SAT").ToString
+                    Me._NOMBRE_MUNICIPIO = "" & dReader("NOMBRE_MUNICIPIO").ToString
+                    Me._CODIGO_ESTADO = "" & dReader("CODIGO_ESTADO").ToString
+                    Me._ESTATUS = "" & dReader("ESTATUS").ToString.ToString
+                    Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT").ToString
 
                     bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Catalogo, "Consultar", ex)
+                HandleError(Me.Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -191,13 +179,14 @@ Public Class Class_CatMunicipios
     End Function
 
     Public Function ObtenerElementos(ByVal sCodigoEstado As String) As System.Data.DataTable
+        Const sProcedure As String = "ObtenerElementos"
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_MUNICIPIO,NOMBRE_MUNICIPIO FROM CAT_MUNICIPIOS WHERE ESTATUS='A' AND CODIGO_ESTADO='" & sReplace(sCodigoEstado) & "'" & _
+        Dim da As New SqlDataAdapter("SELECT CODIGO_MUNICIPIO,NOMBRE_MUNICIPIO FROM CAT_MUNICIPIOS WHERE ESTATUS='A' AND CODIGO_ESTADO='" & sReplace(sCodigoEstado) & "'" &
                                      "ORDER BY NOMBRE_MUNICIPIO", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         Finally
             da.Dispose()
         End Try

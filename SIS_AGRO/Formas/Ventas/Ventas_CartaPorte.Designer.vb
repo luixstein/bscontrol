@@ -108,7 +108,7 @@ Partial Class Ventas_CartaPorte
         Me.TabControl1.Location = New System.Drawing.Point(3, 30)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1189, 565)
+        Me.TabControl1.Size = New System.Drawing.Size(1210, 565)
         Me.TabControl1.TabIndex = 0
         '
         'TabPage1
@@ -121,7 +121,7 @@ Partial Class Ventas_CartaPorte
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1181, 539)
+        Me.TabPage1.Size = New System.Drawing.Size(1202, 539)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Ubicaciones / Mercancias"
         '
@@ -138,7 +138,7 @@ Partial Class Ventas_CartaPorte
         Me.gbMercancias.Controls.Add(Me.GridMercancias)
         Me.gbMercancias.Location = New System.Drawing.Point(6, 209)
         Me.gbMercancias.Name = "gbMercancias"
-        Me.gbMercancias.Size = New System.Drawing.Size(1157, 283)
+        Me.gbMercancias.Size = New System.Drawing.Size(1188, 283)
         Me.gbMercancias.TabIndex = 2
         Me.gbMercancias.TabStop = False
         Me.gbMercancias.Text = "Mercancias"
@@ -232,7 +232,7 @@ Partial Class Ventas_CartaPorte
         Me.GridMercancias.LockButton = True
         Me.GridMercancias.Name = "GridMercancias"
         Me.GridMercancias.Rows = 9
-        Me.GridMercancias.Size = New System.Drawing.Size(1137, 234)
+        Me.GridMercancias.Size = New System.Drawing.Size(1176, 234)
         Me.GridMercancias.TabIndex = 0
         Me.GridMercancias.UncheckedImage = CType(resources.GetObject("GridMercancias.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -263,7 +263,7 @@ Partial Class Ventas_CartaPorte
         Me.gbUbicaciones.Controls.Add(Me.GridUbicaciones)
         Me.gbUbicaciones.Location = New System.Drawing.Point(6, 46)
         Me.gbUbicaciones.Name = "gbUbicaciones"
-        Me.gbUbicaciones.Size = New System.Drawing.Size(1157, 154)
+        Me.gbUbicaciones.Size = New System.Drawing.Size(1188, 154)
         Me.gbUbicaciones.TabIndex = 1
         Me.gbUbicaciones.TabStop = False
         Me.gbUbicaciones.Text = "Ubicaciones"
@@ -313,7 +313,7 @@ Partial Class Ventas_CartaPorte
         Me.GridUbicaciones.LockButton = True
         Me.GridUbicaciones.Name = "GridUbicaciones"
         Me.GridUbicaciones.Rows = 4
-        Me.GridUbicaciones.Size = New System.Drawing.Size(1137, 101)
+        Me.GridUbicaciones.Size = New System.Drawing.Size(1176, 101)
         Me.GridUbicaciones.TabIndex = 0
         Me.GridUbicaciones.UncheckedImage = CType(resources.GetObject("GridUbicaciones.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -768,7 +768,7 @@ Partial Class Ventas_CartaPorte
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1196, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1213, 27)
         Me.tsMenu.TabIndex = 1
         Me.tsMenu.Text = "tsMenu"
         '
@@ -800,7 +800,7 @@ Partial Class Ventas_CartaPorte
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1196, 601)
+        Me.ClientSize = New System.Drawing.Size(1213, 601)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.TabControl1)
         Me.Name = "Ventas_CartaPorte"

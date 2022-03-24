@@ -1,13 +1,12 @@
-﻿Imports System.Data
+﻿Option Strict On
+
 Imports System.Data.SqlClient
 
 Public Class Class_CatCfdiFigurasTransporte
-    Inherits Class_Catalogos
 
 #Region "Campos"
-
 #Region "Campos de la tabla"
-    Private _CODIGO_FIGURA_TRANSPORTE As Integer
+    Private _CODIGO_FIGURA_TRANSPORTE As String
     Private _NOMBRE_FIGURA_TRANSPORTE As String
     Private _CODIGO_TIPO_FIGURA_TRANSPORTE As String
     Private _RFC As String
@@ -17,13 +16,14 @@ Public Class Class_CatCfdiFigurasTransporte
     Private _CALLE As String
     Private _NUMERO_EXTERIOR As String
     Private _NUMERO_INTERIOR As String
-    Private _ID_COLONIA As Integer
-    Private _ID_LOCALIDAD As Integer
+    Private _ID_COLONIA As String ' Integer
+    Private _ID_LOCALIDAD As String ' Integer
     Private _REFERENCIA As String
     Private _CODIGO_MUNICIPIO As Integer
     Private _CODIGO_ESTADO_SAT As String
     Private _CODIGO_PAIS_SAT_DOMICILIO As String
     Private _CODIGO_POSTAL As String
+    Private _ESTATUS As String
     Private _CODIGO_USUARIO_CREO As String
     Private _FECHA_CREO As Date
     Private _CODIGO_USUARIO_MODIFICO As String
@@ -32,14 +32,7 @@ Public Class Class_CatCfdiFigurasTransporte
 
 #Region "Campos ligados a la tabla"
     Private _Existe As Boolean
-#End Region
-
-#Region "Campos públicos"
-
-#End Region
-
-#Region "Campos privados"
-
+    Private _DOMICILIO_COMPLETO As String
 #End Region
 
 #Region "Campos de sistema"
@@ -54,13 +47,12 @@ Public Class Class_CatCfdiFigurasTransporte
 #End Region
 
 #Region "Propiedades"
-
 #Region "Propiedades Campos de la tabla"
-    Public Property CODIGO_FIGURA_TRANSPORTE() As Integer
+    Public Property CODIGO_FIGURA_TRANSPORTE() As String
         Get
             Return Me._CODIGO_FIGURA_TRANSPORTE
         End Get
-        Set(ByVal Value As Integer)
+        Set(ByVal Value As String)
             Me._CODIGO_FIGURA_TRANSPORTE = Value
         End Set
     End Property
@@ -146,20 +138,20 @@ Public Class Class_CatCfdiFigurasTransporte
         End Set
     End Property
 
-    Public Property ID_COLONIA() As Integer
+    Public Property ID_COLONIA() As String
         Get
             Return Me._ID_COLONIA
         End Get
-        Set(value As Integer)
+        Set(value As String)
             Me._ID_COLONIA = value
         End Set
     End Property
 
-    Public Property ID_LOCALIDAD() As Integer
+    Public Property ID_LOCALIDAD() As String
         Get
             Return Me._ID_LOCALIDAD
         End Get
-        Set(value As Integer)
+        Set(value As String)
             Me._ID_LOCALIDAD = value
         End Set
     End Property
@@ -209,6 +201,15 @@ Public Class Class_CatCfdiFigurasTransporte
         End Set
     End Property
 
+    Public Property ESTATUS() As String
+        Get
+            Return Me._ESTATUS
+        End Get
+        Set(value As String)
+            Me._ESTATUS = value
+        End Set
+    End Property
+
     Public Property CODIGO_USUARIO_CREO() As String
         Get
             Return Me._CODIGO_USUARIO_CREO
@@ -253,25 +254,22 @@ Public Class Class_CatCfdiFigurasTransporte
             Return Me._Existe
         End Get
     End Property
-#End Region
 
-#Region "Propiedades públicos"
-
-#End Region
-
-#Region "Propiedades de campos privados"
-
+    Public ReadOnly Property DOMICILIO_COMPLETO() As String
+        Get
+            Return Me._DOMICILIO_COMPLETO
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades de campos de sistema"
-
-    Public Overrides ReadOnly Property Nombre_Catalogo() As String
+    Public ReadOnly Property Nombre_Catalogo() As String
         Get
             Return Me._Nombre_Catalogo
         End Get
     End Property
 
-    Public Overrides Property Nombre_Reporte() As String
+    Public Property Nombre_Reporte() As String
         Get
             Return Me._Nombre_Reporte
         End Get
@@ -284,7 +282,6 @@ Public Class Class_CatCfdiFigurasTransporte
 #End Region
 
 #Region "Constructor y destructor"
-
     Public Sub New()
         Me._Nombre_Catalogo = "CFDI_CAT_FIGURAS_TRANSPORTE"
         Me._Nombre_Reporte = "RPT_CATALOGO_CFDI_FIGURAS_TRANSPORTE"
@@ -292,7 +289,7 @@ Public Class Class_CatCfdiFigurasTransporte
         Me._Conexion.ConnectionString = Empresa_Sistema.conexion
         Me._QuerySelect = "Select * From CFDI_CAT_FIGURAS_TRANSPORTE"
         Me._QueryOrder = " Order by NOMBRE_FIGURA_TRANSPORTE"
-    End Sub                                                         'Inicializa al objeto.
+    End Sub
 
     Public Sub New(ByVal sCodigoFiguraTransporte As String)
         Me.New()
@@ -300,7 +297,6 @@ Public Class Class_CatCfdiFigurasTransporte
             Me._CODIGO_FIGURA_TRANSPORTE = sCodigoFiguraTransporte
             If Me.Consultar = True Then
                 Me._Existe = True
-
             End If
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "New", ex)
@@ -313,13 +309,9 @@ Public Class Class_CatCfdiFigurasTransporte
     End Sub
 #End Region
 
-#Region "Opciones"
-
-#End Region
-
 #Region "Métodos y procedimientos"
-
-    Public Overrides Function Insertar() As Boolean
+    Public Function Grabar(ByVal sAccion As String) As Boolean
+        Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -329,9 +321,9 @@ Public Class Class_CatCfdiFigurasTransporte
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_CFDI_CAT_FIGURAS_TRANSPORTE_GRABA"
 
-            sqlParametro = .Parameters.Add("@CODIGO_FIGURA_TRANSPORTE", SqlDbType.Int) : sqlParametro.Value = CInt(Me._CODIGO_FIGURA_TRANSPORTE) : sqlParametro.Direction = ParameterDirection.InputOutput
+            sqlParametro = .Parameters.Add("@CODIGO_FIGURA_TRANSPORTE", SqlDbType.Int) : sqlParametro.Value = Me._CODIGO_FIGURA_TRANSPORTE : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@NOMBRE_FIGURA_TRANSPORTE", SqlDbType.NVarChar, 254) : sqlParametro.Value = Me._NOMBRE_FIGURA_TRANSPORTE.ToUpper
-            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus
+            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_FIGURA_TRANSPORTE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_FIGURA_TRANSPORTE.ToString.ToUpper
             sqlParametro = .Parameters.Add("@RFC", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._RFC.ToString.ToUpper
             sqlParametro = .Parameters.Add("@NUMERO_LICENCIA", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._NUMERO_LICENCIA.ToString.ToUpper
@@ -351,14 +343,17 @@ Public Class Class_CatCfdiFigurasTransporte
             sqlParametro = .Parameters.Add("@FECHA_CREO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CREO
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_MODIFICO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_USUARIO_MODIFICO)
             sqlParametro = .Parameters.Add("@FECHA_MODIFICO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_MODIFICO
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "INSERTAR"
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
                 bResultado = True
-                Me._CODIGO_FIGURA_TRANSPORTE = "" & .Parameters("@CODIGO_FIGURA_TRANSPORTE").Value.ToString
+                If sAccion = "INSERTAR" Then
+                    Me._CODIGO_FIGURA_TRANSPORTE = "" & .Parameters("@CODIGO_FIGURA_TRANSPORTE").Value.ToString
+                End If
+
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Insertar", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -368,57 +363,22 @@ Public Class Class_CatCfdiFigurasTransporte
         Return bResultado
     End Function
 
-    Public Overrides Function Actualizar() As Boolean
+    Public Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand
-        Dim sqlParametro As SqlParameter
-        With cmd
-            .Connection = Me._Conexion
-            .CommandTimeout = 0
-            .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_CAT_VEHICULOS_GRABA"
-
-            sqlParametro = .Parameters.Add("@CODIGO_FIGURA_TRANSPORTE", SqlDbType.Int) : sqlParametro.Value = CInt(Me._CODIGO_FIGURA_TRANSPORTE)
-            sqlParametro = .Parameters.Add("@NOMBRE_FIGURA_TRANSPORTE", SqlDbType.NVarChar, 254) : sqlParametro.Value = Me._NOMBRE_FIGURA_TRANSPORTE.ToUpper
-            sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me.Estatus
-            sqlParametro = .Parameters.Add("@CODIGO_TIPO_FIGURA_TRANSPORTE", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_FIGURA_TRANSPORTE.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@RFC", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._RFC.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@NUMERO_LICENCIA", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._NUMERO_LICENCIA.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO", SqlDbType.NVarChar, 40) : sqlParametro.Value = Me._NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT_RESIDENCIA_FISCAL", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT_RESIDENCIA_FISCAL.ToUpper
-            sqlParametro = .Parameters.Add("@CALLE", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._CALLE.ToUpper
-            sqlParametro = .Parameters.Add("@NUMERO_EXTERIOR", SqlDbType.NVarChar, 55) : sqlParametro.Value = Me._NUMERO_EXTERIOR.ToUpper
-            sqlParametro = .Parameters.Add("@NUMERO_INTERIOR", SqlDbType.NVarChar, 55) : sqlParametro.Value = Me._NUMERO_INTERIOR.ToUpper
-            sqlParametro = .Parameters.Add("@ID_COLONIA", SqlDbType.Int) : sqlParametro.Value = CInt(Me._ID_COLONIA)
-            sqlParametro = .Parameters.Add("@ID_LOCALIDAD", SqlDbType.Int) : sqlParametro.Value = CInt(Me._ID_LOCALIDAD)
-            sqlParametro = .Parameters.Add("@REFERENCIA", SqlDbType.NVarChar, 250) : sqlParametro.Value = Me._REFERENCIA.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_MUNICIPIO)
-            sqlParametro = .Parameters.Add("@CODIGO_ESTADO_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ESTADO_SAT.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT_DOMICILIO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT_DOMICILIO.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_POSTAL", SqlDbType.NVarChar, 12) : sqlParametro.Value = Me._CODIGO_POSTAL.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CREO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_USUARIO_CREO)
-            sqlParametro = .Parameters.Add("@FECHA_CREO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CREO
-            sqlParametro = .Parameters.Add("@CODIGO_USUARIO_MODIFICO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_USUARIO_MODIFICO)
-            sqlParametro = .Parameters.Add("@FECHA_MODIFICO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_MODIFICO
-            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = "ACTUALIZAR"
-            Try
-                Me._Conexion.Open()
-                .ExecuteNonQuery()
-                bResultado = True
-            Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Actualizar", ex)
-            Finally
-                Me._Conexion.Close()
-                cmd.Dispose()
-                sqlParametro = Nothing
-            End Try
-        End With
-        Return bResultado
-    End Function
-
-    Public Overrides Function Consultar() As Boolean
-        Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("Select * from CFDI_CAT_FIGURAS_TRANSPORTE Where CODIGO_FIGURA_TRANSPORTE='" & sReplace(Me._CODIGO_FIGURA_TRANSPORTE) & "'", Me._Conexion)
+        Dim cmd As New SqlCommand(
+            "SELECT UPPER( " &
+            "CASE WHEN LEN(F.CALLE)>0 THEN F.CALLE ELSE '' END + CASE WHEN LEN(F.NUMERO_EXTERIOR)>0 THEN ' ' + F.NUMERO_EXTERIOR ELSE '' END + CASE WHEN LEN(F.NUMERO_INTERIOR)>0 THEN ' ' + F.NUMERO_INTERIOR ELSE '' END + " &
+            "CASE WHEN LEN(COL.NOMBRE_COLONIA)>0 THEN ' ' + COL.NOMBRE_COLONIA ELSE '' END + CASE WHEN LEN(LOC.NOMBRE_LOCALIDAD)>0 THEN ' ' + LOC.NOMBRE_LOCALIDAD ELSE '' END + " &
+            "CASE WHEN M.NOMBRE_MUNICIPIO IS NOT NULL THEN ' ' + M.NOMBRE_MUNICIPIO ELSE '' END + ' ' + E.NOMBRE_ESTADO + ' ' + P.NOMBRE_PAIS + ' ' + F.CODIGO_POSTAL) DOMICILIO_COMPLETO," &
+            "F.* " &
+            "FROM CFDI_CAT_FIGURAS_TRANSPORTE F " &
+            "INNER JOIN CAT_PAISES P ON(F.CODIGO_PAIS_SAT_DOMICILIO=P.CODIGO_PAIS_SAT) " &
+            "INNER JOIN SIS_ESTADOS E ON(F.CODIGO_ESTADO_SAT=E.CODIGO_ESTADO_SAT) " &
+            "LEFT JOIN CAT_MUNICIPIOS M ON(F.CODIGO_MUNICIPIO=M.CODIGO_MUNICIPIO) " &
+            "LEFT JOIN CFDI_CAT_COLONIAS COL ON(F.ID_COLONIA=COL.ID_COLONIA) " &
+            "LEFT JOIN CFDI_CAT_LOCALIDADES LOC ON(F.ID_LOCALIDAD=LOC.ID_LOCALIDAD)" &
+            "WHERE F.CODIGO_FIGURA_TRANSPORTE='" & sReplace(Me._CODIGO_FIGURA_TRANSPORTE) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -427,36 +387,36 @@ Public Class Class_CatCfdiFigurasTransporte
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
-                    Me._CODIGO_FIGURA_TRANSPORTE = CType(dReader("CODIGO_FIGURA_TRANSPORTE").ToString, Integer)
+                If dReader.Read = True Then
+                    Me._CODIGO_FIGURA_TRANSPORTE = "" & dReader("CODIGO_FIGURA_TRANSPORTE").ToString
                     Me._NOMBRE_FIGURA_TRANSPORTE = "" & dReader("NOMBRE_FIGURA_TRANSPORTE").ToString
                     Me._CODIGO_TIPO_FIGURA_TRANSPORTE = "" & dReader("CODIGO_TIPO_FIGURA_TRANSPORTE").ToString
                     Me._RFC = "" & dReader("RFC").ToString
                     Me._NUMERO_LICENCIA = "" & dReader("NUMERO_LICENCIA").ToString
-                    Me.Estatus = "" & dReader("ESTATUS")
                     Me._NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO = "" & dReader("NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO").ToString
                     Me._CODIGO_PAIS_SAT_RESIDENCIA_FISCAL = "" & dReader("CODIGO_PAIS_SAT_RESIDENCIA_FISCAL").ToString
                     Me._CALLE = "" & dReader("CALLE").ToString
                     Me._NUMERO_EXTERIOR = "" & dReader("NUMERO_EXTERIOR").ToString
                     Me._NUMERO_INTERIOR = "" & dReader("NUMERO_INTERIOR").ToString
-                    Me._ID_COLONIA = CType(dReader("ID_COLONIA").ToString, Integer)
-                    Me._ID_LOCALIDAD = CType(dReader("ID_LOCALIDAD").ToString, Integer)
+                    Me._ID_COLONIA = "" & dReader("ID_COLONIA").ToString
+                    Me._ID_LOCALIDAD = "" & dReader("ID_LOCALIDAD").ToString
                     Me._REFERENCIA = "" & dReader("REFERENCIA").ToString
                     Me._CODIGO_MUNICIPIO = CType(dReader("CODIGO_MUNICIPIO").ToString, Integer)
                     Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT").ToString
                     Me._CODIGO_PAIS_SAT_DOMICILIO = "" & dReader("CODIGO_PAIS_SAT_DOMICILIO").ToString
                     Me._CODIGO_POSTAL = "" & dReader("CODIGO_POSTAL").ToString
-
+                    Me._ESTATUS = "" & dReader("ESTATUS").ToString
                     Me._CODIGO_USUARIO_CREO = "" & dReader("CODIGO_USUARIO_CREO").ToString
-                    Me._FECHA_CREO = CDate(dReader("FECHA_CREO")).ToString
-                    Me._CODIGO_USUARIO_MODIFICO = "" & dReader("CODIGO_USUARIO_MODIFICO").ToString
+                    Me._FECHA_CREO = CDate(dReader("FECHA_CREO").ToString)
+                    If Not (IsDBNull(dReader("CODIGO_USUARIO_MODIFICO"))) Then Me._CODIGO_USUARIO_MODIFICO = "" & dReader("CODIGO_USUARIO_MODIFICO").ToString
                     If Not (IsDBNull(dReader("FECHA_MODIFICO"))) Then Me._FECHA_MODIFICO = CDate(dReader("FECHA_MODIFICO"))
+                    Me._DOMICILIO_COMPLETO = "" & dReader("DOMICILIO_COMPLETO").ToString
 
                     bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Consultar", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -465,13 +425,14 @@ Public Class Class_CatCfdiFigurasTransporte
         Return bResultado
     End Function
 
-    Public Overrides Function ObtenerElementos() As System.Data.DataTable
+    Public Function ObtenerElementos() As System.Data.DataTable
+        Const sProcedure As String = "ObtenerElementos"
         Dim dTable As New DataTable
         Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         Finally
             da.Dispose()
         End Try
@@ -479,13 +440,14 @@ Public Class Class_CatCfdiFigurasTransporte
     End Function
 
     Public Function ObtenerElementosParaReportes() As System.Data.DataTable
+        Const sProcedure As String = "ObtenerElementosParaReportes"
         Dim dTable As New DataTable
         Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
         Try
             da.Fill(dTable)
             dTable.Rows.Add("-1", "TODOS")
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementosParaReportes", ex)
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         Finally
             da.Dispose()
         End Try
@@ -493,26 +455,29 @@ Public Class Class_CatCfdiFigurasTransporte
     End Function
 
     Public Function ObtenerElementosFiltro(ByVal Filtro As String, ByVal ESTATUS As String) As System.Data.DataTable
+        Const sProcedure As String = "ObtenerElementosFiltro"
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_FIGURA_TRANSPORTE, NOMBRE_FIGURA_TRANSPORTE FROM CFDI_CAT_FIGURAS_TRANSPORTE WHERE NOMBRE_FIGURA_TRANSPORTE LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & ESTATUS & "' ORDER BY NOMBRE_FIGURA_TRANSPORTE", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_FIGURA_TRANSPORTE,NOMBRE_FIGURA_TRANSPORTE " &
+                                     "FROM CFDI_CAT_FIGURAS_TRANSPORTE WHERE NOMBRE_FIGURA_TRANSPORTE LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & ESTATUS & "' ORDER BY NOMBRE_FIGURA_TRANSPORTE", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementosFiltro", ex)
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         Finally
             da.Dispose()
         End Try
         Return dTable
     End Function
 
-    Public Overrides Function BusquedaVisual_PorCodigo() As String
+    Public Function BusquedaVisual_PorCodigo() As String
+        Const sProcedure As String = "BusquedaVisual_PorCodigo"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de Figuras de transporte por codigo."
+        f.Text = "Búsqueda de figuras de transporte por código."
         f.sCampo = "CODIGO_FIGURA_TRANSPORTE"
         f.sOrder = "NOMBRE_FIGURA_TRANSPORTE"
         f.sTable = "CFDI_CAT_FIGURAS_TRANSPORTE"
-        f.sQl = "Select CODIGO_FIGURA_TRANSPORTE,NOMBRE_FIGURA_TRANSPORTE From CFDI_CAT_FIGURAS_TRANSPORTE Where 1=1 And"
+        f.sQl = "SELECT CODIGO_FIGURA_TRANSPORTE,NOMBRE_FIGURA_TRANSPORTE From CFDI_CAT_FIGURAS_TRANSPORTE WHERE 1=1 AND "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -520,19 +485,20 @@ Public Class Class_CatCfdiFigurasTransporte
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorCodigo", ex)
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
         End Try
         Return Resultado
     End Function
 
-    Public Overrides Function BusquedaVisual_PorDescripcion() As String
+    Public Function BusquedaVisual_PorDescripcion() As String
+        Const sProcedure As String = "BusquedaVisual_PorDescripcion"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de Figuras de transporte por nombre."
+        f.Text = "Búsqueda de figuras de transporte por nombre."
         f.sCampo = "NOMBRE_FIGURA_TRANSPORTE"
         f.sOrder = "NOMBRE_FIGURA_TRANSPORTE"
         f.sTable = "CFDI_CAT_FIGURAS_TRANSPORTE"
-        f.sQl = "Select CODIGO_FIGURA_TRANSPORTE,NOMBRE_FIGURA_TRANSPORTE From CFDI_CAT_FIGURAS_TRANSPORTE Where 1=1 And"
+        f.sQl = "SELECT CODIGO_FIGURA_TRANSPORTE,NOMBRE_FIGURA_TRANSPORTE FROM CFDI_CAT_FIGURAS_TRANSPORTE WHERE 1=1 AND "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -540,50 +506,22 @@ Public Class Class_CatCfdiFigurasTransporte
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
         End Try
         Return Resultado
     End Function
 
     Public Function CodigoSiguiente() As String
-        Dim Resultado As Integer
+        Const sProcedure As String = "CodigoSiguiente"
+        Dim Resultado As String = ""
         Try
             Dim sql As New Class_find("SELECT ISNULL(MAX(CODIGO_FIGURA_TRANSPORTE),0) FROM CFDI_CAT_FIGURAS_TRANSPORTE")
-            Resultado = CType(sql.Result1, Integer) + 1
+            Resultado = (CType(sql.Result1, Integer) + 1).ToString
         Catch ex As Exception
-            HandleError(Me.Nombre_Catalogo, "CodigoSiguiente", ex)
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
         End Try
         Return Resultado
     End Function
-#End Region
-
-#Region "Eventos de objetos"
-
-
-#Region "Eventos de la lista de elementos"
-
-#End Region
-
-#Region " Eventos de TxtFiltro"
-
-#End Region
-
-#Region "Eventos Genericos"
-
-#End Region
-
-
-#Region "Keydown específicos"
-
-
-#End Region
-
-#Region "Validating específicos"
-
-#End Region
-
-
-
 #End Region
 
 End Class
