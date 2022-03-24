@@ -1,4 +1,5 @@
-﻿
+﻿Option Strict On
+
 Imports System.Data.SqlClient
 
 Public Class Class_CatCfdiUbicaciones
@@ -18,8 +19,8 @@ Public Class Class_CatCfdiUbicaciones
     Private _CALLE As String
     Private _NUMERO_EXTERIOR As String
     Private _NUMERO_INTERIOR As String
-    Private _ID_COLONIA As Integer
-    Private _ID_LOCALIDAD As Integer
+    Private _ID_COLONIA As String ' Integer
+    Private _ID_LOCALIDAD As String ' Integer
     Private _REFERENCIA As String
     Private _CODIGO_MUNICIPIO As Integer
     Private _CODIGO_ESTADO_SAT As String
@@ -34,6 +35,7 @@ Public Class Class_CatCfdiUbicaciones
 
 #Region "Campos ligados a la tabla"
     Private _Existe As Boolean
+    Private _DOMICILIO_COMPLETO As String
 #End Region
 
 #Region "Campos de sistema"
@@ -157,20 +159,20 @@ Public Class Class_CatCfdiUbicaciones
         End Set
     End Property
 
-    Public Property ID_COLONIA() As Integer
+    Public Property ID_COLONIA() As String
         Get
             Return Me._ID_COLONIA
         End Get
-        Set(value As Integer)
+        Set(value As String)
             Me._ID_COLONIA = value
         End Set
     End Property
 
-    Public Property ID_LOCALIDAD() As Integer
+    Public Property ID_LOCALIDAD() As String
         Get
             Return Me._ID_LOCALIDAD
         End Get
-        Set(value As Integer)
+        Set(value As String)
             Me._ID_LOCALIDAD = value
         End Set
     End Property
@@ -273,10 +275,15 @@ Public Class Class_CatCfdiUbicaciones
             Return Me._Existe
         End Get
     End Property
+
+    Public ReadOnly Property DOMICILIO_COMPLETO() As String
+        Get
+            Return Me._DOMICILIO_COMPLETO
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades de campos de sistema"
-
     Public ReadOnly Property Nombre_Catalogo() As String
         Get
             Return Me._Nombre_Catalogo
@@ -296,7 +303,6 @@ Public Class Class_CatCfdiUbicaciones
 #End Region
 
 #Region "Constructor y destructor"
-
     Public Sub New()
         Me._Nombre_Catalogo = "CFDI_CAT_UBICACIONES"
         Me._Nombre_Reporte = "RPT_CATALOGO_CFDI_UBICACIONES"
@@ -306,7 +312,7 @@ Public Class Class_CatCfdiUbicaciones
         Me._QueryOrder = " Order by ID_UBICACION"
     End Sub
 
-    Public Sub New(ByVal sCodigoUbicacion As String)
+    Public Sub New(ByVal sCodigoUbicacion As Integer)
         Me.New()
         Try
             Me._CODIGO_UBICACION = sCodigoUbicacion
@@ -345,7 +351,7 @@ Public Class Class_CatCfdiUbicaciones
             sqlParametro = .Parameters.Add("@NOMBRE_REMITENTE_DESTINATARIO", SqlDbType.NVarChar, 254) : sqlParametro.Value = Me._NOMBRE_REMITENTE_DESTINATARIO.ToUpper
             sqlParametro = .Parameters.Add("@NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO", SqlDbType.NVarChar, 40) : sqlParametro.Value = Me._NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT_RESIDENCIA_FISCAL", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT_RESIDENCIA_FISCAL.ToUpper
-            sqlParametro = .Parameters.Add("@DISTANCIA_RECORRIDA", SqlDbType.Decimal) : sqlParametro.Value = valorNumericoD(Me._DISTANCIA_RECORRIDA)
+            sqlParametro = .Parameters.Add("@DISTANCIA_RECORRIDA", SqlDbType.Decimal) : sqlParametro.Value = Me._DISTANCIA_RECORRIDA
             sqlParametro = .Parameters.Add("@CALLE", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._CALLE.ToUpper
             sqlParametro = .Parameters.Add("@NUMERO_EXTERIOR", SqlDbType.NVarChar, 55) : sqlParametro.Value = Me._NUMERO_EXTERIOR.ToUpper
             sqlParametro = .Parameters.Add("@NUMERO_INTERIOR", SqlDbType.NVarChar, 55) : sqlParametro.Value = Me._NUMERO_INTERIOR.ToUpper
@@ -366,7 +372,7 @@ Public Class Class_CatCfdiUbicaciones
                 .ExecuteNonQuery()
                 bResultado = True
                 If sAccion = "INSERTAR" Then
-                    Me._CODIGO_UBICACION = "" & .Parameters("@CODIGO_UBICACION").Value.ToString
+                    Me._CODIGO_UBICACION = CInt("" & .Parameters("@CODIGO_UBICACION").Value.ToString)
                 End If
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, sProcedure, ex)
@@ -383,7 +389,19 @@ Public Class Class_CatCfdiUbicaciones
         Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
 
-        Dim cmd As New SqlCommand("SELECT * FROM CFDI_CAT_UBICACIONES WHERE CODIGO_UBICACION='" & sReplace(Me._CODIGO_UBICACION) & "'", Me._Conexion)
+        Dim cmd As New SqlCommand(
+            "SELECT UPPER( " &
+            "CASE WHEN LEN(U.CALLE)>0 THEN U.CALLE ELSE '' END + CASE WHEN LEN(U.NUMERO_EXTERIOR)>0 THEN ' ' + U.NUMERO_EXTERIOR ELSE '' END + CASE WHEN LEN(U.NUMERO_INTERIOR)>0 THEN ' ' + U.NUMERO_INTERIOR ELSE '' END + " &
+            "CASE WHEN LEN(COL.NOMBRE_COLONIA)>0 THEN ' ' + COL.NOMBRE_COLONIA ELSE '' END + CASE WHEN LEN(LOC.NOMBRE_LOCALIDAD)>0 THEN ' ' + LOC.NOMBRE_LOCALIDAD ELSE '' END + " &
+            "CASE WHEN M.NOMBRE_MUNICIPIO IS NOT NULL THEN ' ' + M.NOMBRE_MUNICIPIO ELSE '' END + ' ' + E.NOMBRE_ESTADO + ' ' + P.NOMBRE_PAIS + ' ' + U.CODIGO_POSTAL) DOMICILIO_COMPLETO," &
+            "U.* " &
+            "FROM CFDI_CAT_UBICACIONES U " &
+            "INNER JOIN CAT_PAISES P ON(U.CODIGO_PAIS_SAT_DOMICILIO=P.CODIGO_PAIS_SAT) " &
+            "INNER JOIN SIS_ESTADOS E ON(U.CODIGO_ESTADO_SAT=E.CODIGO_ESTADO_SAT) " &
+            "LEFT JOIN CAT_MUNICIPIOS M ON(U.CODIGO_MUNICIPIO=M.CODIGO_MUNICIPIO) " &
+            "LEFT JOIN CFDI_CAT_COLONIAS COL ON(U.ID_COLONIA=COL.ID_COLONIA) " &
+            "LEFT JOIN CFDI_CAT_LOCALIDADES LOC ON(U.ID_LOCALIDAD=LOC.ID_LOCALIDAD)" &
+            "WHERE U.CODIGO_UBICACION='" & sReplace(Me._CODIGO_UBICACION.ToString) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
 
         With cmd
@@ -396,7 +414,7 @@ Public Class Class_CatCfdiUbicaciones
                 If dReader.Read = True Then
                     Me._CODIGO_UBICACION = CType(dReader("CODIGO_UBICACION").ToString, Integer)
                     Me._CODIGO_CLIENTE = "" & dReader("CODIGO_CLIENTE").ToString
-                    Me._ESTATUS = "" & dReader("ESTATUS")
+                    Me._ESTATUS = "" & dReader("ESTATUS").ToString
                     Me._TIPO_UBICACION = "" & dReader("TIPO_UBICACION").ToString
                     Me._ID_UBICACION = "" & dReader("ID_UBICACION").ToString
                     Me._RFC_REMITENTE_DESTINATARIO = "" & dReader("RFC_REMITENTE_DESTINATARIO").ToString
@@ -407,18 +425,19 @@ Public Class Class_CatCfdiUbicaciones
                     Me._CALLE = "" & dReader("CALLE").ToString
                     Me._NUMERO_EXTERIOR = "" & dReader("NUMERO_EXTERIOR").ToString
                     Me._NUMERO_INTERIOR = "" & dReader("NUMERO_INTERIOR").ToString
-                    If txtLEN(dReader("ID_COLONIA").ToString) = True Then Me._ID_COLONIA = CType(dReader("ID_COLONIA").ToString, Integer)
-                    If txtLEN(dReader("ID_LOCALIDAD").ToString) = True Then Me._ID_COLONIA = CType(dReader("ID_LOCALIDAD").ToString, Integer)
+                    If txtLEN(dReader("ID_COLONIA").ToString) = True Then Me._ID_COLONIA = "" & dReader("ID_COLONIA").ToString
+                    If txtLEN(dReader("ID_LOCALIDAD").ToString) = True Then Me.ID_LOCALIDAD = "" & dReader("ID_LOCALIDAD").ToString
                     Me._REFERENCIA = "" & dReader("REFERENCIA").ToString
-                    If txtLEN(dReader("CODIGO_MUNICIPIO").ToString) = True Then Me._ID_COLONIA = CType(dReader("CODIGO_MUNICIPIO").ToString, Integer)
+                    If txtLEN(dReader("CODIGO_MUNICIPIO").ToString) = True Then Me._CODIGO_MUNICIPIO = CType(dReader("CODIGO_MUNICIPIO").ToString, Integer)
                     Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT").ToString
                     Me._CODIGO_PAIS_SAT_DOMICILIO = "" & dReader("CODIGO_PAIS_SAT_DOMICILIO").ToString
                     Me._CODIGO_POSTAL = "" & dReader("CODIGO_POSTAL").ToString
                     Me._ESTATUS = "" & dReader("ESTATUS").ToString
                     Me._CODIGO_USUARIO_CREO = "" & dReader("CODIGO_USUARIO_CREO").ToString
                     Me._FECHA_CREO = CDate(dReader("FECHA_CREO").ToString)
-                    Me._CODIGO_USUARIO_MODIFICO = "" & dReader("CODIGO_USUARIO_MODIFICO").ToString
+                    If Not (IsDBNull(dReader("CODIGO_USUARIO_MODIFICO"))) Then Me._CODIGO_USUARIO_MODIFICO = "" & dReader("CODIGO_USUARIO_MODIFICO").ToString
                     If Not (IsDBNull(dReader("FECHA_MODIFICO"))) Then Me._FECHA_MODIFICO = CDate(dReader("FECHA_MODIFICO").ToString)
+                    Me._DOMICILIO_COMPLETO = "" & dReader("DOMICILIO_COMPLETO").ToString
 
                     bResultado = True
                 End If
@@ -522,10 +541,10 @@ Public Class Class_CatCfdiUbicaciones
 
     Public Function CodigoSiguiente() As String
         Const sProcedure As String = "CodigoSiguiente"
-        Dim Resultado As Integer
+        Dim Resultado As String = ""
         Try
             Dim sql As New Class_find("SELECT ISNULL(MAX(CODIGO_UBICACION),0) FROM CFDI_CAT_UBICACIONES")
-            Resultado = CType(sql.Result1, Integer) + 1
+            Resultado = (CType(sql.Result1, Integer) + 1).ToString
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, sProcedure, ex)
         End Try
