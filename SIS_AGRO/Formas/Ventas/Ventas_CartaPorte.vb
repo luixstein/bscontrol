@@ -6,11 +6,11 @@ Public Class Ventas_CartaPorte
     Private FolioVenta As String
 
     Private Enum enumEstados
-        NUEVO
-        GRABADO
+        EDITAR
+        CONSULTAR
     End Enum
 
-    Private oCartaPorte As New Class_CartaPorte
+    Private oCartaPorte As New Class_CartaPorte, oVenta As New Class_Ventas_Global
     Private Estado As enumEstados
 #End Region
 
@@ -60,7 +60,7 @@ Public Class Ventas_CartaPorte
 #Region "Opciones"
     Private Sub tsbNuevo_Click(sender As Object, e As EventArgs) Handles tsbNuevo.Click
         Me.Inicializa()
-        Me.CambiarEstado(enumEstados.NUEVO)
+        Me.CambiarEstado(enumEstados.EDITAR)
     End Sub
 
     Private Sub tsbGrabar_Click(sender As Object, e As EventArgs) Handles tsbGrabar.Click
@@ -77,13 +77,28 @@ Public Class Ventas_CartaPorte
 #Region "Eventos de objetos"
     Private Sub Ventas_CartaPorte_Load(sender As Object, e As EventArgs) Handles Me.Load
         Const sProcedure As String = "Ventas_CartaPorte_Load"
-        'FALTA
         Try
-            Me.cboTransporteInternacional.Items.AddRange(New Object() {"Sí", "No"})
-
             Me.Inicializa()
 
+            Me.cboTransporteInternacional.Items.AddRange(New Object() {"Sí", "No"})
             Me.GridUbicaciones.ComboBox(Me.iGyUbTipo).Items.AddRange(New Object() {"Salida", "Llegada"})
+
+            Me.oVenta = New Class_Ventas_Global(Me.FolioVenta)
+
+            Me.oCartaPorte = New Class_CartaPorte(Me.FolioVenta)
+
+            If Me.oCartaPorte.Existe = True Then
+                Me.Consultar()
+            Else
+                Me.PrecargarEnBaseFactura()
+
+                If Me.oVenta.TIMBRADO_CFDI = "0" And Me.oVenta.ESTATUS_VENTA = "A" Then
+                    Me.CambiarEstado(enumEstados.EDITAR)
+                Else
+                    Me.CambiarEstado(enumEstados.CONSULTAR)
+                End If
+            End If
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -144,18 +159,7 @@ Enter:
                     If oVehiculo.Existe = False Then
                         Me.InicializaVehiculo() : GoTo Buscar : Return
                     Else
-                        Me.txtNombreVehiculo.Text = oVehiculo.NOMBRE_VEHICULO
-                        Me.txtMarca.Text = oVehiculo.MARCA
-                        Me.txtAño.Text = oVehiculo.ANIO
-                        Me.txtPlacaAutotransporte.Text = oVehiculo.PLACA
-                        Me.txtCodigoAutotransporte.Text = oVehiculo.CODIGO_AUTOTRANSPORTE
-                        Dim oAutoTransporte As New Class_CfdiCatConfigAutotransporte(oVehiculo.CODIGO_AUTOTRANSPORTE)
-                        Me.txtNombreAutotransporte.Text = oAutoTransporte.NOMBRE_AUTOTRANSPORTE
-                        Me.txtCodigoPermisoSCT.Text = oVehiculo.CODIGO_PERMISO_SCT
-                        Me.txtNumeroPermisoSCT.Text = oVehiculo.NUMERO_PERMISO_SCT
-                        Me.txtAseguradoraResponsabilidadCivil.Text = oVehiculo.NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL
-                        Me.txtPolizaResposabilidadCivil.Text = oVehiculo.POLIZA_RESPONSABILIDAD_CIVIL
-                        Me.txtPrimaSeguro.Text = oVehiculo.PRIMA_SEGURO
+                        Me.ConsultarVehiculo(oVehiculo)
                     End If
 
                     Me.txtCodigoRemolque1.Focus()
@@ -190,10 +194,7 @@ Enter:
                     If oRemolque.Existe = False Then
                         Me.InicializaRemolque1() : GoTo F6 : Exit Sub
                     Else
-                        Me.txtPlacaRemolque1.Text = oRemolque.PLACA
-                        Me.txtTipoRemolque1.Text = oRemolque.CODIGO_TIPO_REMOLQUE
-                        Dim oTipoRemolque As New Class_CfdiCatTiposRemolques(Me.txtTipoRemolque1.Text)
-                        Me.txtNombreTipoRemolque1.Text = oTipoRemolque.NOMBRE_TIPO_REMOLQUE
+                        Me.ConsultarRemolque1(oRemolque)
                     End If
 
                     txtTAB(e)
@@ -330,25 +331,176 @@ Enter:
             Me.Estado = Estado
 
             Select Case Me.Estado
-                Case enumEstados.NUEVO
+                Case enumEstados.EDITAR
+                    Me.tsbNuevo.Enabled = True
+                    Me.tsbGrabar.Enabled = True
 
-                Case enumEstados.GRABADO
+                    Me.GridUbicaciones.Locked = False
+                    Me.GridMercancias.Locked = False
+                    Me.GridFigurasTransporte.Locked = False
+                    Me.GridPartesTransporte.Locked = False
 
+                    Me.cboTransporteInternacional.Enabled = False
+                    Me.txtCodigoUnidadPeso.Enabled = True
+                    Me.txtCodigoVehiculo.Enabled = True
+                    Me.txtCodigoRemolque1.Enabled = True
+                    Me.txtCodigoRemolque2.Enabled = True
+
+                Case enumEstados.CONSULTAR
+                    Me.tsbNuevo.Enabled = False
+                    Me.tsbGrabar.Enabled = False
+
+                    Me.GridUbicaciones.Locked = True
+                    Me.GridMercancias.Locked = True
+                    Me.GridFigurasTransporte.Locked = True
+                    Me.GridPartesTransporte.Locked = True
+
+                    Me.cboTransporteInternacional.Enabled = False 'Bloqueado siempre de momento
+                    Me.txtCodigoUnidadPeso.Enabled = False
+                    Me.txtCodigoVehiculo.Enabled = False
+                    Me.txtCodigoRemolque1.Enabled = False
+                    Me.txtCodigoRemolque2.Enabled = False
+
+                    'Me.TabControl1.TabPages(1).Enabled = False
             End Select
 
-            'FALTA
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
-    Private Function Consultar() As Boolean
-        Const sProcedure As String = "Consultar"
+    Private Function PrecargarEnBaseFactura() As Boolean
+        Dim bResultado As Boolean = False
+        Const sProcedure As String = "PrecargarEnBaseFactura"
         Try
             'FALTA
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
+
+        Return bResultado
+    End Function
+
+    Private Function Consultar() As Boolean
+        Dim bResultado As Boolean = False
+        Const sProcedure As String = "Consultar"
+        Try
+            'FALTA
+            With Me.oCartaPorte
+                Me.cboTransporteInternacional.Text = .TRANSPORTE_INTERNACIONAL
+
+                Me.txtTotalDistanciaRecorrida.Text = Format(.TOTAL_DISTANCIA_RECORRIDA, "###,##0.00")
+                Me.txtTotalPesoBruto.Text = Format(.PESO_BRUTO_TOTAL, "###,##0.000")
+                Me.txtTotalMercancias.Text = Format(.NUMERO_TOTAL_MERCANCIAS, "###,##0")
+
+                Me.txtCodigoUnidadPeso.Text = .CODIGO_UNIDAD_PESO
+                Me.txtNombreUnidadPeso.Text = New Class_CFD_CatUnidades(.CODIGO_UNIDAD_PESO).NOMBRE_UNIDAD
+
+                Me.txtCodigoVehiculo.Text = .CODIGO_VEHICULO.ToString
+                Dim oVehiculo As New Class_CatVehiculos(.CODIGO_VEHICULO.ToString)
+                Me.ConsultarVehiculo(oVehiculo)
+
+                Me.txtCodigoRemolque1.Text = .CODIGO_REMOLQUE_1
+                Dim oRemolque1 As New Class_CatRemolques(.CODIGO_REMOLQUE_1)
+                Me.ConsultarRemolque1(oRemolque1)
+
+                Me.txtCodigoRemolque2.Text = .CODIGO_REMOLQUE_2
+                Dim oRemolque2 As New Class_CatRemolques(.CODIGO_REMOLQUE_2)
+                Me.ConsultarRemolque1(oRemolque2)
+
+                Dim dTabla As DataTable = Me.oCartaPorte.ObtenerDetalleUbicaciones
+                Me.GridUbicaciones.AutoRedraw = False
+                Me.GridUbicaciones.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
+                For Each dRow As DataRow In dTabla.Rows
+                    Me.GridUbicaciones.AddItem(
+                        dRow("TIPO_UBICACION").ToString & Chr(9) & dRow("CODIGO_UBICACION").ToString & Chr(9) & dRow("NOMBRE_REMITENTE_DESTINATARIO").ToString & Chr(9) & dRow("DISTANCIA_RECORRIDA").ToString & Chr(9) &
+                        dRow("FECHA_HORA_SALIDA_LLEGADA").ToString & Chr(9) & dRow("DOMICILIO_COMPLETO").ToString & Chr(9))
+                Next
+
+                'Me.GridMercancias
+
+                'Me.GridFigurasTransporte
+
+                'Me.GridPartesTransporte
+            End With
+
+            If Me.oVenta.TIMBRADO_CFDI = "0" And Me.oVenta.ESTATUS_VENTA = "A" Then
+                Me.CambiarEstado(enumEstados.EDITAR)
+            Else
+                Me.CambiarEstado(enumEstados.CONSULTAR)
+            End If
+
+            bResultado = True
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        Finally
+            Me.GridUbicaciones.AutoRedraw = True : Me.GridUbicaciones.Refresh()
+            Me.GridMercancias.AutoRedraw = True : Me.GridMercancias.Refresh()
+            Me.GridFigurasTransporte.AutoRedraw = True : Me.GridFigurasTransporte.Refresh()
+            Me.GridPartesTransporte.AutoRedraw = True : Me.GridPartesTransporte.Refresh()
+        End Try
+
+        Return bResultado
+    End Function
+
+    Private Function ConsultarVehiculo(ByVal oVehiculo As Class_CatVehiculos) As Boolean
+        Dim bResultado As Boolean = False
+        Const sProcedure As String = "ConsultarVehiculo"
+        Try
+            Me.txtNombreVehiculo.Text = oVehiculo.NOMBRE_VEHICULO
+            Me.txtMarca.Text = oVehiculo.MARCA
+            Me.txtAño.Text = oVehiculo.ANIO
+            Me.txtPlacaAutotransporte.Text = oVehiculo.PLACA
+            Me.txtCodigoAutotransporte.Text = oVehiculo.CODIGO_AUTOTRANSPORTE
+            Dim oAutoTransporte As New Class_CfdiCatConfigAutotransporte(oVehiculo.CODIGO_AUTOTRANSPORTE)
+            Me.txtNombreAutotransporte.Text = oAutoTransporte.NOMBRE_AUTOTRANSPORTE
+            Me.txtCodigoPermisoSCT.Text = oVehiculo.CODIGO_PERMISO_SCT
+            Me.txtNumeroPermisoSCT.Text = oVehiculo.NUMERO_PERMISO_SCT
+            Me.txtAseguradoraResponsabilidadCivil.Text = oVehiculo.NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL
+            Me.txtPolizaResposabilidadCivil.Text = oVehiculo.POLIZA_RESPONSABILIDAD_CIVIL
+            Me.txtPrimaSeguro.Text = oVehiculo.PRIMA_SEGURO
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Private Function ConsultarRemolque1(ByVal oRemolque As Class_CatRemolques) As Boolean
+        Dim bResultado As Boolean = False
+        Const sProcedure As String = "ConsultarRemolque1"
+        Try
+            Me.txtPlacaRemolque1.Text = oRemolque.PLACA
+            Me.txtTipoRemolque1.Text = oRemolque.CODIGO_TIPO_REMOLQUE
+            Dim oTipoRemolque As New Class_CfdiCatTiposRemolques(Me.txtTipoRemolque1.Text)
+            Me.txtNombreTipoRemolque1.Text = oTipoRemolque.NOMBRE_TIPO_REMOLQUE
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Private Function ConsultarRemolque2(ByVal oRemolque As Class_CatRemolques) As Boolean
+        Dim bResultado As Boolean = False
+        Const sProcedure As String = "ConsultarRemolque2"
+        Try
+            Me.txtPlacaRemolque2.Text = oRemolque.PLACA
+            Me.txtTipoRemolque2.Text = oRemolque.CODIGO_TIPO_REMOLQUE
+            Dim oTipoRemolque As New Class_CfdiCatTiposRemolques(Me.txtTipoRemolque1.Text)
+            Me.txtNombreTipoRemolque2.Text = oTipoRemolque.NOMBRE_TIPO_REMOLQUE
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
     End Function
 
     Private Function Grabar() As Boolean
@@ -364,9 +516,6 @@ Enter:
             If Me.Validar = False Then
                 Return False
             End If
-
-            MsgBox("FALTA")
-            Return False
 
             With Me.oCartaPorte
                 '.ID_CFDI_CARTA_PORTE_GLOBAL = 0
@@ -388,12 +537,18 @@ Enter:
                 .LISTA_FIGURAS_TRANSPORTE = sListaFigurasTransporte
                 .LISTA_FIGURAS_PARTES_TRANSPORTE = sListaPartesTransporte
 
-                Select Case Me.Estado
-                    Case enumEstados.NUEVO
-                        bResultado = .Grabar("INSERTAR")
-                    Case enumEstados.GRABADO
-                        bResultado = .Grabar("ACTUALIZAR")
-                End Select
+                'Select Case Me.Estado
+                '    Case enumEstados.NUEVO
+                '        bResultado = .Grabar("INSERTAR")
+                '    Case enumEstados.GRABADO
+                '        bResultado = .Grabar("ACTUALIZAR")
+                'End Select
+
+                If Me.oCartaPorte.Existe = True Then
+                    bResultado = .Grabar("ACTUALIZAR")
+                Else
+                    bResultado = .Grabar("INSERTAR")
+                End If
 
             End With
         Catch ex As Exception
@@ -409,6 +564,7 @@ Enter:
         Try
             Dim i As Integer = 0, j As Integer = 0
 
+            Me.TabControl1.SelectedIndex = 0 'Por si alguna validación no pasa al menos pase al tab page donde se hizo la validación
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             'Validar que hayan puesto 2 ubicaciones, una origen y destino y la de destino validar que distancia recorrida>0
             Dim oUbicacion As Class_CatCfdiUbicaciones, bUbicacionOrigenEncontrada As Boolean = False, bUbicacionDestinoEncontrada As Boolean = False
@@ -527,15 +683,17 @@ Enter:
 
             If txtLEN(Me.txtCodigoUnidadPeso.Text) = False Then
                 MsgBox("Debe indicar la unidad de peso(va abajo de las mercancias).", MsgBoxStyle.Exclamation, sProcedure)
-                Me.txtNombreUnidadPeso.Text = "" : Return False
+                Me.txtNombreUnidadPeso.Text = "" : Me.txtCodigoUnidadPeso.Focus() : Return False
             Else
                 Dim oUnidadSAT As New Class_CFD_CatUnidades(Me.txtCodigoUnidadPeso.Text)
                 If oUnidadSAT.EXISTE = False Then
                     MsgBox("La unidad de peso indicada no existe.", MsgBoxStyle.Exclamation, sProcedure)
-                    Me.txtNombreUnidadPeso.Text = "" : Return False
+                    Me.txtNombreUnidadPeso.Text = "" : Me.txtCodigoUnidadPeso.Focus() : Return False
                 End If
             End If
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Me.TabControl1.SelectedIndex = 1 'Por si alguna validación no pasa al menos pase al tab page donde se hizo la validación
+
             'Validar vehículo
             If txtLEN(Me.txtCodigoVehiculo.Text) = False Then
                 MsgBox("Debe indicar el vehículo usado.", MsgBoxStyle.Exclamation, sProcedure)
@@ -545,7 +703,7 @@ Enter:
             Dim oVehiculo = New Class_CatVehiculos(Me.txtCodigoVehiculo.Text)
             If oVehiculo.Existe = False Then
                 MsgBox("El vehículo indicado no existe.", MsgBoxStyle.Exclamation, sProcedure)
-                Me.InicializaVehiculo() : Return False
+                Me.InicializaVehiculo() : Me.txtCodigoVehiculo.Focus() : Return False
             End If
 
             If txtLEN(Me.txtCodigoPermisoSCT.Text) = False Then
@@ -595,20 +753,20 @@ Enter:
                 Case "1" 'Significa que debe llevar al menos el remolque #1 y el #2 de forma opcional
                     If txtLEN(Me.txtCodigoRemolque1.Text) = False Then
                         MsgBox("El vehículo indicado debe llevar al menos el remolque #1.", MsgBoxStyle.Exclamation, sProcedure)
-                        Me.InicializaRemolque1() : Return False
+                        Me.InicializaRemolque1() : Me.txtCodigoRemolque1.Focus() : Return False
                     End If
 
                     Dim oRemolque1 As New Class_CatRemolques(Me.txtCodigoRemolque1.Text)
                     If oRemolque1.Existe = False Then
                         MsgBox("El remolque #1 indicado no existe.", MsgBoxStyle.Exclamation, sProcedure)
-                        Me.InicializaRemolque1() : Return False
+                        Me.InicializaRemolque1() : Me.txtCodigoRemolque1.Focus() : Return False
                     End If
 
                     If txtLEN(Me.txtCodigoRemolque2.Text) = True Then
                         Dim oRemolque2 As New Class_CatRemolques(Me.txtCodigoRemolque2.Text)
                         If oRemolque2.Existe = False Then
                             MsgBox("El remolque #2 indicado no existe.", MsgBoxStyle.Exclamation, sProcedure)
-                            Me.InicializaRemolque2() : Return False
+                            Me.InicializaRemolque2() : Me.txtCodigoRemolque2.Focus() : Return False
                         End If
                     End If
 
@@ -622,7 +780,7 @@ Enter:
                         Dim oRemolque1 As New Class_CatRemolques(Me.txtCodigoRemolque1.Text)
                         If oRemolque1.Existe = False Then
                             MsgBox("El remolque #1 indicado no existe.", MsgBoxStyle.Exclamation, sProcedure)
-                            Me.InicializaRemolque1() : Return False
+                            Me.InicializaRemolque1() : Me.txtCodigoRemolque1.Focus() : Return False
                         End If
                     End If
 
@@ -630,7 +788,7 @@ Enter:
                         Dim oRemolque2 As New Class_CatRemolques(Me.txtCodigoRemolque2.Text)
                         If oRemolque2.Existe = False Then
                             MsgBox("El remolque #2 indicado no existe.", MsgBoxStyle.Exclamation, sProcedure)
-                            Me.InicializaRemolque2() : Return False
+                            Me.InicializaRemolque2() : Me.txtCodigoRemolque2.Focus() : Return False
                         End If
                     End If
 
@@ -752,11 +910,14 @@ Enter:
         Try
             Me.GridUbicaciones.DataSource = Nothing
             FG_Grid_Limpiar(Me.GridUbicaciones)
-            Me.GridUbicaciones.Rows = 2
+            Me.GridUbicaciones.Rows = 3
             Me.GridUbicaciones.Cols = 7
             Me.GridUbicaciones.DisplayRowNumber = True
 
             Me.FormateaGridUbicaciones()
+
+            Me.GridUbicaciones.Cell(1, Me.iGyUbTipo).Text = "Salida"
+            Me.GridUbicaciones.Cell(2, Me.iGyUbTipo).Text = "Llegada"
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -914,13 +1075,13 @@ Enter:
                 .Cell(0, Me.iGyFtLicencia).Text = "Licencia"
                 .Cell(0, Me.iGyFtDomicilio).Text = "Domicilio"
 
-                .Column(Me.iGyFtCodigoFigura).Width = 100
-                .Column(Me.iGyFtCodigoTipo).Width = 100
+                .Column(Me.iGyFtCodigoFigura).Width = 60
+                .Column(Me.iGyFtCodigoTipo).Width = 60
                 .Column(Me.iGyFtNombreTipo).Width = 100
                 .Column(Me.iGyFtNombreFigura).Width = 250
                 .Column(Me.iGyFtRFC).Width = 100
-                .Column(Me.iGyFtLicencia).Width = 100
-                .Column(Me.iGyFtDomicilio).Width = 300
+                .Column(Me.iGyFtLicencia).Width = 70
+                .Column(Me.iGyFtDomicilio).Width = 400
 
                 .Column(Me.iGyFtCodigoTipo).Locked = True
                 .Column(Me.iGyFtNombreTipo).Locked = True
@@ -959,7 +1120,6 @@ Enter:
                 .Column(Me.iGyPtNombreParte).Width = 200
 
                 .Column(Me.iGyPtNombreFigura).Locked = True
-                .Column(Me.iGyPtCodigoParte).Locked = True
                 .Column(Me.iGyPtNombreParte).Locked = True
             End With
 
@@ -976,6 +1136,10 @@ Enter:
         Try
             Dim Columna As Integer, Renglon As Integer
             Dim sText As String = "", oUbicacion As Class_CatCfdiUbicaciones
+
+            If Me.GridUbicaciones.Locked = True Then
+                Return
+            End If
 
             Columna = Me.GridUbicaciones.Selection.FirstCol
             Renglon = Me.GridUbicaciones.Selection.FirstRow
@@ -1005,6 +1169,8 @@ Enter_Codigo:
                         Me.GridUbicaciones.Rows += 1
                     End If
 
+                    Me.Totaliza()
+
                 Case Keys.F6
                     Select Case Columna
                         Case Me.iGyUbCodigo
@@ -1016,9 +1182,18 @@ F6_Codigo:
                                 Me.GridUbicaciones.Cell(Renglon, Me.iGyUbCodigo).Text = sText : GoTo Enter_Codigo : Return
                             End If
                     End Select
+
+                Case Keys.F8 ', Keys.Delete-El delete no se considera porque también va borra el valor de la celda donde quede el foco luego de borrar el renglón
+                    If Me.GridUbicaciones.Rows = 2 Then
+                        Me.InicializaGridUbicaciones()
+                    Else
+                        Me.GridUbicaciones.Selection.DeleteByRow()
+                    End If
+
+                    Me.Totaliza()
+
             End Select
 
-            Me.Totaliza()
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -1029,6 +1204,10 @@ F6_Codigo:
         Try
             Dim Columna As Integer, Renglon As Integer
             Dim sText As String = "", oProductoSAT As Class_CFD_CatProductosServicios, oUnidadSAT As Class_CFD_CatUnidades
+
+            If Me.GridMercancias.Locked = True Then
+                Return
+            End If
 
             Columna = Me.GridMercancias.Selection.FirstCol
             Renglon = Me.GridMercancias.Selection.FirstRow
@@ -1078,6 +1257,8 @@ Enter_ClaveUnidad:
                         Me.GridMercancias.Rows += 1
                     End If
 
+                    Me.Totaliza()
+
                 Case Keys.F6
                     Select Case Columna
                         Case Me.iGyMerBienTransportado
@@ -1111,9 +1292,18 @@ F6_ClaveUnidad:
                             End If
 
                     End Select
+
+                Case Keys.F8 ', Keys.Delete-El delete no se considera porque también va borra el valor de la celda donde quede el foco luego de borrar el renglón
+                    If Me.GridMercancias.Rows = 2 Then
+                        Me.InicializaGridMercancias()
+                    Else
+                        Me.GridMercancias.Selection.DeleteByRow()
+                    End If
+
+                    Me.Totaliza()
+
             End Select
 
-            Me.Totaliza()
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -1123,6 +1313,7 @@ F6_ClaveUnidad:
         Const sProcedure As String = "InicializaFiguraTransporte"
         Try
             Me.GridFigurasTransporte.Cell(iRenglon, Me.iGyFtCodigoTipo).Text = ""
+            Me.GridFigurasTransporte.Cell(iRenglon, Me.iGyFtNombreTipo).Text = ""
             Me.GridFigurasTransporte.Cell(iRenglon, Me.iGyFtNombreFigura).Text = ""
             Me.GridFigurasTransporte.Cell(iRenglon, Me.iGyFtRFC).Text = ""
             Me.GridFigurasTransporte.Cell(iRenglon, Me.iGyFtLicencia).Text = ""
@@ -1137,6 +1328,10 @@ F6_ClaveUnidad:
         Try
             Dim Columna As Integer, Renglon As Integer
             Dim sText As String = "", oFigura As Class_CatCfdiFigurasTransporte
+
+            If Me.GridFigurasTransporte.Locked = True Then
+                Return
+            End If
 
             Columna = Me.GridFigurasTransporte.Selection.FirstCol
             Renglon = Me.GridFigurasTransporte.Selection.FirstRow
@@ -1162,6 +1357,10 @@ Enter_Codigo:
                                 Me.GridFigurasTransporte.Cell(Renglon, Me.iGyFtRFC).Text = oFigura.RFC
                                 Me.GridFigurasTransporte.Cell(Renglon, Me.iGyFtLicencia).Text = oFigura.NUMERO_LICENCIA
                                 Me.GridFigurasTransporte.Cell(Renglon, Me.iGyFtDomicilio).Text = oFigura.DOMICILIO_COMPLETO
+
+                                If Me.GridFigurasTransporte.Rows = Renglon + 1 Then
+                                    Me.GridFigurasTransporte.Rows += 1
+                                End If
                             Else
                                 GoTo NoExiste_Codigo : Return
                             End If
@@ -1175,9 +1374,16 @@ F6_Codigo:
                             sText = oFigura.BusquedaVisual_PorDescripcion
 
                             If txtLEN(sText) = True Then
-                                Me.GridFigurasTransporte.Cell(Renglon, Me.iGyFtCodigoTipo).Text = sText : GoTo Enter_Codigo : Return
+                                Me.GridFigurasTransporte.Cell(Renglon, Me.iGyFtCodigoFigura).Text = sText : GoTo Enter_Codigo : Return
                             End If
                     End Select
+
+                Case Keys.F8 ', Keys.Delete-El delete no se considera porque también va borra el valor de la celda donde quede el foco luego de borrar el renglón
+                    If Me.GridFigurasTransporte.Rows = 2 Then
+                        Me.InicializaGridFigurasTransporte()
+                    Else
+                        Me.GridFigurasTransporte.Selection.DeleteByRow()
+                    End If
 
             End Select
 
@@ -1187,19 +1393,17 @@ F6_Codigo:
     End Sub
 
     Private Sub GestionaGridPartesTransporte(ByVal e As System.Windows.Forms.KeyEventArgs)
-        'FALTA
         Const sProcedure As String = "GestionaGridPartesTransporte"
         Try
             Dim Columna As Integer, Renglon As Integer
             Dim sText As String = "", oParteTransporte As Class_CfdiCatPartesTransporte, oFigura As Class_CatCfdiFigurasTransporte
 
-            Columna = Me.GridPartesTransporte.Selection.FirstCol
-            Renglon = Me.GridPartesTransporte.Selection.FirstRow
+            If Me.GridFigurasTransporte.Locked = True Then
+                Return
+            End If
 
-            'Private iGyPtCodigoFigura As Integer = 1
-            'Private iGyPtNombreFigura As Integer = 2
-            'Private iGyPtCodigoParte As Integer = 3
-            'Private iGyPtNombreParte As Integer = 4
+            Columna = Me.GridFigurasTransporte.Selection.FirstCol
+            Renglon = Me.GridFigurasTransporte.Selection.FirstRow
 
             Select Case e.KeyCode
                 Case Keys.Enter
@@ -1210,27 +1414,35 @@ NoExiste_CodigoFigura:
                                 Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtNombreFigura).Text = ""
                                 GoTo F6_CodigoFigura : Return
                             End If
-
+Enter_CodigoFigura:
                             Dim bFiguraEncontrada As Boolean = False
                             For i = 1 To Me.GridFigurasTransporte.Rows - 1
-                                If Me.GridFigurasTransporte.Cell(i, Me.iGyFtCodigoFigura).Text = Me.GridPartesTransporte.Cell(i, Me.iGyPtCodigoFigura).Text Then
+                                If Me.GridFigurasTransporte.Cell(i, Me.iGyFtCodigoFigura).Text = Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtCodigoFigura).Text Then
                                     bFiguraEncontrada = True
-                                    Continue For
+                                    Exit For
                                 End If
                             Next
 
-Enter_CodigoFigura:
                             If bFiguraEncontrada = False Then
-                                MsgBox("Esta figura que indicó en las partes de figuras no esta en la lista de figuras.", MsgBoxStyle.Exclamation, sProcedure)
+                                MsgBox("Esta figura que indicó no esta en la lista de figuras.", MsgBoxStyle.Exclamation, sProcedure)
                                 Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtCodigoFigura).Text = ""
                                 Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtNombreFigura).Text = ""
+                                Me.GridPartesTransporte.Cell(Renglon, 0).SetFocus() 'Para que se quede el focus donde mismo porque con el enter lo va avanzar a la siguiente columna.
                                 Return
                             End If
 
                             oFigura = New Class_CatCfdiFigurasTransporte(Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtCodigoFigura).Text)
 
                             If oFigura.Existe = True Then
-                                Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtNombreFigura).Text = oFigura.NOMBRE_FIGURA_TRANSPORTE
+                                Dim oTipoFigura As New Class_CfdiCatTiposFiguraTransporte(oFigura.CODIGO_TIPO_FIGURA_TRANSPORTE)
+                                If oTipoFigura.VALIDA_PARTE_TRANSPORTE = True Then
+                                    Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtNombreFigura).Text = oFigura.NOMBRE_FIGURA_TRANSPORTE
+                                Else
+                                    MsgBox("Esta figura no necesita que le indique una parte de transporte.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtCodigoFigura).Text = ""
+                                    Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtNombreFigura).Text = ""
+                                    Me.GridPartesTransporte.Cell(Renglon, 0).SetFocus() 'Para que se quede el focus donde mismo porque con el enter lo va avanzar a la siguiente columna.
+                                End If
                             Else
                                 GoTo NoExiste_CodigoFigura : Return
                             End If
@@ -1248,6 +1460,10 @@ Enter_CodigoParte:
                                 Me.GridPartesTransporte.Cell(Renglon, Me.iGyPtNombreParte).Text = oParteTransporte.NOMBRE_PARTE_TRANSPORTE
                             Else
                                 GoTo NoExiste_CodigoParte : Return
+                            End If
+
+                            If Me.GridPartesTransporte.Rows = Renglon + 1 Then
+                                Me.GridPartesTransporte.Rows += 1
                             End If
                     End Select
 
@@ -1272,6 +1488,13 @@ F6_CodigoParte:
                             End If
 
                     End Select
+
+                Case Keys.F8 ', Keys.Delete-El delete no se considera porque también va borra el valor de la celda donde quede el foco luego de borrar el renglón
+                    If Me.GridPartesTransporte.Rows = 2 Then
+                        Me.InicializaGridPartesTransporte()
+                    Else
+                        Me.GridPartesTransporte.Selection.DeleteByRow()
+                    End If
 
             End Select
 
@@ -1323,6 +1546,7 @@ F6_CodigoParte:
             HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
+
 
 #End Region
 

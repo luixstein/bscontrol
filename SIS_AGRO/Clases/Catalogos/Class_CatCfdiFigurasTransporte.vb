@@ -401,7 +401,7 @@ Public Class Class_CatCfdiFigurasTransporte
                     Me._ID_COLONIA = "" & dReader("ID_COLONIA").ToString
                     Me._ID_LOCALIDAD = "" & dReader("ID_LOCALIDAD").ToString
                     Me._REFERENCIA = "" & dReader("REFERENCIA").ToString
-                    Me._CODIGO_MUNICIPIO = CType(dReader("CODIGO_MUNICIPIO").ToString, Integer)
+                    If txtLEN(dReader("CODIGO_MUNICIPIO").ToString) = True Then Me._CODIGO_MUNICIPIO = CType(dReader("CODIGO_MUNICIPIO").ToString, Integer)
                     Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT").ToString
                     Me._CODIGO_PAIS_SAT_DOMICILIO = "" & dReader("CODIGO_PAIS_SAT_DOMICILIO").ToString
                     Me._CODIGO_POSTAL = "" & dReader("CODIGO_POSTAL").ToString
