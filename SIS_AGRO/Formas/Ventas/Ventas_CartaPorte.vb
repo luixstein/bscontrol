@@ -90,6 +90,7 @@ Public Class Ventas_CartaPorte
             If Me.oCartaPorte.Existe = True Then
                 Me.Consultar()
             Else
+                'FALTA probar esto
                 Me.PrecargarEnBaseFactura()
 
                 If Me.oVenta.TIMBRADO_CFDI = "0" And Me.oVenta.ESTATUS_VENTA = "A" Then
@@ -385,7 +386,6 @@ Enter:
         Dim bResultado As Boolean = False
         Const sProcedure As String = "Consultar"
         Try
-            'FALTA
             With Me.oCartaPorte
                 Me.cboTransporteInternacional.Text = .TRANSPORTE_INTERNACIONAL
 
@@ -401,27 +401,55 @@ Enter:
                 Me.ConsultarVehiculo(oVehiculo)
 
                 Me.txtCodigoRemolque1.Text = .CODIGO_REMOLQUE_1
-                Dim oRemolque1 As New Class_CatRemolques(.CODIGO_REMOLQUE_1)
-                Me.ConsultarRemolque1(oRemolque1)
+                If txtLEN(Me.txtCodigoRemolque1.Text) = True Then
+                    Dim oRemolque1 As New Class_CatRemolques(.CODIGO_REMOLQUE_1)
+                    Me.ConsultarRemolque1(oRemolque1)
+                End If
 
                 Me.txtCodigoRemolque2.Text = .CODIGO_REMOLQUE_2
-                Dim oRemolque2 As New Class_CatRemolques(.CODIGO_REMOLQUE_2)
-                Me.ConsultarRemolque1(oRemolque2)
+                If txtLEN(Me.txtCodigoRemolque2.Text) = True Then
+                    Dim oRemolque2 As New Class_CatRemolques(.CODIGO_REMOLQUE_2)
+                    Me.ConsultarRemolque2(oRemolque2)
+                End If
 
-                Dim dTabla As DataTable = Me.oCartaPorte.ObtenerDetalleUbicaciones
+                'iGyUbTipo,iGyUbCodigo,iGyUbNombre,iGyUbDistanciaRecorrida,iGyUbFechaHoraSalidaLlegada,iGyUbDomicilio
+                Dim dtUbicaciones As DataTable = Me.oCartaPorte.ObtenerDetalleUbicaciones
                 Me.GridUbicaciones.AutoRedraw = False
                 Me.GridUbicaciones.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
-                For Each dRow As DataRow In dTabla.Rows
+                For Each dRow As DataRow In dtUbicaciones.Rows
                     Me.GridUbicaciones.AddItem(
                         dRow("TIPO_UBICACION").ToString & Chr(9) & dRow("CODIGO_UBICACION").ToString & Chr(9) & dRow("NOMBRE_REMITENTE_DESTINATARIO").ToString & Chr(9) & dRow("DISTANCIA_RECORRIDA").ToString & Chr(9) &
-                        dRow("FECHA_HORA_SALIDA_LLEGADA").ToString & Chr(9) & dRow("DOMICILIO_COMPLETO").ToString & Chr(9))
+                        Format(CDate(dRow("FECHA_HORA_SALIDA_LLEGADA").ToString), "dd/MM/yyyy HH:mm:ss") & Chr(9) & dRow("DOMICILIO_COMPLETO").ToString & Chr(9))
                 Next
 
-                'Me.GridMercancias
+                'iGyMerBienTransportado,iGyMerDescripcion,iGyMerCantidad,iGyMerClaveUnidad,iGyMerNombreUnidad,iGyMerUnidad,iGyMerPesoEnKG
+                Dim dtMercancias As DataTable = Me.oCartaPorte.ObtenerDetalleMercancias
+                Me.GridMercancias.AutoRedraw = False
+                Me.GridMercancias.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
+                For Each dRow As DataRow In dtMercancias.Rows
+                    Me.GridMercancias.AddItem(
+                        dRow("CODIGO_PRODUCTO_SERVICIO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("CODIGO_UNIDAD").ToString & Chr(9) & dRow("NOMBRE_UNIDAD").ToString & Chr(9) &
+                        dRow("UNIDAD").ToString & Chr(9) & dRow("PESO_EN_KG").ToString & Chr(9))
+                Next
 
-                'Me.GridFigurasTransporte
+                'iGyFtCodigoFigura,iGyFtCodigoTipo,iGyFtNombreTipo,iGyFtNombreFigura,iGyFtRFC,iGyFtLicencia,iGyFtDomicilio
+                Dim dtFiguras As DataTable = Me.oCartaPorte.ObtenerDetalleFiguras
+                Me.GridFigurasTransporte.AutoRedraw = False
+                Me.GridFigurasTransporte.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
+                For Each dRow As DataRow In dtFiguras.Rows
+                    Me.GridFigurasTransporte.AddItem(
+                        dRow("CODIGO_FIGURA_TRANSPORTE").ToString & Chr(9) & dRow("CODIGO_TIPO_FIGURA_TRANSPORTE").ToString & Chr(9) & dRow("NOMBRE_TIPO_FIGURA_TRANSPORTE").ToString & Chr(9) & dRow("NOMBRE_FIGURA_TRANSPORTE").ToString & Chr(9) &
+                        dRow("RFC").ToString & Chr(9) & dRow("NUMERO_LICENCIA").ToString & Chr(9) & dRow("DOMICILIO_COMPLETO").ToString & Chr(9))
+                Next
 
-                'Me.GridPartesTransporte
+                'iGyPtCodigoFigura,iGyPtNombreFigura, iGyPtCodigoParte, iGyPtNombreParte
+                Dim dtPartesFiguras As DataTable = Me.oCartaPorte.ObtenerDetallePartesFiguras
+                Me.GridPartesTransporte.AutoRedraw = False
+                Me.GridPartesTransporte.Rows = 1 'Trae dos porque en docs nuevos se pone un row en blanco, y si se dejan aqui dos agrega a partir del 3 y queda un hueco
+                For Each dRow As DataRow In dtPartesFiguras.Rows
+                    Me.GridPartesTransporte.AddItem(
+                        dRow("CODIGO_FIGURA_TRANSPORTE").ToString & Chr(9) & dRow("NOMBRE_FIGURA_TRANSPORTE").ToString & Chr(9) & dRow("CODIGO_PARTE_TRANSPORTE").ToString & Chr(9) & dRow("NOMBRE_PARTE_TRANSPORTE").ToString & Chr(9))
+                Next
             End With
 
             If Me.oVenta.TIMBRADO_CFDI = "0" And Me.oVenta.ESTATUS_VENTA = "A" Then
@@ -517,6 +545,38 @@ Enter:
                 Return False
             End If
 
+            'CODIGO_UBICACION,FECHA_HORA_SALIDA_LLEGADA,DISTANCIA_RECORRIDA|
+            '"dd/MM/yyyy HH:mm:ss" asi se consulta en el grid la fecha
+            For i = 1 To Me.GridUbicaciones.Rows - 1
+                If txtLEN(Me.GridUbicaciones.Cell(i, Me.iGyUbCodigo).Text) = True Then
+                    sListaUbicaciones &= Me.GridUbicaciones.Cell(i, Me.iGyUbCodigo).Text & "," & Format(CDate(Me.GridUbicaciones.Cell(i, Me.iGyUbFechaHoraSalidaLlegada).Text), "yyyy-dd-MM HH:mm:ss") & "," &
+                                         Me.GridUbicaciones.Cell(i, Me.iGyUbDistanciaRecorrida).Text & "|"
+                End If
+            Next
+
+            'CODIGO_PRODUCTO_SERVICIO,DESCRIPCION,CANTIDAD,CODIGO_UNIDAD,UNIDAD,PESO_EN_KG,VALOR_MERCANCIA,CODIGO_MONEDA_SAT| nota las últimas 2 de momento se pasan en 0 y en blanco respectivamente.
+            For i = 1 To Me.GridMercancias.Rows - 1
+                If txtLEN(Me.GridMercancias.Cell(i, Me.iGyMerBienTransportado).Text) = True Then
+                    sListaMercancias &= Me.GridMercancias.Cell(i, Me.iGyMerBienTransportado).Text & "," & Me.GridMercancias.Cell(i, Me.iGyMerDescripcion).Text & "," & Me.GridMercancias.Cell(i, Me.iGyMerCantidad).Text & "," &
+                                        Me.GridMercancias.Cell(i, Me.iGyMerClaveUnidad).Text & "," & Me.GridMercancias.Cell(i, Me.iGyMerUnidad).Text & "," & Me.GridMercancias.Cell(i, Me.iGyMerPesoEnKG).Text & ",0,|"
+                End If
+            Next
+
+            'CODIGO_FIGURA_TRANSPORTE|
+            For i = 1 To Me.GridFigurasTransporte.Rows - 1
+                If txtLEN(Me.GridFigurasTransporte.Cell(i, Me.iGyFtCodigoFigura).Text) = True Then
+                    sListaFigurasTransporte &= Me.GridFigurasTransporte.Cell(i, Me.iGyFtCodigoFigura).Text & "|"
+                End If
+            Next
+
+            'CODIGO_FIGURA_TRANSPORTE,CODIGO_PARTE_TRANSPORTE|
+            For i = 1 To Me.GridPartesTransporte.Rows - 1
+                If txtLEN(Me.GridPartesTransporte.Cell(i, Me.iGyPtCodigoFigura).Text) = True AndAlso txtLEN(Me.GridPartesTransporte.Cell(i, Me.iGyPtCodigoParte).Text) = True Then
+                    sListaPartesTransporte &= Me.GridPartesTransporte.Cell(i, Me.iGyPtCodigoFigura).Text & "," & Me.GridPartesTransporte.Cell(i, Me.iGyPtCodigoParte).Text & "|"
+                End If
+            Next
+
+
             With Me.oCartaPorte
                 '.ID_CFDI_CARTA_PORTE_GLOBAL = 0
                 .FOLIO_VENTA = Me.FolioVenta
@@ -536,13 +596,6 @@ Enter:
                 .LISTA_MERCANCIAS = sListaMercancias
                 .LISTA_FIGURAS_TRANSPORTE = sListaFigurasTransporte
                 .LISTA_FIGURAS_PARTES_TRANSPORTE = sListaPartesTransporte
-
-                'Select Case Me.Estado
-                '    Case enumEstados.NUEVO
-                '        bResultado = .Grabar("INSERTAR")
-                '    Case enumEstados.GRABADO
-                '        bResultado = .Grabar("ACTUALIZAR")
-                'End Select
 
                 If Me.oCartaPorte.Existe = True Then
                     bResultado = .Grabar("ACTUALIZAR")

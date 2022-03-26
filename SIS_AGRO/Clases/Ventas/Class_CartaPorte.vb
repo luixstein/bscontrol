@@ -367,10 +367,10 @@ Public Class Class_CartaPorte
 
         Try
             sSQL = "SELECT R.TIPO_UBICACION,R.CODIGO_UBICACION,U.NOMBRE_REMITENTE_DESTINATARIO,R.DISTANCIA_RECORRIDA,R.FECHA_HORA_SALIDA_LLEGADA, " &
-                    "UPPER( " &
+                    "LTRIM(UPPER( " &
                     "CASE WHEN LEN(U.CALLE)>0 THEN U.CALLE ELSE '' END + CASE WHEN LEN(U.NUMERO_EXTERIOR)>0 THEN ' ' + U.NUMERO_EXTERIOR ELSE '' END + CASE WHEN LEN(U.NUMERO_INTERIOR)>0 THEN ' ' + U.NUMERO_INTERIOR ELSE '' END + " &
                     "CASE WHEN LEN(COL.NOMBRE_COLONIA)>0 THEN ' ' + COL.NOMBRE_COLONIA ELSE '' END + CASE WHEN LEN(LOC.NOMBRE_LOCALIDAD)>0 THEN ' ' + LOC.NOMBRE_LOCALIDAD ELSE '' END + " &
-                    "CASE WHEN M.NOMBRE_MUNICIPIO IS NOT NULL THEN ' ' + M.NOMBRE_MUNICIPIO ELSE '' END + ' ' + E.NOMBRE_ESTADO + ' ' + P.NOMBRE_PAIS + ' ' + U.CODIGO_POSTAL) DOMICILIO_COMPLETO" &
+                    "CASE WHEN M.NOMBRE_MUNICIPIO IS NOT NULL THEN ' ' + M.NOMBRE_MUNICIPIO ELSE '' END + ' ' + E.NOMBRE_ESTADO + ' ' + P.NOMBRE_PAIS + ' ' + U.CODIGO_POSTAL)) DOMICILIO_COMPLETO " &
                     "FROM CFDI_CARTA_PORTE_DETALLE_UBICACIONES R " &
                     "INNER JOIN CFDI_CAT_UBICACIONES U ON(R.CODIGO_UBICACION=U.CODIGO_UBICACION) " &
                     "INNER JOIN CAT_PAISES P ON(U.CODIGO_PAIS_SAT_DOMICILIO=P.CODIGO_PAIS_SAT) " &
@@ -379,11 +379,110 @@ Public Class Class_CartaPorte
                     "LEFT JOIN CFDI_CAT_COLONIAS COL ON(U.ID_COLONIA=COL.ID_COLONIA) " &
                     "LEFT JOIN CFDI_CAT_LOCALIDADES LOC ON(U.ID_LOCALIDAD=LOC.ID_LOCALIDAD) " &
                     "WHERE R.ID_CFDI_CARTA_PORTE_GLOBAL=@ID_CFDI_CARTA_PORTE_GLOBAL " &
-                    "ORDER BY I.ID_CFDI_CARTA_PORTE_DETALLE_UBICACIONES"
-
+                    "ORDER BY R.ID_CFDI_CARTA_PORTE_DETALLE_UBICACIONES"
 
             Using da As New SqlDataAdapter(sSQL, Me._Conexion)
+                da.SelectCommand.CommandType = CommandType.Text
 
+                With da.SelectCommand
+                    .Parameters.Add("@ID_CFDI_CARTA_PORTE_GLOBAL", SqlDbType.Int).Value = Me._ID_CFDI_CARTA_PORTE_GLOBAL
+                End With
+
+                da.Fill(dTabla)
+            End Using
+
+        Catch ex As Exception
+            HandleError(Me.NombreClase, sProcedure, ex)
+        End Try
+
+        Return dTabla
+    End Function
+
+    Public Function ObtenerDetalleMercancias() As DataTable
+        Const sProcedure As String = "ObtenerDetalleMercancias"
+        Dim dTabla As New DataTable("detalle")
+        Dim sSQL As String
+
+        Try
+            'iGyMerBienTransportado,iGyMerDescripcion,iGyMerCantidad,iGyMerClaveUnidad,iGyMerNombreUnidad,iGyMerUnidad,iGyMerPesoEnKG
+            sSQL = "SELECT R.CODIGO_PRODUCTO_SERVICIO,R.DESCRIPCION,R.CANTIDAD,R.CODIGO_UNIDAD,U.NOMBRE_UNIDAD,R.UNIDAD,R.PESO_EN_KG " &
+                    "FROM CFDI_CARTA_PORTE_DETALLE_MERCANCIAS R " &
+                    "INNER JOIN CFDI_CAT_UNIDADES U ON(R.CODIGO_UNIDAD=U.CODIGO_UNIDAD)" &
+                    "WHERE R.ID_CFDI_CARTA_PORTE_GLOBAL=@ID_CFDI_CARTA_PORTE_GLOBAL " &
+                    "ORDER BY R.ID_CFDI_CARTA_PORTE_DETALLE_MERCANCIAS"
+
+            Using da As New SqlDataAdapter(sSQL, Me._Conexion)
+                da.SelectCommand.CommandType = CommandType.Text
+
+                With da.SelectCommand
+                    .Parameters.Add("@ID_CFDI_CARTA_PORTE_GLOBAL", SqlDbType.Int).Value = Me._ID_CFDI_CARTA_PORTE_GLOBAL
+                End With
+
+                da.Fill(dTabla)
+            End Using
+
+        Catch ex As Exception
+            HandleError(Me.NombreClase, sProcedure, ex)
+        End Try
+
+        Return dTabla
+    End Function
+
+    Public Function ObtenerDetalleFiguras() As DataTable
+        Const sProcedure As String = "ObtenerDetalleFiguras"
+        Dim dTabla As New DataTable("detalle")
+        Dim sSQL As String
+
+        Try
+            sSQL = "SELECT R.CODIGO_FIGURA_TRANSPORTE,F.CODIGO_TIPO_FIGURA_TRANSPORTE,TF.NOMBRE_TIPO_FIGURA_TRANSPORTE,F.NOMBRE_FIGURA_TRANSPORTE,F.RFC,F.NUMERO_LICENCIA, " &
+                    "LTRIM(UPPER( " &
+                    "CASE WHEN LEN(F.CALLE)>0 THEN F.CALLE ELSE '' END + CASE WHEN LEN(F.NUMERO_EXTERIOR)>0 THEN ' ' + F.NUMERO_EXTERIOR ELSE '' END + CASE WHEN LEN(F.NUMERO_INTERIOR)>0 THEN ' ' + F.NUMERO_INTERIOR ELSE '' END + " &
+                    "CASE WHEN LEN(COL.NOMBRE_COLONIA)>0 THEN ' ' + COL.NOMBRE_COLONIA ELSE '' END + CASE WHEN LEN(LOC.NOMBRE_LOCALIDAD)>0 THEN ' ' + LOC.NOMBRE_LOCALIDAD ELSE '' END + " &
+                    "CASE WHEN M.NOMBRE_MUNICIPIO IS NOT NULL THEN ' ' + M.NOMBRE_MUNICIPIO ELSE '' END + ' ' + E.NOMBRE_ESTADO + ' ' + P.NOMBRE_PAIS + ' ' + F.CODIGO_POSTAL)) DOMICILIO_COMPLETO " &
+                    "FROM CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE R " &
+                    "INNER JOIN CFDI_CAT_FIGURAS_TRANSPORTE F ON(R.CODIGO_FIGURA_TRANSPORTE=F.CODIGO_FIGURA_TRANSPORTE) " &
+                    "INNER JOIN CFDI_CAT_TIPOS_FIGURAS_TRANSPORTE TF ON(F.CODIGO_TIPO_FIGURA_TRANSPORTE=TF.CODIGO_TIPO_FIGURA_TRANSPORTE) " &
+                    "INNER JOIN CAT_PAISES P ON(F.CODIGO_PAIS_SAT_DOMICILIO=P.CODIGO_PAIS_SAT) " &
+                    "INNER JOIN SIS_ESTADOS E ON(F.CODIGO_ESTADO_SAT=E.CODIGO_ESTADO_SAT) " &
+                    "LEFT JOIN CAT_MUNICIPIOS M ON(F.CODIGO_MUNICIPIO=M.CODIGO_MUNICIPIO) " &
+                    "LEFT JOIN CFDI_CAT_COLONIAS COL ON(F.ID_COLONIA=COL.ID_COLONIA) " &
+                    "LEFT JOIN CFDI_CAT_LOCALIDADES LOC ON(F.ID_LOCALIDAD=LOC.ID_LOCALIDAD) " &
+                    "WHERE R.ID_CFDI_CARTA_PORTE_GLOBAL=@ID_CFDI_CARTA_PORTE_GLOBAL " &
+                    "ORDER BY R.ID_CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE"
+
+            Using da As New SqlDataAdapter(sSQL, Me._Conexion)
+                da.SelectCommand.CommandType = CommandType.Text
+
+                With da.SelectCommand
+                    .Parameters.Add("@ID_CFDI_CARTA_PORTE_GLOBAL", SqlDbType.Int).Value = Me._ID_CFDI_CARTA_PORTE_GLOBAL
+                End With
+
+                da.Fill(dTabla)
+            End Using
+
+        Catch ex As Exception
+            HandleError(Me.NombreClase, sProcedure, ex)
+        End Try
+
+        Return dTabla
+    End Function
+
+    Public Function ObtenerDetallePartesFiguras() As DataTable
+        Const sProcedure As String = "ObtenerDetallePartesFiguras"
+        Dim dTabla As New DataTable("detalle")
+        Dim sSQL As String
+
+        Try
+            'iGyMerBienTransportado,iGyMerDescripcion,iGyMerCantidad,iGyMerClaveUnidad,iGyMerNombreUnidad,iGyMerUnidad,iGyMerPesoEnKG
+            sSQL = "SELECT F.CODIGO_FIGURA_TRANSPORTE,F.NOMBRE_FIGURA_TRANSPORTE,RP.CODIGO_PARTE_TRANSPORTE,PT.NOMBRE_PARTE_TRANSPORTE " &
+                    "FROM CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE_DETALLE_PARTES_TRANSPORTE RP " &
+                    "INNER JOIN CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE RF ON(RP.ID_CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE=RF.ID_CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE) " &
+                    "INNER JOIN CFDI_CAT_FIGURAS_TRANSPORTE F ON(RF.CODIGO_FIGURA_TRANSPORTE=F.CODIGO_FIGURA_TRANSPORTE) " &
+                    "INNER JOIN CFDI_CAT_PARTES_TRANSPORTE PT ON(RP.CODIGO_PARTE_TRANSPORTE=PT.CODIGO_PARTE_TRANSPORTE)" &
+                    "WHERE RF.ID_CFDI_CARTA_PORTE_GLOBAL=@ID_CFDI_CARTA_PORTE_GLOBAL " &
+                    "ORDER BY Rp.ID_CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE_DETALLE_PARTES_TRANSPORTE"
+
+            Using da As New SqlDataAdapter(sSQL, Me._Conexion)
                 da.SelectCommand.CommandType = CommandType.Text
 
                 With da.SelectCommand
