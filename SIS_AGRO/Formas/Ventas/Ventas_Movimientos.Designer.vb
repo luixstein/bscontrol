@@ -161,6 +161,7 @@ Partial Class Ventas_Movimientos
         Me.cboRegimenFiscal = New System.Windows.Forms.ComboBox()
         Me.btnTimbradoTrasladoPrueba = New System.Windows.Forms.Button()
         Me.btnCartaPortePrueba = New System.Windows.Forms.Button()
+        Me.tsbFacturaACartaPorte = New System.Windows.Forms.ToolStripButton()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -214,7 +215,7 @@ Partial Class Ventas_Movimientos
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbCancelar, Me.tsbCotizacionRemision, Me.tsbCotizacionFactura, Me.tsbRemisionVenta, Me.tsbCancelarTimbre, Me.tsbTimbrar, Me.tsbRecuperarXMLPDF, Me.tsbEnviarCorreo, Me.tsbSubirXML, Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbCancelar, Me.tsbCotizacionRemision, Me.tsbCotizacionFactura, Me.tsbRemisionVenta, Me.tsbFacturaACartaPorte, Me.tsbCancelarTimbre, Me.tsbTimbrar, Me.tsbRecuperarXMLPDF, Me.tsbEnviarCorreo, Me.tsbSubirXML, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1290, 27)
@@ -1627,6 +1628,15 @@ Partial Class Ventas_Movimientos
         Me.btnCartaPortePrueba.Text = "CartaPortePrueba"
         Me.btnCartaPortePrueba.UseVisualStyleBackColor = True
         '
+        'tsbFacturaACartaPorte
+        '
+        Me.tsbFacturaACartaPorte.Image = Global.BsControl.My.Resources.Resources._096
+        Me.tsbFacturaACartaPorte.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbFacturaACartaPorte.Name = "tsbFacturaACartaPorte"
+        Me.tsbFacturaACartaPorte.Size = New System.Drawing.Size(120, 24)
+        Me.tsbFacturaACartaPorte.Text = "Fac a Carta Porte"
+        Me.tsbFacturaACartaPorte.Visible = False
+        '
         'Ventas_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1810,4 +1820,5 @@ Partial Class Ventas_Movimientos
     Friend WithEvents cboRegimenFiscal As ComboBox
     Friend WithEvents btnTimbradoTrasladoPrueba As Button
     Friend WithEvents btnCartaPortePrueba As Button
+    Friend WithEvents tsbFacturaACartaPorte As ToolStripButton
 End Class

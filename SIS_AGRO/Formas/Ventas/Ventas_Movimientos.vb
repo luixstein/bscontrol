@@ -178,17 +178,22 @@ Public Class Ventas_Movimientos
     End Sub
 
     Private Sub tsbCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCancelar.Click
-        If Me.oVenta.ESTATUS_VENTA = "A" Or Me.oVenta.ESTATUS_VENTA = "G" Then
-            If Me.CancelarVenta = True Then  'Se cancelo el documento correctamente = true
-                'If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And oDocumento.TIMBRA_DOCUMENTO = True Then 'Si es CFDi
-                If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And txtLEN(Me.oVenta.FOLIO_FISCAL_SAT) = True Then 'Puede ser un documento no timbrable que le subieron un xml externo
-                    Me.oVenta.CancelarTimbre()
+        Const sProcedure As String = "tsbCancelar_Click"
+        Try
+            If Me.oVenta.ESTATUS_VENTA = "A" Or Me.oVenta.ESTATUS_VENTA = "G" Then
+                If Me.CancelarVenta = True Then  'Se cancelo el documento correctamente = true
+                    'If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And oDocumento.TIMBRA_DOCUMENTO = True Then 'Si es CFDi
+                    If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And txtLEN(Me.oVenta.FOLIO_FISCAL_SAT) = True Then 'Puede ser un documento no timbrable que le subieron un xml externo
+                        Me.oVenta.CancelarTimbre()
+                    End If
+                    MsgBox("Movimiento cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
                 End If
-                MsgBox("Movimiento cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+                Me.Consultar()
+                Me.GestionaCambioEstado()
             End If
-            Me.Consultar()
-            Me.GestionaCambioEstado()
-        End If
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Sub tsbCotizacionRemision_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCotizacionRemision.Click
@@ -197,50 +202,73 @@ Public Class Ventas_Movimientos
     End Sub
 
     Private Sub tsbCotizacionFactura_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCotizacionFactura.Click
-        sTipoVenta = "SCF" 'SUSTITUCION DE COTIZACION A FACTURA
+        Const sProcedure As String = "tsbCotizacionFactura_Click"
+        Try
+            sTipoVenta = "SCF" 'SUSTITUCION DE COTIZACION A FACTURA
 
-        Dim oTF As New VentasSeleccionaTipoFactura
-        oTF.ShowDialog()
+            Dim oTF As New VentasSeleccionaTipoFactura
+            oTF.ShowDialog()
 
-        sCodigoDocumentoFacturaExterno = oTF.CboDocumento.SelectedValue.ToString
+            sCodigoDocumentoFacturaExterno = oTF.CboDocumento.SelectedValue.ToString
 
-        If Me.Consultar(True) = True Then
-            Me.EstableceCuentasContables()
-            Me.Totales()
-        End If
+            If Me.Consultar(True) = True Then
+                Me.EstableceCuentasContables()
+                Me.Totales()
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Sub tsbRemisionVenta_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbRemisionVenta.Click
-
-        If oVenta.SiRemisionTieneMovimientosAbonoParaEvitarSustitucion(Me.txtFolio.Text) = True Then 'Aqui aún no se convierte a rem, entonces el folio sale del txtFolio
-            Return
-        End If
-
-        sTipoVenta = "SR" 'SUSTITUCION DE REMISION
-
-        Dim oTF As New VentasSeleccionaTipoFactura
-        oTF.ShowDialog()
-
-        sCodigoDocumentoFacturaExterno = oTF.CboDocumento.SelectedValue.ToString
-
-        If Me.Consultar(True, False) = True Then
-            Me.EstableceCuentasContables()
-            Me.Totales()
-            Me.tsbTimbrar.Visible = False
-
-            If valorNumericoD(Me.lblDescuento.Text) > 0 Then
-                MsgBox("La remisión tenia descuento y este se heredó a la factura, revíse si va afectar el mismo descuento ." & vbCrLf & "(Si factura menos producto que en la remisión original usted debe establecer un descuento menor)", vbInformation, "Advertencia")
+        Const sProcedure As String = "tsbRemisionVenta_Click"
+        Try
+            If oVenta.SiRemisionTieneMovimientosAbonoParaEvitarSustitucion(Me.txtFolio.Text) = True Then 'Aqui aún no se convierte a rem, entonces el folio sale del txtFolio
+                Return
             End If
 
+            sTipoVenta = "SR" 'SUSTITUCION DE REMISION
+
+            Dim oTF As New VentasSeleccionaTipoFactura
+            oTF.ShowDialog()
+
+            sCodigoDocumentoFacturaExterno = oTF.CboDocumento.SelectedValue.ToString
+
+            If Me.Consultar(True, False) = True Then
+                Me.EstableceCuentasContables()
+                Me.Totales()
+                Me.tsbTimbrar.Visible = False
+
+                If valorNumericoD(Me.lblDescuento.Text) > 0 Then
+                    MsgBox("La remisión tenia descuento y este se heredó a la factura, revíse si va afectar el mismo descuento ." & vbCrLf & "(Si factura menos producto que en la remisión original usted debe establecer un descuento menor)", vbInformation, "Advertencia")
+                End If
+            End If
+
+            'No no puse porque entonces no se podrian poner comentarios en uns sustitución
+            'Me.Grid.Row(Me.Grid.Rows - 1).Locked = True  'Para bloquear la edición del último renglón
+
+            'f6 que haria en una sust?, Queryable mejor no haya f6 , si borran de mas y quieren poner, Que le den nuevo y empiezen otra vez
+
+            'Me.Grid.Locked = True
+            Me.Grid.Column(Me.igyCodigo).Locked = True 'No podrán cambiar códigos ni ponerlos con f6
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
+    Private Sub tsbFacturaACartaPorte_Click(sender As Object, e As EventArgs) Handles tsbFacturaACartaPorte.Click
+        'FALTA
+
+        sTipoVenta = "FT" 'FACTURA DE TRASLADO
+
+        If Me.Consultar(True, True) = True Then
+            Me.Totales()
+            Me.tsbTimbrar.Visible = False
         End If
 
-        'No no puse porque entonces no se podrian poner comentarios en uns sustitución
-        'Me.Grid.Row(Me.Grid.Rows - 1).Locked = True  'Para bloquear la edición del último renglón
+        Me.cboMoneda.Text = "XXX"
+        Me.cboMoneda.Enabled = False
 
-        'f6 que haria en una sust?, Queryable mejor no haya f6 , si borran de mas y quieren poner, Que le den nuevo y empiezen otra vez
-
-        'Me.Grid.Locked = True
-        Me.Grid.Column(Me.igyCodigo).Locked = True 'No podrán cambiar códigos ni ponerlos con f6
     End Sub
 
     Private Sub tsbImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimir.Click
@@ -315,6 +343,7 @@ Public Class Ventas_Movimientos
 
 #Region "Eventos de objetos"
     Private Sub Ventas_Movimientos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Const sProcedure As String = "Ventas_Movimientos_Load"
         Try
             Me.DesplegarAlmacenes()
             Me.DesplegarTiposMercados()
@@ -361,7 +390,7 @@ Public Class Ventas_Movimientos
             End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "Ventas_Movimientos_Load", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
@@ -446,10 +475,6 @@ Buscar:
             Me.tpFacturasRemisiones.Enabled = False
         End If
 
-    End Sub
-
-    Private Sub CmbAlmacen_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboAlmacen.SelectedIndexChanged
-        'limpia()
     End Sub
 
     Private Sub DtpFecha_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dpFecha.KeyDown
@@ -800,7 +825,6 @@ Buscar:
         End If
     End Sub
 
-
     Private Sub cboUsoCFDI_KeyDown(sender As Object, e As KeyEventArgs) Handles cboUsoCFDI.KeyDown
         txtTAB(e)
     End Sub
@@ -829,6 +853,7 @@ Buscar:
 
 #Region "Métodos y procedimientos"
     Private Sub Inicializa()
+        Const sProcedure As String = "Inicializa"
         Try
             Me.txtFolio.Text = ""
             Me.TxtReferencia.Text = ""
@@ -915,23 +940,30 @@ Buscar:
             Me.lblUtilidad.Text = "0.00"
             Me.lblPorcentajeUtilidad.Text = "0.00"
 
+            If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
+                Me.cboMoneda.Text = "XXX"
+                Me.cboUsoCFDI.SelectedValue = "P01"
+            End If
+
         Catch ex As Exception
-            HandleError(Me.Name, "Inicializa", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub InicializaGrid()
+        Const sProcedure As String = "InicializaGrid"
         Try
             Me.Grid.DataSource = Nothing
             FG_Grid_Limpiar(Me.Grid)
             Me.Grid.Rows = 2
             Me.FormateaGrid()
         Catch ex As Exception
-            HandleError(Me.Name, "InicializaGrid", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub FormateaGrid()
+        Const sProcedure As String = "FormateaGrid"
         Try
             Me.Grid.AutoRedraw = False
             Me.Grid.Cols = 56
@@ -1259,7 +1291,7 @@ Buscar:
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         Catch ex As Exception
-            HandleError(Me.Name, "FormateaGrid", ex)
+            HandleError(Me.Name, sProcedure, ex)
         Finally
             Me.Grid.AutoRedraw = True
             Me.Grid.Refresh()
@@ -1284,11 +1316,13 @@ Buscar:
     End Sub
 
     Private Sub Cambia_Estado(ByVal pEstado As enumEstados)
+        Const sProcedure As String = "Cambia_Estado"
         Try
             Me.Estado = pEstado
 
             Me.cboTipoRelacionCFDI.Enabled = False
             Me.GridCFDIsRelacionados.Locked = True
+            Me.tsbFacturaACartaPorte.Visible = False
 
             Select Case Me.Estado
                 Case enumEstados.NUEVO
@@ -1478,6 +1512,10 @@ Buscar:
                         Me.tsbRemisionVenta.Visible = False
                     End If
 
+                    If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
+                        Me.tsbFacturaACartaPorte.Visible = True
+                    End If
+
                     'If Me.oVenta.ADDENDA = "1" Then
                     '    Me.btnAgregaAddenda.Visible = False
                     'Else
@@ -1606,7 +1644,7 @@ Buscar:
             Application.DoEvents()
 
         Catch ex As Exception
-            HandleError(Me.Name, "Cambia_Estado", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
@@ -3287,6 +3325,10 @@ CANCELAR:
 
             dTotalSustitucion = 0
 
+            If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
+                Return 'No hay nada que calcular todos los totales serán en 0 aunque si haya importes(el sat si lo permite así en las facturas de traslado)
+            End If
+
             For i = 1 To Me.Grid.Rows - 1
                 If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = False Then
                     Continue For
@@ -3755,7 +3797,7 @@ CANCELAR:
                 Me.CboDocumento.SelectedValue = Me.oVenta.CODIGO_DOCUMENTO
                 Me.oVenta = oVentaLocal 'Se hace de este modo porque si estan en un documento diferente al tecleado al cambiar el combo se inicializa y se pierde la venta cargada
             ElseIf sTipoVenta = "SCR" Then
-                Me.CboDocumento.SelectedValue = "REM" + Plaza.CODIGO_PLAZA.ToString
+                Me.CboDocumento.SelectedValue = "REM" & Plaza.CODIGO_PLAZA.ToString
                 Me.GeneraFolio()
                 Me.oVenta = oVentaLocal
             ElseIf sTipoVenta = "SR" Or sTipoVenta = "SCF" Then
@@ -3764,6 +3806,9 @@ CANCELAR:
                 Me.oVenta = New Class_Ventas_Global(sVenta)
                 'Me.GeneraFolio()'No se ocupa volver a regenerar al cambiar el documento se inicializó y se genero folio
                 'Me.dpVencimiento.Value = Me.oVenta.FECHA_VENCIMIENTO
+            ElseIf sTipoVenta = "FT" Then
+                Me.CboDocumento.SelectedValue = "FT" & Plaza.CODIGO_PLAZA.ToString
+                Me.oVenta = New Class_Ventas_Global(sVenta)
             End If
 
             Me.TxtCliente.Text = Me.oVenta.CODIGO_CLIENTE
@@ -5159,6 +5204,7 @@ busca_serie:
             With Me.cboMoneda
                 .Items.Add("MXN")
                 .Items.Add("USD")
+                .Items.Add("XXX")
                 .Text = "MXN"
                 sMonedaAnterior = "MXN"
             End With

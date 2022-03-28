@@ -3723,6 +3723,29 @@ Public Class Class_Ventas_Global
 
         Return CCP
     End Function
+
+    Public Function ObtenerDetalleParaCartaPorte() As DataTable
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        Try
+            sSQL = "SELECT A.CODIGO_PRODUCTO_SERVICIO,A.DESCRIPCION,R.CANTIDAD,A.CODIGO_UNIDAD,U.NOMBRE_UNIDAD,R.UNIDAD_VENTA " &
+                "FROM VENTA_DETALLE R " &
+                "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+                "INNER JOIN CFDI_CAT_UNIDADES U ON(A.CODIGO_UNIDAD=U.CODIGO_UNIDAD) " &
+                "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' AND R.CODIGO_ARTICULO<>'-' " &
+                "ORDER BY R.ID_VENTA_DETALLE"
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "ObtenerDetalleParaCartaPorte", ex)
+        End Try
+
+        Return dTabla
+    End Function
 #End Region
 
 End Class

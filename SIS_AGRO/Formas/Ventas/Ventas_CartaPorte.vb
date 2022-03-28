@@ -90,7 +90,6 @@ Public Class Ventas_CartaPorte
             If Me.oCartaPorte.Existe = True Then
                 Me.Consultar()
             Else
-                'FALTA probar esto
                 Me.PrecargarEnBaseFactura()
 
                 If Me.oVenta.TIMBRADO_CFDI = "0" And Me.oVenta.ESTATUS_VENTA = "A" Then
@@ -374,9 +373,24 @@ Enter:
         Dim bResultado As Boolean = False
         Const sProcedure As String = "PrecargarEnBaseFactura"
         Try
-            'FALTA
+            'iGyMerBienTransportado,iGyMerDescripcion,iGyMerCantidad,iGyMerClaveUnidad,iGyMerNombreUnidad,iGyMerUnidad,iGyMerPesoEnKG
+            Dim dtMercancias As DataTable = Me.oVenta.ObtenerDetalleParaCartaPorte()
+            Me.GridMercancias.AutoRedraw = False
+            Me.GridMercancias.Rows = 1
+            For Each dRow As DataRow In dtMercancias.Rows
+                Me.GridMercancias.AddItem(
+                        dRow("CODIGO_PRODUCTO_SERVICIO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("CODIGO_UNIDAD").ToString & Chr(9) & dRow("NOMBRE_UNIDAD").ToString & Chr(9) &
+                        dRow("UNIDAD_VENTA").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9)) 'No tenemos PESO_EN_KG pero igualamos de momento con la cantidad
+            Next
+
+            Me.Totaliza()
+
+            bResultado = True
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
+        Finally
+            Me.GridMercancias.AutoRedraw = True : Me.GridMercancias.Refresh()
         End Try
 
         Return bResultado
@@ -532,7 +546,6 @@ Enter:
     End Function
 
     Private Function Grabar() As Boolean
-        'FALTA
         Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
 
@@ -545,12 +558,12 @@ Enter:
                 Return False
             End If
 
-            'CODIGO_UBICACION,FECHA_HORA_SALIDA_LLEGADA,DISTANCIA_RECORRIDA|
+            'CODIGO_UBICACION,TIPO_UBICACION,FECHA_HORA_SALIDA_LLEGADA,DISTANCIA_RECORRIDA|
             '"dd/MM/yyyy HH:mm:ss" asi se consulta en el grid la fecha
             For i = 1 To Me.GridUbicaciones.Rows - 1
                 If txtLEN(Me.GridUbicaciones.Cell(i, Me.iGyUbCodigo).Text) = True Then
-                    sListaUbicaciones &= Me.GridUbicaciones.Cell(i, Me.iGyUbCodigo).Text & "," & Format(CDate(Me.GridUbicaciones.Cell(i, Me.iGyUbFechaHoraSalidaLlegada).Text), "yyyy-dd-MM HH:mm:ss") & "," &
-                                         Me.GridUbicaciones.Cell(i, Me.iGyUbDistanciaRecorrida).Text & "|"
+                    sListaUbicaciones &= Me.GridUbicaciones.Cell(i, Me.iGyUbCodigo).Text & "," & Me.GridUbicaciones.Cell(i, Me.iGyUbTipo).Text & "," &
+                                        Format(CDate(Me.GridUbicaciones.Cell(i, Me.iGyUbFechaHoraSalidaLlegada).Text), "yyyy-dd-MM HH:mm:ss") & "," & Me.GridUbicaciones.Cell(i, Me.iGyUbDistanciaRecorrida).Text & "|"
                 End If
             Next
 
@@ -575,7 +588,6 @@ Enter:
                     sListaPartesTransporte &= Me.GridPartesTransporte.Cell(i, Me.iGyPtCodigoFigura).Text & "," & Me.GridPartesTransporte.Cell(i, Me.iGyPtCodigoParte).Text & "|"
                 End If
             Next
-
 
             With Me.oCartaPorte
                 '.ID_CFDI_CARTA_PORTE_GLOBAL = 0

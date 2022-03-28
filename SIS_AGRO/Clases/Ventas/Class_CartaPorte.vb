@@ -20,6 +20,10 @@ Public Class Class_CartaPorte
     Private _CODIGO_VEHICULO As Integer
     Private _CODIGO_REMOLQUE_1 As String
     Private _CODIGO_REMOLQUE_2 As String
+    Private _CODIGO_USUARIO_CREO As String
+    Private _FECHA_CREO As Date
+    Private _CODIGO_USUARIO_MODIFICO As String
+    Private _FECHA_MODIFICO As Date
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -161,6 +165,31 @@ Public Class Class_CartaPorte
             Me._CODIGO_REMOLQUE_2 = Value
         End Set
     End Property
+
+    Public ReadOnly Property CODIGO_USUARIO_CREO() As String
+        Get
+            Return Me._CODIGO_USUARIO_CREO
+        End Get
+    End Property
+
+    Public ReadOnly Property FECHA_CREO() As Date
+        Get
+            Return Me._FECHA_CREO
+        End Get
+    End Property
+
+    Public ReadOnly Property CODIGO_USUARIO_MODIFICO() As String
+        Get
+            Return Me._CODIGO_USUARIO_MODIFICO
+        End Get
+    End Property
+
+
+    Public ReadOnly Property FECHA_MODIFICO() As Date
+        Get
+            Return Me._FECHA_MODIFICO
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -285,6 +314,7 @@ Public Class Class_CartaPorte
                 sqlParametro = .Parameters.Add("@LISTA_MERCANCIAS", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_MERCANCIAS
                 sqlParametro = .Parameters.Add("@LISTA_FIGURAS_TRANSPORTE", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_FIGURAS_TRANSPORTE
                 sqlParametro = .Parameters.Add("@LISTA_FIGURAS_PARTES_TRANSPORTE", SqlDbType.NVarChar, -1) : sqlParametro.Value = Me._LISTA_FIGURAS_PARTES_TRANSPORTE
+                sqlParametro = .Parameters.Add("@CODIGO_USUARIO_GRABO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
 
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -345,6 +375,10 @@ Public Class Class_CartaPorte
                     Me._CODIGO_VEHICULO = CInt(dReader("CODIGO_VEHICULO"))
                     Me._CODIGO_REMOLQUE_1 = "" & dReader("CODIGO_REMOLQUE_1").ToString()
                     Me._CODIGO_REMOLQUE_2 = "" & dReader("CODIGO_REMOLQUE_2").ToString()
+                    Me._CODIGO_USUARIO_CREO = "" & dReader("CODIGO_USUARIO_CREO").ToString
+                    Me._FECHA_CREO = CDate(dReader("FECHA_CREO").ToString)
+                    If Not (IsDBNull(dReader("CODIGO_USUARIO_MODIFICO"))) Then Me._CODIGO_USUARIO_MODIFICO = "" & dReader("CODIGO_USUARIO_MODIFICO").ToString
+                    If Not (IsDBNull(dReader("FECHA_MODIFICO"))) Then Me._FECHA_MODIFICO = CDate(dReader("FECHA_MODIFICO").ToString)
 
                     bResultado = True
                 End If
