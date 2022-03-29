@@ -25,7 +25,6 @@
 #End Region
 
 #Region "Eventos"
-
     Private Sub ContabilidadElectronicaGeneraXMLs_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
         If e.KeyData = Keys.Shift + Keys.I Then
             Me.chkPruebas.Visible = True
@@ -103,7 +102,7 @@
             ElseIf Me.rbBalanzaComplementaria.Checked = True Then
                 iCodigoTipoArchivo = 3
             End If
-            bResultado = oConta.GeneraXMLBalanzaComprobacion(FechaMesFIN(Me.dtFecha.Value), iCodigoTipoArchivo, Me.CmbEjercicio.SelectedValue, Me.dtFechaModificacionBalanza.Value, Convert.ToInt32(Me.chkPruebas.Checked))
+            bResultado = oConta.GeneraXMLBalanzaComprobacion(FechaMesFIN(Me.dtFecha.Value), iCodigoTipoArchivo, Me.CmbEjercicio.SelectedValue, Me.dtFechaModificacionBalanza.Value, Convert.ToInt32(Me.chkPruebas.Checked), Me.chkPeriodo13.Checked)
 
             If bResultado = True Then
                 Me.lblMsg.Text = "XML GENERADO CORRECTAMENTE"
@@ -125,11 +124,11 @@
             If txtLEN(Me.CmbEjercicio.Text) = False Then
                 MsgBox("Seleccione el ejercicio por favor.", MsgBoxStyle.Exclamation, Me.Name)
                 Me.CmbEjercicio.Focus()
-                Exit Sub
+                Return
             End If
 
             Dim oConta As New Class_Contabilidad_Electronica
-            oConta.ReporteBalanzaComprobacion(FechaMesFIN(Me.dtFecha.Value), 2, Me.CmbEjercicio.SelectedValue, 0)
+            oConta.ReporteBalanzaComprobacion(FechaMesFIN(Me.dtFecha.Value), 2, Me.CmbEjercicio.SelectedValue, 0, Me.chkPeriodo13.Checked)
             oConta = Nothing
 
         Catch ex As Exception

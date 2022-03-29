@@ -301,7 +301,8 @@ Public Class Class_Contabilidad_Electronica
         Return bResultado
     End Function
 
-    Public Function GeneraXMLBalanzaComprobacion(ByVal dFecha As Date, ByVal iCodigoTipoArchivo As Integer, ByVal iCodigoEjercicio As Integer, ByVal dFechaModificacion As Date, ByVal iPruebas As Integer) As Boolean
+    Public Function GeneraXMLBalanzaComprobacion(ByVal dFecha As Date, ByVal iCodigoTipoArchivo As Integer, ByVal iCodigoEjercicio As Integer, ByVal dFechaModificacion As Date, ByVal iPruebas As Integer,
+                                                 ByVal bPeriodo13 As Boolean) As Boolean
         Dim bResultado As Boolean = False
         Const sProcedure As String = "GeneraXMLBalanzaComprobacion"
         Dim bValidaciones As Boolean = False, sValidaciones As String, fElectronica As FacturaElectronica
@@ -322,8 +323,13 @@ Public Class Class_Contabilidad_Electronica
                 Exit Function
             End If
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            sCarpeta = sContabilidadElectronicaCarpeta & "\" & Year(dFecha) & "." & Format(dFecha, "MM").ToUpper
-            sRutaXML = sCarpeta & "\" & Empresa_Sistema.RFC & Year(dFecha) & Format(dFecha, "MM") & oTipo.TERMINACION_NOMBRE_ARCHIVO_XML & ".xml" '"BN.xml"
+            If bPeriodo13 = True Then
+                sCarpeta = sContabilidadElectronicaCarpeta & "\" & Year(dFecha) & "." & "13"
+                sRutaXML = sCarpeta & "\" & Empresa_Sistema.RFC & Year(dFecha) & "13" & oTipo.TERMINACION_NOMBRE_ARCHIVO_XML & ".xml" '"BN.xml"
+            Else
+                sCarpeta = sContabilidadElectronicaCarpeta & "\" & Year(dFecha) & "." & Format(dFecha, "MM").ToUpper
+                sRutaXML = sCarpeta & "\" & Empresa_Sistema.RFC & Year(dFecha) & Format(dFecha, "MM") & oTipo.TERMINACION_NOMBRE_ARCHIVO_XML & ".xml" '"BN.xml"
+            End If
 
             If Len(Dir(sCarpeta, FileAttribute.Directory)) = 0 Then
                 MkDir(sCarpeta)
@@ -341,6 +347,7 @@ Public Class Class_Contabilidad_Electronica
                 parameter = New SqlParameter("@CODIGO_USUARIO", SqlDbType.SmallInt) : parameter.Value = Usuario.Codigo_Usuario : da.SelectCommand.Parameters.Add(parameter)
                 parameter = New SqlParameter("@PRUEBAS", SqlDbType.SmallInt) : parameter.Value = iPruebas : da.SelectCommand.Parameters.Add(parameter)
                 parameter = New SqlParameter("@VALIDACIONES", SqlDbType.NVarChar, 2000) : parameter.Value = "" : parameter.Direction = ParameterDirection.Output : da.SelectCommand.Parameters.Add(parameter)
+                parameter = New SqlParameter("@PERIODO_13", SqlDbType.Char, 1) : parameter.Value = Convert.ToInt32(bPeriodo13).ToString : da.SelectCommand.Parameters.Add(parameter)
 
                 da.Fill(dt)
                 sValidaciones = da.SelectCommand.Parameters("@VALIDACIONES").Value.ToString
@@ -358,9 +365,9 @@ Public Class Class_Contabilidad_Electronica
                       sValidaciones & vbCrLf &
                       "Esta seguro de querer generar el xml de la balanza de todas formas?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, sProcedure) = MsgBoxResult.No Then
 
-                    Me.ReporteBalanzaComprobacion(dFecha, iCodigoTipoArchivo, iCodigoEjercicio, iPruebas)
+                    Me.ReporteBalanzaComprobacion(dFecha, iCodigoTipoArchivo, iCodigoEjercicio, iPruebas, bPeriodo13)
 
-                    Exit Function
+                    Return False
                 End If
             End If
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -450,7 +457,7 @@ Public Class Class_Contabilidad_Electronica
             Process.Start(proceso)
 
             'En la balanza ese muestra el reporte al final siempre.
-            Me.ReporteBalanzaComprobacion(dFecha, iCodigoTipoArchivo, iCodigoEjercicio, iPruebas)
+            Me.ReporteBalanzaComprobacion(dFecha, iCodigoTipoArchivo, iCodigoEjercicio, iPruebas, bPeriodo13)
 
         Catch ex As Exception
             HandleError(Me.NombreClase, sProcedure, ex)
@@ -466,7 +473,7 @@ Public Class Class_Contabilidad_Electronica
         Return bResultado
     End Function
 
-    Public Sub ReporteBalanzaComprobacion(ByVal dFecha As Date, ByVal iCodigoTipoArchivo As Integer, ByVal iCodigoEjercicio As Integer, Optional ByVal iPruebas As Integer = 0)
+    Public Sub ReporteBalanzaComprobacion(ByVal dFecha As Date, ByVal iCodigoTipoArchivo As Integer, ByVal iCodigoEjercicio As Integer, Optional ByVal iPruebas As Integer = 0, Optional ByVal bPeriodo13 As Boolean = False)
         Const sProcedure As String = "ReporteBalanzaComprobacion"
         Try
             Dim Rpt As New ReportDocument
@@ -481,6 +488,7 @@ Public Class Class_Contabilidad_Electronica
             Rpt.SetParameterValue("@CODIGO_USUARIO", Usuario.Codigo_Usuario)
             Rpt.SetParameterValue("@PRUEBAS", "0")
             Rpt.SetParameterValue("@VALIDACIONES", "0")
+            Rpt.SetParameterValue("@PERIODO_13", Convert.ToInt32(bPeriodo13).ToString)
 
             Dim frm As New Reporte(Rpt)
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None

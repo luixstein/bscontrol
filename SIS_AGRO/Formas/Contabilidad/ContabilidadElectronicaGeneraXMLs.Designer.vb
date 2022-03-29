@@ -49,6 +49,7 @@ Partial Class ContabilidadElectronicaGeneraXMLs
         Me.cboTipoSolicitud = New System.Windows.Forms.ComboBox()
         Me.lblDisplayTipoSolicitud = New System.Windows.Forms.Label()
         Me.gbFecha = New System.Windows.Forms.GroupBox()
+        Me.chkPeriodo13 = New System.Windows.Forms.CheckBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.gbOtros.SuspendLayout()
@@ -339,11 +340,22 @@ Partial Class ContabilidadElectronicaGeneraXMLs
         Me.gbFecha.TabIndex = 390
         Me.gbFecha.TabStop = False
         '
+        'chkPeriodo13
+        '
+        Me.chkPeriodo13.AutoSize = True
+        Me.chkPeriodo13.Location = New System.Drawing.Point(12, 223)
+        Me.chkPeriodo13.Name = "chkPeriodo13"
+        Me.chkPeriodo13.Size = New System.Drawing.Size(77, 17)
+        Me.chkPeriodo13.TabIndex = 391
+        Me.chkPeriodo13.Text = "Periodo 13"
+        Me.chkPeriodo13.UseVisualStyleBackColor = True
+        '
         'ContabilidadElectronicaGeneraXMLs
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(687, 417)
+        Me.Controls.Add(Me.chkPeriodo13)
         Me.Controls.Add(Me.gbFecha)
         Me.Controls.Add(Me.gbOtros)
         Me.Controls.Add(Me.chkPruebas)
@@ -393,4 +405,5 @@ Partial Class ContabilidadElectronicaGeneraXMLs
     Friend WithEvents cboTipoSolicitud As ComboBox
     Friend WithEvents lblDisplayTipoSolicitud As Label
     Friend WithEvents gbFecha As GroupBox
+    Friend WithEvents chkPeriodo13 As CheckBox
 End Class
