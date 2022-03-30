@@ -334,6 +334,7 @@ Public Class Class_CatVehiculos
             sqlParametro = .Parameters.Add("@NOMBRE_ASEGURADORA_MEDIO_AMBIENTE", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_ASEGURADORA_MEDIO_AMBIENTE.ToUpper
             sqlParametro = .Parameters.Add("@POLIZA_MEDIO_AMBIENTE", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._POLIZA_MEDIO_AMBIENTE.ToUpper
             sqlParametro = .Parameters.Add("@NOMBRE_ASEGURADORA_CARGA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_ASEGURADORA_CARGA.ToUpper
+            sqlParametro = .Parameters.Add("@POLIZA_CARGA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._POLIZA_CARGA.ToUpper
             sqlParametro = .Parameters.Add("@PRIMA_SEGURO", SqlDbType.Decimal) : sqlParametro.Value = Me._PRIMA_SEGURO.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CREO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_USUARIO_CREO)
             sqlParametro = .Parameters.Add("@FECHA_CREO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CREO

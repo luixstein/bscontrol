@@ -242,7 +242,7 @@ Public Class Class_CfdiCatLocalidades
         f.sCampo = "CODIGO_LOCALIDAD"
         f.sOrder = "NOMBRE_LOCALIDAD"
         f.sTable = "CFDI_CAT_LOCALIDADES"
-        f.sQl = "SELECT CODIGO_LOCALIDAD,NOMBRE_LOCALIDAD FROM CFDI_CAT_LOCALIDADES WHERE 1=1 AND "
+        f.sQl = "SELECT ID_LOCALIDAD,NOMBRE_LOCALIDAD FROM CFDI_CAT_LOCALIDADES WHERE 1=1 AND "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -263,7 +263,7 @@ Public Class Class_CfdiCatLocalidades
         f.sCampo = "NOMBRE_LOCALIDAD"
         f.sOrder = "NOMBRE_LOCALIDAD"
         f.sTable = "CFDI_CAT_LOCALIDADES"
-        f.sQl = "SELECT CODIGO_LOCALIDAD,NOMBRE_LOCALIDAD FROM CFDI_CAT_LOCALIDADES WHERE 1=1 AND "
+        f.sQl = "SELECT ID_LOCALIDAD,NOMBRE_LOCALIDAD FROM CFDI_CAT_LOCALIDADES WHERE 1=1 AND "
         f.Inicia("")
         f.ShowDialog()
         Try

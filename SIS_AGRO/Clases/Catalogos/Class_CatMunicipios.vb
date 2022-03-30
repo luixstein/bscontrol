@@ -204,6 +204,20 @@ Public Class Class_CatMunicipios
         Return dTable
     End Function
 
+    Public Function ObtenerElementosPorEstadoSAT(ByVal sCodigoEstadoSAT As String) As System.Data.DataTable
+        Dim dTable As New DataTable
+        Dim da As New SqlDataAdapter("SELECT M.CODIGO_MUNICIPIO,M.NOMBRE_MUNICIPIO FROM CAT_MUNICIPIOS M INNER JOIN SIS_ESTADOS E ON(M.CODIGO_ESTADO=E.CODIGO_ESTADO) WHERE M.ESTATUS='A' AND E.CODIGO_ESTADO_SAT='" & sReplace(sCodigoEstadoSAT) & "'" & _
+                                     "ORDER BY M.NOMBRE_MUNICIPIO", Me._Conexion)
+        Try
+            da.Fill(dTable)
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
+        Finally
+            da.Dispose()
+        End Try
+        Return dTable
+    End Function
+
 #End Region
 
 End Class

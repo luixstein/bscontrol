@@ -233,7 +233,7 @@ Public Class Class_CfdiCatColonias
         f.sCampo = "CODIGO_COLONIA"
         f.sOrder = "NOMBRE_COLONIA"
         f.sTable = "CFDI_CAT_COLONIAS"
-        f.sQl = "SELECT CODIGO_COLONIA,NOMBRE_COLONIA FROM CFDI_CAT_COLONIAS WHERE 1=1 AND "
+        f.sQl = "SELECT ID_COLONIA,NOMBRE_COLONIA FROM CFDI_CAT_COLONIAS WHERE 1=1 AND "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -254,7 +254,7 @@ Public Class Class_CfdiCatColonias
         f.sCampo = "NOMBRE_COLONIA"
         f.sOrder = "NOMBRE_COLONIA"
         f.sTable = "CFDI_CAT_COLONIAS"
-        f.sQl = "SELECT CODIGO_COLONIA,NOMBRE_COLONIA FROM CFDI_CAT_COLONIAS WHERE 1=1 AND "
+        f.sQl = "SELECT ID_COLONIA,NOMBRE_COLONIA FROM CFDI_CAT_COLONIAS WHERE 1=1 AND "
         f.Inicia("")
         f.ShowDialog()
         Try

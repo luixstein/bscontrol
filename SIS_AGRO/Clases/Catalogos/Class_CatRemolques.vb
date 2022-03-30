@@ -173,7 +173,7 @@ Public Class Class_CatRemolques
 #End Region
 
 #Region "Métodos y procedimientos"
-    Public Function Grabar(ByVal bAgregar As Boolean) As Boolean
+    Public Function Grabar(ByVal sAccion As String) As Boolean
         Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
@@ -182,7 +182,7 @@ Public Class Class_CatRemolques
             .Connection = Me._Conexion
             .CommandTimeout = 0
             .CommandType = CommandType.StoredProcedure
-            .CommandText = "MP_CAT_REMOLQUE_GRABA"
+            .CommandText = "MP_CAT_REMOLQUES_GRABA"
 
             sqlParametro = .Parameters.Add("@CODIGO_REMOLQUE", SqlDbType.Int) : sqlParametro.Value = CInt(Me._CODIGO_REMOLQUE) : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@NOMBRE_REMOLQUE", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._NOMBRE_REMOLQUE.ToUpper
@@ -193,16 +193,15 @@ Public Class Class_CatRemolques
             sqlParametro = .Parameters.Add("@FECHA_CREO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CREO
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_MODIFICO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_USUARIO_MODIFICO)
             sqlParametro = .Parameters.Add("@FECHA_MODIFICO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_MODIFICO
-            sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(bAgregar).ToString
+            sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
-
-                If bAgregar = True Then
+                bResultado = True
+                If sAccion = "INSERTAR" Then
                     Me._CODIGO_REMOLQUE = .Parameters("@CODIGO_REMOLQUE").Value.ToString
                 End If
 
-                bResultado = True
             Catch ex As Exception
                 HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
@@ -323,14 +322,14 @@ Public Class Class_CatRemolques
 
     Public Function CodigoSiguiente() As String
         Const sProcedure As String = "CodigoSiguiente"
-        Dim Resultado As Integer
+        Dim Resultado As String = ""
         Try
-            Dim sql As New Class_find("SELECT ISNULL(MAX(CODIGO_REMOLQUE),0) FROM CAT_REMOLQUES")
-            Resultado = CType(sql.Result1, Integer) + 1
+            Dim sql As New Class_find("SELECT ISNULL(MAX(CODIGO_REMOLQUE),0)+1 FROM CAT_REMOLQUES")
+            Resultado = sql.Result1.ToString
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, sProcedure, ex)
         End Try
-        Return Resultado.ToString
+        Return Resultado
     End Function
 #End Region
 

@@ -506,6 +506,12 @@
     <Compile Include="Formas\Administracion\Sis_administracion_clientes.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_CFDI_Figuras_Transporte.Designer.vb">
+      <DependentUpon>Catalogo_CFDI_Figuras_Transporte.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_CFDI_Figuras_Transporte.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_ClientesCuentasBancarias.designer.vb">
       <DependentUpon>Catalogo_ClientesCuentasBancarias.vb</DependentUpon>
     </Compile>
@@ -516,6 +522,12 @@
       <DependentUpon>Catalogo_Departamentos.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_Departamentos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_CFDI_Ubicaciones.Designer.vb">
+      <DependentUpon>Catalogo_CFDI_Ubicaciones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_CFDI_Ubicaciones.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_Participacion_Socios.designer.vb">
@@ -582,6 +594,12 @@
       <DependentUpon>Catalogo_Propietarios.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_Propietarios.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Remolques.designer.vb">
+      <DependentUpon>Catalogo_Remolques.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Remolques.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Catalogos\Impresion\Cat_Clientes_Impresion.designer.vb">
@@ -1921,11 +1939,17 @@
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_CajasTransportes.resx">
       <DependentUpon>Catalogo_CajasTransportes.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_CFDI_Figuras_Transporte.resx">
+      <DependentUpon>Catalogo_CFDI_Figuras_Transporte.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_ClientesCuentasBancarias.resx">
       <DependentUpon>Catalogo_ClientesCuentasBancarias.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_Departamentos.resx">
       <DependentUpon>Catalogo_Departamentos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_CFDI_Ubicaciones.resx">
+      <DependentUpon>Catalogo_CFDI_Ubicaciones.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_Participacion_Socios.resx">
       <DependentUpon>Catalogo_Participacion_Socios.vb</DependentUpon>
@@ -1959,6 +1983,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_Propietarios.resx">
       <DependentUpon>Catalogo_Propietarios.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Remolques.resx">
+      <DependentUpon>Catalogo_Remolques.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Impresion\Cat_Clientes_Impresion.resx">
       <DependentUpon>Cat_Clientes_Impresion.vb</DependentUpon>

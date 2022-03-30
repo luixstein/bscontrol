@@ -244,8 +244,8 @@ Public Class Class_CfdiCatTiposPermisosSCT
                 dReader = .ExecuteReader()
 
                 If dReader.Read Then
-                    Me._CODIGO_PERMISO_SCT = "" & dReader("CODIGO_PERMISO_SCST").ToString
-                    Me._NOMBRE_PERMISO_SCT = "" & dReader("NOMBRE_PERMISO_SCST").ToString
+                    Me._CODIGO_PERMISO_SCT = "" & dReader("CODIGO_PERMISO_SCT").ToString
+                    Me._NOMBRE_PERMISO_SCT = "" & dReader("NOMBRE_PERMISO_SCT").ToString
                     Me._LISTA_CODIGOS_TRANSPORTE = "" & dReader("LISTA_CODIGOS_TRANSPORTE")
 
                     bResultado = True
