@@ -1036,7 +1036,7 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@ES_VENTA_PUBLICO_GENERAL", SqlDbType.NVarChar, 1) : sqlParametro.Value = "" & Me._ES_VENTA_PUBLICO_GENERAL
             'sqlParametro = .Parameters.Add("@FOLIO_EMBARQUE", SqlDbType.NVarChar, 15) : sqlParametro.Value = "" & Me._FOLIO_EMBARQUE
             sqlParametro = .Parameters.Add("@TOTAL_DOLARES", SqlDbType.Decimal) : sqlParametro.Value = Me._TOTAL_DOLARES
-            sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_METODO_PAGO
+            sqlParametro = .Parameters.Add("@CODIGO_METODO_PAGO", SqlDbType.NVarChar, 2) : sqlParametro.Value = "" & Me._CODIGO_METODO_PAGO
             sqlParametro = .Parameters.Add("@NUMERO_CUENTA_PAGO", SqlDbType.NVarChar, 40) : sqlParametro.Value = "" & Me._NUMERO_CUENTA_PAGO
             sqlParametro = .Parameters.Add("@SUBTOTAL_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._SUBTOTAL_USD
             sqlParametro = .Parameters.Add("@DESCUENTO_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._DESCUENTO_USD
@@ -1058,6 +1058,7 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
             sqlParametro = .Parameters.Add("@RETENCION_ISR_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_USD
             sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL
+            sqlParametro = .Parameters.Add("@TIENE_COMPLEMENTO_CARTA_PORTE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._TIENE_COMPLEMENTO_CARTA_PORTE).ToString
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion 'INSERTAR,ACTUALIZAR
 
             Try

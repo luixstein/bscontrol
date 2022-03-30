@@ -820,7 +820,6 @@ Friend Class cComprobante33
                 If Me.Impuestos.Retenciones.Count > 0 Or Me.Impuestos.Traslados.Count > 0 Then
                     MsgBox("TipoDeComprobante: Se debe omitir el elemento Impuestos cuando el TipoDeComprobante es T, P o N.", vbExclamation, sProcedure) : Return False
                 End If
-
             End If
 
             If Me.TipoDeComprobante = "T" Or Me.TipoDeComprobante = "P" Then

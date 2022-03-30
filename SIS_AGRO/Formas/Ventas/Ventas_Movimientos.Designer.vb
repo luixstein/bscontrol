@@ -35,6 +35,7 @@ Partial Class Ventas_Movimientos
         Me.tsbCotizacionRemision = New System.Windows.Forms.ToolStripButton()
         Me.tsbCotizacionFactura = New System.Windows.Forms.ToolStripButton()
         Me.tsbRemisionVenta = New System.Windows.Forms.ToolStripButton()
+        Me.tsbFacturaACartaPorte = New System.Windows.Forms.ToolStripButton()
         Me.tsbCancelarTimbre = New System.Windows.Forms.ToolStripButton()
         Me.tsbTimbrar = New System.Windows.Forms.ToolStripButton()
         Me.tsbRecuperarXMLPDF = New System.Windows.Forms.ToolStripButton()
@@ -160,8 +161,8 @@ Partial Class Ventas_Movimientos
         Me.lblDisplayRegimenFiscal = New System.Windows.Forms.Label()
         Me.cboRegimenFiscal = New System.Windows.Forms.ComboBox()
         Me.btnTimbradoTrasladoPrueba = New System.Windows.Forms.Button()
-        Me.btnCartaPortePrueba = New System.Windows.Forms.Button()
-        Me.tsbFacturaACartaPorte = New System.Windows.Forms.ToolStripButton()
+        Me.btnCartaPorte = New System.Windows.Forms.Button()
+        Me.chkTieneCartaPorte = New System.Windows.Forms.CheckBox()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -281,6 +282,15 @@ Partial Class Ventas_Movimientos
         Me.tsbRemisionVenta.Size = New System.Drawing.Size(121, 24)
         Me.tsbRemisionVenta.Text = "&Remisión a venta"
         Me.tsbRemisionVenta.Visible = False
+        '
+        'tsbFacturaACartaPorte
+        '
+        Me.tsbFacturaACartaPorte.Image = Global.BsControl.My.Resources.Resources._096
+        Me.tsbFacturaACartaPorte.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbFacturaACartaPorte.Name = "tsbFacturaACartaPorte"
+        Me.tsbFacturaACartaPorte.Size = New System.Drawing.Size(120, 24)
+        Me.tsbFacturaACartaPorte.Text = "Fac a Carta Porte"
+        Me.tsbFacturaACartaPorte.Visible = False
         '
         'tsbCancelarTimbre
         '
@@ -1619,23 +1629,27 @@ Partial Class Ventas_Movimientos
         Me.btnTimbradoTrasladoPrueba.Text = "TimbradoTrasladoPrueba"
         Me.btnTimbradoTrasladoPrueba.UseVisualStyleBackColor = True
         '
-        'btnCartaPortePrueba
+        'btnCartaPorte
         '
-        Me.btnCartaPortePrueba.Location = New System.Drawing.Point(1130, 600)
-        Me.btnCartaPortePrueba.Name = "btnCartaPortePrueba"
-        Me.btnCartaPortePrueba.Size = New System.Drawing.Size(148, 32)
-        Me.btnCartaPortePrueba.TabIndex = 386
-        Me.btnCartaPortePrueba.Text = "CartaPortePrueba"
-        Me.btnCartaPortePrueba.UseVisualStyleBackColor = True
+        Me.btnCartaPorte.Location = New System.Drawing.Point(1001, 187)
+        Me.btnCartaPorte.Name = "btnCartaPorte"
+        Me.btnCartaPorte.Size = New System.Drawing.Size(148, 32)
+        Me.btnCartaPorte.TabIndex = 386
+        Me.btnCartaPorte.Text = "Carta porte"
+        Me.btnCartaPorte.UseVisualStyleBackColor = True
+        Me.btnCartaPorte.Visible = False
         '
-        'tsbFacturaACartaPorte
+        'chkTieneCartaPorte
         '
-        Me.tsbFacturaACartaPorte.Image = Global.BsControl.My.Resources.Resources._096
-        Me.tsbFacturaACartaPorte.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbFacturaACartaPorte.Name = "tsbFacturaACartaPorte"
-        Me.tsbFacturaACartaPorte.Size = New System.Drawing.Size(120, 24)
-        Me.tsbFacturaACartaPorte.Text = "Fac a Carta Porte"
-        Me.tsbFacturaACartaPorte.Visible = False
+        Me.chkTieneCartaPorte.AutoSize = True
+        Me.chkTieneCartaPorte.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTieneCartaPorte.Location = New System.Drawing.Point(1001, 165)
+        Me.chkTieneCartaPorte.Name = "chkTieneCartaPorte"
+        Me.chkTieneCartaPorte.Size = New System.Drawing.Size(158, 20)
+        Me.chkTieneCartaPorte.TabIndex = 387
+        Me.chkTieneCartaPorte.Text = "Tiene carta porte ?"
+        Me.chkTieneCartaPorte.UseVisualStyleBackColor = True
+        Me.chkTieneCartaPorte.Visible = False
         '
         'Ventas_Movimientos
         '
@@ -1643,7 +1657,8 @@ Partial Class Ventas_Movimientos
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(1290, 678)
-        Me.Controls.Add(Me.btnCartaPortePrueba)
+        Me.Controls.Add(Me.chkTieneCartaPorte)
+        Me.Controls.Add(Me.btnCartaPorte)
         Me.Controls.Add(Me.btnTimbradoTrasladoPrueba)
         Me.Controls.Add(Me.lblDisplayRegimenFiscal)
         Me.Controls.Add(Me.cboRegimenFiscal)
@@ -1819,6 +1834,7 @@ Partial Class Ventas_Movimientos
     Friend WithEvents lblDisplayRegimenFiscal As Label
     Friend WithEvents cboRegimenFiscal As ComboBox
     Friend WithEvents btnTimbradoTrasladoPrueba As Button
-    Friend WithEvents btnCartaPortePrueba As Button
+    Friend WithEvents btnCartaPorte As Button
     Friend WithEvents tsbFacturaACartaPorte As ToolStripButton
+    Friend WithEvents chkTieneCartaPorte As CheckBox
 End Class

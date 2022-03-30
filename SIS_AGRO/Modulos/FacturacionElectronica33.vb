@@ -123,7 +123,7 @@ Module FacturacionElectronica33
                 '    End If
             End If
 
-            If oVenta.CODIGO_MONEDA_SAT = "MXN" Then
+            If oVenta.CODIGO_MONEDA_SAT = "MXN" Or oVenta.CODIGO_MONEDA_SAT = "XXX" Then
                 dSubTotal = CDec(oVenta.SUBTOTAL)
                 dDescuento = CDec(oVenta.DESCUENTO)
                 dTotal = CDec(oVenta.TOTAL)
@@ -153,7 +153,11 @@ Module FacturacionElectronica33
                 If oVenta.TIPO_DE_CAMBIO > 0 Then
                     .TipoCambio = FormatTipoCambio(oVenta.TIPO_DE_CAMBIO, False)
                 End If
-                .TipoDeComprobante = "I" 'Ingreso
+                If oVenta.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
+                    .TipoDeComprobante = "T" 'Traslado
+                Else
+                    .TipoDeComprobante = "I" 'Ingreso
+                End If
                 .MetodoPago = oVenta.CODIGO_METODO_PAGO_EVENTO
                 .LugarExpedicion = tPlazaFacturaElectronica.CODIGO_POSTAL
                 .Confirmacion = ""
@@ -283,104 +287,105 @@ Module FacturacionElectronica33
                 ConceptoImpuestoTraslados = New iConceptoImpuestoTraslados33
                 ConceptoImpuestoRetenciones = New iConceptoImpuestoRetenciones33
 
-                '003=IEPS,002=IVA
+                If Cfd.TipoDeComprobante = "I" Then 'Para los tipo I-Ingreso si hay impuestos, pero para los tipo T-Traslados no debe haber.
+                    '003=IEPS,002=IVA
+                    If oVenta.TIENE_IEPS_DESGLOSADO = True Then
+                        If row("GRADO_TOXICIDAD").ToString <> "0" Then '0=no graba ieps, <>0 significa que si graba ieps : 1-4=con alguna tasa,5=Exento(aún siendo exento hay que llenar la base ieps)
+                            'drBASE_IEPS = CDec(row("BASE_IEPS").ToString)
+                            'drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE").ToString)
 
-                If oVenta.TIENE_IEPS_DESGLOSADO = True Then
-                    If row("GRADO_TOXICIDAD").ToString <> "0" Then '0=no graba ieps, <>0 significa que si graba ieps : 1-4=con alguna tasa,5=Exento(aún siendo exento hay que llenar la base ieps)
-                        'drBASE_IEPS = CDec(row("BASE_IEPS").ToString)
-                        'drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE").ToString)
+                            'If oVenta.CODIGO_MONEDA_SAT = "USD" Then
+                            '    drBASE_IEPS = RedondearD(drBASE_IEPS / dTIPO_DE_CAMBIO, 2)
+                            '    drIEPS_IMPORTE = RedondearD(drIEPS_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                            'End If
+
+                            If oVenta.CODIGO_MONEDA_SAT = "MXN" Then
+                                drBASE_IEPS = CDec(row("BASE_IEPS").ToString)
+                                drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE").ToString)
+                            ElseIf oVenta.CODIGO_MONEDA_SAT = "USD" Then
+                                drBASE_IEPS = CDec(row("BASE_IEPS_USD").ToString)
+                                drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE_USD").ToString)
+                            End If
+
+                            If row("GRADO_TOXICIDAD").ToString = "5" Then '5=Ieps Exento
+                                'ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Exento", "", "")
+                                ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.000000"), "003", "Exento", "", "")
+                            Else
+                                'ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
+                                ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.000000"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
+                            End If
+                        End If
+                    End If
+
+                    If row("ID_SIS_CAT_IMPUESTOS").ToString <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
+                        'drBASE_IVA = CDec(row("BASE_IVA").ToString)
+                        'drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE").ToString)
+                        'drRetencionIVA = CDec(row("RETENCION_IVA_IMPORTE").ToString)
 
                         'If oVenta.CODIGO_MONEDA_SAT = "USD" Then
-                        '    drBASE_IEPS = RedondearD(drBASE_IEPS / dTIPO_DE_CAMBIO, 2)
-                        '    drIEPS_IMPORTE = RedondearD(drIEPS_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                        '    drBASE_IVA = RedondearD(drBASE_IVA / dTIPO_DE_CAMBIO, 2)
+                        '    drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                        '    drRetencionIVA = RedondearD(drRetencionIVA / dTIPO_DE_CAMBIO, 2)
                         'End If
 
                         If oVenta.CODIGO_MONEDA_SAT = "MXN" Then
-                            drBASE_IEPS = CDec(row("BASE_IEPS").ToString)
-                            drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE").ToString)
+                            drBASE_IVA = CDec(row("BASE_IVA").ToString)
+                            drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE").ToString)
+                            'drRetencionIVA = CDec(row("RETENCION_IVA_IMPORTE").ToString)
                         ElseIf oVenta.CODIGO_MONEDA_SAT = "USD" Then
-                            drBASE_IEPS = CDec(row("BASE_IEPS_USD").ToString)
-                            drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE_USD").ToString)
+                            drBASE_IVA = CDec(row("BASE_IVA_USD").ToString)
+                            drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE_USD").ToString)
+                            'drRetencionIVA = CDec(row("RETENCION_IVA_IMPORTE_USD").ToString)
                         End If
 
-                        If row("GRADO_TOXICIDAD").ToString = "5" Then '5=Ieps Exento
-                            'ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Exento", "", "")
-                            ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.000000"), "003", "Exento", "", "")
+                        If row("ID_SIS_CAT_IMPUESTOS").ToString = "E" Then 'E=Iva Exento
+                            'ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Exento", "", "")
+                            ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.000000"), "002", "Exento", "", "")
                         Else
-                            'ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
-                            ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.000000"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
+                            'ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
+                            ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.000000"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
+
+                            'If row("ID_SIS_CAT_IMPUESTOS_FLETE").ToString <> "0" Then
+                            '    ConceptoImpuestoRetenciones.Add(Format(drBASE_IVA, "##0.000000"), "002", "Tasa", Format(drRetencionPorcentaje, "0.#00000"), Format(drRetencionIVA, "##0.00"))
+                            'End If
                         End If
+
                     End If
-                End If
 
-                If row("ID_SIS_CAT_IMPUESTOS").ToString <> "N" Then 'N=No grava iva, si es <>N = Si grava iva ya sea al 0,16,Exento(aún siendo exento ó 0 hay que llenar la base iva)
-                    'drBASE_IVA = CDec(row("BASE_IVA").ToString)
-                    'drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE").ToString)
-                    'drRetencionIVA = CDec(row("RETENCION_IVA_IMPORTE").ToString)
+                    If drRETENCION_IVA_IMPORTE > 0 Then
+                        ConceptoImpuestoRetenciones.Add(Format(drRETENCION_IVA_BASE, "##0.00"), "002", "Tasa", Format(drRETENCION_IVA_PORCENTAJE, "0.#00000"), Format(drRETENCION_IVA_IMPORTE, "##0.00")) '002=IVA
+                    End If
 
-                    'If oVenta.CODIGO_MONEDA_SAT = "USD" Then
-                    '    drBASE_IVA = RedondearD(drBASE_IVA / dTIPO_DE_CAMBIO, 2)
-                    '    drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
-                    '    drRetencionIVA = RedondearD(drRetencionIVA / dTIPO_DE_CAMBIO, 2)
+                    If drRETENCION_ISR_IMPORTE > 0 Then
+                        ConceptoImpuestoRetenciones.Add(Format(drRETENCION_ISR_BASE, "##0.00"), "001", "Tasa", Format(drRETENCION_ISR_PORCENTAJE, "0.#00000"), Format(drRETENCION_ISR_IMPORTE, "##0.00")) '001=ISR
+                    End If
+
+                    'If oVenta.IEPS_TOTAL_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
+                    '    If CDec(row("IEPS_PORCENTAJE").ToString) > 0 Then 'Este viene como 6,7,9
+                    '        drBASE_IEPS = CDec(row("BASE_IEPS").ToString)
+                    '        drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE").ToString)
+
+                    '        If oVenta.CODIGO_MONEDA_SAT = "USD" Then
+                    '            drBASE_IEPS = RedondearD(drBASE_IEPS / dTIPO_DE_CAMBIO, 2)
+                    '            drIEPS_IMPORTE = RedondearD(drIEPS_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                    '        End If
+
+                    '        ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
+                    '    End If
                     'End If
 
-                    If oVenta.CODIGO_MONEDA_SAT = "MXN" Then
-                        drBASE_IVA = CDec(row("BASE_IVA").ToString)
-                        drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE").ToString)
-                        'drRetencionIVA = CDec(row("RETENCION_IVA_IMPORTE").ToString)
-                    ElseIf oVenta.CODIGO_MONEDA_SAT = "USD" Then
-                        drBASE_IVA = CDec(row("BASE_IVA_USD").ToString)
-                        drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE_USD").ToString)
-                        'drRetencionIVA = CDec(row("RETENCION_IVA_IMPORTE_USD").ToString)
-                    End If
+                    'If drIMPUESTO_PORCENTAJE > 0 Then
+                    '    drBASE_IVA = CDec(row("BASE_IVA").ToString)
+                    '    drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE").ToString)
 
-                    If row("ID_SIS_CAT_IMPUESTOS").ToString = "E" Then 'E=Iva Exento
-                        'ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Exento", "", "")
-                        ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.000000"), "002", "Exento", "", "")
-                    Else
-                        'ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
-                        ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.000000"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
+                    '    If oVenta.CODIGO_MONEDA_SAT = "USD" Then
+                    '        drBASE_IVA = RedondearD(drBASE_IVA / dTIPO_DE_CAMBIO, 2)
+                    '        drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
+                    '    End If
 
-                        'If row("ID_SIS_CAT_IMPUESTOS_FLETE").ToString <> "0" Then
-                        '    ConceptoImpuestoRetenciones.Add(Format(drBASE_IVA, "##0.000000"), "002", "Tasa", Format(drRetencionPorcentaje, "0.#00000"), Format(drRetencionIVA, "##0.00"))
-                        'End If
-                    End If
-
+                    '    ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
+                    'End If
                 End If
-
-                If drRETENCION_IVA_IMPORTE > 0 Then
-                    ConceptoImpuestoRetenciones.Add(Format(drRETENCION_IVA_BASE, "##0.00"), "002", "Tasa", Format(drRETENCION_IVA_PORCENTAJE, "0.#00000"), Format(drRETENCION_IVA_IMPORTE, "##0.00")) '002=IVA
-                End If
-
-                If drRETENCION_ISR_IMPORTE > 0 Then
-                    ConceptoImpuestoRetenciones.Add(Format(drRETENCION_ISR_BASE, "##0.00"), "001", "Tasa", Format(drRETENCION_ISR_PORCENTAJE, "0.#00000"), Format(drRETENCION_ISR_IMPORTE, "##0.00")) '001=ISR
-                End If
-
-                'If oVenta.IEPS_TOTAL_DESGLOSADO > 0 Then 'Solamente si se le desglosan los ieps se mencionan, si es incluido no(como si no tuviera), por eso se pregunta por el total y no del renglón porque al ser inc si va tener ieps pero no es parte del xml
-                '    If CDec(row("IEPS_PORCENTAJE").ToString) > 0 Then 'Este viene como 6,7,9
-                '        drBASE_IEPS = CDec(row("BASE_IEPS").ToString)
-                '        drIEPS_IMPORTE = CDec(row("IEPS_IMPORTE").ToString)
-
-                '        If oVenta.CODIGO_MONEDA_SAT = "USD" Then
-                '            drBASE_IEPS = RedondearD(drBASE_IEPS / dTIPO_DE_CAMBIO, 2)
-                '            drIEPS_IMPORTE = RedondearD(drIEPS_IMPORTE / dTIPO_DE_CAMBIO, 2)
-                '        End If
-
-                '        ConceptoImpuestoTraslados.Add(Format(drBASE_IEPS, "##0.00"), "003", "Tasa", Format(drIEPS_PORCENTAJE, "0.#00000"), Format(drIEPS_IMPORTE, "##0.00"))
-                '    End If
-                'End If
-
-                'If drIMPUESTO_PORCENTAJE > 0 Then
-                '    drBASE_IVA = CDec(row("BASE_IVA").ToString)
-                '    drIMPUESTO_IMPORTE = CDec(row("IMPUESTO_IMPORTE").ToString)
-
-                '    If oVenta.CODIGO_MONEDA_SAT = "USD" Then
-                '        drBASE_IVA = RedondearD(drBASE_IVA / dTIPO_DE_CAMBIO, 2)
-                '        drIMPUESTO_IMPORTE = RedondearD(drIMPUESTO_IMPORTE / dTIPO_DE_CAMBIO, 2)
-                '    End If
-
-                '    ConceptoImpuestoTraslados.Add(Format(drBASE_IVA, "##0.00"), "002", "Tasa", Format(drIMPUESTO_PORCENTAJE, "0.#00000"), Format(drIMPUESTO_IMPORTE, "##0.00"))
-                'End If
 
                 'Format(drPrecio, "##0." & CerosEnCadena(Empresa_Sistema.DECIMALES_PRECIO))
                 Cfd.Conceptos.Add(row("CODIGO_PRODUCTO_SERVICIO").ToString, row("CODIGO_ARTICULO").ToString,
