@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="TabPage2.Locked" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="GridMercancias.CheckedImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -153,6 +150,9 @@
         AACP/////4AAAI//////gAAAiIiIiIiAAAA=
 </value>
   </data>
+  <metadata name="TabPage2.Locked" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <data name="GridPartesTransporte.CheckedImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         Qk3OAAAAAAAAAHYAAAAoAAAACwAAAAsAAAABAAQAAAAAAAAAAADEDgAAxA4AABAAAAAQAAAAAAAA/wAA
@@ -212,6 +212,17 @@
         KCQajaLRaJBv22RpeJ7H+XkQa2vrWFp6Aa1WS9rpxvV1iYDeYGNjk6ViACoKsdlspFg+BuM4DrFYioDe
         kvd+xcnJB2xt7bIu0O8cCATmO/EgCnI6nTCZTDg7+0hAr6DT6WA0GsnNDlaPe+vTokZBEGAwGOajzkmj
         +QPmZ8OJHrju0gAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="tsbImprimir.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAETSURBVFhH7ZFbDsMgDAQ5eo6Wm6WsH8gBggLYVT861UgJ
+        4LVT0p9JLge3uHZAPcesI1FroJ5jFjjP80rHIUHHKy2opYwNJGoe1HLEOhI1//Wo5Yh1JGoe1HLEIvbe
+        Qe9LYQ+POwcSNw9qOWIeLSaV3pc/yefvOQ820N+m4n0V1OIaVJsLyxlDcwhrW46aY4/PEc2hKEtzMwAt
+        fovSvB6gN623YDhAfqVf/TxrTi3e1jPjAWSjfvYSaC5ZDxAt+NoA2sSugbo5oA170MPhANw8doCeAP2M
+        BG2WvybSe/MyAOhthksfXtEcilKvJT/foHvSTU8B8qFdp64GXQxz1Fxpirx805ywByOUNmN6hR5K/K+Q
+        0gdOOn29Sij+cwAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="tsbSalir.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

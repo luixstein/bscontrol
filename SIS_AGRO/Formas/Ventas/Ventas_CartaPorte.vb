@@ -65,9 +65,14 @@ Public Class Ventas_CartaPorte
 
     Private Sub tsbGrabar_Click(sender As Object, e As EventArgs) Handles tsbGrabar.Click
         If Me.Grabar() = True Then
+            MsgBox("Carta porte grabada satisfactoriamente.", MsgBoxStyle.Exclamation, Me.Text)
             Me.Consultar()
-            Me.Close()
+            'Me.Close()
         End If
+    End Sub
+
+    Private Sub tsbImprimir_Click(sender As Object, e As EventArgs) Handles tsbImprimir.Click
+        Me.oCartaPorte.Imprimir()
     End Sub
 
     Private Sub tsbSalir_Click(sender As Object, e As EventArgs) Handles tsbSalir.Click
@@ -332,6 +337,8 @@ Enter:
         Try
             Me.Estado = Estado
 
+            Me.tsbImprimir.Enabled = False
+
             Select Case Me.Estado
                 Case enumEstados.EDITAR
                     Me.tsbNuevo.Enabled = True
@@ -365,6 +372,10 @@ Enter:
 
                     'Me.TabControl1.TabPages(1).Enabled = False
             End Select
+
+            If Me.oCartaPorte.Existe = True Then
+                Me.tsbImprimir.Enabled = True
+            End If
 
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -1617,7 +1628,6 @@ F6_CodigoParte:
             HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
-
 
 #End Region
 

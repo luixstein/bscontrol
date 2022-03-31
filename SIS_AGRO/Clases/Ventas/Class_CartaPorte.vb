@@ -1,6 +1,7 @@
 ﻿Option Strict On
 
 Imports System.Data.SqlClient
+Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Class_CartaPorte
 
@@ -31,13 +32,13 @@ Public Class Class_CartaPorte
     Private _LISTA_MERCANCIAS As String
     Private _LISTA_FIGURAS_TRANSPORTE As String
     Private _LISTA_FIGURAS_PARTES_TRANSPORTE As String
-    Private _Existe As Boolean 'lectura
+    Private _Existe As Boolean
+    Private _Nombre_Formato As String
 #End Region
 
 #Region "Campos de sistema"
     Private _Conexion As SqlConnection
 #End Region
-
 #End Region
 
 #Region "Propiedades"
@@ -196,6 +197,12 @@ Public Class Class_CartaPorte
     Public ReadOnly Property Existe() As Boolean
         Get
             Return Me._Existe
+        End Get
+    End Property
+
+    Public ReadOnly Property Nombre_Formato() As String
+        Get
+            Return Me._Nombre_Formato
         End Get
     End Property
 
@@ -377,6 +384,7 @@ Public Class Class_CartaPorte
                     Me._FECHA_CREO = CDate(dReader("FECHA_CREO").ToString)
                     If Not (IsDBNull(dReader("CODIGO_USUARIO_MODIFICO"))) Then Me._CODIGO_USUARIO_MODIFICO = "" & dReader("CODIGO_USUARIO_MODIFICO").ToString
                     If Not (IsDBNull(dReader("FECHA_MODIFICO"))) Then Me._FECHA_MODIFICO = CDate(dReader("FECHA_MODIFICO").ToString)
+                    Me._Nombre_Formato = "CARTA_PORTE" '& Trim(dReader("NOMBRE_FORMATO").ToString) 'Nota esta fijo puesto que este no es un documento del catálogo de documentos.
 
                     bResultado = True
                 End If
@@ -530,6 +538,33 @@ Public Class Class_CartaPorte
 
         Return dTabla
     End Function
+
+    Public Sub Imprimir()
+        Const sProcedure As String = "Imprimir"
+        Dim Rpt As New ReportDocument
+        Dim oReporte As Class_Reporte
+        Try
+            If Me._Existe = False Then
+                MsgBox("Esta carta porte no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                Return
+            End If
+
+            oReporte = New Class_Reporte(Me._Nombre_Formato, Rpt, False)
+
+            If Not oReporte.RptCargado = True Then
+                Return
+            End If
+
+            Rpt.SetParameterValue("@FOLIO_VENTA", Me._FOLIO_VENTA)
+
+            Dim frm As New Reporte(Rpt)
+            frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+            frm.Show()
+
+        Catch ex As Exception
+            HandleError(Me.NombreClase, sProcedure, ex)
+        End Try
+    End Sub
 #End Region
 
 End Class
