@@ -22,6 +22,7 @@ Friend Class cComplementoCartaPorte20
     Private xsischemaLocation As String
     Private AnexoNodo As String
 
+    Public ValoresComplementoCargados As Boolean = False
     Public ComplementoGenerado As Boolean
     Public Complemento As MSXML2.IXMLDOMElement
 
@@ -763,7 +764,7 @@ errorUbicacion:
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            MsgBox("Ver la matriz de errores para ver que validar aquí")
+            'MsgBox("Ver la matriz de errores para ver que validar aquí")
 
             bResultado = True
         Catch ex As Exception

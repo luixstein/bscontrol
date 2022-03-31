@@ -3013,7 +3013,11 @@ Public Class Class_Ventas_Global
                 If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
                     bResultado = FacturacionElectronica.GeneraFacturaElectronica(Me, bMensajes, sRutaXML)
                 Else
-                    bResultado = FacturacionElectronica33.GeneraFacturaElectronica33(Me, bMensajes, sRutaXML)
+                    If Me._CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
+                        bResultado = FacturacionElectronica33.GeneraFacturaTrasladoElectronica33(Me, bMensajes, sRutaXML)
+                    Else
+                        bResultado = FacturacionElectronica33.GeneraFacturaElectronica33(Me, bMensajes, sRutaXML)
+                    End If
                 End If
 
                 If bResultado = False Then
@@ -3456,12 +3460,11 @@ Public Class Class_Ventas_Global
         Return bResultado
     End Function
 
-    Friend Function ComplementoCartaPorte20() As cComplementoCartaPorte20
-        Const sProcedure As String = "ComplementoCartaPorte20"
+    Friend Function CargaValoresComplementoCartaPorte20() As cComplementoCartaPorte20
+        Const sProcedure As String = "CargaValoresComplementoCartaPorte20"
         Dim CCP As New cComplementoCartaPorte20
 
         Try
-
             'Crear clases de carta porte, o hacer selects simulando que esta en si es la clase
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Dim da As SqlDataAdapter
@@ -3491,7 +3494,7 @@ Public Class Class_Ventas_Global
                     "LEFT JOIN CFDI_CAT_COLONIAS COL ON(U.ID_COLONIA=COL.ID_COLONIA) " &
                     "LEFT JOIN CFDI_CAT_LOCALIDADES LOC ON(U.ID_LOCALIDAD=LOC.ID_LOCALIDAD) " &
                     "LEFT JOIN CAT_MUNICIPIOS MUN ON(U.CODIGO_MUNICIPIO=MUN.CODIGO_MUNICIPIO) " &
-                    "LEFT JOIN SIS_ESTADOS EST ON(U.CODIGO_ESTADO=EST.CODIGO_ESTADO) " &
+                    "LEFT JOIN SIS_ESTADOS EST ON(U.CODIGO_ESTADO_SAT=EST.CODIGO_ESTADO_SAT) " &
                     "WHERE D.ID_CFDI_CARTA_PORTE_GLOBAL=" & dRowCartaPorte("ID_CFDI_CARTA_PORTE_GLOBAL").ToString  ' drCartaPorte("ID_CFDI_CARTA_PORTE_GLOBAL").ToString
 
             da = New SqlDataAdapter(sSQL, Me._Conexion)
@@ -3547,7 +3550,7 @@ Public Class Class_Ventas_Global
                     "LEFT JOIN CFDI_CAT_COLONIAS COL ON(F.ID_COLONIA=COL.ID_COLONIA) " &
                     "LEFT JOIN CFDI_CAT_LOCALIDADES LOC ON(F.ID_LOCALIDAD=LOC.ID_LOCALIDAD) " &
                     "LEFT JOIN CAT_MUNICIPIOS MUN ON(F.CODIGO_MUNICIPIO=MUN.CODIGO_MUNICIPIO) " &
-                    "LEFT JOIN SIS_ESTADOS EST ON(F.CODIGO_ESTADO=EST.CODIGO_ESTADO) " &
+                    "LEFT JOIN SIS_ESTADOS EST ON(F.CODIGO_ESTADO_SAT=EST.CODIGO_ESTADO_SAT) " &
                     "WHERE D.ID_CFDI_CARTA_PORTE_GLOBAL=" & dRowCartaPorte("ID_CFDI_CARTA_PORTE_GLOBAL").ToString & " " &
                     "ORDER BY D.ID_CFDI_CARTA_PORTE_DETALLE_FIGURAS_TRANSPORTE"
 
@@ -3559,7 +3562,7 @@ Public Class Class_Ventas_Global
 
             With CCP
                 .Version = "" & dRowCartaPorte("VERSION").ToString
-                .TranspInternac = "" & dRowCartaPorte("TRASPORTE_INTERNACIONAL").ToString
+                .TranspInternac = "" & dRowCartaPorte("TRANSPORTE_INTERNACIONAL").ToString
                 .EntradaSalidaMerc = "" & dRowCartaPorte("ENTRADA_SALIDA_MERCANCIA").ToString
                 .PaisOrigenDestino = "" & dRowCartaPorte("CODIGO_PAIS_SAT").ToString
                 .ViaEntradaSalida = "" & dRowCartaPorte("CODIGO_TRANSPORTE").ToString
@@ -3717,6 +3720,8 @@ Public Class Class_Ventas_Global
             dtRemolque1.Dispose()
             dtRemolque2.Dispose()
             dtFiguras.Dispose()
+
+            CCP.ValoresComplementoCargados = True
 
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, sProcedure, ex)

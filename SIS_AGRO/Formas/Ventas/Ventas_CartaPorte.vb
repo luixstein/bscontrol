@@ -66,6 +66,7 @@ Public Class Ventas_CartaPorte
     Private Sub tsbGrabar_Click(sender As Object, e As EventArgs) Handles tsbGrabar.Click
         If Me.Grabar() = True Then
             Me.Consultar()
+            Me.Close()
         End If
     End Sub
 
@@ -78,10 +79,11 @@ Public Class Ventas_CartaPorte
     Private Sub Ventas_CartaPorte_Load(sender As Object, e As EventArgs) Handles Me.Load
         Const sProcedure As String = "Ventas_CartaPorte_Load"
         Try
+            Me.cboTransporteInternacional.Items.AddRange(New Object() {"Sí", "No"})
+
             Me.Inicializa()
 
-            Me.cboTransporteInternacional.Items.AddRange(New Object() {"Sí", "No"})
-            Me.GridUbicaciones.ComboBox(Me.iGyUbTipo).Items.AddRange(New Object() {"Salida", "Llegada"})
+            Me.GridUbicaciones.ComboBox(Me.iGyUbTipo).Items.AddRange(New Object() {"Origen", "Destino"}) 'Ojo debe de ir luego de haber inicializado porque no existe el grid completo antes de
 
             Me.oVenta = New Class_Ventas_Global(Me.FolioVenta)
 
@@ -435,6 +437,7 @@ Enter:
                         dRow("TIPO_UBICACION").ToString & Chr(9) & dRow("CODIGO_UBICACION").ToString & Chr(9) & dRow("NOMBRE_REMITENTE_DESTINATARIO").ToString & Chr(9) & dRow("DISTANCIA_RECORRIDA").ToString & Chr(9) &
                         Format(CDate(dRow("FECHA_HORA_SALIDA_LLEGADA").ToString), "dd/MM/yyyy HH:mm:ss") & Chr(9) & dRow("DOMICILIO_COMPLETO").ToString & Chr(9))
                 Next
+                Me.GridUbicaciones.Rows += 1
 
                 'iGyMerBienTransportado,iGyMerDescripcion,iGyMerCantidad,iGyMerClaveUnidad,iGyMerNombreUnidad,iGyMerUnidad,iGyMerPesoEnKG
                 Dim dtMercancias As DataTable = Me.oCartaPorte.ObtenerDetalleMercancias
@@ -445,6 +448,7 @@ Enter:
                         dRow("CODIGO_PRODUCTO_SERVICIO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("CANTIDAD").ToString & Chr(9) & dRow("CODIGO_UNIDAD").ToString & Chr(9) & dRow("NOMBRE_UNIDAD").ToString & Chr(9) &
                         dRow("UNIDAD").ToString & Chr(9) & dRow("PESO_EN_KG").ToString & Chr(9))
                 Next
+                Me.GridMercancias.Rows += 1
 
                 'iGyFtCodigoFigura,iGyFtCodigoTipo,iGyFtNombreTipo,iGyFtNombreFigura,iGyFtRFC,iGyFtLicencia,iGyFtDomicilio
                 Dim dtFiguras As DataTable = Me.oCartaPorte.ObtenerDetalleFiguras
@@ -455,6 +459,7 @@ Enter:
                         dRow("CODIGO_FIGURA_TRANSPORTE").ToString & Chr(9) & dRow("CODIGO_TIPO_FIGURA_TRANSPORTE").ToString & Chr(9) & dRow("NOMBRE_TIPO_FIGURA_TRANSPORTE").ToString & Chr(9) & dRow("NOMBRE_FIGURA_TRANSPORTE").ToString & Chr(9) &
                         dRow("RFC").ToString & Chr(9) & dRow("NUMERO_LICENCIA").ToString & Chr(9) & dRow("DOMICILIO_COMPLETO").ToString & Chr(9))
                 Next
+                Me.GridFigurasTransporte.Rows += 1
 
                 'iGyPtCodigoFigura,iGyPtNombreFigura, iGyPtCodigoParte, iGyPtNombreParte
                 Dim dtPartesFiguras As DataTable = Me.oCartaPorte.ObtenerDetallePartesFiguras
@@ -464,6 +469,7 @@ Enter:
                     Me.GridPartesTransporte.AddItem(
                         dRow("CODIGO_FIGURA_TRANSPORTE").ToString & Chr(9) & dRow("NOMBRE_FIGURA_TRANSPORTE").ToString & Chr(9) & dRow("CODIGO_PARTE_TRANSPORTE").ToString & Chr(9) & dRow("NOMBRE_PARTE_TRANSPORTE").ToString & Chr(9))
                 Next
+                Me.GridPartesTransporte.Rows += 1
             End With
 
             If Me.oVenta.TIMBRADO_CFDI = "0" And Me.oVenta.ESTATUS_VENTA = "A" Then
@@ -563,7 +569,7 @@ Enter:
             For i = 1 To Me.GridUbicaciones.Rows - 1
                 If txtLEN(Me.GridUbicaciones.Cell(i, Me.iGyUbCodigo).Text) = True Then
                     sListaUbicaciones &= Me.GridUbicaciones.Cell(i, Me.iGyUbCodigo).Text & "," & Me.GridUbicaciones.Cell(i, Me.iGyUbTipo).Text & "," &
-                                        Format(CDate(Me.GridUbicaciones.Cell(i, Me.iGyUbFechaHoraSalidaLlegada).Text), "yyyy-dd-MM HH:mm:ss") & "," & Me.GridUbicaciones.Cell(i, Me.iGyUbDistanciaRecorrida).Text & "|"
+                                        Format(CDate(Me.GridUbicaciones.Cell(i, Me.iGyUbFechaHoraSalidaLlegada).Text), "yyyy-dd-MM HH:mm:ss") & "," & valorNumericoD(Me.GridUbicaciones.Cell(i, Me.iGyUbDistanciaRecorrida).Text) & "|"
                 End If
             Next
 
@@ -599,7 +605,7 @@ Enter:
                 .CODIGO_TRANSPORTE = "" 'Forzado en blanco de momento
                 .TOTAL_DISTANCIA_RECORRIDA = valorNumericoD(Me.txtTotalDistanciaRecorrida.Text)
                 .PESO_BRUTO_TOTAL = valorNumericoD(Me.txtTotalPesoBruto.Text)
-                .CODIGO_UNIDAD_PESO = Me.txtCodigoUnidadPeso.Text
+                .CODIGO_UNIDAD_PESO = Me.txtCodigoUnidadPeso.Text.ToUpper
                 .NUMERO_TOTAL_MERCANCIAS = CInt(Me.txtTotalMercancias.Text)
                 .CODIGO_VEHICULO = CInt(Me.txtCodigoVehiculo.Text)
                 .CODIGO_REMOLQUE_1 = Me.txtCodigoRemolque1.Text
@@ -981,8 +987,8 @@ Enter:
 
             Me.FormateaGridUbicaciones()
 
-            Me.GridUbicaciones.Cell(1, Me.iGyUbTipo).Text = "Salida"
-            Me.GridUbicaciones.Cell(2, Me.iGyUbTipo).Text = "Llegada"
+            Me.GridUbicaciones.Cell(1, Me.iGyUbTipo).Text = "Origen"
+            Me.GridUbicaciones.Cell(2, Me.iGyUbTipo).Text = "Destino"
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -1463,12 +1469,12 @@ F6_Codigo:
             Dim Columna As Integer, Renglon As Integer
             Dim sText As String = "", oParteTransporte As Class_CfdiCatPartesTransporte, oFigura As Class_CatCfdiFigurasTransporte
 
-            If Me.GridFigurasTransporte.Locked = True Then
+            If Me.GridPartesTransporte.Locked = True Then
                 Return
             End If
 
-            Columna = Me.GridFigurasTransporte.Selection.FirstCol
-            Renglon = Me.GridFigurasTransporte.Selection.FirstRow
+            Columna = Me.GridPartesTransporte.Selection.FirstCol
+            Renglon = Me.GridPartesTransporte.Selection.FirstRow
 
             Select Case e.KeyCode
                 Case Keys.Enter

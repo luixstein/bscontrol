@@ -324,19 +324,17 @@ Public Class Class_CartaPorte
                 End If
 
                 bResultado = True
-
-                Me._Conexion.Close()
             End With
 
         Catch ex As Exception
             HandleError(Me.NombreClase, sProcedure, ex)
         Finally
+            Me._Conexion.Close()
             cmd.Dispose()
             sqlParametro = Nothing
         End Try
 
         Return bResultado
-
     End Function
 
     Private Function Consultar(ByVal sConsultarPor As String) As Boolean

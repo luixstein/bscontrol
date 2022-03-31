@@ -312,8 +312,6 @@ Public Class Ventas_Movimientos
             End If
             If Me.oVenta.GeneraFacturaElectronica(True, True) = True Then
                 Me.Consultar()
-            Else
-                MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, Me.Text)
             End If
         Else
             MsgBox("El documento ya esta timbrado.", MsgBoxStyle.Exclamation, Me.Text)
@@ -1560,6 +1558,7 @@ Buscar:
 
                         If Me.oVenta.TIENE_COMPLEMENTO_CARTA_PORTE = True Or Me.oVenta.TIMBRADO_CFDI = "0" Then 'Si no esta timbrada va permitir grabar carta porte.
                             Me.btnCartaPorte.Visible = True
+                            Me.btnCartaPorte.Enabled = True
                         End If
                     End If
 
@@ -2363,7 +2362,7 @@ SaltarTimbrado:
 
 CANCELAR:
             Select Case Me.oVenta.TIPO_VENTA
-                Case "NM"
+                Case "NM", "FT"
                     If Me.oVenta.Cancelar() = False Then
                         Return False
                     End If
@@ -3395,10 +3394,6 @@ CANCELAR:
 
             dTotalSustitucion = 0
 
-            If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
-                Return 'No hay nada que calcular todos los totales serán en 0 aunque si haya importes(el sat si lo permite así en las facturas de traslado)
-            End If
-
             For i = 1 To Me.Grid.Rows - 1
                 If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = False Then
                     Continue For
@@ -3737,6 +3732,10 @@ CANCELAR:
                 'dTotalSustitucion = dTotalSustitucion + dImporteSustitucion
 
             Next i
+
+            If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
+                Return 'No hay nada que calcular todos los totales serán en 0 aunque si haya importes(el sat si lo permite así en las facturas de traslado)
+            End If
 
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             '''''''''''''''''''''''''''''''TOTALES USD
@@ -6032,6 +6031,7 @@ BuscaVentas:
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
+        Return bResultado
     End Function
 
 
