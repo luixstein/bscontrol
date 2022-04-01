@@ -260,6 +260,20 @@ Public Class Class_SisEstados
         Return dTable
     End Function
 
+    Public Function ObtenerElementosEstadosSAT(ByVal sCodigoPaisSAT As String) As System.Data.DataTable
+        Dim dTable As New DataTable
+        Dim da As New SqlDataAdapter("SELECT CODIGO_ESTADO_SAT,NOMBRE_ESTADO FROM SIS_ESTADOS WHERE CODIGO_PAIS_SAT='" & sReplace(sCodigoPaisSAT) & "'" & _
+                                     "ORDER BY NOMBRE_ESTADO", Me._Conexion)
+        Try
+            da.Fill(dTable)
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
+        Finally
+            da.Dispose()
+        End Try
+        Return dTable
+    End Function
+
     Public Function ObtenerElementos() As System.Data.DataTable
         Dim dTable As New DataTable
         Dim da As New SqlDataAdapter("SELECT CODIGO_ESTADO,NOMBRE_ESTADO FROM VW_SIS_ESTADOS_EXTENDIDO ORDER BY ORDEN_PAIS,NOMBRE_ESTADO", Me._Conexion)

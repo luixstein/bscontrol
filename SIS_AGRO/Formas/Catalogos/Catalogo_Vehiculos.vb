@@ -176,6 +176,20 @@ Public Class Catalogo_Vehiculos
                     Me.CboEstatus.Enabled = False
                     Me.TxtCodigoCategoria.Enabled = True
 
+                    Me.txtMarca.Enabled = True
+                    Me.txtPlaca.Enabled = True
+                    Me.txtAnio.Enabled = True
+                    Me.txtCodigoAutotransporte.Enabled = True
+                    Me.txtCodigoPermisoSct.Enabled = True
+                    Me.txtNumeroPermisoSct.Enabled = True
+                    Me.txtNombreAseguradoraResponsabilidadCivil.Enabled = True
+                    Me.txtPolizaResponsabilidadCivil.Enabled = True
+                    Me.txtNombreAseguradoraMedioAmbiente.Enabled = True
+                    Me.txtPolizaMedioAmbiente.Enabled = True
+                    Me.txtNombreAseguradoraCarga.Enabled = True
+                    Me.txtPolizaCarga.Enabled = True
+                    Me.txtPrimaSeguro.Enabled = True
+
                     Me.InicializaElemento()
 
                     Me.chkCrearCategoria.Visible = True : Me.chkCrearCategoria.Checked = False : Me.chkCrearCategoria.Checked = True 'esta como false y true para forzar a que hay cambio y se ejecute el evento del check
@@ -196,6 +210,20 @@ Public Class Catalogo_Vehiculos
                     Me.CboEstatus.Enabled = True
                     Me.TxtCodigoCategoria.Enabled = True
 
+                    Me.txtMarca.Enabled = True
+                    Me.txtPlaca.Enabled = True
+                    Me.txtAnio.Enabled = True
+                    Me.txtCodigoAutotransporte.Enabled = True
+                    Me.txtCodigoPermisoSct.Enabled = True
+                    Me.txtNumeroPermisoSct.Enabled = True
+                    Me.txtNombreAseguradoraResponsabilidadCivil.Enabled = True
+                    Me.txtPolizaResponsabilidadCivil.Enabled = True
+                    Me.txtNombreAseguradoraMedioAmbiente.Enabled = True
+                    Me.txtPolizaMedioAmbiente.Enabled = True
+                    Me.txtNombreAseguradoraCarga.Enabled = True
+                    Me.txtPolizaCarga.Enabled = True
+                    Me.txtPrimaSeguro.Enabled = True
+
                     Me.chkCrearCategoria.Visible = False : Me.chkCrearCategoria.Checked = True : Me.chkCrearCategoria.Checked = False
 
                     Me.TxtNombre.Focus()
@@ -205,7 +233,7 @@ Public Class Catalogo_Vehiculos
                     Me.gBoxBusquedaRapida.Enabled = True
                     Me.tssLabelEstado.Text = "Consultando"
                     Me.tsbNuevo.Enabled = True
-                    Me.tsbEditar.Enabled = False
+                    Me.tsbEditar.Enabled = True
                     Me.tsbGrabar.Enabled = False
                     Me.tsbCancelar.Enabled = False
 
@@ -228,6 +256,22 @@ Public Class Catalogo_Vehiculos
         Me.txtTipoCategoria.Text = ""
         Me.lblTipoCategoria.Text = ""
         Me.chkCrearCategoria.Checked = False
+
+        Me.txtMarca.Text = ""
+        Me.txtPlaca.Text = ""
+        Me.txtAnio.Text = ""
+        Me.txtCodigoAutotransporte.Text = ""
+        Me.LblNombreAutransporte.Text = ""
+        Me.txtCodigoPermisoSct.Text = ""
+        Me.LblNombreAutransporte.Text = ""
+        Me.txtNumeroPermisoSct.Text = ""
+        Me.txtNombreAseguradoraResponsabilidadCivil.Text = ""
+        Me.txtPolizaResponsabilidadCivil.Text = ""
+        Me.txtNombreAseguradoraMedioAmbiente.Text = ""
+        Me.txtPolizaMedioAmbiente.Text = ""
+        Me.txtNombreAseguradoraCarga.Text = ""
+        Me.txtPolizaCarga.Text = ""
+        Me.txtPrimaSeguro.Text = "0.00"
     End Sub
 
     Private Sub DesplegarElementos()
@@ -248,7 +292,8 @@ Public Class Catalogo_Vehiculos
             If Me.oVehiculo.Consultar Then
                 With Me.oVehiculo
                     Me.TxtCodigo.Text = .Codigo_Vehiculo.ToString
-                    Me.TxtNombre.Text = .Nombre_Vehiculo.ToString
+                    Me.TxtNombre.Text = .NOMBRE_VEHICULO.ToString
+
                     Me.TxtCodigoCategoria.Text = .Codigo_Categoria
                     Dim sql As New Class_find("SELECT NOMBRE_CATEGORIA FROM CAT_CATEGORIAS WHERE CODIGO_CATEGORIA='" & Me.TxtCodigoCategoria.Text & "' ")
                     If sql.Result1 = "" Then
@@ -261,6 +306,34 @@ Public Class Catalogo_Vehiculos
                     Else
                         Me.CboEstatus.SelectedIndex = 1
                     End If
+
+                    Me.txtMarca.Text = .MARCA
+                    Me.txtPlaca.Text = .PLACA.ToString
+                    Me.txtAnio.Text = .ANIO.ToString
+
+                    Me.txtCodigoAutotransporte.Text = .CODIGO_AUTOTRANSPORTE
+                    sql = New Class_find("SELECT NOMBRE_AUTOTRANSPORTE FROM CFDI_CAT_CONFIG_AUTOTRANSPORTE WHERE CODIGO_AUTOTRANSPORTE='" & .CODIGO_AUTOTRANSPORTE & "' ")
+                    If sql.Result1 = "" Then
+                    Else
+                        Me.LblNombreAutransporte.Text = sql.Result1
+                    End If
+
+                    Me.txtCodigoPermisoSct.Text = .CODIGO_PERMISO_SCT
+                    sql = New Class_find("SELECT NOMBRE_PERMISO_SCT FROM CFDI_CAT_TIPOS_PERMISOS_SCT WHERE CODIGO_PERMISO_SCT='" & .CODIGO_PERMISO_SCT & "' ")
+                    If sql.Result1 = "" Then
+                    Else
+                        Me.LblNombrePermisoSct.Text = sql.Result1
+                    End If
+
+                    Me.txtNumeroPermisoSct.Text = .NUMERO_PERMISO_SCT
+                    Me.txtNombreAseguradoraResponsabilidadCivil.Text = .NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL
+                    Me.txtPolizaResponsabilidadCivil.Text = .POLIZA_RESPONSABILIDAD_CIVIL
+                    Me.txtNombreAseguradoraMedioAmbiente.Text = .NOMBRE_ASEGURADORA_MEDIO_AMBIENTE
+                    Me.txtPolizaMedioAmbiente.Text = .POLIZA_MEDIO_AMBIENTE
+                    Me.txtNombreAseguradoraCarga.Text = .NOMBRE_ASEGURADORA_CARGA
+                    Me.txtPolizaCarga.Text = .POLIZA_CARGA
+                    Me.txtPrimaSeguro.Text = .PRIMA_SEGURO.ToString
+
                 End With
             End If
         Catch ex As Exception
@@ -280,18 +353,36 @@ Public Class Catalogo_Vehiculos
                         .Estatus = Strings.Left(Me.CboEstatus.Text, 1)
                         .CODIGO_CATEGORIA = Me.TxtCodigoCategoria.Text
 
+                        .MARCA = Me.txtMarca.Text
+                        .PLACA = Me.txtPlaca.Text
+                        .ANIO = Me.txtAnio.Text
+                        .CODIGO_AUTOTRANSPORTE = Me.txtCodigoAutotransporte.Text
+                        .CODIGO_PERMISO_SCT = Me.txtCodigoPermisoSct.Text
+                        .NUMERO_PERMISO_SCT = Me.txtNumeroPermisoSct.Text
+                        .NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL = Me.txtNombreAseguradoraResponsabilidadCivil.Text
+                        .POLIZA_RESPONSABILIDAD_CIVIL = Me.txtPolizaResponsabilidadCivil.Text
+                        .NOMBRE_ASEGURADORA_MEDIO_AMBIENTE = Me.txtNombreAseguradoraMedioAmbiente.Text
+                        .POLIZA_MEDIO_AMBIENTE = Me.txtPolizaMedioAmbiente.Text
+                        .NOMBRE_ASEGURADORA_CARGA = Me.txtNombreAseguradoraCarga.Text
+                        .POLIZA_CARGA = Me.txtPolizaCarga.Text
+                        .PRIMA_SEGURO = Me.txtPrimaSeguro.Text
+                        .CODIGO_USUARIO_CREO = Usuario.Codigo_Usuario.ToString
+                        .FECHA_CREO = Date.Now
+                        .CODIGO_USUARIO_MODIFICO = Usuario.Codigo_Usuario.ToString
+                        .FECHA_MODIFICO = Date.Now
+
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 .GENERAR_CATEGORIA = Me.chkCrearCategoria.Checked
                                 .CODIGO_TIPO_CATEGORIA = Me.txtTipoCategoria.Text
-                                If .Insertar() = True Then
+                                If .Grabar("INSERTAR") = True Then
                                     Grabado = True
                                     Me.Estado = enumEstados.NUEVO
                                 End If
                             Case enumEstados.EDICION
                                 .GENERAR_CATEGORIA = False
                                 .CODIGO_TIPO_CATEGORIA = ""
-                                If .Actualizar() = True Then
+                                If .Grabar("ACTUALIZAR") = True Then
                                     Grabado = True
                                 End If
                         End Select
@@ -335,6 +426,68 @@ Public Class Catalogo_Vehiculos
                         Return False
                     End If
             End Select
+
+            If txtLEN(Me.txtCodigoPermisoSct.Text) Then
+                If txtLEN(Me.txtNumeroPermisoSct.Text) = False Then
+                    MsgBox("Capture un código de permiso SCT.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.txtNumeroPermisoSct.Focus()
+                    Return False
+                End If
+            End If
+
+            If txtLEN(Me.txtNumeroPermisoSct.Text) Then
+                If txtLEN(Me.txtCodigoPermisoSct.Text) = False Then
+                    MsgBox("Capture un número de permiso SCT.", MsgBoxStyle.Exclamation, Me.Text)
+                    Me.txtCodigoPermisoSct.Focus()
+                    Return False
+                End If
+            End If
+
+            If txtLEN(Me.txtCodigoAutotransporte.Text) = False Then
+                MsgBox("Capture un código de autotransporte.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtCodigoAutotransporte.Focus()
+                Return False
+            End If
+
+            If txtLEN(Me.txtNombreAseguradoraResponsabilidadCivil.Text) = False Then
+                MsgBox("Capture un nombre de aseguradora de responsabilidad civil.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtNombreAseguradoraResponsabilidadCivil.Focus()
+                Return False
+            End If
+
+            If txtLEN(Me.txtPolizaResponsabilidadCivil.Text) = False Then
+                MsgBox("Capture una poliza de aseguradora de responsabilidad civil.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtPolizaResponsabilidadCivil.Focus()
+                Return False
+            End If
+
+            If txtLEN(Me.txtNombreAseguradoraMedioAmbiente.Text) = False Then
+                MsgBox("Capture un nombre de aseguradora de medio ambiente.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtNombreAseguradoraMedioAmbiente.Focus()
+                Return False
+            End If
+
+            If txtLEN(Me.txtPolizaMedioAmbiente.Text) = False Then
+                MsgBox("Capture una poliza de aseguradora de medio ambiente.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtPolizaMedioAmbiente.Focus()
+                Return False
+            End If
+
+            If txtLEN(Me.txtNombreAseguradoraCarga.Text) = False Then
+                MsgBox("Capture un nombre de aseguradora de carga.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtNombreAseguradoraCarga.Focus()
+                Return False
+            End If
+
+            If txtLEN(Me.txtPolizaCarga.Text) = False Then
+                MsgBox("Capture una poliza de aseguradora de carga.", MsgBoxStyle.Exclamation, Me.Text)
+                Me.txtPolizaCarga.Focus()
+                Return False
+            End If
+
+            If txtLEN(Me.txtPrimaSeguro.Text) = False Then
+                Me.txtPrimaSeguro.Text = "0"
+            End If
 
             bResultado = True
         Catch ex As Exception
@@ -386,20 +539,30 @@ Public Class Catalogo_Vehiculos
 #End Region
 
 #Region "Eventos Genericos"
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNombre.KeyPress, TxtCodigoCategoria.KeyPress, TxtCodigo.KeyPress, txtTipoCategoria.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNombre.KeyPress, TxtCodigoCategoria.KeyPress, TxtCodigo.KeyPress, txtTipoCategoria.KeyPress, txtCodigoAutotransporte.KeyPress, txtMarca.KeyPress, txtPlaca.KeyPress, txtCodigoPermisoSct.KeyPress, txtNumeroPermisoSct.KeyPress, _
+        txtNombreAseguradoraResponsabilidadCivil.KeyPress, txtPolizaResponsabilidadCivil.KeyPress, txtNombreAseguradoraMedioAmbiente.KeyPress, txtPolizaMedioAmbiente.KeyPress, txtNombreAseguradoraCarga.KeyPress, txtPolizaCarga.KeyPress
+
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombre.KeyDown, CboEstatus.KeyDown, chkCrearCategoria.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombre.KeyDown, CboEstatus.KeyDown, chkCrearCategoria.KeyDown, txtMarca.KeyDown, txtPlaca.KeyDown, txtAnio.KeyDown, txtCodigoPermisoSct.KeyDown, txtNumeroPermisoSct.KeyDown, txtNombreAseguradoraResponsabilidadCivil.KeyDown, txtPolizaResponsabilidadCivil.KeyDown, _
+        txtNombreAseguradoraMedioAmbiente.KeyDown, txtPolizaMedioAmbiente.KeyDown, txtNombreAseguradoraCarga.KeyDown, txtPolizaCarga.KeyDown
         If e.KeyCode = Keys.Return Then
             txtTAB(e)
         End If
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoCategoria.KeyPress, txtTipoCategoria.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigoCategoria.KeyPress, txtTipoCategoria.KeyPress, txtAnio.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
+
+    Private Sub txtNumerosDecimalesKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtPrimaSeguro.KeyPress
+        Dim Txt As TextBox = CType(sender, TextBox)
+        txtSoloNumerosDecimales(e, Txt.Text)
+        txtNoBeep(e)
+    End Sub
+
 #End Region
 
 #Region "Keydown específicos"
@@ -435,11 +598,8 @@ Enter:
                         Me.lblCategoria.Text = "_" : GoTo Buscar : Exit Sub
                     End If
 
-                    If Me.chkCrearCategoria.Visible = True Then
-                        Me.chkCrearCategoria.Focus()
-                    Else
-                        tsbGrabar.PerformClick()
-                    End If
+                    txtTAB(e)
+
             End Select
         Catch ex As Exception
             HandleError(Me.Name, "txtCodigoCategoria_keyDown", ex)
@@ -469,18 +629,94 @@ Enter:
                     oTiposCategorias = New Class_CatTiposCategorias(Me.txtTipoCategoria.Text)
                     If oTiposCategorias.Existe = True Then
                         Me.lblTipoCategoria.Text = oTiposCategorias.Nombre_Tipo_Categoria
-                        tsbGrabar.PerformClick()
                     Else
                         Me.lblTipoCategoria.Text = "" : GoTo Buscar : Exit Sub
                     End If
 
-                    tsbGrabar.PerformClick()
+                    txtTAB(e)
 
             End Select
         Catch ex As Exception
             HandleError(Me.Name, "txtTipoCategoria_KeyDown", ex)
         End Try
     End Sub
+
+    Private Sub txtCodigoAutotransporte_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoAutotransporte.KeyDown
+        Dim oAutotransporte As New Class_CfdiCatConfigAutotransporte
+        Try
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    Dim sAutotransporte As String = oAutotransporte.BusquedaVisual_PorDescripcion()
+                    If txtLEN(sAutotransporte) = True Then
+                        Me.txtCodigoAutotransporte.Text = sAutotransporte
+                        GoTo Enter : Return
+                    End If
+
+                Case Keys.Enter
+                    If txtLEN(Me.txtCodigoAutotransporte.Text) = False Then
+                        Me.LblNombreAutransporte.Text = ""
+                        GoTo Buscar : Return
+                    End If
+Enter:
+                    oAutotransporte = New Class_CfdiCatConfigAutotransporte(Me.txtCodigoAutotransporte.Text)
+
+                    If oAutotransporte.Existe = False Then
+                        Me.LblNombreAutransporte.Text = ""
+                        GoTo Buscar : Return
+                    End If
+
+                    Me.LblNombreAutransporte.Text = oAutotransporte.NOMBRE_AUTOTRANSPORTE
+
+                    txtTAB(e)
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, "txtCodigoAutotransporte_KeyDown", ex)
+        End Try
+    End Sub
+
+    Private Sub txtCodigoPermisoSct_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCodigoPermisoSct.KeyDown
+        Dim oPermisoSct As New Class_CfdiCatTiposPermisosSCT
+        Try
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    Dim sPermisoSct As String = oPermisoSct.BusquedaVisual_PorDescripcion()
+                    If txtLEN(sPermisoSct) = True Then
+                        Me.txtCodigoPermisoSct.Text = sPermisoSct
+                        GoTo Enter : Return
+                    End If
+
+                Case Keys.Enter
+                    If txtLEN(Me.txtCodigoPermisoSct.Text) = False Then
+                        Me.LblNombrePermisoSct.Text = ""
+                        GoTo Buscar : Return
+                    End If
+Enter:
+                    oPermisoSct = New Class_CfdiCatTiposPermisosSCT(Me.txtCodigoPermisoSct.Text)
+
+                    If oPermisoSct.Existe = False Then
+                        Me.LblNombrePermisoSct.Text = ""
+                        GoTo Buscar : Return
+                    End If
+
+                    Me.LblNombrePermisoSct.Text = oPermisoSct.NOMBRE_PERMISO_SCT
+
+                    txtTAB(e)
+            End Select
+
+        Catch ex As Exception
+            HandleError(Me.Name, "txtCodigoPermisoSct_KeyDown", ex)
+        End Try
+    End Sub
+
+    Private Sub txtPrimaSeguro_KeyDown(sender As Object, e As KeyEventArgs) Handles txtPrimaSeguro.KeyDown
+        If e.KeyCode = Keys.Return Then
+            tsbGrabar.PerformClick()
+        End If
+    End Sub
+
 #End Region
 
 #Region "Validating específicos"

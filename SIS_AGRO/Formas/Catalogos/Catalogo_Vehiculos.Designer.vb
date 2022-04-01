@@ -40,6 +40,33 @@ Partial Class Catalogo_Vehiculos
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.LblNombreAutransporte = New System.Windows.Forms.Label()
+        Me.lblPolizaCarga = New System.Windows.Forms.Label()
+        Me.txtPolizaCarga = New System.Windows.Forms.TextBox()
+        Me.lblNombreAseguradoraCarga = New System.Windows.Forms.Label()
+        Me.txtNombreAseguradoraCarga = New System.Windows.Forms.TextBox()
+        Me.lblPolizaMedioAmbiente = New System.Windows.Forms.Label()
+        Me.txtPolizaMedioAmbiente = New System.Windows.Forms.TextBox()
+        Me.lblNombreAseguradoraMedioAmbiente = New System.Windows.Forms.Label()
+        Me.txtNombreAseguradoraMedioAmbiente = New System.Windows.Forms.TextBox()
+        Me.lblPrimaSeguro = New System.Windows.Forms.Label()
+        Me.txtPrimaSeguro = New System.Windows.Forms.TextBox()
+        Me.lblPolizaResponsabilidadCivil = New System.Windows.Forms.Label()
+        Me.txtPolizaResponsabilidadCivil = New System.Windows.Forms.TextBox()
+        Me.lblNombreAseguradoraResponsabilidadCivil = New System.Windows.Forms.Label()
+        Me.txtNombreAseguradoraResponsabilidadCivil = New System.Windows.Forms.TextBox()
+        Me.lblNumeroPermisoSct = New System.Windows.Forms.Label()
+        Me.txtNumeroPermisoSct = New System.Windows.Forms.TextBox()
+        Me.lblCodigoPermisoSct = New System.Windows.Forms.Label()
+        Me.txtCodigoPermisoSct = New System.Windows.Forms.TextBox()
+        Me.lblCodigoAutotransporte = New System.Windows.Forms.Label()
+        Me.txtCodigoAutotransporte = New System.Windows.Forms.TextBox()
+        Me.lblAnio = New System.Windows.Forms.Label()
+        Me.txtAnio = New System.Windows.Forms.TextBox()
+        Me.lblPlaca = New System.Windows.Forms.Label()
+        Me.txtPlaca = New System.Windows.Forms.TextBox()
+        Me.lblMarca = New System.Windows.Forms.Label()
+        Me.txtMarca = New System.Windows.Forms.TextBox()
         Me.lblTipoCategoria = New System.Windows.Forms.Label()
         Me.chkCrearCategoria = New System.Windows.Forms.CheckBox()
         Me.txtTipoCategoria = New System.Windows.Forms.TextBox()
@@ -55,6 +82,7 @@ Partial Class Catalogo_Vehiculos
         Me.LblCodigo = New System.Windows.Forms.Label()
         Me.TxtCodigo = New System.Windows.Forms.TextBox()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
+        Me.LblNombrePermisoSct = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -69,7 +97,7 @@ Partial Class Catalogo_Vehiculos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1004, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1085, 27)
         Me.tsMenu.TabIndex = 2
         Me.tsMenu.Text = "tsMenu"
         '
@@ -127,11 +155,11 @@ Partial Class Catalogo_Vehiculos
         Me.gBoxBusquedaRapida.Controls.Add(Me.CboEstatusFiltro)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
-        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(439, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(597, 34)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(557, 395)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(475, 827)
         Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -164,33 +192,33 @@ Partial Class Catalogo_Vehiculos
         Me.Grid.AllowUserToResizeColumns = False
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(8, 53)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid.Location = New System.Drawing.Point(10, 52)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(540, 335)
+        Me.Grid.Size = New System.Drawing.Size(457, 767)
         Me.Grid.TabIndex = 111
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Location = New System.Drawing.Point(10, 22)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(399, 22)
+        Me.txtFiltro.Size = New System.Drawing.Size(234, 22)
         Me.txtFiltro.TabIndex = 0
         '
         'StatusStripEstado
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 440)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 865)
         Me.StatusStripEstado.Name = "StatusStripEstado"
         Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1004, 25)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1085, 25)
         Me.StatusStripEstado.TabIndex = 29
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -207,6 +235,34 @@ Partial Class Catalogo_Vehiculos
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.LblNombrePermisoSct)
+        Me.gBoxInformacion.Controls.Add(Me.LblNombreAutransporte)
+        Me.gBoxInformacion.Controls.Add(Me.lblPolizaCarga)
+        Me.gBoxInformacion.Controls.Add(Me.txtPolizaCarga)
+        Me.gBoxInformacion.Controls.Add(Me.lblNombreAseguradoraCarga)
+        Me.gBoxInformacion.Controls.Add(Me.txtNombreAseguradoraCarga)
+        Me.gBoxInformacion.Controls.Add(Me.lblPolizaMedioAmbiente)
+        Me.gBoxInformacion.Controls.Add(Me.txtPolizaMedioAmbiente)
+        Me.gBoxInformacion.Controls.Add(Me.lblNombreAseguradoraMedioAmbiente)
+        Me.gBoxInformacion.Controls.Add(Me.txtNombreAseguradoraMedioAmbiente)
+        Me.gBoxInformacion.Controls.Add(Me.lblPrimaSeguro)
+        Me.gBoxInformacion.Controls.Add(Me.txtPrimaSeguro)
+        Me.gBoxInformacion.Controls.Add(Me.lblPolizaResponsabilidadCivil)
+        Me.gBoxInformacion.Controls.Add(Me.txtPolizaResponsabilidadCivil)
+        Me.gBoxInformacion.Controls.Add(Me.lblNombreAseguradoraResponsabilidadCivil)
+        Me.gBoxInformacion.Controls.Add(Me.txtNombreAseguradoraResponsabilidadCivil)
+        Me.gBoxInformacion.Controls.Add(Me.lblNumeroPermisoSct)
+        Me.gBoxInformacion.Controls.Add(Me.txtNumeroPermisoSct)
+        Me.gBoxInformacion.Controls.Add(Me.lblCodigoPermisoSct)
+        Me.gBoxInformacion.Controls.Add(Me.txtCodigoPermisoSct)
+        Me.gBoxInformacion.Controls.Add(Me.lblCodigoAutotransporte)
+        Me.gBoxInformacion.Controls.Add(Me.txtCodigoAutotransporte)
+        Me.gBoxInformacion.Controls.Add(Me.lblAnio)
+        Me.gBoxInformacion.Controls.Add(Me.txtAnio)
+        Me.gBoxInformacion.Controls.Add(Me.lblPlaca)
+        Me.gBoxInformacion.Controls.Add(Me.txtPlaca)
+        Me.gBoxInformacion.Controls.Add(Me.lblMarca)
+        Me.gBoxInformacion.Controls.Add(Me.txtMarca)
         Me.gBoxInformacion.Controls.Add(Me.lblTipoCategoria)
         Me.gBoxInformacion.Controls.Add(Me.chkCrearCategoria)
         Me.gBoxInformacion.Controls.Add(Me.txtTipoCategoria)
@@ -222,13 +278,270 @@ Partial Class Catalogo_Vehiculos
         Me.gBoxInformacion.Controls.Add(Me.LblCodigo)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigo)
         Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.gBoxInformacion.Size = New System.Drawing.Size(413, 395)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(573, 827)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
+        '
+        'LblNombreAutransporte
+        '
+        Me.LblNombreAutransporte.AutoSize = True
+        Me.LblNombreAutransporte.Location = New System.Drawing.Point(15, 357)
+        Me.LblNombreAutransporte.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombreAutransporte.Name = "LblNombreAutransporte"
+        Me.LblNombreAutransporte.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreAutransporte.TabIndex = 129
+        Me.LblNombreAutransporte.Text = "_"
+        '
+        'lblPolizaCarga
+        '
+        Me.lblPolizaCarga.AutoSize = True
+        Me.lblPolizaCarga.Location = New System.Drawing.Point(9, 728)
+        Me.lblPolizaCarga.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblPolizaCarga.Name = "lblPolizaCarga"
+        Me.lblPolizaCarga.Size = New System.Drawing.Size(94, 17)
+        Me.lblPolizaCarga.TabIndex = 128
+        Me.lblPolizaCarga.Text = "Poliza carga :"
+        '
+        'txtPolizaCarga
+        '
+        Me.txtPolizaCarga.Location = New System.Drawing.Point(12, 749)
+        Me.txtPolizaCarga.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtPolizaCarga.MaxLength = 30
+        Me.txtPolizaCarga.Name = "txtPolizaCarga"
+        Me.txtPolizaCarga.Size = New System.Drawing.Size(553, 22)
+        Me.txtPolizaCarga.TabIndex = 18
+        '
+        'lblNombreAseguradoraCarga
+        '
+        Me.lblNombreAseguradoraCarga.AutoSize = True
+        Me.lblNombreAseguradoraCarga.Location = New System.Drawing.Point(9, 681)
+        Me.lblNombreAseguradoraCarga.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblNombreAseguradoraCarga.Name = "lblNombreAseguradoraCarga"
+        Me.lblNombreAseguradoraCarga.Size = New System.Drawing.Size(191, 17)
+        Me.lblNombreAseguradoraCarga.TabIndex = 126
+        Me.lblNombreAseguradoraCarga.Text = "Nombre aseguradora carga :"
+        '
+        'txtNombreAseguradoraCarga
+        '
+        Me.txtNombreAseguradoraCarga.Location = New System.Drawing.Point(12, 702)
+        Me.txtNombreAseguradoraCarga.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtNombreAseguradoraCarga.MaxLength = 50
+        Me.txtNombreAseguradoraCarga.Name = "txtNombreAseguradoraCarga"
+        Me.txtNombreAseguradoraCarga.Size = New System.Drawing.Size(553, 22)
+        Me.txtNombreAseguradoraCarga.TabIndex = 17
+        '
+        'lblPolizaMedioAmbiente
+        '
+        Me.lblPolizaMedioAmbiente.AutoSize = True
+        Me.lblPolizaMedioAmbiente.Location = New System.Drawing.Point(9, 630)
+        Me.lblPolizaMedioAmbiente.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblPolizaMedioAmbiente.Name = "lblPolizaMedioAmbiente"
+        Me.lblPolizaMedioAmbiente.Size = New System.Drawing.Size(158, 17)
+        Me.lblPolizaMedioAmbiente.TabIndex = 124
+        Me.lblPolizaMedioAmbiente.Text = "Poliza medio ambiente :"
+        '
+        'txtPolizaMedioAmbiente
+        '
+        Me.txtPolizaMedioAmbiente.Location = New System.Drawing.Point(12, 651)
+        Me.txtPolizaMedioAmbiente.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtPolizaMedioAmbiente.MaxLength = 30
+        Me.txtPolizaMedioAmbiente.Name = "txtPolizaMedioAmbiente"
+        Me.txtPolizaMedioAmbiente.Size = New System.Drawing.Size(553, 22)
+        Me.txtPolizaMedioAmbiente.TabIndex = 16
+        '
+        'lblNombreAseguradoraMedioAmbiente
+        '
+        Me.lblNombreAseguradoraMedioAmbiente.AutoSize = True
+        Me.lblNombreAseguradoraMedioAmbiente.Location = New System.Drawing.Point(9, 583)
+        Me.lblNombreAseguradoraMedioAmbiente.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblNombreAseguradoraMedioAmbiente.Name = "lblNombreAseguradoraMedioAmbiente"
+        Me.lblNombreAseguradoraMedioAmbiente.Size = New System.Drawing.Size(255, 17)
+        Me.lblNombreAseguradoraMedioAmbiente.TabIndex = 122
+        Me.lblNombreAseguradoraMedioAmbiente.Text = "Nombre aseguradora medio ambiente :"
+        '
+        'txtNombreAseguradoraMedioAmbiente
+        '
+        Me.txtNombreAseguradoraMedioAmbiente.Location = New System.Drawing.Point(12, 604)
+        Me.txtNombreAseguradoraMedioAmbiente.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtNombreAseguradoraMedioAmbiente.MaxLength = 50
+        Me.txtNombreAseguradoraMedioAmbiente.Name = "txtNombreAseguradoraMedioAmbiente"
+        Me.txtNombreAseguradoraMedioAmbiente.Size = New System.Drawing.Size(553, 22)
+        Me.txtNombreAseguradoraMedioAmbiente.TabIndex = 15
+        '
+        'lblPrimaSeguro
+        '
+        Me.lblPrimaSeguro.AutoSize = True
+        Me.lblPrimaSeguro.Location = New System.Drawing.Point(9, 787)
+        Me.lblPrimaSeguro.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblPrimaSeguro.Name = "lblPrimaSeguro"
+        Me.lblPrimaSeguro.Size = New System.Drawing.Size(100, 17)
+        Me.lblPrimaSeguro.TabIndex = 120
+        Me.lblPrimaSeguro.Text = "Prima seguro :"
+        '
+        'txtPrimaSeguro
+        '
+        Me.txtPrimaSeguro.Location = New System.Drawing.Point(117, 784)
+        Me.txtPrimaSeguro.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtPrimaSeguro.MaxLength = 50
+        Me.txtPrimaSeguro.Name = "txtPrimaSeguro"
+        Me.txtPrimaSeguro.Size = New System.Drawing.Size(209, 22)
+        Me.txtPrimaSeguro.TabIndex = 19
+        '
+        'lblPolizaResponsabilidadCivil
+        '
+        Me.lblPolizaResponsabilidadCivil.AutoSize = True
+        Me.lblPolizaResponsabilidadCivil.Location = New System.Drawing.Point(9, 533)
+        Me.lblPolizaResponsabilidadCivil.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblPolizaResponsabilidadCivil.Name = "lblPolizaResponsabilidadCivil"
+        Me.lblPolizaResponsabilidadCivil.Size = New System.Drawing.Size(185, 17)
+        Me.lblPolizaResponsabilidadCivil.TabIndex = 116
+        Me.lblPolizaResponsabilidadCivil.Text = "Poliza responsabilidad civil :"
+        '
+        'txtPolizaResponsabilidadCivil
+        '
+        Me.txtPolizaResponsabilidadCivil.Location = New System.Drawing.Point(12, 554)
+        Me.txtPolizaResponsabilidadCivil.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtPolizaResponsabilidadCivil.MaxLength = 30
+        Me.txtPolizaResponsabilidadCivil.Name = "txtPolizaResponsabilidadCivil"
+        Me.txtPolizaResponsabilidadCivil.Size = New System.Drawing.Size(553, 22)
+        Me.txtPolizaResponsabilidadCivil.TabIndex = 14
+        '
+        'lblNombreAseguradoraResponsabilidadCivil
+        '
+        Me.lblNombreAseguradoraResponsabilidadCivil.AutoSize = True
+        Me.lblNombreAseguradoraResponsabilidadCivil.Location = New System.Drawing.Point(9, 486)
+        Me.lblNombreAseguradoraResponsabilidadCivil.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblNombreAseguradoraResponsabilidadCivil.Name = "lblNombreAseguradoraResponsabilidadCivil"
+        Me.lblNombreAseguradoraResponsabilidadCivil.Size = New System.Drawing.Size(282, 17)
+        Me.lblNombreAseguradoraResponsabilidadCivil.TabIndex = 114
+        Me.lblNombreAseguradoraResponsabilidadCivil.Text = "Nombre aseguradora responsabilidad civil :"
+        '
+        'txtNombreAseguradoraResponsabilidadCivil
+        '
+        Me.txtNombreAseguradoraResponsabilidadCivil.Location = New System.Drawing.Point(12, 507)
+        Me.txtNombreAseguradoraResponsabilidadCivil.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtNombreAseguradoraResponsabilidadCivil.MaxLength = 50
+        Me.txtNombreAseguradoraResponsabilidadCivil.Name = "txtNombreAseguradoraResponsabilidadCivil"
+        Me.txtNombreAseguradoraResponsabilidadCivil.Size = New System.Drawing.Size(553, 22)
+        Me.txtNombreAseguradoraResponsabilidadCivil.TabIndex = 13
+        '
+        'lblNumeroPermisoSct
+        '
+        Me.lblNumeroPermisoSct.AutoSize = True
+        Me.lblNumeroPermisoSct.Location = New System.Drawing.Point(8, 439)
+        Me.lblNumeroPermisoSct.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblNumeroPermisoSct.Name = "lblNumeroPermisoSct"
+        Me.lblNumeroPermisoSct.Size = New System.Drawing.Size(151, 17)
+        Me.lblNumeroPermisoSct.TabIndex = 112
+        Me.lblNumeroPermisoSct.Text = "Número permiso SCT :"
+        '
+        'txtNumeroPermisoSct
+        '
+        Me.txtNumeroPermisoSct.Location = New System.Drawing.Point(12, 460)
+        Me.txtNumeroPermisoSct.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtNumeroPermisoSct.MaxLength = 50
+        Me.txtNumeroPermisoSct.Name = "txtNumeroPermisoSct"
+        Me.txtNumeroPermisoSct.Size = New System.Drawing.Size(553, 22)
+        Me.txtNumeroPermisoSct.TabIndex = 12
+        '
+        'lblCodigoPermisoSct
+        '
+        Me.lblCodigoPermisoSct.AutoSize = True
+        Me.lblCodigoPermisoSct.Location = New System.Drawing.Point(9, 387)
+        Me.lblCodigoPermisoSct.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCodigoPermisoSct.Name = "lblCodigoPermisoSct"
+        Me.lblCodigoPermisoSct.Size = New System.Drawing.Size(145, 17)
+        Me.lblCodigoPermisoSct.TabIndex = 110
+        Me.lblCodigoPermisoSct.Text = "Código permiso SCT :"
+        '
+        'txtCodigoPermisoSct
+        '
+        Me.txtCodigoPermisoSct.Location = New System.Drawing.Point(173, 384)
+        Me.txtCodigoPermisoSct.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtCodigoPermisoSct.MaxLength = 10
+        Me.txtCodigoPermisoSct.Name = "txtCodigoPermisoSct"
+        Me.txtCodigoPermisoSct.Size = New System.Drawing.Size(194, 22)
+        Me.txtCodigoPermisoSct.TabIndex = 11
+        '
+        'lblCodigoAutotransporte
+        '
+        Me.lblCodigoAutotransporte.AutoSize = True
+        Me.lblCodigoAutotransporte.Location = New System.Drawing.Point(8, 331)
+        Me.lblCodigoAutotransporte.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCodigoAutotransporte.Name = "lblCodigoAutotransporte"
+        Me.lblCodigoAutotransporte.Size = New System.Drawing.Size(157, 17)
+        Me.lblCodigoAutotransporte.TabIndex = 108
+        Me.lblCodigoAutotransporte.Text = "Código autotransporte :"
+        '
+        'txtCodigoAutotransporte
+        '
+        Me.txtCodigoAutotransporte.Location = New System.Drawing.Point(173, 328)
+        Me.txtCodigoAutotransporte.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtCodigoAutotransporte.MaxLength = 10
+        Me.txtCodigoAutotransporte.Name = "txtCodigoAutotransporte"
+        Me.txtCodigoAutotransporte.Size = New System.Drawing.Size(169, 22)
+        Me.txtCodigoAutotransporte.TabIndex = 10
+        '
+        'lblAnio
+        '
+        Me.lblAnio.AutoSize = True
+        Me.lblAnio.Location = New System.Drawing.Point(232, 295)
+        Me.lblAnio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblAnio.Name = "lblAnio"
+        Me.lblAnio.Size = New System.Drawing.Size(41, 17)
+        Me.lblAnio.TabIndex = 106
+        Me.lblAnio.Text = "Año :"
+        '
+        'txtAnio
+        '
+        Me.txtAnio.Location = New System.Drawing.Point(281, 292)
+        Me.txtAnio.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtAnio.MaxLength = 4
+        Me.txtAnio.Name = "txtAnio"
+        Me.txtAnio.Size = New System.Drawing.Size(105, 22)
+        Me.txtAnio.TabIndex = 9
+        '
+        'lblPlaca
+        '
+        Me.lblPlaca.AutoSize = True
+        Me.lblPlaca.Location = New System.Drawing.Point(9, 295)
+        Me.lblPlaca.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblPlaca.Name = "lblPlaca"
+        Me.lblPlaca.Size = New System.Drawing.Size(51, 17)
+        Me.lblPlaca.TabIndex = 104
+        Me.lblPlaca.Text = "Placa :"
+        '
+        'txtPlaca
+        '
+        Me.txtPlaca.Location = New System.Drawing.Point(68, 292)
+        Me.txtPlaca.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtPlaca.MaxLength = 7
+        Me.txtPlaca.Name = "txtPlaca"
+        Me.txtPlaca.Size = New System.Drawing.Size(141, 22)
+        Me.txtPlaca.TabIndex = 8
+        '
+        'lblMarca
+        '
+        Me.lblMarca.AutoSize = True
+        Me.lblMarca.Location = New System.Drawing.Point(9, 264)
+        Me.lblMarca.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblMarca.Name = "lblMarca"
+        Me.lblMarca.Size = New System.Drawing.Size(55, 17)
+        Me.lblMarca.TabIndex = 102
+        Me.lblMarca.Text = "Marca :"
+        '
+        'txtMarca
+        '
+        Me.txtMarca.Location = New System.Drawing.Point(70, 261)
+        Me.txtMarca.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtMarca.MaxLength = 30
+        Me.txtMarca.Name = "txtMarca"
+        Me.txtMarca.Size = New System.Drawing.Size(139, 22)
+        Me.txtMarca.TabIndex = 7
         '
         'lblTipoCategoria
         '
@@ -244,7 +557,7 @@ Partial Class Catalogo_Vehiculos
         '
         Me.chkCrearCategoria.AutoSize = True
         Me.chkCrearCategoria.Location = New System.Drawing.Point(12, 164)
-        Me.chkCrearCategoria.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkCrearCategoria.Margin = New System.Windows.Forms.Padding(4)
         Me.chkCrearCategoria.Name = "chkCrearCategoria"
         Me.chkCrearCategoria.Size = New System.Drawing.Size(252, 21)
         Me.chkCrearCategoria.TabIndex = 5
@@ -254,7 +567,7 @@ Partial Class Catalogo_Vehiculos
         'txtTipoCategoria
         '
         Me.txtTipoCategoria.Location = New System.Drawing.Point(139, 192)
-        Me.txtTipoCategoria.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtTipoCategoria.Margin = New System.Windows.Forms.Padding(4)
         Me.txtTipoCategoria.MaxLength = 30
         Me.txtTipoCategoria.Name = "txtTipoCategoria"
         Me.txtTipoCategoria.Size = New System.Drawing.Size(111, 22)
@@ -305,7 +618,7 @@ Partial Class Catalogo_Vehiculos
         'TxtCodigoCategoria
         '
         Me.TxtCodigoCategoria.Location = New System.Drawing.Point(103, 113)
-        Me.TxtCodigoCategoria.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigoCategoria.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigoCategoria.MaxLength = 2
         Me.TxtCodigoCategoria.Name = "TxtCodigoCategoria"
         Me.TxtCodigoCategoria.Size = New System.Drawing.Size(75, 22)
@@ -344,7 +657,7 @@ Partial Class Catalogo_Vehiculos
         'TxtNombre
         '
         Me.TxtNombre.Location = New System.Drawing.Point(103, 50)
-        Me.TxtNombre.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtNombre.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtNombre.MaxLength = 50
         Me.TxtNombre.Name = "TxtNombre"
         Me.TxtNombre.Size = New System.Drawing.Size(301, 22)
@@ -363,7 +676,7 @@ Partial Class Catalogo_Vehiculos
         'TxtCodigo
         '
         Me.TxtCodigo.Location = New System.Drawing.Point(101, 18)
-        Me.TxtCodigo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodigo.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodigo.MaxLength = 2
         Me.TxtCodigo.Name = "TxtCodigo"
         Me.TxtCodigo.Size = New System.Drawing.Size(75, 22)
@@ -373,17 +686,27 @@ Partial Class Catalogo_Vehiculos
         '
         Me.ErrorProvider.ContainerControl = Me
         '
+        'LblNombrePermisoSct
+        '
+        Me.LblNombrePermisoSct.AutoSize = True
+        Me.LblNombrePermisoSct.Location = New System.Drawing.Point(15, 415)
+        Me.LblNombrePermisoSct.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombrePermisoSct.Name = "LblNombrePermisoSct"
+        Me.LblNombrePermisoSct.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombrePermisoSct.TabIndex = 130
+        Me.LblNombrePermisoSct.Text = "_"
+        '
         'Catalogo_Vehiculos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1004, 465)
+        Me.ClientSize = New System.Drawing.Size(1085, 890)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Vehiculos"
         Me.ShowIcon = False
@@ -433,4 +756,32 @@ Partial Class Catalogo_Vehiculos
     Friend WithEvents chkCrearCategoria As System.Windows.Forms.CheckBox
     Friend WithEvents txtTipoCategoria As System.Windows.Forms.TextBox
     Friend WithEvents lblDisplayTipoCategoria As System.Windows.Forms.Label
+    Friend WithEvents lblPolizaCarga As System.Windows.Forms.Label
+    Friend WithEvents txtPolizaCarga As System.Windows.Forms.TextBox
+    Friend WithEvents lblNombreAseguradoraCarga As System.Windows.Forms.Label
+    Friend WithEvents txtNombreAseguradoraCarga As System.Windows.Forms.TextBox
+    Friend WithEvents lblPolizaMedioAmbiente As System.Windows.Forms.Label
+    Friend WithEvents txtPolizaMedioAmbiente As System.Windows.Forms.TextBox
+    Friend WithEvents lblNombreAseguradoraMedioAmbiente As System.Windows.Forms.Label
+    Friend WithEvents txtNombreAseguradoraMedioAmbiente As System.Windows.Forms.TextBox
+    Friend WithEvents lblPrimaSeguro As System.Windows.Forms.Label
+    Friend WithEvents txtPrimaSeguro As System.Windows.Forms.TextBox
+    Friend WithEvents lblPolizaResponsabilidadCivil As System.Windows.Forms.Label
+    Friend WithEvents txtPolizaResponsabilidadCivil As System.Windows.Forms.TextBox
+    Friend WithEvents lblNombreAseguradoraResponsabilidadCivil As System.Windows.Forms.Label
+    Friend WithEvents txtNombreAseguradoraResponsabilidadCivil As System.Windows.Forms.TextBox
+    Friend WithEvents lblNumeroPermisoSct As System.Windows.Forms.Label
+    Friend WithEvents txtNumeroPermisoSct As System.Windows.Forms.TextBox
+    Friend WithEvents lblCodigoPermisoSct As System.Windows.Forms.Label
+    Friend WithEvents txtCodigoPermisoSct As System.Windows.Forms.TextBox
+    Friend WithEvents lblCodigoAutotransporte As System.Windows.Forms.Label
+    Friend WithEvents txtCodigoAutotransporte As System.Windows.Forms.TextBox
+    Friend WithEvents lblAnio As System.Windows.Forms.Label
+    Friend WithEvents txtAnio As System.Windows.Forms.TextBox
+    Friend WithEvents lblPlaca As System.Windows.Forms.Label
+    Friend WithEvents txtPlaca As System.Windows.Forms.TextBox
+    Friend WithEvents lblMarca As System.Windows.Forms.Label
+    Friend WithEvents txtMarca As System.Windows.Forms.TextBox
+    Friend WithEvents LblNombreAutransporte As System.Windows.Forms.Label
+    Friend WithEvents LblNombrePermisoSct As System.Windows.Forms.Label
 End Class

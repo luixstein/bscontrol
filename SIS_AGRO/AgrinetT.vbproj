@@ -202,6 +202,7 @@
     <Compile Include="Clases\Catalogos\Class_CatAlmacenes.vb" />
     <Compile Include="Clases\Catalogos\Class_Catalogos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatArticulos.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatCfdiFigurasTransporte.vb" />
     <Compile Include="Clases\Catalogos\Class_CatPrioridadesRequisicion.vb" />
     <Compile Include="Clases\Catalogos\Class_CatClientesCuentasBancarias.vb" />
     <Compile Include="Clases\Catalogos\Class_CatParticipacionSocios.vb" />
@@ -224,6 +225,8 @@
     <Compile Include="Clases\Catalogos\Class_CatPreciosVenta.vb" />
     <Compile Include="Clases\Catalogos\Class_CatRelParametrosAcuicolaDocumentos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatTiposCreditos.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatRemolques.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatCfdiUbicaciones.vb" />
     <Compile Include="Clases\Catalogos\Class_CatVehiculos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatCategorias.vb" />
     <Compile Include="Clases\Catalogos\Class_CatChoferes.vb" />
@@ -237,10 +240,19 @@
     <Compile Include="Clases\Catalogos\Class_CatMonedas.vb" />
     <Compile Include="Clases\Catalogos\Class_CatTiposCambio.vb" />
     <Compile Include="Clases\Catalogos\Class_Cat_UnidadesVenta.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatTiposPermisosSCT.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatPartesTransporte.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatTiposRemolques.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatCodigosPostales.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatLocalidades.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatColonias.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatClavesTransporte.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatTiposFiguraTransporte.vb" />
     <Compile Include="Clases\Catalogos\Class_SisCatImpuestosFlete.vb" />
     <Compile Include="Clases\Catalogos\Class_SisCatImpuestos.vb" />
     <Compile Include="Clases\Catalogos\Class_CFDCatTiposRegimenesFiscales.vb" />
     <Compile Include="Clases\Catalogos\Class_SisCatTasaOCuotaSAT.vb" />
+    <Compile Include="Clases\Catalogos\Class_CfdiCatConfigAutotransporte.vb" />
     <Compile Include="Clases\Catalogos\Class_sisEmpresas.vb" />
     <Compile Include="Clases\Catalogos\Class_SisEstados.vb" />
     <Compile Include="Clases\Catalogos\Class_SisTiposProveedores.vb" />
@@ -494,6 +506,12 @@
     <Compile Include="Formas\Administracion\Sis_administracion_clientes.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_CFDI_Figuras_Transporte.Designer.vb">
+      <DependentUpon>Catalogo_CFDI_Figuras_Transporte.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_CFDI_Figuras_Transporte.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_ClientesCuentasBancarias.designer.vb">
       <DependentUpon>Catalogo_ClientesCuentasBancarias.vb</DependentUpon>
     </Compile>
@@ -504,6 +522,12 @@
       <DependentUpon>Catalogo_Departamentos.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_Departamentos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_CFDI_Ubicaciones.Designer.vb">
+      <DependentUpon>Catalogo_CFDI_Ubicaciones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_CFDI_Ubicaciones.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_Participacion_Socios.designer.vb">
@@ -570,6 +594,12 @@
       <DependentUpon>Catalogo_Propietarios.vb</DependentUpon>
     </Compile>
     <Compile Include="Formas\Catalogos\Catalogo_Propietarios.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Remolques.designer.vb">
+      <DependentUpon>Catalogo_Remolques.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Catalogos\Catalogo_Remolques.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formas\Catalogos\Impresion\Cat_Clientes_Impresion.designer.vb">
@@ -1909,11 +1939,17 @@
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_CajasTransportes.resx">
       <DependentUpon>Catalogo_CajasTransportes.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_CFDI_Figuras_Transporte.resx">
+      <DependentUpon>Catalogo_CFDI_Figuras_Transporte.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_ClientesCuentasBancarias.resx">
       <DependentUpon>Catalogo_ClientesCuentasBancarias.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_Departamentos.resx">
       <DependentUpon>Catalogo_Departamentos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_CFDI_Ubicaciones.resx">
+      <DependentUpon>Catalogo_CFDI_Ubicaciones.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_Participacion_Socios.resx">
       <DependentUpon>Catalogo_Participacion_Socios.vb</DependentUpon>
@@ -1947,6 +1983,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Catalogo_Propietarios.resx">
       <DependentUpon>Catalogo_Propietarios.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Catalogos\Catalogo_Remolques.resx">
+      <DependentUpon>Catalogo_Remolques.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Catalogos\Impresion\Cat_Clientes_Impresion.resx">
       <DependentUpon>Cat_Clientes_Impresion.vb</DependentUpon>

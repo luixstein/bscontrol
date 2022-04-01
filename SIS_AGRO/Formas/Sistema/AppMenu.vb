@@ -1797,4 +1797,28 @@ Public Class AppMenu
         Child.StartPosition = FormStartPosition.CenterScreen
         Child.Show()
     End Sub
+
+    Private Sub RemolquesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RemolquesToolStripMenuItem.Click
+        Dim Child As New Catalogo_Remolques
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub UbicacionesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UbicacionesToolStripMenuItem.Click
+        Dim Child As New Catalogo_CFDI_Ubicaciones
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
+
+    Private Sub FigurasDeTransporteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FigurasDeTransporteToolStripMenuItem.Click
+        Dim Child As New Catalogo_CFDI_Figuras_Transporte
+        Child.MdiParent = Me
+        m_ChildFormNumber += 1
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.Show()
+    End Sub
 End Class
