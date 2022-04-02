@@ -23,7 +23,7 @@ Public Class Class_CatVehiculos
     Private _POLIZA_MEDIO_AMBIENTE As String
     Private _NOMBRE_ASEGURADORA_CARGA As String
     Private _POLIZA_CARGA As String
-    Private _PRIMA_SEGURO As String
+    Private _PRIMA_SEGURO As Decimal
     Private _CODIGO_USUARIO_CREO As String
     Private _FECHA_CREO As Date
     Private _CODIGO_USUARIO_MODIFICO As String
@@ -191,11 +191,11 @@ Public Class Class_CatVehiculos
         End Set
     End Property
 
-    Public Property PRIMA_SEGURO() As String
+    Public Property PRIMA_SEGURO() As Decimal
         Get
             Return Me._PRIMA_SEGURO
         End Get
-        Set(value As String)
+        Set(value As Decimal)
             Me._PRIMA_SEGURO = value
         End Set
     End Property
@@ -335,7 +335,7 @@ Public Class Class_CatVehiculos
             sqlParametro = .Parameters.Add("@POLIZA_MEDIO_AMBIENTE", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._POLIZA_MEDIO_AMBIENTE.ToUpper
             sqlParametro = .Parameters.Add("@NOMBRE_ASEGURADORA_CARGA", SqlDbType.NVarChar, 50) : sqlParametro.Value = Me._NOMBRE_ASEGURADORA_CARGA.ToUpper
             sqlParametro = .Parameters.Add("@POLIZA_CARGA", SqlDbType.NVarChar, 30) : sqlParametro.Value = Me._POLIZA_CARGA.ToUpper
-            sqlParametro = .Parameters.Add("@PRIMA_SEGURO", SqlDbType.Decimal) : sqlParametro.Value = Me._PRIMA_SEGURO.ToUpper
+            sqlParametro = .Parameters.Add("@PRIMA_SEGURO", SqlDbType.Decimal) : sqlParametro.Value = Me._PRIMA_SEGURO
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_CREO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_USUARIO_CREO)
             sqlParametro = .Parameters.Add("@FECHA_CREO", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CREO
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO_MODIFICO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_USUARIO_MODIFICO)
@@ -390,7 +390,7 @@ Public Class Class_CatVehiculos
                     Me._POLIZA_MEDIO_AMBIENTE = "" & dReader("POLIZA_MEDIO_AMBIENTE").ToString
                     Me._NOMBRE_ASEGURADORA_CARGA = "" & dReader("NOMBRE_ASEGURADORA_CARGA").ToString
                     Me._POLIZA_CARGA = "" & dReader("POLIZA_CARGA").ToString
-                    Me._PRIMA_SEGURO = "" & dReader("PRIMA_SEGURO").ToString
+                    Me._PRIMA_SEGURO = valorNumericoD(dReader("PRIMA_SEGURO").ToString)
                     Me._CODIGO_USUARIO_CREO = "" & dReader("CODIGO_USUARIO_CREO").ToString
                     Me._FECHA_CREO = CDate(dReader("FECHA_CREO").ToString)
                     Me._CODIGO_USUARIO_MODIFICO = "" & dReader("CODIGO_USUARIO_MODIFICO").ToString

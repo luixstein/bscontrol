@@ -518,7 +518,7 @@ Enter:
             Me.txtNumeroPermisoSCT.Text = oVehiculo.NUMERO_PERMISO_SCT
             Me.txtAseguradoraResponsabilidadCivil.Text = oVehiculo.NOMBRE_ASEGURADORA_RESPONSABILIDAD_CIVIL
             Me.txtPolizaResposabilidadCivil.Text = oVehiculo.POLIZA_RESPONSABILIDAD_CIVIL
-            Me.txtPrimaSeguro.Text = oVehiculo.PRIMA_SEGURO
+            Me.txtPrimaSeguro.Text = FormatImporteContable(oVehiculo.PRIMA_SEGURO)
 
             bResultado = True
         Catch ex As Exception

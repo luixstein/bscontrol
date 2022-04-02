@@ -1,7 +1,6 @@
 ﻿Option Strict On
-Imports System.Data
+
 Imports System.Data.SqlClient
-Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Catalogo_Vehiculos
     Private oVehiculo As New Class_CatVehiculos
@@ -120,7 +119,7 @@ Public Class Catalogo_Vehiculos
 
     Private Sub tsbGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbGrabar.Click
         If Me.Validar() = False Then
-            Exit Sub
+            Return
         End If
 
         Dim sMsg As String = ""
@@ -332,7 +331,7 @@ Public Class Catalogo_Vehiculos
                     Me.txtPolizaMedioAmbiente.Text = .POLIZA_MEDIO_AMBIENTE
                     Me.txtNombreAseguradoraCarga.Text = .NOMBRE_ASEGURADORA_CARGA
                     Me.txtPolizaCarga.Text = .POLIZA_CARGA
-                    Me.txtPrimaSeguro.Text = .PRIMA_SEGURO.ToString
+                    Me.txtPrimaSeguro.Text = FormatImporteContable(.PRIMA_SEGURO)
 
                 End With
             End If
@@ -365,7 +364,7 @@ Public Class Catalogo_Vehiculos
                         .POLIZA_MEDIO_AMBIENTE = Me.txtPolizaMedioAmbiente.Text
                         .NOMBRE_ASEGURADORA_CARGA = Me.txtNombreAseguradoraCarga.Text
                         .POLIZA_CARGA = Me.txtPolizaCarga.Text
-                        .PRIMA_SEGURO = Me.txtPrimaSeguro.Text
+                        .PRIMA_SEGURO = valorNumericoD(Me.txtPrimaSeguro.Text)
                         .CODIGO_USUARIO_CREO = Usuario.Codigo_Usuario.ToString
                         .FECHA_CREO = Date.Now
                         .CODIGO_USUARIO_MODIFICO = Usuario.Codigo_Usuario.ToString
@@ -404,10 +403,11 @@ Public Class Catalogo_Vehiculos
     End Sub
 
     Private Function Validar() As Boolean
+        Const sProcedure As String = "Validar"
         Dim bResultado As Boolean = False
         Try
             If txtLEN(Me.TxtNombre.Text) = False Then
-                MsgBox("Capture el nombre del vehículo.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Capture el nombre del vehículo.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtNombre.Focus()
                 Return bResultado
             End If
@@ -415,13 +415,13 @@ Public Class Catalogo_Vehiculos
             Select Case Me.chkCrearCategoria.Checked
                 Case False
                     If txtLEN(Me.TxtCodigoCategoria.Text) = False Then
-                        MsgBox("Seleccione una categoria, en caso de no tener, puede usar la 0.", MsgBoxStyle.Exclamation, Me.Text)
+                        MsgBox("Seleccione una categoria, en caso de no tener, puede usar la 0.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.TxtCodigoCategoria.Focus()
                         Return False
                     End If
                 Case True
                     If txtLEN(Me.txtTipoCategoria.Text) = False Then
-                        MsgBox("Seleccione el tipo de categoria.", MsgBoxStyle.Exclamation, Me.Text)
+                        MsgBox("Seleccione el tipo de categoria.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.txtTipoCategoria.Focus()
                         Return False
                     End If
@@ -429,7 +429,7 @@ Public Class Catalogo_Vehiculos
 
             If txtLEN(Me.txtCodigoPermisoSct.Text) Then
                 If txtLEN(Me.txtNumeroPermisoSct.Text) = False Then
-                    MsgBox("Capture un código de permiso SCT.", MsgBoxStyle.Exclamation, Me.Text)
+                    MsgBox("Capture un código de permiso SCT.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.txtNumeroPermisoSct.Focus()
                     Return False
                 End If
@@ -437,53 +437,53 @@ Public Class Catalogo_Vehiculos
 
             If txtLEN(Me.txtNumeroPermisoSct.Text) Then
                 If txtLEN(Me.txtCodigoPermisoSct.Text) = False Then
-                    MsgBox("Capture un número de permiso SCT.", MsgBoxStyle.Exclamation, Me.Text)
+                    MsgBox("Capture un número de permiso SCT.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.txtCodigoPermisoSct.Focus()
                     Return False
                 End If
             End If
 
             If txtLEN(Me.txtCodigoAutotransporte.Text) = False Then
-                MsgBox("Capture un código de autotransporte.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Capture un código de autotransporte.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtCodigoAutotransporte.Focus()
                 Return False
             End If
 
             If txtLEN(Me.txtNombreAseguradoraResponsabilidadCivil.Text) = False Then
-                MsgBox("Capture un nombre de aseguradora de responsabilidad civil.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Capture un nombre de aseguradora de responsabilidad civil.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtNombreAseguradoraResponsabilidadCivil.Focus()
                 Return False
             End If
 
             If txtLEN(Me.txtPolizaResponsabilidadCivil.Text) = False Then
-                MsgBox("Capture una poliza de aseguradora de responsabilidad civil.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Capture una poliza de aseguradora de responsabilidad civil.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.txtPolizaResponsabilidadCivil.Focus()
                 Return False
             End If
 
-            If txtLEN(Me.txtNombreAseguradoraMedioAmbiente.Text) = False Then
-                MsgBox("Capture un nombre de aseguradora de medio ambiente.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtNombreAseguradoraMedioAmbiente.Focus()
-                Return False
-            End If
+            'If txtLEN(Me.txtNombreAseguradoraMedioAmbiente.Text) = False Then
+            '    MsgBox("Capture un nombre de aseguradora de medio ambiente.", MsgBoxStyle.Exclamation,sProcedure)
+            '    Me.txtNombreAseguradoraMedioAmbiente.Focus()
+            '    Return False
+            'End If
 
-            If txtLEN(Me.txtPolizaMedioAmbiente.Text) = False Then
-                MsgBox("Capture una poliza de aseguradora de medio ambiente.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtPolizaMedioAmbiente.Focus()
-                Return False
-            End If
+            'If txtLEN(Me.txtPolizaMedioAmbiente.Text) = False Then
+            '    MsgBox("Capture una poliza de aseguradora de medio ambiente.", MsgBoxStyle.Exclamation,sProcedure)
+            '    Me.txtPolizaMedioAmbiente.Focus()
+            '    Return False
+            'End If
 
-            If txtLEN(Me.txtNombreAseguradoraCarga.Text) = False Then
-                MsgBox("Capture un nombre de aseguradora de carga.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtNombreAseguradoraCarga.Focus()
-                Return False
-            End If
+            'If txtLEN(Me.txtNombreAseguradoraCarga.Text) = False Then
+            '    MsgBox("Capture un nombre de aseguradora de carga.", MsgBoxStyle.Exclamation,sProcedure)
+            '    Me.txtNombreAseguradoraCarga.Focus()
+            '    Return False
+            'End If
 
-            If txtLEN(Me.txtPolizaCarga.Text) = False Then
-                MsgBox("Capture una poliza de aseguradora de carga.", MsgBoxStyle.Exclamation, Me.Text)
-                Me.txtPolizaCarga.Focus()
-                Return False
-            End If
+            'If txtLEN(Me.txtPolizaCarga.Text) = False Then
+            '    MsgBox("Capture una poliza de aseguradora de carga.", MsgBoxStyle.Exclamation,sProcedure)
+            '    Me.txtPolizaCarga.Focus()
+            '    Return False
+            'End If
 
             If txtLEN(Me.txtPrimaSeguro.Text) = False Then
                 Me.txtPrimaSeguro.Text = "0"
@@ -491,7 +491,7 @@ Public Class Catalogo_Vehiculos
 
             bResultado = True
         Catch ex As Exception
-            HandleError(Me.Name, "Validar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
@@ -541,11 +541,10 @@ Public Class Catalogo_Vehiculos
 #Region "Eventos Genericos"
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtNombre.KeyPress, TxtCodigoCategoria.KeyPress, TxtCodigo.KeyPress, txtTipoCategoria.KeyPress, txtCodigoAutotransporte.KeyPress, txtMarca.KeyPress, txtPlaca.KeyPress, txtCodigoPermisoSct.KeyPress, txtNumeroPermisoSct.KeyPress, _
         txtNombreAseguradoraResponsabilidadCivil.KeyPress, txtPolizaResponsabilidadCivil.KeyPress, txtNombreAseguradoraMedioAmbiente.KeyPress, txtPolizaMedioAmbiente.KeyPress, txtNombreAseguradoraCarga.KeyPress, txtPolizaCarga.KeyPress
-
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombre.KeyDown, CboEstatus.KeyDown, chkCrearCategoria.KeyDown, txtMarca.KeyDown, txtPlaca.KeyDown, txtAnio.KeyDown, txtCodigoPermisoSct.KeyDown, txtNumeroPermisoSct.KeyDown, txtNombreAseguradoraResponsabilidadCivil.KeyDown, txtPolizaResponsabilidadCivil.KeyDown, _
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombre.KeyDown, CboEstatus.KeyDown, chkCrearCategoria.KeyDown, txtMarca.KeyDown, txtPlaca.KeyDown, txtAnio.KeyDown, txtNumeroPermisoSct.KeyDown, txtNombreAseguradoraResponsabilidadCivil.KeyDown, txtPolizaResponsabilidadCivil.KeyDown,
         txtNombreAseguradoraMedioAmbiente.KeyDown, txtPolizaMedioAmbiente.KeyDown, txtNombreAseguradoraCarga.KeyDown, txtPolizaCarga.KeyDown
         If e.KeyCode = Keys.Return Then
             txtTAB(e)
@@ -566,7 +565,6 @@ Public Class Catalogo_Vehiculos
 #End Region
 
 #Region "Keydown específicos"
-
     Private Sub txtCodigoCategoria_keyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtCodigoCategoria.KeyDown
         Try
             Dim oCategorias As New Class_CatCategorias
@@ -578,7 +576,7 @@ Buscar:
                     resultado = oCategorias.BusquedaVisual_PorDescripcion()
                     Me.TxtCodigoCategoria.Text = resultado
                     If txtLEN(resultado) = True Then
-                        GoTo Enter : Exit Sub
+                        GoTo Enter : Return
                     Else
                         Me.lblCategoria.Text = "_"
                     End If
@@ -595,7 +593,7 @@ Enter:
                     If oCategorias.Existe = True Then
                         Me.lblCategoria.Text = oCategorias.NOMBRE_CATEGORIA
                     Else
-                        Me.lblCategoria.Text = "_" : GoTo Buscar : Exit Sub
+                        Me.lblCategoria.Text = "_" : GoTo Buscar : Return
                     End If
 
                     txtTAB(e)
@@ -617,20 +615,20 @@ Buscar:
                     resultado = oTiposCategorias.BusquedaVisual_PorDescripcion()
                     Me.txtTipoCategoria.Text = resultado
                     If txtLEN(resultado) = True Then
-                        GoTo Enter : Exit Sub
+                        GoTo Enter : Return
                     End If
 
                 Case Keys.Return
 Enter:
                     If txtLEN(Me.txtTipoCategoria.Text) = False Then
-                        Me.lblTipoCategoria.Text = "" : GoTo Buscar : Exit Sub
+                        Me.lblTipoCategoria.Text = "" : GoTo Buscar : Return
                     End If
 
                     oTiposCategorias = New Class_CatTiposCategorias(Me.txtTipoCategoria.Text)
                     If oTiposCategorias.Existe = True Then
                         Me.lblTipoCategoria.Text = oTiposCategorias.Nombre_Tipo_Categoria
                     Else
-                        Me.lblTipoCategoria.Text = "" : GoTo Buscar : Exit Sub
+                        Me.lblTipoCategoria.Text = "" : GoTo Buscar : Return
                     End If
 
                     txtTAB(e)
@@ -713,6 +711,7 @@ Enter:
 
     Private Sub txtPrimaSeguro_KeyDown(sender As Object, e As KeyEventArgs) Handles txtPrimaSeguro.KeyDown
         If e.KeyCode = Keys.Return Then
+            Me.txtPrimaSeguro.Text = FormatImporteContable(valorNumericoD(Me.txtPrimaSeguro.Text))
             tsbGrabar.PerformClick()
         End If
     End Sub

@@ -116,7 +116,7 @@ Public Class Class_CfdiCatTiposPermisosSCT
     Public Function Consultar() As Boolean
         Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("Select * from CFDI_CAT_TIPOS_PERMISOS_SCT Where CODIGO_PERMISO_SCT='" & sReplace(Me._CODIGO_PERMISO_SCT) & "'", Me._Conexion)
+        Dim cmd As New SqlCommand("SELECT * FROM CFDI_CAT_TIPOS_PERMISOS_SCT WHERE CODIGO_PERMISO_SCT='" & sReplace(Me._CODIGO_PERMISO_SCT) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -190,12 +190,13 @@ Public Class Class_CfdiCatTiposPermisosSCT
         Const sProcedure As String = "BusquedaVisual_PorCodigo"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
-        f.Text = "Búsqueda de permisos SCT por codigo."
+        f.Text = "Búsqueda de permisos SCT por código."
         f.sCampo = "CODIGO_PERMISO_SCT"
         f.sOrder = "NOMBRE_PERMISO_SCT"
         f.sTable = "CFDI_CAT_TIPOS_PERMISOS_SCT"
-        f.sQl = "Select CODIGO_PERMISOS_SCT,NOMBRE_PERMISOS_SCT From CFDI_CAT_TIPOS_PERMISOS_SCT Where 1=1 And"
-        f.Inicia("")
+        f.sQl = "SELECT CODIGO_PERMISO_SCT,NOMBRE_PERMISO_SCT FROM CFDI_CAT_TIPOS_PERMISOS_SCT WHERE 1=1 AND "
+        f.arrayWidthColumns = New Integer() {100, 400}
+        f.Inicia("%")
         f.ShowDialog()
         Try
             If f.iRows > 0 Then
@@ -215,8 +216,9 @@ Public Class Class_CfdiCatTiposPermisosSCT
         f.sCampo = "NOMBRE_PERMISO_SCT"
         f.sOrder = "NOMBRE_PERMISO_SCT"
         f.sTable = "CFDI_CAT_TIPOS_PERMISOS_SCT"
-        f.sQl = "Select CODIGO_PERMISO_SCT,NOMBRE_PERMISO_SCT From CFDI_CAT_TIPOS_PERMISOS_SCT Where 1=1 And"
-        f.Inicia("")
+        f.sQl = "SELECT CODIGO_PERMISO_SCT,NOMBRE_PERMISO_SCT FROM CFDI_CAT_TIPOS_PERMISOS_SCT WHERE 1=1 AND "
+        f.arrayWidthColumns = New Integer() {100, 900}
+        f.Inicia("%")
         f.ShowDialog()
         Try
             If f.iRows > 0 Then

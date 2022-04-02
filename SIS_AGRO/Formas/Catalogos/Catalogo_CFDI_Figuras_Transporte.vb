@@ -447,52 +447,56 @@ Public Class Catalogo_CFDI_Figuras_Transporte
         Dim bResultado As Boolean = False
 
         If txtLEN(Me.TxtNombreFiguraTransporte.Text) = False Then
-            MsgBox("Capture el nombre de la figura de transporte.", MsgBoxStyle.Exclamation, Me.Name)
+            MsgBox("Capture el nombre.", MsgBoxStyle.Exclamation, Me.Name)
             Me.TxtNombreFiguraTransporte.Focus()
             Return bResultado
         End If
 
         If Me.CboTipoFiguraTransporte.SelectedIndex = -1 Then
-            MsgBox("Seleccione un tipo de figura de transporte.", MsgBoxStyle.Exclamation, Me.Name)
+            MsgBox("Seleccione un tipo de figura.", MsgBoxStyle.Exclamation, Me.Name)
             Me.CboTipoFiguraTransporte.Focus()
             Return bResultado
         End If
 
         If txtLEN(Me.TxtRfc.Text) = False Then
-            MsgBox("Capture el RFC de la figura de transporte.", MsgBoxStyle.Exclamation, Me.Name)
+            MsgBox("Capture el RFC.", MsgBoxStyle.Exclamation, Me.Name)
             Me.TxtRfc.Focus()
             Return bResultado
         End If
 
-        If txtLEN(Me.TxtNumeroLicencia.Text) = False Then
-            MsgBox("Capture el número de licencia de la figura de transporte.", MsgBoxStyle.Exclamation, Me.Name)
-            Me.TxtNumeroLicencia.Focus()
-            Return bResultado
+        Dim oTipoFigura As New Class_CfdiCatTiposFiguraTransporte(Me.CboTipoFiguraTransporte.SelectedValue.ToString)
+
+        If oTipoFigura.VALIDA_LICENCIA = True Then
+            If txtLEN(Me.TxtNumeroLicencia.Text) = False Then
+                MsgBox("Capture el número de licencia que es obligatoria cuando el tipo de figura es " & Me.CboTipoFiguraTransporte.Text & ".", MsgBoxStyle.Exclamation, Me.Name)
+                Me.TxtNumeroLicencia.Focus()
+                Return bResultado
+            End If
         End If
 
-        If txtLEN(Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Text) = False Then
-            MsgBox("Capture un número de identificación de registro fiscal extranjero.", MsgBoxStyle.Exclamation, Me.Name)
-            Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Focus()
-            Return bResultado
-        End If
+        'If txtLEN(Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Text) = False Then
+        '    MsgBox("Capture un número de identificación de registro fiscal extranjero.", MsgBoxStyle.Exclamation, Me.Name)
+        '    Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Focus()
+        '    Return bResultado
+        'End If
 
         If txtLEN(Me.TxtCalle.Text) = False Then
-            MsgBox("Capture una calle.", MsgBoxStyle.Exclamation, Me.Name)
+            MsgBox("Capture la calle.", MsgBoxStyle.Exclamation, Me.Name)
             Me.TxtCalle.Focus()
             Return bResultado
         End If
 
         If txtLEN(Me.TxtNumeroExterior.Text) = False Then
-            MsgBox("Capture un número exterior.", MsgBoxStyle.Exclamation, Me.Name)
+            MsgBox("Capture el número exterior.", MsgBoxStyle.Exclamation, Me.Name)
             Me.TxtNumeroExterior.Focus()
             Return bResultado
         End If
 
-        If txtLEN(Me.TxtReferencia.Text) = False Then
-            MsgBox("Agregue una referencia.", MsgBoxStyle.Exclamation)
-            Me.TxtReferencia.Focus()
-            Return bResultado
-        End If
+        'If txtLEN(Me.TxtReferencia.Text) = False Then
+        '    MsgBox("Capture la referencia.", MsgBoxStyle.Exclamation)
+        '    Me.TxtReferencia.Focus()
+        '    Return bResultado
+        'End If
 
         If Me.cboPaisDomicilio.SelectedIndex = -1 Then
             MsgBox("Asígne el país del domicilio.", MsgBoxStyle.Exclamation, Me.Name)
@@ -501,7 +505,7 @@ Public Class Catalogo_CFDI_Figuras_Transporte
         End If
 
         If txtLEN(Me.TxtCodigoPostal.Text) = False Then
-            MsgBox("Agregue un numero de hectareas", MsgBoxStyle.Exclamation, Me.Name)
+            MsgBox("Capture el código postal.", MsgBoxStyle.Exclamation, Me.Name)
             Me.TxtCodigoPostal.Focus()
             Return bResultado
         End If

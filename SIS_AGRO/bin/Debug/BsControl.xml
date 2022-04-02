@@ -6,276 +6,377 @@ BsControl
 </name>
 </assembly>
 <members>
-<member name="M:BsControl.Class_CatCuentasBancarias.Consultar">
-	<summary>
- Carga al objeto con todos los datos del registro.
- </summary>
-</member><member name="M:BsControl.Class_CatCuentasBancarias.ObtenerElementos">
-	<summary>
- Devuelve un datatable con todos los registros de la tabla
- </summary>
-</member><member name="M:BsControl.Class_CatCuentasBancarias.BusquedaVisual_PorDescripcion">
-	<summary>
- Despliega la búsqueda visual por descripción.
- </summary>
-</member><member name="T:BsControl.dsTrabajadores.miTablaDataTable">
-	<summary>
-Represents the strongly named DataTable class.
+<member name="T:BsControl.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
 </summary>
-</member><member name="T:BsControl.dsTrabajadores.miTablaRow">
-	<summary>
-Represents strongly named DataRow class.
-</summary>
-</member><member name="T:BsControl.dsTrabajadores.miTablaRowChangeEvent">
-	<summary>
-Row event argument class
-</summary>
-</member><member name="T:BsControl.dsTrabajadores">
-	<summary>
-Represents a strongly typed in-memory cache of data.
-</summary>
-</member><member name="P:BsControl.My.Resources.Resources.ResourceManager">
-	<summary>
+</member>
+<member name="P:BsControl.My.Resources.Resources.ResourceManager">
+<summary>
   Returns the cached ResourceManager instance used by this class.
 </summary>
-</member><member name="P:BsControl.My.Resources.Resources.Culture">
-	<summary>
+</member>
+<member name="P:BsControl.My.Resources.Resources.Culture">
+<summary>
   Overrides the current thread's CurrentUICulture property for all
   resource lookups using this strongly typed resource class.
 </summary>
-</member><member name="P:BsControl.My.Resources.Resources._096">
-	<summary>
+</member>
+<member name="P:BsControl.My.Resources.Resources._096">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
-</member><member name="P:BsControl.My.Resources.Resources._782">
-	<summary>
+</member>
+<member name="P:BsControl.My.Resources.Resources._782">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
-</member><member name="P:BsControl.My.Resources.Resources.alb">
-	<summary>
+</member>
+<member name="P:BsControl.My.Resources.Resources.alb">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
-</member><member name="P:BsControl.My.Resources.Resources.pdf1">
-	<summary>
+</member>
+<member name="P:BsControl.My.Resources.Resources.pdf1">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
-</member><member name="P:BsControl.My.Resources.Resources.pdf1___copia">
-	<summary>
+</member>
+<member name="P:BsControl.My.Resources.Resources.pdf1___copia">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
-</member><member name="P:BsControl.My.Resources.Resources.pdf11">
-	<summary>
+</member>
+<member name="P:BsControl.My.Resources.Resources.pdf11">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
-</member><member name="P:BsControl.My.Resources.Resources.pdf2">
-	<summary>
+</member>
+<member name="P:BsControl.My.Resources.Resources.pdf2">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
-</member><member name="P:BsControl.My.Resources.Resources.xml_file">
-	<summary>
+</member>
+<member name="P:BsControl.My.Resources.Resources.xml_file">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
-</member><member name="P:BsControl.My.Resources.Resources.xml1">
-	<summary>
+</member>
+<member name="P:BsControl.My.Resources.Resources.xml1">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
-</member><member name="T:BsControl.My.Resources.Resources">
-	<summary>
-  A strongly-typed resource class, for looking up localized strings, etc.
-</summary>
-</member><member name="M:BsControl.Class_CatProveedores.Insertar">
-	<summary>
- Inserta un proveedor al catálogo.
+</member>
+<member name="M:BsControl.Class_CatCuentasBancarias.Consultar">
+ <summary>
+ Carga al objeto con todos los datos del registro.
  </summary>
-</member><member name="M:BsControl.Class_CatProveedores.Actualizar">
-	<summary>
- Actualiza al proveedor.
- </summary>
-</member><member name="M:BsControl.Class_CatProveedores.Consultar">
-	<summary>
- Consulta y refresca los campos del almacén.
- </summary>
-</member><member name="M:BsControl.Class_CatProveedores.ObtenerElementos">
-	<summary>
- Obtiene a todos los elementos del catálogo.
- </summary>
-</member><member name="M:BsControl.InventariosDetalleCuentasContables.RecargaArticuloPrevio">
-	<summary>
- Recarga los renglones todos los renglones chequeados y no chequeados del Articulo
- </summary>
-</member><member name="M:BsControl.Class_SisPlazas.ObtenerElementos">
-	<summary>
+</member>
+<member name="M:BsControl.Class_CatCuentasBancarias.ObtenerElementos">
+ <summary>
  Devuelve un datatable con todos los registros de la tabla
  </summary>
-</member><member name="M:BsControl.Class_SisPlazas.ObtenerPlazasPorUsuario">
-	<summary>
+</member>
+<member name="M:BsControl.Class_CatCuentasBancarias.BusquedaVisual_PorDescripcion">
+ <summary>
+ Despliega la búsqueda visual por descripción.
+ </summary>
+</member>
+<member name="M:BsControl.Class_CatProveedores.Insertar">
+ <summary>
+ Inserta un proveedor al catálogo.
+ </summary>
+</member>
+<member name="M:BsControl.Class_CatProveedores.Actualizar">
+ <summary>
+ Actualiza al proveedor.
+ </summary>
+</member>
+<member name="M:BsControl.Class_CatProveedores.Consultar">
+ <summary>
+ Consulta y refresca los campos del almacén.
+ </summary>
+</member>
+<member name="M:BsControl.Class_CatProveedores.ObtenerElementos">
+ <summary>
+ Obtiene a todos los elementos del catálogo.
+ </summary>
+</member>
+<member name="M:BsControl.Class_SisPlazas.ObtenerElementos">
+ <summary>
+ Devuelve un datatable con todos los registros de la tabla
+ </summary>
+</member>
+<member name="M:BsControl.Class_SisPlazas.ObtenerPlazasPorUsuario">
+ <summary>
  Devuelve un datatable con todos los registros de la tabla que conicidan para 
  el id de usuario.
  </summary>
-</member><member name="M:BsControl.Class_SisPlazas.BusquedaVisual_PorCodigo">
-	<summary>
+</member>
+<member name="M:BsControl.Class_SisPlazas.BusquedaVisual_PorCodigo">
+ <summary>
  Despliega la búsqueda visual por código.
  </summary>
-</member><member name="M:BsControl.Class_SisPlazas.BusquedaVisual_PorDescripcion">
-	<summary>
+</member>
+<member name="M:BsControl.Class_SisPlazas.BusquedaVisual_PorDescripcion">
+ <summary>
  Despliega la búsqueda visual por descripción.
  </summary>
-</member><member name="P:BsControl.clsComprobante.version">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.serie">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.folio">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.fecha">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.sello">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.formaDePago">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.certificado">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.condicionesDePago">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.subTotal">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.descuento">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.motivoDescuento">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.TipoCambio">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.Moneda">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.total">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.tipoDeComprobante">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.metodoDePago">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.LugarExpedicion">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.NumCtaPago">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.Confirmacion">
-	<comentarios/>
-</member><member name="P:BsControl.clsComprobante.CantidadConLetra">
-	<comentarios/>
-</member><member name="P:BsControl.t_UbicacionFiscal.calle">
-	<comentarios/>
-</member><member name="P:BsControl.t_UbicacionFiscal.noExterior">
-	<comentarios/>
-</member><member name="P:BsControl.t_UbicacionFiscal.noInterior">
-	<comentarios/>
-</member><member name="P:BsControl.t_UbicacionFiscal.colonia">
-	<comentarios/>
-</member><member name="P:BsControl.t_UbicacionFiscal.localidad">
-	<comentarios/>
-</member><member name="P:BsControl.t_UbicacionFiscal.referencia">
-	<comentarios/>
-</member><member name="P:BsControl.t_UbicacionFiscal.municipio">
-	<comentarios/>
-</member><member name="P:BsControl.t_UbicacionFiscal.estado">
-	<comentarios/>
-</member><member name="P:BsControl.t_UbicacionFiscal.pais">
-	<comentarios/>
-</member><member name="P:BsControl.t_UbicacionFiscal.codigoPostal">
-	<comentarios/>
-</member><member name="P:BsControl.t_Ubicacion.calle">
-	<comentarios/>
-</member><member name="P:BsControl.t_Ubicacion.noExterior">
-	<comentarios/>
-</member><member name="P:BsControl.t_Ubicacion.noInterior">
-	<comentarios/>
-</member><member name="P:BsControl.t_Ubicacion.colonia">
-	<comentarios/>
-</member><member name="P:BsControl.t_Ubicacion.localidad">
-	<comentarios/>
-</member><member name="P:BsControl.t_Ubicacion.referencia">
-	<comentarios/>
-</member><member name="P:BsControl.t_Ubicacion.municipio">
-	<comentarios/>
-</member><member name="P:BsControl.t_Ubicacion.estado">
-	<comentarios/>
-</member><member name="P:BsControl.t_Ubicacion.pais">
-	<comentarios/>
-</member><member name="P:BsControl.t_Ubicacion.codigoPostal">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteEmisorRegimenFiscal.Regimen">
-	<comentarios/>
-</member><member name="T:BsControl.ComprobanteEmisorRegimenFiscal">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteEmisor.DomicilioFiscal">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteEmisor.ExpedidoEn">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteEmisor.RegimenFiscal">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteEmisor.rfc">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteEmisor.nombre">
-	<comentarios/>
-</member><member name="T:BsControl.ComprobanteEmisor">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteReceptor.Domicilio">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteReceptor.rfc">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteReceptor.nombre">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteReceptor.ResidenciaFiscal">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteReceptor.NumRegIdTrib">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteReceptor.UsoCFDI">
-	<comentarios/>
-</member><member name="T:BsControl.ComprobanteReceptor">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteImpuestos.Retenciones">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteImpuestos.Traslados">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteImpuestos.totalImpuestosRetenidos">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteImpuestos.totalImpuestosTrasladados">
-	<comentarios/>
-</member><member name="T:BsControl.ComprobanteImpuestos">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteImpuestosRetencion.impuesto">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteImpuestosRetencion.importe">
-	<comentarios/>
-</member><member name="T:BsControl.ComprobanteImpuestosRetencion">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteImpuestosTraslado.impuesto">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteImpuestosTraslado.tasa">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteImpuestosTraslado.importe">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteImpuestosLocales.TotaldeRetenciones">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteImpuestosLocales.TotaldeTraslados">
-	<comentarios/>
-</member><member name="T:BsControl.ComprobanteImpuestosLocales">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteImpuestosAerolineas.TUA">
-	<comentarios/>
-</member><member name="P:BsControl.ComprobanteImpuestosAerolineas.TieneTUADesglosado">
-	<comentarios/>
-</member><member name="T:BsControl.ComprobanteImpuestosAerolineas">
-	<comentarios/>
-</member><member name="M:BsControl.Class_Inventarios_Global.ObtenerElementos">
-	<summary>
+</member>
+<member name="P:BsControl.clsComprobante.version">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.serie">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.folio">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.fecha">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.sello">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.formaDePago">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.certificado">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.condicionesDePago">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.subTotal">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.descuento">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.motivoDescuento">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.TipoCambio">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.Moneda">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.total">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.tipoDeComprobante">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.metodoDePago">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.LugarExpedicion">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.NumCtaPago">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.Confirmacion">
+<comentarios/>
+</member>
+<member name="P:BsControl.clsComprobante.CantidadConLetra">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_UbicacionFiscal.calle">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_UbicacionFiscal.noExterior">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_UbicacionFiscal.noInterior">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_UbicacionFiscal.colonia">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_UbicacionFiscal.localidad">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_UbicacionFiscal.referencia">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_UbicacionFiscal.municipio">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_UbicacionFiscal.estado">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_UbicacionFiscal.pais">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_UbicacionFiscal.codigoPostal">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_Ubicacion.calle">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_Ubicacion.noExterior">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_Ubicacion.noInterior">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_Ubicacion.colonia">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_Ubicacion.localidad">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_Ubicacion.referencia">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_Ubicacion.municipio">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_Ubicacion.estado">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_Ubicacion.pais">
+<comentarios/>
+</member>
+<member name="P:BsControl.t_Ubicacion.codigoPostal">
+<comentarios/>
+</member>
+<member name="T:BsControl.ComprobanteEmisorRegimenFiscal">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteEmisorRegimenFiscal.Regimen">
+<comentarios/>
+</member>
+<member name="T:BsControl.ComprobanteEmisor">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteEmisor.DomicilioFiscal">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteEmisor.ExpedidoEn">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteEmisor.RegimenFiscal">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteEmisor.rfc">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteEmisor.nombre">
+<comentarios/>
+</member>
+<member name="T:BsControl.ComprobanteReceptor">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteReceptor.Domicilio">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteReceptor.rfc">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteReceptor.nombre">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteReceptor.ResidenciaFiscal">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteReceptor.NumRegIdTrib">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteReceptor.UsoCFDI">
+<comentarios/>
+</member>
+<member name="T:BsControl.ComprobanteImpuestos">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteImpuestos.Retenciones">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteImpuestos.Traslados">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteImpuestos.totalImpuestosRetenidos">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteImpuestos.totalImpuestosTrasladados">
+<comentarios/>
+</member>
+<member name="T:BsControl.ComprobanteImpuestosRetencion">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteImpuestosRetencion.impuesto">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteImpuestosRetencion.importe">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteImpuestosTraslado.impuesto">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteImpuestosTraslado.tasa">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteImpuestosTraslado.importe">
+<comentarios/>
+</member>
+<member name="T:BsControl.ComprobanteImpuestosLocales">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteImpuestosLocales.TotaldeRetenciones">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteImpuestosLocales.TotaldeTraslados">
+<comentarios/>
+</member>
+<member name="T:BsControl.ComprobanteImpuestosAerolineas">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteImpuestosAerolineas.TUA">
+<comentarios/>
+</member>
+<member name="P:BsControl.ComprobanteImpuestosAerolineas.TieneTUADesglosado">
+<comentarios/>
+</member>
+<member name="T:BsControl.dsTrabajadores">
+<summary>
+Represents a strongly typed in-memory cache of data.
+</summary>
+</member>
+<member name="T:BsControl.dsTrabajadores.miTablaDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
+<member name="T:BsControl.dsTrabajadores.miTablaRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:BsControl.dsTrabajadores.miTablaRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
+<member name="M:BsControl.InventariosDetalleCuentasContables.RecargaArticuloPrevio">
+ <summary>
+ Recarga los renglones todos los renglones chequeados y no chequeados del Articulo
+ </summary>
+</member>
+<member name="M:BsControl.Class_Inventarios_Global.ObtenerElementos">
+ <summary>
  Obtiene a todos los elementos del catálogo.
  </summary>
-</member><member name="M:BsControl.Mod_Uti.FormatearCadenaParaConsultaSQL(System.String,System.Char)">
-	<summary>
+</member>
+<member name="M:BsControl.Mod_Uti.FormatearCadenaParaConsultaSQL(System.String,System.Char)">
+ <summary>
  Metodo para separar una cadena por el metodo String.Split y retornarla con formato SQL para consultas sobre varios registros.
  </summary>
-	<param name="prmCadena">String con los valores separados por un caracter que servirá como base para la consulta SQL</param>
-	<param name="prmSeparador">Indica el parametro Separator de tipo CHAR del metodo String.Split</param>
-	<returns>Retorna la misma cadena esta vez con el caracter apostrofe inicial y final por cada elemento y el separador coma(",") </returns>
-	<remarks></remarks>
+ <param name="prmCadena">String con los valores separados por un caracter que servirá como base para la consulta SQL</param>
+ <param name="prmSeparador">Indica el parametro Separator de tipo CHAR del metodo String.Split</param>
+ <returns>Retorna la misma cadena esta vez con el caracter apostrofe inicial y final por cada elemento y el separador coma(",") </returns>
+ <remarks></remarks>
 </member>
 </members>
 </doc>

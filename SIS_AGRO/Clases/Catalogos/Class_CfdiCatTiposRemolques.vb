@@ -1,4 +1,6 @@
-﻿Imports System.Data.SqlClient
+﻿Option Strict On
+
+Imports System.Data.SqlClient
 
 Public Class Class_CfdiCatTiposRemolques
 

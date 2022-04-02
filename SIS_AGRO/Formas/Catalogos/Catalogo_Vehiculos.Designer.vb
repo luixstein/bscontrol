@@ -40,6 +40,7 @@ Partial Class Catalogo_Vehiculos
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.LblNombrePermisoSct = New System.Windows.Forms.Label()
         Me.LblNombreAutransporte = New System.Windows.Forms.Label()
         Me.lblPolizaCarga = New System.Windows.Forms.Label()
         Me.txtPolizaCarga = New System.Windows.Forms.TextBox()
@@ -82,7 +83,6 @@ Partial Class Catalogo_Vehiculos
         Me.LblCodigo = New System.Windows.Forms.Label()
         Me.TxtCodigo = New System.Windows.Forms.TextBox()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.LblNombrePermisoSct = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -97,7 +97,7 @@ Partial Class Catalogo_Vehiculos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1085, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(814, 27)
         Me.tsMenu.TabIndex = 2
         Me.tsMenu.Text = "tsMenu"
         '
@@ -106,7 +106,7 @@ Partial Class Catalogo_Vehiculos
         Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
         Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(76, 24)
+        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
         Me.tsbNuevo.Text = "&Nuevo"
         '
         'tsbEditar
@@ -114,7 +114,7 @@ Partial Class Catalogo_Vehiculos
         Me.tsbEditar.Image = CType(resources.GetObject("tsbEditar.Image"), System.Drawing.Image)
         Me.tsbEditar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbEditar.Name = "tsbEditar"
-        Me.tsbEditar.Size = New System.Drawing.Size(72, 24)
+        Me.tsbEditar.Size = New System.Drawing.Size(61, 24)
         Me.tsbEditar.Text = "&Editar"
         '
         'tsbGrabar
@@ -122,7 +122,7 @@ Partial Class Catalogo_Vehiculos
         Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
         Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
+        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
         Me.tsbGrabar.Text = "&Grabar"
         '
         'tsbCancelar
@@ -130,7 +130,7 @@ Partial Class Catalogo_Vehiculos
         Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
         Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(90, 24)
+        Me.tsbCancelar.Size = New System.Drawing.Size(77, 24)
         Me.tsbCancelar.Text = "&Cancelar"
         '
         'tsbImprimirListado
@@ -138,7 +138,7 @@ Partial Class Catalogo_Vehiculos
         Me.tsbImprimirListado.Image = CType(resources.GetObject("tsbImprimirListado.Image"), System.Drawing.Image)
         Me.tsbImprimirListado.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbImprimirListado.Name = "tsbImprimirListado"
-        Me.tsbImprimirListado.Size = New System.Drawing.Size(139, 24)
+        Me.tsbImprimirListado.Size = New System.Drawing.Size(115, 24)
         Me.tsbImprimirListado.Text = "&Imprimir listado"
         '
         'tsbSalir
@@ -146,7 +146,7 @@ Partial Class Catalogo_Vehiculos
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'gBoxBusquedaRapida
@@ -155,11 +155,9 @@ Partial Class Catalogo_Vehiculos
         Me.gBoxBusquedaRapida.Controls.Add(Me.CboEstatusFiltro)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
-        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(597, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
+        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(448, 28)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(475, 827)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(356, 672)
         Me.gBoxBusquedaRapida.TabIndex = 1
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -167,10 +165,9 @@ Partial Class Catalogo_Vehiculos
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(413, 25)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Location = New System.Drawing.Point(310, 20)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(60, 17)
+        Me.Label3.Size = New System.Drawing.Size(46, 13)
         Me.Label3.TabIndex = 97
         Me.Label3.Text = "Estado :"
         '
@@ -179,10 +176,10 @@ Partial Class Catalogo_Vehiculos
         Me.CboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatusFiltro.FormattingEnabled = True
         Me.CboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
-        Me.CboEstatusFiltro.Location = New System.Drawing.Point(481, 21)
-        Me.CboEstatusFiltro.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.CboEstatusFiltro.Location = New System.Drawing.Point(361, 17)
+        Me.CboEstatusFiltro.Margin = New System.Windows.Forms.Padding(2)
         Me.CboEstatusFiltro.Name = "CboEstatusFiltro"
-        Me.CboEstatusFiltro.Size = New System.Drawing.Size(67, 24)
+        Me.CboEstatusFiltro.Size = New System.Drawing.Size(51, 21)
         Me.CboEstatusFiltro.TabIndex = 97
         '
         'Grid
@@ -192,46 +189,43 @@ Partial Class Catalogo_Vehiculos
         Me.Grid.AllowUserToResizeColumns = False
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(10, 52)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
+        Me.Grid.Location = New System.Drawing.Point(8, 42)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(457, 767)
+        Me.Grid.Size = New System.Drawing.Size(343, 623)
         Me.Grid.TabIndex = 111
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFiltro.Location = New System.Drawing.Point(10, 22)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFiltro.Location = New System.Drawing.Point(8, 18)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(234, 22)
+        Me.txtFiltro.Size = New System.Drawing.Size(176, 20)
         Me.txtFiltro.TabIndex = 0
         '
         'StatusStripEstado
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 865)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 701)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1085, 25)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(814, 22)
         Me.StatusStripEstado.TabIndex = 29
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
         'tssLabel
         '
         Me.tssLabel.Name = "tssLabel"
-        Me.tssLabel.Size = New System.Drawing.Size(61, 20)
+        Me.tssLabel.Size = New System.Drawing.Size(48, 17)
         Me.tssLabel.Text = "Estado :"
         '
         'tssLabelEstado
         '
         Me.tssLabelEstado.Name = "tssLabelEstado"
-        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
+        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
         '
         'gBoxInformacion
         '
@@ -277,278 +271,260 @@ Partial Class Catalogo_Vehiculos
         Me.gBoxInformacion.Controls.Add(Me.TxtNombre)
         Me.gBoxInformacion.Controls.Add(Me.LblCodigo)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigo)
-        Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
+        Me.gBoxInformacion.Location = New System.Drawing.Point(12, 28)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxInformacion.Size = New System.Drawing.Size(573, 827)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(430, 672)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
         '
+        'LblNombrePermisoSct
+        '
+        Me.LblNombrePermisoSct.AutoSize = True
+        Me.LblNombrePermisoSct.Location = New System.Drawing.Point(6, 337)
+        Me.LblNombrePermisoSct.Name = "LblNombrePermisoSct"
+        Me.LblNombrePermisoSct.Size = New System.Drawing.Size(13, 13)
+        Me.LblNombrePermisoSct.TabIndex = 130
+        Me.LblNombrePermisoSct.Text = "_"
+        '
         'LblNombreAutransporte
         '
         Me.LblNombreAutransporte.AutoSize = True
-        Me.LblNombreAutransporte.Location = New System.Drawing.Point(15, 357)
-        Me.LblNombreAutransporte.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombreAutransporte.Location = New System.Drawing.Point(6, 290)
         Me.LblNombreAutransporte.Name = "LblNombreAutransporte"
-        Me.LblNombreAutransporte.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreAutransporte.Size = New System.Drawing.Size(13, 13)
         Me.LblNombreAutransporte.TabIndex = 129
         Me.LblNombreAutransporte.Text = "_"
         '
         'lblPolizaCarga
         '
         Me.lblPolizaCarga.AutoSize = True
-        Me.lblPolizaCarga.Location = New System.Drawing.Point(9, 728)
-        Me.lblPolizaCarga.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblPolizaCarga.Location = New System.Drawing.Point(6, 585)
         Me.lblPolizaCarga.Name = "lblPolizaCarga"
-        Me.lblPolizaCarga.Size = New System.Drawing.Size(94, 17)
+        Me.lblPolizaCarga.Size = New System.Drawing.Size(81, 13)
         Me.lblPolizaCarga.TabIndex = 128
-        Me.lblPolizaCarga.Text = "Poliza carga :"
+        Me.lblPolizaCarga.Text = "# Póliza carga :"
         '
         'txtPolizaCarga
         '
-        Me.txtPolizaCarga.Location = New System.Drawing.Point(12, 749)
-        Me.txtPolizaCarga.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtPolizaCarga.Location = New System.Drawing.Point(90, 585)
         Me.txtPolizaCarga.MaxLength = 30
         Me.txtPolizaCarga.Name = "txtPolizaCarga"
-        Me.txtPolizaCarga.Size = New System.Drawing.Size(553, 22)
+        Me.txtPolizaCarga.Size = New System.Drawing.Size(116, 20)
         Me.txtPolizaCarga.TabIndex = 18
         '
         'lblNombreAseguradoraCarga
         '
         Me.lblNombreAseguradoraCarga.AutoSize = True
-        Me.lblNombreAseguradoraCarga.Location = New System.Drawing.Point(9, 681)
-        Me.lblNombreAseguradoraCarga.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblNombreAseguradoraCarga.Location = New System.Drawing.Point(6, 546)
         Me.lblNombreAseguradoraCarga.Name = "lblNombreAseguradoraCarga"
-        Me.lblNombreAseguradoraCarga.Size = New System.Drawing.Size(191, 17)
+        Me.lblNombreAseguradoraCarga.Size = New System.Drawing.Size(142, 13)
         Me.lblNombreAseguradoraCarga.TabIndex = 126
         Me.lblNombreAseguradoraCarga.Text = "Nombre aseguradora carga :"
         '
         'txtNombreAseguradoraCarga
         '
-        Me.txtNombreAseguradoraCarga.Location = New System.Drawing.Point(12, 702)
-        Me.txtNombreAseguradoraCarga.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtNombreAseguradoraCarga.Location = New System.Drawing.Point(10, 562)
         Me.txtNombreAseguradoraCarga.MaxLength = 50
         Me.txtNombreAseguradoraCarga.Name = "txtNombreAseguradoraCarga"
-        Me.txtNombreAseguradoraCarga.Size = New System.Drawing.Size(553, 22)
+        Me.txtNombreAseguradoraCarga.Size = New System.Drawing.Size(416, 20)
         Me.txtNombreAseguradoraCarga.TabIndex = 17
         '
         'lblPolizaMedioAmbiente
         '
         Me.lblPolizaMedioAmbiente.AutoSize = True
-        Me.lblPolizaMedioAmbiente.Location = New System.Drawing.Point(9, 630)
-        Me.lblPolizaMedioAmbiente.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblPolizaMedioAmbiente.Location = New System.Drawing.Point(6, 515)
         Me.lblPolizaMedioAmbiente.Name = "lblPolizaMedioAmbiente"
-        Me.lblPolizaMedioAmbiente.Size = New System.Drawing.Size(158, 17)
+        Me.lblPolizaMedioAmbiente.Size = New System.Drawing.Size(128, 13)
         Me.lblPolizaMedioAmbiente.TabIndex = 124
-        Me.lblPolizaMedioAmbiente.Text = "Poliza medio ambiente :"
+        Me.lblPolizaMedioAmbiente.Text = "# Póliza medio ambiente :"
         '
         'txtPolizaMedioAmbiente
         '
-        Me.txtPolizaMedioAmbiente.Location = New System.Drawing.Point(12, 651)
-        Me.txtPolizaMedioAmbiente.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtPolizaMedioAmbiente.Location = New System.Drawing.Point(140, 512)
         Me.txtPolizaMedioAmbiente.MaxLength = 30
         Me.txtPolizaMedioAmbiente.Name = "txtPolizaMedioAmbiente"
-        Me.txtPolizaMedioAmbiente.Size = New System.Drawing.Size(553, 22)
+        Me.txtPolizaMedioAmbiente.Size = New System.Drawing.Size(116, 20)
         Me.txtPolizaMedioAmbiente.TabIndex = 16
         '
         'lblNombreAseguradoraMedioAmbiente
         '
         Me.lblNombreAseguradoraMedioAmbiente.AutoSize = True
-        Me.lblNombreAseguradoraMedioAmbiente.Location = New System.Drawing.Point(9, 583)
-        Me.lblNombreAseguradoraMedioAmbiente.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblNombreAseguradoraMedioAmbiente.Location = New System.Drawing.Point(6, 476)
         Me.lblNombreAseguradoraMedioAmbiente.Name = "lblNombreAseguradoraMedioAmbiente"
-        Me.lblNombreAseguradoraMedioAmbiente.Size = New System.Drawing.Size(255, 17)
+        Me.lblNombreAseguradoraMedioAmbiente.Size = New System.Drawing.Size(189, 13)
         Me.lblNombreAseguradoraMedioAmbiente.TabIndex = 122
         Me.lblNombreAseguradoraMedioAmbiente.Text = "Nombre aseguradora medio ambiente :"
         '
         'txtNombreAseguradoraMedioAmbiente
         '
-        Me.txtNombreAseguradoraMedioAmbiente.Location = New System.Drawing.Point(12, 604)
-        Me.txtNombreAseguradoraMedioAmbiente.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtNombreAseguradoraMedioAmbiente.Location = New System.Drawing.Point(10, 489)
         Me.txtNombreAseguradoraMedioAmbiente.MaxLength = 50
         Me.txtNombreAseguradoraMedioAmbiente.Name = "txtNombreAseguradoraMedioAmbiente"
-        Me.txtNombreAseguradoraMedioAmbiente.Size = New System.Drawing.Size(553, 22)
+        Me.txtNombreAseguradoraMedioAmbiente.Size = New System.Drawing.Size(416, 20)
         Me.txtNombreAseguradoraMedioAmbiente.TabIndex = 15
         '
         'lblPrimaSeguro
         '
         Me.lblPrimaSeguro.AutoSize = True
-        Me.lblPrimaSeguro.Location = New System.Drawing.Point(9, 787)
-        Me.lblPrimaSeguro.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblPrimaSeguro.Location = New System.Drawing.Point(6, 625)
         Me.lblPrimaSeguro.Name = "lblPrimaSeguro"
-        Me.lblPrimaSeguro.Size = New System.Drawing.Size(100, 17)
+        Me.lblPrimaSeguro.Size = New System.Drawing.Size(83, 13)
         Me.lblPrimaSeguro.TabIndex = 120
-        Me.lblPrimaSeguro.Text = "Prima seguro :"
+        Me.lblPrimaSeguro.Text = "$ Prima seguro :"
         '
         'txtPrimaSeguro
         '
-        Me.txtPrimaSeguro.Location = New System.Drawing.Point(117, 784)
-        Me.txtPrimaSeguro.Margin = New System.Windows.Forms.Padding(4)
-        Me.txtPrimaSeguro.MaxLength = 50
+        Me.txtPrimaSeguro.Location = New System.Drawing.Point(90, 622)
+        Me.txtPrimaSeguro.MaxLength = 20
         Me.txtPrimaSeguro.Name = "txtPrimaSeguro"
-        Me.txtPrimaSeguro.Size = New System.Drawing.Size(209, 22)
+        Me.txtPrimaSeguro.Size = New System.Drawing.Size(116, 20)
         Me.txtPrimaSeguro.TabIndex = 19
+        Me.txtPrimaSeguro.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblPolizaResponsabilidadCivil
         '
         Me.lblPolizaResponsabilidadCivil.AutoSize = True
-        Me.lblPolizaResponsabilidadCivil.Location = New System.Drawing.Point(9, 533)
-        Me.lblPolizaResponsabilidadCivil.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblPolizaResponsabilidadCivil.Location = New System.Drawing.Point(6, 444)
         Me.lblPolizaResponsabilidadCivil.Name = "lblPolizaResponsabilidadCivil"
-        Me.lblPolizaResponsabilidadCivil.Size = New System.Drawing.Size(185, 17)
+        Me.lblPolizaResponsabilidadCivil.Size = New System.Drawing.Size(148, 13)
         Me.lblPolizaResponsabilidadCivil.TabIndex = 116
-        Me.lblPolizaResponsabilidadCivil.Text = "Poliza responsabilidad civil :"
+        Me.lblPolizaResponsabilidadCivil.Text = "# Póliza responsabilidad civil :"
         '
         'txtPolizaResponsabilidadCivil
         '
-        Me.txtPolizaResponsabilidadCivil.Location = New System.Drawing.Point(12, 554)
-        Me.txtPolizaResponsabilidadCivil.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtPolizaResponsabilidadCivil.Location = New System.Drawing.Point(160, 441)
         Me.txtPolizaResponsabilidadCivil.MaxLength = 30
         Me.txtPolizaResponsabilidadCivil.Name = "txtPolizaResponsabilidadCivil"
-        Me.txtPolizaResponsabilidadCivil.Size = New System.Drawing.Size(553, 22)
+        Me.txtPolizaResponsabilidadCivil.Size = New System.Drawing.Size(116, 20)
         Me.txtPolizaResponsabilidadCivil.TabIndex = 14
         '
         'lblNombreAseguradoraResponsabilidadCivil
         '
         Me.lblNombreAseguradoraResponsabilidadCivil.AutoSize = True
-        Me.lblNombreAseguradoraResponsabilidadCivil.Location = New System.Drawing.Point(9, 486)
-        Me.lblNombreAseguradoraResponsabilidadCivil.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblNombreAseguradoraResponsabilidadCivil.Location = New System.Drawing.Point(6, 402)
         Me.lblNombreAseguradoraResponsabilidadCivil.Name = "lblNombreAseguradoraResponsabilidadCivil"
-        Me.lblNombreAseguradoraResponsabilidadCivil.Size = New System.Drawing.Size(282, 17)
+        Me.lblNombreAseguradoraResponsabilidadCivil.Size = New System.Drawing.Size(209, 13)
         Me.lblNombreAseguradoraResponsabilidadCivil.TabIndex = 114
         Me.lblNombreAseguradoraResponsabilidadCivil.Text = "Nombre aseguradora responsabilidad civil :"
         '
         'txtNombreAseguradoraResponsabilidadCivil
         '
-        Me.txtNombreAseguradoraResponsabilidadCivil.Location = New System.Drawing.Point(12, 507)
-        Me.txtNombreAseguradoraResponsabilidadCivil.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtNombreAseguradoraResponsabilidadCivil.Location = New System.Drawing.Point(10, 418)
         Me.txtNombreAseguradoraResponsabilidadCivil.MaxLength = 50
         Me.txtNombreAseguradoraResponsabilidadCivil.Name = "txtNombreAseguradoraResponsabilidadCivil"
-        Me.txtNombreAseguradoraResponsabilidadCivil.Size = New System.Drawing.Size(553, 22)
+        Me.txtNombreAseguradoraResponsabilidadCivil.Size = New System.Drawing.Size(416, 20)
         Me.txtNombreAseguradoraResponsabilidadCivil.TabIndex = 13
         '
         'lblNumeroPermisoSct
         '
         Me.lblNumeroPermisoSct.AutoSize = True
-        Me.lblNumeroPermisoSct.Location = New System.Drawing.Point(8, 439)
-        Me.lblNumeroPermisoSct.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblNumeroPermisoSct.Location = New System.Drawing.Point(6, 357)
         Me.lblNumeroPermisoSct.Name = "lblNumeroPermisoSct"
-        Me.lblNumeroPermisoSct.Size = New System.Drawing.Size(151, 17)
+        Me.lblNumeroPermisoSct.Size = New System.Drawing.Size(84, 13)
         Me.lblNumeroPermisoSct.TabIndex = 112
-        Me.lblNumeroPermisoSct.Text = "Número permiso SCT :"
+        Me.lblNumeroPermisoSct.Text = "# Permiso SCT :"
         '
         'txtNumeroPermisoSct
         '
-        Me.txtNumeroPermisoSct.Location = New System.Drawing.Point(12, 460)
-        Me.txtNumeroPermisoSct.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtNumeroPermisoSct.Location = New System.Drawing.Point(130, 357)
         Me.txtNumeroPermisoSct.MaxLength = 50
         Me.txtNumeroPermisoSct.Name = "txtNumeroPermisoSct"
-        Me.txtNumeroPermisoSct.Size = New System.Drawing.Size(553, 22)
+        Me.txtNumeroPermisoSct.Size = New System.Drawing.Size(158, 20)
         Me.txtNumeroPermisoSct.TabIndex = 12
         '
         'lblCodigoPermisoSct
         '
         Me.lblCodigoPermisoSct.AutoSize = True
-        Me.lblCodigoPermisoSct.Location = New System.Drawing.Point(9, 387)
-        Me.lblCodigoPermisoSct.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCodigoPermisoSct.Location = New System.Drawing.Point(6, 314)
         Me.lblCodigoPermisoSct.Name = "lblCodigoPermisoSct"
-        Me.lblCodigoPermisoSct.Size = New System.Drawing.Size(145, 17)
+        Me.lblCodigoPermisoSct.Size = New System.Drawing.Size(109, 13)
         Me.lblCodigoPermisoSct.TabIndex = 110
         Me.lblCodigoPermisoSct.Text = "Código permiso SCT :"
         '
         'txtCodigoPermisoSct
         '
-        Me.txtCodigoPermisoSct.Location = New System.Drawing.Point(173, 384)
-        Me.txtCodigoPermisoSct.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtCodigoPermisoSct.Location = New System.Drawing.Point(130, 311)
         Me.txtCodigoPermisoSct.MaxLength = 10
         Me.txtCodigoPermisoSct.Name = "txtCodigoPermisoSct"
-        Me.txtCodigoPermisoSct.Size = New System.Drawing.Size(194, 22)
+        Me.txtCodigoPermisoSct.Size = New System.Drawing.Size(80, 20)
         Me.txtCodigoPermisoSct.TabIndex = 11
         '
         'lblCodigoAutotransporte
         '
         Me.lblCodigoAutotransporte.AutoSize = True
-        Me.lblCodigoAutotransporte.Location = New System.Drawing.Point(8, 331)
-        Me.lblCodigoAutotransporte.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCodigoAutotransporte.Location = New System.Drawing.Point(6, 269)
         Me.lblCodigoAutotransporte.Name = "lblCodigoAutotransporte"
-        Me.lblCodigoAutotransporte.Size = New System.Drawing.Size(157, 17)
+        Me.lblCodigoAutotransporte.Size = New System.Drawing.Size(117, 13)
         Me.lblCodigoAutotransporte.TabIndex = 108
         Me.lblCodigoAutotransporte.Text = "Código autotransporte :"
         '
         'txtCodigoAutotransporte
         '
-        Me.txtCodigoAutotransporte.Location = New System.Drawing.Point(173, 328)
-        Me.txtCodigoAutotransporte.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtCodigoAutotransporte.Location = New System.Drawing.Point(130, 266)
         Me.txtCodigoAutotransporte.MaxLength = 10
         Me.txtCodigoAutotransporte.Name = "txtCodigoAutotransporte"
-        Me.txtCodigoAutotransporte.Size = New System.Drawing.Size(169, 22)
+        Me.txtCodigoAutotransporte.Size = New System.Drawing.Size(80, 20)
         Me.txtCodigoAutotransporte.TabIndex = 10
         '
         'lblAnio
         '
         Me.lblAnio.AutoSize = True
-        Me.lblAnio.Location = New System.Drawing.Point(232, 295)
-        Me.lblAnio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblAnio.Location = New System.Drawing.Point(174, 240)
         Me.lblAnio.Name = "lblAnio"
-        Me.lblAnio.Size = New System.Drawing.Size(41, 17)
+        Me.lblAnio.Size = New System.Drawing.Size(32, 13)
         Me.lblAnio.TabIndex = 106
         Me.lblAnio.Text = "Año :"
         '
         'txtAnio
         '
-        Me.txtAnio.Location = New System.Drawing.Point(281, 292)
-        Me.txtAnio.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtAnio.Location = New System.Drawing.Point(211, 237)
         Me.txtAnio.MaxLength = 4
         Me.txtAnio.Name = "txtAnio"
-        Me.txtAnio.Size = New System.Drawing.Size(105, 22)
+        Me.txtAnio.Size = New System.Drawing.Size(80, 20)
         Me.txtAnio.TabIndex = 9
         '
         'lblPlaca
         '
         Me.lblPlaca.AutoSize = True
-        Me.lblPlaca.Location = New System.Drawing.Point(9, 295)
-        Me.lblPlaca.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblPlaca.Location = New System.Drawing.Point(6, 240)
         Me.lblPlaca.Name = "lblPlaca"
-        Me.lblPlaca.Size = New System.Drawing.Size(51, 17)
+        Me.lblPlaca.Size = New System.Drawing.Size(40, 13)
         Me.lblPlaca.TabIndex = 104
         Me.lblPlaca.Text = "Placa :"
         '
         'txtPlaca
         '
-        Me.txtPlaca.Location = New System.Drawing.Point(68, 292)
-        Me.txtPlaca.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtPlaca.Location = New System.Drawing.Point(51, 237)
         Me.txtPlaca.MaxLength = 7
         Me.txtPlaca.Name = "txtPlaca"
-        Me.txtPlaca.Size = New System.Drawing.Size(141, 22)
+        Me.txtPlaca.Size = New System.Drawing.Size(107, 20)
         Me.txtPlaca.TabIndex = 8
         '
         'lblMarca
         '
         Me.lblMarca.AutoSize = True
-        Me.lblMarca.Location = New System.Drawing.Point(9, 264)
-        Me.lblMarca.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblMarca.Location = New System.Drawing.Point(6, 214)
         Me.lblMarca.Name = "lblMarca"
-        Me.lblMarca.Size = New System.Drawing.Size(55, 17)
+        Me.lblMarca.Size = New System.Drawing.Size(43, 13)
         Me.lblMarca.TabIndex = 102
         Me.lblMarca.Text = "Marca :"
         '
         'txtMarca
         '
-        Me.txtMarca.Location = New System.Drawing.Point(70, 261)
-        Me.txtMarca.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtMarca.Location = New System.Drawing.Point(51, 212)
         Me.txtMarca.MaxLength = 30
         Me.txtMarca.Name = "txtMarca"
-        Me.txtMarca.Size = New System.Drawing.Size(139, 22)
+        Me.txtMarca.Size = New System.Drawing.Size(105, 20)
         Me.txtMarca.TabIndex = 7
         '
         'lblTipoCategoria
         '
         Me.lblTipoCategoria.AutoSize = True
-        Me.lblTipoCategoria.Location = New System.Drawing.Point(139, 220)
+        Me.lblTipoCategoria.Location = New System.Drawing.Point(104, 179)
+        Me.lblTipoCategoria.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblTipoCategoria.Name = "lblTipoCategoria"
-        Me.lblTipoCategoria.Size = New System.Drawing.Size(16, 17)
+        Me.lblTipoCategoria.Size = New System.Drawing.Size(13, 13)
         Me.lblTipoCategoria.TabIndex = 100
         Me.lblTipoCategoria.Text = "_"
         Me.lblTipoCategoria.Visible = False
@@ -556,31 +532,28 @@ Partial Class Catalogo_Vehiculos
         'chkCrearCategoria
         '
         Me.chkCrearCategoria.AutoSize = True
-        Me.chkCrearCategoria.Location = New System.Drawing.Point(12, 164)
-        Me.chkCrearCategoria.Margin = New System.Windows.Forms.Padding(4)
+        Me.chkCrearCategoria.Location = New System.Drawing.Point(9, 133)
         Me.chkCrearCategoria.Name = "chkCrearCategoria"
-        Me.chkCrearCategoria.Size = New System.Drawing.Size(252, 21)
+        Me.chkCrearCategoria.Size = New System.Drawing.Size(193, 17)
         Me.chkCrearCategoria.TabIndex = 5
         Me.chkCrearCategoria.Text = "Crear categoría automáticamente ?"
         Me.chkCrearCategoria.UseVisualStyleBackColor = True
         '
         'txtTipoCategoria
         '
-        Me.txtTipoCategoria.Location = New System.Drawing.Point(139, 192)
-        Me.txtTipoCategoria.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtTipoCategoria.Location = New System.Drawing.Point(104, 156)
         Me.txtTipoCategoria.MaxLength = 30
         Me.txtTipoCategoria.Name = "txtTipoCategoria"
-        Me.txtTipoCategoria.Size = New System.Drawing.Size(111, 22)
+        Me.txtTipoCategoria.Size = New System.Drawing.Size(84, 20)
         Me.txtTipoCategoria.TabIndex = 6
         Me.txtTipoCategoria.Visible = False
         '
         'lblDisplayTipoCategoria
         '
         Me.lblDisplayTipoCategoria.AutoSize = True
-        Me.lblDisplayTipoCategoria.Location = New System.Drawing.Point(8, 194)
-        Me.lblDisplayTipoCategoria.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayTipoCategoria.Location = New System.Drawing.Point(6, 158)
         Me.lblDisplayTipoCategoria.Name = "lblDisplayTipoCategoria"
-        Me.lblDisplayTipoCategoria.Size = New System.Drawing.Size(127, 17)
+        Me.lblDisplayTipoCategoria.Size = New System.Drawing.Size(98, 13)
         Me.lblDisplayTipoCategoria.TabIndex = 99
         Me.lblDisplayTipoCategoria.Text = "Tipo de categoría :"
         Me.lblDisplayTipoCategoria.Visible = False
@@ -588,40 +561,36 @@ Partial Class Catalogo_Vehiculos
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(8, 84)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Location = New System.Drawing.Point(6, 68)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(63, 17)
+        Me.Label1.Size = New System.Drawing.Size(48, 13)
         Me.Label1.TabIndex = 96
         Me.Label1.Text = "Estatus :"
         '
         'lblCategoria
         '
         Me.lblCategoria.AutoSize = True
-        Me.lblCategoria.Location = New System.Drawing.Point(101, 144)
-        Me.lblCategoria.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCategoria.Location = New System.Drawing.Point(76, 117)
         Me.lblCategoria.Name = "lblCategoria"
-        Me.lblCategoria.Size = New System.Drawing.Size(16, 17)
+        Me.lblCategoria.Size = New System.Drawing.Size(13, 13)
         Me.lblCategoria.TabIndex = 4
         Me.lblCategoria.Text = "_"
         '
         'lblCodigoCategoria
         '
         Me.lblCodigoCategoria.AutoSize = True
-        Me.lblCodigoCategoria.Location = New System.Drawing.Point(8, 117)
-        Me.lblCodigoCategoria.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCodigoCategoria.Location = New System.Drawing.Point(6, 95)
         Me.lblCodigoCategoria.Name = "lblCodigoCategoria"
-        Me.lblCodigoCategoria.Size = New System.Drawing.Size(77, 17)
+        Me.lblCodigoCategoria.Size = New System.Drawing.Size(60, 13)
         Me.lblCodigoCategoria.TabIndex = 94
         Me.lblCodigoCategoria.Text = "Categoría :"
         '
         'TxtCodigoCategoria
         '
-        Me.TxtCodigoCategoria.Location = New System.Drawing.Point(103, 113)
-        Me.TxtCodigoCategoria.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtCodigoCategoria.Location = New System.Drawing.Point(77, 92)
         Me.TxtCodigoCategoria.MaxLength = 2
         Me.TxtCodigoCategoria.Name = "TxtCodigoCategoria"
-        Me.TxtCodigoCategoria.Size = New System.Drawing.Size(75, 22)
+        Me.TxtCodigoCategoria.Size = New System.Drawing.Size(57, 20)
         Me.TxtCodigoCategoria.TabIndex = 3
         '
         'CboEstatus
@@ -629,84 +598,68 @@ Partial Class Catalogo_Vehiculos
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
-        Me.CboEstatus.Location = New System.Drawing.Point(101, 81)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.CboEstatus.Location = New System.Drawing.Point(76, 66)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(2)
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(100, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(76, 21)
         Me.CboEstatus.TabIndex = 2
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(161, -140)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Location = New System.Drawing.Point(121, -114)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(241, 16)
+        Me.Label2.Size = New System.Drawing.Size(181, 13)
         Me.Label2.TabIndex = 91
         Me.Label2.Text = ".."
         '
         'LblNombreVehiculo
         '
         Me.LblNombreVehiculo.AutoSize = True
-        Me.LblNombreVehiculo.Location = New System.Drawing.Point(8, 54)
-        Me.LblNombreVehiculo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombreVehiculo.Location = New System.Drawing.Point(6, 44)
         Me.LblNombreVehiculo.Name = "LblNombreVehiculo"
-        Me.LblNombreVehiculo.Size = New System.Drawing.Size(66, 17)
+        Me.LblNombreVehiculo.Size = New System.Drawing.Size(50, 13)
         Me.LblNombreVehiculo.TabIndex = 74
         Me.LblNombreVehiculo.Text = "Nombre :"
         '
         'TxtNombre
         '
-        Me.TxtNombre.Location = New System.Drawing.Point(103, 50)
-        Me.TxtNombre.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtNombre.Location = New System.Drawing.Point(77, 41)
         Me.TxtNombre.MaxLength = 50
         Me.TxtNombre.Name = "TxtNombre"
-        Me.TxtNombre.Size = New System.Drawing.Size(301, 22)
+        Me.TxtNombre.Size = New System.Drawing.Size(227, 20)
         Me.TxtNombre.TabIndex = 1
         '
         'LblCodigo
         '
         Me.LblCodigo.AutoSize = True
-        Me.LblCodigo.Location = New System.Drawing.Point(8, 22)
-        Me.LblCodigo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblCodigo.Location = New System.Drawing.Point(6, 18)
         Me.LblCodigo.Name = "LblCodigo"
-        Me.LblCodigo.Size = New System.Drawing.Size(60, 17)
+        Me.LblCodigo.Size = New System.Drawing.Size(46, 13)
         Me.LblCodigo.TabIndex = 8
         Me.LblCodigo.Text = "Código :"
         '
         'TxtCodigo
         '
-        Me.TxtCodigo.Location = New System.Drawing.Point(101, 18)
-        Me.TxtCodigo.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtCodigo.Location = New System.Drawing.Point(76, 15)
         Me.TxtCodigo.MaxLength = 2
         Me.TxtCodigo.Name = "TxtCodigo"
-        Me.TxtCodigo.Size = New System.Drawing.Size(75, 22)
+        Me.TxtCodigo.Size = New System.Drawing.Size(57, 20)
         Me.TxtCodigo.TabIndex = 0
         '
         'ErrorProvider
         '
         Me.ErrorProvider.ContainerControl = Me
         '
-        'LblNombrePermisoSct
-        '
-        Me.LblNombrePermisoSct.AutoSize = True
-        Me.LblNombrePermisoSct.Location = New System.Drawing.Point(15, 415)
-        Me.LblNombrePermisoSct.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblNombrePermisoSct.Name = "LblNombrePermisoSct"
-        Me.LblNombrePermisoSct.Size = New System.Drawing.Size(16, 17)
-        Me.LblNombrePermisoSct.TabIndex = 130
-        Me.LblNombrePermisoSct.Text = "_"
-        '
         'Catalogo_Vehiculos
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1085, 890)
+        Me.ClientSize = New System.Drawing.Size(814, 723)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Vehiculos"
         Me.ShowIcon = False
