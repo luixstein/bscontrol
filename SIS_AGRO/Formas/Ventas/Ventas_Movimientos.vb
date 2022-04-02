@@ -6034,5 +6034,4 @@ BuscaVentas:
         Return bResultado
     End Function
 
-
 End Class
