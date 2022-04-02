@@ -35,6 +35,7 @@ Partial Class Ventas_Movimientos
         Me.tsbCotizacionRemision = New System.Windows.Forms.ToolStripButton()
         Me.tsbCotizacionFactura = New System.Windows.Forms.ToolStripButton()
         Me.tsbRemisionVenta = New System.Windows.Forms.ToolStripButton()
+        Me.tsbFacturaACartaPorte = New System.Windows.Forms.ToolStripButton()
         Me.tsbCancelarTimbre = New System.Windows.Forms.ToolStripButton()
         Me.tsbTimbrar = New System.Windows.Forms.ToolStripButton()
         Me.tsbRecuperarXMLPDF = New System.Windows.Forms.ToolStripButton()
@@ -159,6 +160,9 @@ Partial Class Ventas_Movimientos
         Me.GridFacturasVariasRemisiones = New FlexCell.Grid()
         Me.lblDisplayRegimenFiscal = New System.Windows.Forms.Label()
         Me.cboRegimenFiscal = New System.Windows.Forms.ComboBox()
+        Me.btnTimbradoTrasladoPrueba = New System.Windows.Forms.Button()
+        Me.btnCartaPorte = New System.Windows.Forms.Button()
+        Me.chkTieneCartaPorte = New System.Windows.Forms.CheckBox()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -212,7 +216,7 @@ Partial Class Ventas_Movimientos
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbCancelar, Me.tsbCotizacionRemision, Me.tsbCotizacionFactura, Me.tsbRemisionVenta, Me.tsbCancelarTimbre, Me.tsbTimbrar, Me.tsbRecuperarXMLPDF, Me.tsbEnviarCorreo, Me.tsbSubirXML, Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbCancelar, Me.tsbCotizacionRemision, Me.tsbCotizacionFactura, Me.tsbRemisionVenta, Me.tsbFacturaACartaPorte, Me.tsbCancelarTimbre, Me.tsbTimbrar, Me.tsbRecuperarXMLPDF, Me.tsbEnviarCorreo, Me.tsbSubirXML, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1290, 27)
@@ -278,6 +282,15 @@ Partial Class Ventas_Movimientos
         Me.tsbRemisionVenta.Size = New System.Drawing.Size(121, 24)
         Me.tsbRemisionVenta.Text = "&Remisión a venta"
         Me.tsbRemisionVenta.Visible = False
+        '
+        'tsbFacturaACartaPorte
+        '
+        Me.tsbFacturaACartaPorte.Image = Global.BsControl.My.Resources.Resources._096
+        Me.tsbFacturaACartaPorte.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbFacturaACartaPorte.Name = "tsbFacturaACartaPorte"
+        Me.tsbFacturaACartaPorte.Size = New System.Drawing.Size(120, 24)
+        Me.tsbFacturaACartaPorte.Text = "Fac a Carta Porte"
+        Me.tsbFacturaACartaPorte.Visible = False
         '
         'tsbCancelarTimbre
         '
@@ -1607,12 +1620,46 @@ Partial Class Ventas_Movimientos
         Me.cboRegimenFiscal.Size = New System.Drawing.Size(281, 21)
         Me.cboRegimenFiscal.TabIndex = 1
         '
+        'btnTimbradoTrasladoPrueba
+        '
+        Me.btnTimbradoTrasladoPrueba.Location = New System.Drawing.Point(1130, 562)
+        Me.btnTimbradoTrasladoPrueba.Name = "btnTimbradoTrasladoPrueba"
+        Me.btnTimbradoTrasladoPrueba.Size = New System.Drawing.Size(148, 32)
+        Me.btnTimbradoTrasladoPrueba.TabIndex = 385
+        Me.btnTimbradoTrasladoPrueba.Text = "TimbradoTrasladoPrueba"
+        Me.btnTimbradoTrasladoPrueba.UseVisualStyleBackColor = True
+        '
+        'btnCartaPorte
+        '
+        Me.btnCartaPorte.Location = New System.Drawing.Point(1001, 187)
+        Me.btnCartaPorte.Name = "btnCartaPorte"
+        Me.btnCartaPorte.Size = New System.Drawing.Size(148, 32)
+        Me.btnCartaPorte.TabIndex = 386
+        Me.btnCartaPorte.Text = "Carta porte"
+        Me.btnCartaPorte.UseVisualStyleBackColor = True
+        Me.btnCartaPorte.Visible = False
+        '
+        'chkTieneCartaPorte
+        '
+        Me.chkTieneCartaPorte.AutoSize = True
+        Me.chkTieneCartaPorte.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTieneCartaPorte.Location = New System.Drawing.Point(1001, 165)
+        Me.chkTieneCartaPorte.Name = "chkTieneCartaPorte"
+        Me.chkTieneCartaPorte.Size = New System.Drawing.Size(158, 20)
+        Me.chkTieneCartaPorte.TabIndex = 387
+        Me.chkTieneCartaPorte.Text = "Tiene carta porte ?"
+        Me.chkTieneCartaPorte.UseVisualStyleBackColor = True
+        Me.chkTieneCartaPorte.Visible = False
+        '
         'Ventas_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(1290, 678)
+        Me.Controls.Add(Me.chkTieneCartaPorte)
+        Me.Controls.Add(Me.btnCartaPorte)
+        Me.Controls.Add(Me.btnTimbradoTrasladoPrueba)
         Me.Controls.Add(Me.lblDisplayRegimenFiscal)
         Me.Controls.Add(Me.cboRegimenFiscal)
         Me.Controls.Add(Me.TabControl1)
@@ -1786,4 +1833,8 @@ Partial Class Ventas_Movimientos
     Friend WithEvents lblTotalRetencionISR_USD As Label
     Friend WithEvents lblDisplayRegimenFiscal As Label
     Friend WithEvents cboRegimenFiscal As ComboBox
+    Friend WithEvents btnTimbradoTrasladoPrueba As Button
+    Friend WithEvents btnCartaPorte As Button
+    Friend WithEvents tsbFacturaACartaPorte As ToolStripButton
+    Friend WithEvents chkTieneCartaPorte As CheckBox
 End Class

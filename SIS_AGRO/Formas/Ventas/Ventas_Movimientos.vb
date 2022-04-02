@@ -178,17 +178,22 @@ Public Class Ventas_Movimientos
     End Sub
 
     Private Sub tsbCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCancelar.Click
-        If Me.oVenta.ESTATUS_VENTA = "A" Or Me.oVenta.ESTATUS_VENTA = "G" Then
-            If Me.CancelarVenta = True Then  'Se cancelo el documento correctamente = true
-                'If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And oDocumento.TIMBRA_DOCUMENTO = True Then 'Si es CFDi
-                If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And txtLEN(Me.oVenta.FOLIO_FISCAL_SAT) = True Then 'Puede ser un documento no timbrable que le subieron un xml externo
-                    Me.oVenta.CancelarTimbre()
+        Const sProcedure As String = "tsbCancelar_Click"
+        Try
+            If Me.oVenta.ESTATUS_VENTA = "A" Or Me.oVenta.ESTATUS_VENTA = "G" Then
+                If Me.CancelarVenta = True Then  'Se cancelo el documento correctamente = true
+                    'If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And oDocumento.TIMBRA_DOCUMENTO = True Then 'Si es CFDi
+                    If Me.oVenta.VERSION_ESQUEMA_XML > "2.2" And txtLEN(Me.oVenta.FOLIO_FISCAL_SAT) = True Then 'Puede ser un documento no timbrable que le subieron un xml externo
+                        Me.oVenta.CancelarTimbre()
+                    End If
+                    MsgBox("Movimiento cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
                 End If
-                MsgBox("Movimiento cancelado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+                Me.Consultar()
+                Me.GestionaCambioEstado()
             End If
-            Me.Consultar()
-            Me.GestionaCambioEstado()
-        End If
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Sub tsbCotizacionRemision_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCotizacionRemision.Click
@@ -197,50 +202,89 @@ Public Class Ventas_Movimientos
     End Sub
 
     Private Sub tsbCotizacionFactura_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbCotizacionFactura.Click
-        sTipoVenta = "SCF" 'SUSTITUCION DE COTIZACION A FACTURA
+        Const sProcedure As String = "tsbCotizacionFactura_Click"
+        Try
+            sTipoVenta = "SCF" 'SUSTITUCION DE COTIZACION A FACTURA
 
-        Dim oTF As New VentasSeleccionaTipoFactura
-        oTF.ShowDialog()
+            Dim oTF As New VentasSeleccionaTipoFactura
+            oTF.ShowDialog()
 
-        sCodigoDocumentoFacturaExterno = oTF.CboDocumento.SelectedValue.ToString
+            sCodigoDocumentoFacturaExterno = oTF.CboDocumento.SelectedValue.ToString
 
-        If Me.Consultar(True) = True Then
-            Me.EstableceCuentasContables()
-            Me.Totales()
-        End If
+            If Me.Consultar(True) = True Then
+                Me.EstableceCuentasContables()
+                Me.Totales()
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Sub tsbRemisionVenta_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbRemisionVenta.Click
-
-        If oVenta.SiRemisionTieneMovimientosAbonoParaEvitarSustitucion(Me.txtFolio.Text) = True Then 'Aqui aún no se convierte a rem, entonces el folio sale del txtFolio
-            Return
-        End If
-
-        sTipoVenta = "SR" 'SUSTITUCION DE REMISION
-
-        Dim oTF As New VentasSeleccionaTipoFactura
-        oTF.ShowDialog()
-
-        sCodigoDocumentoFacturaExterno = oTF.CboDocumento.SelectedValue.ToString
-
-        If Me.Consultar(True, False) = True Then
-            Me.EstableceCuentasContables()
-            Me.Totales()
-            Me.tsbTimbrar.Visible = False
-
-            If valorNumericoD(Me.lblDescuento.Text) > 0 Then
-                MsgBox("La remisión tenia descuento y este se heredó a la factura, revíse si va afectar el mismo descuento ." & vbCrLf & "(Si factura menos producto que en la remisión original usted debe establecer un descuento menor)", vbInformation, "Advertencia")
+        Const sProcedure As String = "tsbRemisionVenta_Click"
+        Try
+            If oVenta.SiRemisionTieneMovimientosAbonoParaEvitarSustitucion(Me.txtFolio.Text) = True Then 'Aqui aún no se convierte a rem, entonces el folio sale del txtFolio
+                Return
             End If
 
-        End If
+            sTipoVenta = "SR" 'SUSTITUCION DE REMISION
 
-        'No no puse porque entonces no se podrian poner comentarios en uns sustitución
-        'Me.Grid.Row(Me.Grid.Rows - 1).Locked = True  'Para bloquear la edición del último renglón
+            Dim oTF As New VentasSeleccionaTipoFactura
+            oTF.ShowDialog()
 
-        'f6 que haria en una sust?, Queryable mejor no haya f6 , si borran de mas y quieren poner, Que le den nuevo y empiezen otra vez
+            sCodigoDocumentoFacturaExterno = oTF.CboDocumento.SelectedValue.ToString
 
-        'Me.Grid.Locked = True
-        Me.Grid.Column(Me.igyCodigo).Locked = True 'No podrán cambiar códigos ni ponerlos con f6
+            If Me.Consultar(True, False) = True Then
+                Me.EstableceCuentasContables()
+                Me.Totales()
+                Me.tsbTimbrar.Visible = False
+
+                If valorNumericoD(Me.lblDescuento.Text) > 0 Then
+                    MsgBox("La remisión tenia descuento y este se heredó a la factura, revíse si va afectar el mismo descuento ." & vbCrLf & "(Si factura menos producto que en la remisión original usted debe establecer un descuento menor)", vbInformation, "Advertencia")
+                End If
+            End If
+
+            'No no puse porque entonces no se podrian poner comentarios en uns sustitución
+            'Me.Grid.Row(Me.Grid.Rows - 1).Locked = True  'Para bloquear la edición del último renglón
+
+            'f6 que haria en una sust?, Queryable mejor no haya f6 , si borran de mas y quieren poner, Que le den nuevo y empiezen otra vez
+
+            'Me.Grid.Locked = True
+            Me.Grid.Column(Me.igyCodigo).Locked = True 'No podrán cambiar códigos ni ponerlos con f6
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
+    Private Sub tsbFacturaACartaPorte_Click(sender As Object, e As EventArgs) Handles tsbFacturaACartaPorte.Click
+        Const sProcedure As String = "tsbFacturaACartaPorte_Click"
+        Try
+            Dim oSQL As New Class_find("SELECT TOP 1 FOLIO_VENTA FROM VENTA_GLOBAL WHERE CODIGO_DOCUMENTO LIKE 'FT%' AND FOLIO_REFERENCIA='" & sReplace(Me.txtFolio.Text) & "' AND ESTATUS_VENTA='A' ORDER BY ID_VENTA_GLOBAL DESC")
+
+            If txtLEN(oSQL.Result1) = True Then
+                MsgBox("Esta factura ya fue convertida a una factura de traslado con carta porte con el folio " & oSQL.Result1, vbExclamation, sProcedure)
+                Return
+            End If
+
+            sTipoVenta = "FT" 'FACTURA DE TRASLADO
+
+            If Me.Consultar(True, True) = True Then
+                Me.Totales()
+                Me.tsbTimbrar.Visible = False
+            End If
+
+            Me.cboUsoCFDI.SelectedValue = "P01"
+            Me.cboUsoCFDI.Enabled = False
+            Me.cboMoneda.Text = "XXX"
+            Me.cboMoneda.Enabled = False
+            Me.cboFormaPago.SelectedIndex = -1
+            Me.cboFormaPago.Enabled = False
+            Me.cboMetodoPago.SelectedIndex = -1
+            Me.chkTieneCartaPorte.Checked = True
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Sub tsbImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbImprimir.Click
@@ -268,8 +312,6 @@ Public Class Ventas_Movimientos
             End If
             If Me.oVenta.GeneraFacturaElectronica(True, True) = True Then
                 Me.Consultar()
-            Else
-                MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, Me.Text)
             End If
         Else
             MsgBox("El documento ya esta timbrado.", MsgBoxStyle.Exclamation, Me.Text)
@@ -311,10 +353,14 @@ Public Class Ventas_Movimientos
         Me.SubirXML()
     End Sub
 
+    Private Sub btnCartaPorte_Click(sender As Object, e As EventArgs) Handles btnCartaPorte.Click
+        Me.GestionaCartaPorte
+    End Sub
 #End Region
 
 #Region "Eventos de objetos"
     Private Sub Ventas_Movimientos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Const sProcedure As String = "Ventas_Movimientos_Load"
         Try
             Me.DesplegarAlmacenes()
             Me.DesplegarTiposMercados()
@@ -361,7 +407,7 @@ Public Class Ventas_Movimientos
             End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "Ventas_Movimientos_Load", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
@@ -446,10 +492,6 @@ Buscar:
             Me.tpFacturasRemisiones.Enabled = False
         End If
 
-    End Sub
-
-    Private Sub CmbAlmacen_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboAlmacen.SelectedIndexChanged
-        'limpia()
     End Sub
 
     Private Sub DtpFecha_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dpFecha.KeyDown
@@ -800,7 +842,6 @@ Buscar:
         End If
     End Sub
 
-
     Private Sub cboUsoCFDI_KeyDown(sender As Object, e As KeyEventArgs) Handles cboUsoCFDI.KeyDown
         txtTAB(e)
     End Sub
@@ -829,6 +870,7 @@ Buscar:
 
 #Region "Métodos y procedimientos"
     Private Sub Inicializa()
+        Const sProcedure As String = "Inicializa"
         Try
             Me.txtFolio.Text = ""
             Me.TxtReferencia.Text = ""
@@ -915,23 +957,31 @@ Buscar:
             Me.lblUtilidad.Text = "0.00"
             Me.lblPorcentajeUtilidad.Text = "0.00"
 
+            If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
+                Me.cboMoneda.Text = "XXX"
+                Me.cboUsoCFDI.SelectedValue = "P01"
+            End If
+
+            Me.chkTieneCartaPorte.Checked = False
         Catch ex As Exception
-            HandleError(Me.Name, "Inicializa", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub InicializaGrid()
+        Const sProcedure As String = "InicializaGrid"
         Try
             Me.Grid.DataSource = Nothing
             FG_Grid_Limpiar(Me.Grid)
             Me.Grid.Rows = 2
             Me.FormateaGrid()
         Catch ex As Exception
-            HandleError(Me.Name, "InicializaGrid", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub FormateaGrid()
+        Const sProcedure As String = "FormateaGrid"
         Try
             Me.Grid.AutoRedraw = False
             Me.Grid.Cols = 56
@@ -1259,7 +1309,7 @@ Buscar:
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         Catch ex As Exception
-            HandleError(Me.Name, "FormateaGrid", ex)
+            HandleError(Me.Name, sProcedure, ex)
         Finally
             Me.Grid.AutoRedraw = True
             Me.Grid.Refresh()
@@ -1284,11 +1334,17 @@ Buscar:
     End Sub
 
     Private Sub Cambia_Estado(ByVal pEstado As enumEstados)
+        Const sProcedure As String = "Cambia_Estado"
         Try
             Me.Estado = pEstado
 
             Me.cboTipoRelacionCFDI.Enabled = False
             Me.GridCFDIsRelacionados.Locked = True
+            Me.tsbFacturaACartaPorte.Visible = False
+
+            Me.chkTieneCartaPorte.Visible = False
+            Me.btnCartaPorte.Visible = False
+            Me.btnCartaPorte.Enabled = False
 
             Select Case Me.Estado
                 Case enumEstados.NUEVO
@@ -1359,6 +1415,20 @@ Buscar:
                     EsFacturaVariasRemisiones = False
                     Me.btnAceptar.Enabled = True
                     Me.btnCargarRemisiones.Enabled = True
+
+                    If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
+                        Me.cboUsoCFDI.SelectedValue = "P01"
+                        Me.cboUsoCFDI.Enabled = False
+                        Me.cboMoneda.Text = "XXX"
+                        Me.cboMoneda.Enabled = False
+                        Me.cboFormaPago.SelectedIndex = -1 'No se permitirá seleccionar ninguna forma de pago
+                        Me.cboFormaPago.Enabled = False
+                        Me.cboMetodoPago.SelectedIndex = -1 'No se permitirá seleccionar ningún método de pago
+                        Me.cboTipoNegociacion.SelectedValue = 1 '1=CREDITO
+                        Me.cboTipoNegociacion.Enabled = False
+                        Me.chkTieneCartaPorte.Visible = True
+                        Me.chkTieneCartaPorte.Enabled = True
+                    End If
 
                     If Me.Visible = True Then
                         Me.txtFolio.Focus()
@@ -1476,6 +1546,20 @@ Buscar:
                         Me.tsbCotizacionFactura.Visible = False
                         Me.tsbCotizacionRemision.Visible = False
                         Me.tsbRemisionVenta.Visible = False
+                    End If
+
+                    If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
+                        Me.tsbFacturaACartaPorte.Visible = True
+                    End If
+
+                    Me.chkTieneCartaPorte.Enabled = False
+                    If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then
+                        Me.chkTieneCartaPorte.Visible = True
+
+                        If Me.oVenta.TIENE_COMPLEMENTO_CARTA_PORTE = True Or Me.oVenta.TIMBRADO_CFDI = "0" Then 'Si no esta timbrada va permitir grabar carta porte.
+                            Me.btnCartaPorte.Visible = True
+                            Me.btnCartaPorte.Enabled = True
+                        End If
                     End If
 
                     'If Me.oVenta.ADDENDA = "1" Then
@@ -1606,14 +1690,14 @@ Buscar:
             Application.DoEvents()
 
         Catch ex As Exception
-            HandleError(Me.Name, "Cambia_Estado", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Function Grabar() As Boolean
         Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
-        Dim i As Integer, sMetodoPago As String = "", sUsoCFDI As String = "", sListaSeries As String = "", sCodigoTipoRelacionCFDI As String = "", sListaCFDIsRelacionados As String = ""
+        Dim i As Integer, sMetodoPago As String = "", sUsoCFDI As String = "", sListaSeries As String = "", sCodigoTipoRelacionCFDI As String = "", sListaCFDIsRelacionados As String = "", sFormaPago As String = ""
 
         Try
             If Me._EsPorEmbarqueExtranjero = True Then
@@ -1715,7 +1799,7 @@ Buscar:
                 sMetodoPago = ""
                 sUsoCFDI = ""
             Else
-                If Me.cboMetodoPago.SelectedIndex = -1 Then
+                If Me.cboMetodoPago.SelectedIndex = -1 AndAlso Me.oDocumento.CODIGO_TIPO_DOCUMENTO <> "FT" Then 'Factura de traslado 
                     MsgBox("Seleccione un método de pago.", vbExclamation, sProcedure)
                     Return False
                 End If
@@ -1730,7 +1814,11 @@ Buscar:
                     Return False
                 End If
 
-                sMetodoPago = Me.cboMetodoPago.SelectedValue.ToString
+                If Me.oDocumento.CODIGO_TIPO_DOCUMENTO <> "FT" Then
+                    sMetodoPago = Me.cboMetodoPago.SelectedValue.ToString
+                    sFormaPago = Me.cboFormaPago.SelectedValue.ToString
+                End If
+
                 sUsoCFDI = Me.cboUsoCFDI.SelectedValue.ToString
             End If
 
@@ -1859,7 +1947,7 @@ Buscar:
                 .ES_VENTA_PUBLICO_GENERAL = Convert.ToInt32(Me.chkVentaPublicoGeneral.Checked).ToString
                 .FOLIO_EMBARQUE = Me.txtFolioEmbarque.Text.ToUpper
 
-                .CODIGO_METODO_PAGO = Me.cboFormaPago.SelectedValue.ToString
+                .CODIGO_METODO_PAGO = sFormaPago 'Me.cboFormaPago.SelectedValue.ToString
                 .NUMERO_CUENTA_PAGO = Me.txtNumeroCuentaPago.Text
                 .CODIGO_METODO_PAGO_EVENTO = sMetodoPago
                 .CODIGO_USO_CFDI = sUsoCFDI
@@ -1874,6 +1962,7 @@ Buscar:
                 .CODIGO_TIPO_RELACION_CFDI = sCodigoTipoRelacionCFDI
                 .LISTA_CFDIS_RELACIONADOS = sListaCFDIsRelacionados
                 .CODIGO_REGIMEN_FISCAL = Me.cboRegimenFiscal.SelectedValue.ToString
+                .TIENE_COMPLEMENTO_CARTA_PORTE = Me.chkTieneCartaPorte.Checked
 
                 If Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.SUSTITUYENDO Then
                     If .Grabar("INSERTAR") = False Then
@@ -2024,11 +2113,20 @@ Buscar:
                     End If
                 End If
 
+                If Me.chkTieneCartaPorte.Checked = True Then
+                    If Me.GestionaCartaPorte = False Then
+                        If MsgBox("No grabó la carta porte, quiere aún así timbrar la factura sin carta porte?", vbQuestion Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
+                            GoTo SaltarTimbrado
+                        End If
+                    End If
+                End If
+
                 Dim bVentaTimbrada As Boolean = False
                 If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
                     Me.oVenta = New Class_Ventas_Global(Me.txtFolio.Text) 'Refrescar documento para evitar algún error por dato no cargado.
                     bVentaTimbrada = Me.oVenta.GeneraFacturaElectronica(False, True)
                 End If
+SaltarTimbrado:
 
                 If bVentaAutorizadaPorRegla = True Then
                     .VENTA_TOTAL = CDbl(Me.lblTotal.Text)
@@ -2264,7 +2362,7 @@ Buscar:
 
 CANCELAR:
             Select Case Me.oVenta.TIPO_VENTA
-                Case "NM"
+                Case "NM", "FT"
                     If Me.oVenta.Cancelar() = False Then
                         Return False
                     End If
@@ -2360,10 +2458,12 @@ CANCELAR:
                 End If
             End If
 
-            If Me.cboFormaPago.SelectedIndex = -1 Then
-                MsgBox("Asígne una forma de pago", MsgBoxStyle.Exclamation, sProcedure)
-                Me.cboFormaPago.Focus()
-                Return False
+            If Me.oDocumento.CODIGO_TIPO_DOCUMENTO <> "FT" Then 'Factura de traslado
+                If Me.cboFormaPago.SelectedIndex = -1 Then
+                    MsgBox("Asígne una forma de pago", MsgBoxStyle.Exclamation, sProcedure)
+                    Me.cboFormaPago.Focus()
+                    Return False
+                End If
             End If
 
             If txtLEN(Me.txtFolioEmbarque.Text) = True Then
@@ -2427,9 +2527,11 @@ CANCELAR:
                 Return False
             End If
 
-            If valorNumericoD(Me.lblSubtotal.Text) <= 0 Then
-                MsgBox("El subtotal debe ser mayor a cero.", MsgBoxStyle.Exclamation, sProcedure)
-                Return False
+            If Me.oDocumento.CODIGO_TIPO_DOCUMENTO <> "FT" Then 'Factura de traslado
+                If valorNumericoD(Me.lblSubtotal.Text) <= 0 Then
+                    MsgBox("El subtotal debe ser mayor a cero.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
             End If
 
             'Dim i As Integer
@@ -2443,41 +2545,44 @@ CANCELAR:
             '    End If
             'Next i
 
-            Dim oFormaPago As New Class_CFD_CatFormasPago(Me.cboFormaPago.SelectedValue.ToString)
 
-            If oFormaPago.ESTATUS = "B" Then
-                MsgBox("La forma de pago tiene estatus baja.", MsgBoxStyle.Exclamation, sProcedure)
-                Return False
-            End If
+            If Me.oDocumento.CODIGO_TIPO_DOCUMENTO <> "FT" Then 'Factura de traslado
 
-            If Me.oDocumento.AFECTA_CXC = True Then
-                If Me.cboFormaPago.SelectedIndex = -1 Then
-                    MsgBox("Seleccione una forma de pago.", MsgBoxStyle.Exclamation, sProcedure)
-                    If Me.cboFormaPago.Enabled = True Then
-                        Me.cboFormaPago.Focus()
-                    End If
+                Dim oFormaPago As New Class_CFD_CatFormasPago(Me.cboFormaPago.SelectedValue.ToString)
+
+                If oFormaPago.ESTATUS = "B" Then
+                    MsgBox("La forma de pago tiene estatus baja.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
 
-                If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
-                    If oFormaPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
-                        If txtLEN(Me.txtNumeroCuentaPago.Text) = False Then
-                            If MsgBox("La forma de pago tiene opcional el número de cuenta de pago. Esta seguro de dejarlo en blanco ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
-                                Return False
-                            End If
-                        End If
-                    End If
-                Else
+                If Me.oDocumento.AFECTA_CXC = True Then
                     If Me.cboFormaPago.SelectedIndex = -1 Then
-                        MsgBox("Seleccione un método de pago.", MsgBoxStyle.Exclamation, sProcedure)
+                        MsgBox("Seleccione una forma de pago.", MsgBoxStyle.Exclamation, sProcedure)
                         If Me.cboFormaPago.Enabled = True Then
                             Me.cboFormaPago.Focus()
                         End If
                         Return False
                     End If
 
-                    Select Case Me.cboTipoNegociacion.Text
-                        Case "CONTADO"
+                    If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
+                        If oFormaPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
+                            If txtLEN(Me.txtNumeroCuentaPago.Text) = False Then
+                                If MsgBox("La forma de pago tiene opcional el número de cuenta de pago. Esta seguro de dejarlo en blanco ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Me.Text) = MsgBoxResult.No Then
+                                    Return False
+                                End If
+                            End If
+                        End If
+                    Else
+                        If Me.cboFormaPago.SelectedIndex = -1 Then
+                            MsgBox("Seleccione un método de pago.", MsgBoxStyle.Exclamation, sProcedure)
+                            If Me.cboFormaPago.Enabled = True Then
+                                Me.cboFormaPago.Focus()
+                            End If
+                            Return False
+                        End If
+
+                        Select Case Me.cboTipoNegociacion.Text
+                            Case "CONTADO"
                             'Se quitó la restricción, biologos ocupa facturar un auto a una aseguradora con PUE-99
                             'If Me.cboFormaPago.SelectedValue.ToString = "99" Then
                             '    MsgBox("La forma de pago no puede ser 99-Por definir porque al ser venta de ""contado"" entonces se sabe como se esta pagando el documento.", vbExclamation, sProcedure)
@@ -2486,24 +2591,26 @@ CANCELAR:
                             '    End If
                             '    Return False
                             'End If
-                        Case "CREDITO" 'SE PERMITIRA GRABAR A CREDITO CON OTRA FORMA DE PAGO
-                            'If Me.cboFormaPago.SelectedValue.ToString <> "99" Then
-                            '    MsgBox("La forma de pago debe ser 99-Por definir porque al ser venta de ""crédito"" no hay pago.", vbExclamation, sProcedure)
-                            '    If Me.cboFormaPago.Enabled = True Then
-                            '        Me.cboFormaPago.Focus()
-                            '    End If
-                            '    Return False
-                            'End If
-                    End Select
+                            Case "CREDITO" 'SE PERMITIRA GRABAR A CREDITO CON OTRA FORMA DE PAGO
+                                'If Me.cboFormaPago.SelectedValue.ToString <> "99" Then
+                                '    MsgBox("La forma de pago debe ser 99-Por definir porque al ser venta de ""crédito"" no hay pago.", vbExclamation, sProcedure)
+                                '    If Me.cboFormaPago.Enabled = True Then
+                                '        Me.cboFormaPago.Focus()
+                                '    End If
+                                '    Return False
+                                'End If
+                        End Select
 
-                    If Me.cboUsoCFDI.SelectedIndex = -1 Then
-                        MsgBox("Seleccione el uso del CFDI.", vbExclamation, sProcedure)
-                        If Me.cboUsoCFDI.Enabled = True Then
-                            Me.cboUsoCFDI.Focus()
+                        If Me.cboUsoCFDI.SelectedIndex = -1 Then
+                            MsgBox("Seleccione el uso del CFDI.", vbExclamation, sProcedure)
+                            If Me.cboUsoCFDI.Enabled = True Then
+                                Me.cboUsoCFDI.Focus()
+                            End If
+                            Return False
                         End If
-                        Return False
                     End If
                 End If
+
             End If
 
             If sTipoVenta <> "NM" Then
@@ -3626,6 +3733,10 @@ CANCELAR:
 
             Next i
 
+            If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
+                Return 'No hay nada que calcular todos los totales serán en 0 aunque si haya importes(el sat si lo permite así en las facturas de traslado)
+            End If
+
             '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             '''''''''''''''''''''''''''''''TOTALES USD
             dtIEPS_USD = RedondearD(CDec(FG_Grid_SumaCol(Me.Grid, Me.igyIEPS_IMPORTE_USD)), Empresa_Sistema.DECIMALES_CONTABILIDAD)
@@ -3755,7 +3866,7 @@ CANCELAR:
                 Me.CboDocumento.SelectedValue = Me.oVenta.CODIGO_DOCUMENTO
                 Me.oVenta = oVentaLocal 'Se hace de este modo porque si estan en un documento diferente al tecleado al cambiar el combo se inicializa y se pierde la venta cargada
             ElseIf sTipoVenta = "SCR" Then
-                Me.CboDocumento.SelectedValue = "REM" + Plaza.CODIGO_PLAZA.ToString
+                Me.CboDocumento.SelectedValue = "REM" & Plaza.CODIGO_PLAZA.ToString
                 Me.GeneraFolio()
                 Me.oVenta = oVentaLocal
             ElseIf sTipoVenta = "SR" Or sTipoVenta = "SCF" Then
@@ -3764,6 +3875,9 @@ CANCELAR:
                 Me.oVenta = New Class_Ventas_Global(sVenta)
                 'Me.GeneraFolio()'No se ocupa volver a regenerar al cambiar el documento se inicializó y se genero folio
                 'Me.dpVencimiento.Value = Me.oVenta.FECHA_VENCIMIENTO
+            ElseIf sTipoVenta = "FT" Then
+                Me.CboDocumento.SelectedValue = "FT" & Plaza.CODIGO_PLAZA.ToString
+                Me.oVenta = New Class_Ventas_Global(sVenta)
             End If
 
             Me.TxtCliente.Text = Me.oVenta.CODIGO_CLIENTE
@@ -3989,6 +4103,8 @@ CANCELAR:
             Else
                 Me.cboTipoRelacionCFDI.SelectedIndex = -1
             End If
+
+            Me.chkTieneCartaPorte.Checked = Me.oVenta.TIENE_COMPLEMENTO_CARTA_PORTE
 
             bResultado = True
 
@@ -4628,9 +4744,15 @@ buscaCentrosCostos:
             If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
                 bEstableceFormaPago = True
             Else
-                If Me.cboMetodoPago.SelectedValue.ToString = "PUE" Then 'Si es PPD recordemos que la forma de pago es obligatoriamente 99
+                If Me.cboMetodoPago.SelectedIndex <> -1 AndAlso Me.cboMetodoPago.SelectedValue.ToString = "PUE" Then 'Si es PPD recordemos que la forma de pago es obligatoriamente 99
                     bEstableceFormaPago = True
                 End If
+            End If
+
+            Me.bClienteEsContribuyenteIEPS = CBool(Me.oCliente.ES_CONTRIBUYENTE_IEPS)
+
+            If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
+                Return True 'Nos salimos ya que la forma de pago y método de pago son fijas y ya están establecidas.
             End If
 
             If bEstableceFormaPago = True Then
@@ -4655,8 +4777,6 @@ buscaCentrosCostos:
                     Me.DesplegarUsoCFDIPersonasMorales()
             End Select
             Me.cboUsoCFDI.SelectedValue = Me.oCliente.CODIGO_USO_CFDI
-
-            Me.bClienteEsContribuyenteIEPS = CBool(Me.oCliente.ES_CONTRIBUYENTE_IEPS)
 
             If Me.oDocumento.ES_FACTURA_ANTICIPO = True Then
                 Me.cboTipoNegociacion.SelectedValue = "2" '1=Credito, 2=Contado , forzamos a contado porque al ser anticipo es contado-PUE según el SAT.
@@ -5159,6 +5279,7 @@ busca_serie:
             With Me.cboMoneda
                 .Items.Add("MXN")
                 .Items.Add("USD")
+                .Items.Add("XXX")
                 .Text = "MXN"
                 sMonedaAnterior = "MXN"
             End With
@@ -5169,12 +5290,17 @@ busca_serie:
 
     Private Sub EstableceMetodoPago()
         Try
+            If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
+                Return
+            End If
+
             Select Case Me.cboTipoNegociacion.Text
                 Case "CONTADO"
                     If bCargandoVenta = False Then
                         Me.cboMetodoPago.SelectedValue = "PUE"
                     End If
                     Me.cboMetodoPago.Enabled = False
+
                     Me.cboFormaPago.Enabled = True
 
                     If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
@@ -5190,7 +5316,9 @@ busca_serie:
 
                     If txtLEN(Me.TxtCliente.Text) = True Then
                         If bCargandoVenta = False Then
-                            Me.EstableceFormaPagoCliente()
+                            If Me.oDocumento.CODIGO_TIPO_DOCUMENTO <> "FT" Then 'Factura de traslado
+                                Me.EstableceFormaPagoCliente()
+                            End If
                         End If
                         If Me.cboFormaPago.SelectedValue.ToString = "99" Then
                             Me.cboFormaPago.SelectedIndex = -1
@@ -5201,7 +5329,6 @@ busca_serie:
                     End If
 
                 Case "CREDITO"
-
                     Me.cboMetodoPago.SelectedValue = "PPD"
 
                     If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
@@ -5224,6 +5351,7 @@ busca_serie:
                     End If
 
             End Select
+
         Catch ex As Exception
             HandleError(Me.Name, "EstableceMetodoPago", ex)
         End Try
@@ -5880,5 +6008,31 @@ BuscaVentas:
         Return sResultado
     End Function
 #End Region
+
+    Private Sub btnTimbradoTrasladoPrueba_Click(sender As Object, e As EventArgs) Handles btnTimbradoTrasladoPrueba.Click
+        'If Me.oVenta.GeneraFacturaElectronica(True, True) = True Then
+        Dim oVenta As New Class_Ventas_Global("F-613")
+        Dim sRutaXML As String = "C:\BsControl\FELECTRONICA\SEIN_ACU\Xmls_Pdfs\CULIACAN\F-613.xml"
+        If FacturacionElectronica33.GeneraFacturaTrasladoElectronica33(oVenta, True, sRutaXML) Then
+            MsgBox("bien")
+        End If
+    End Sub
+
+    Private Function GestionaCartaPorte() As Boolean
+        Const sProcedure As String = "GestionaCartaPorte"
+        Dim bResultado As Boolean = False
+        Try
+            Dim oPantallaCartaPorte As New Ventas_CartaPorte(Me.txtFolio.Text) '("F-613")
+            oPantallaCartaPorte.ShowDialog()
+            Dim oCartaPorte As New Class_CartaPorte(Me.txtFolio.Text)
+            If oCartaPorte.Existe = True Then
+                bResultado = True
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+        Return bResultado
+    End Function
+
 
 End Class

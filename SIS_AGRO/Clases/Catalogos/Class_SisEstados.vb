@@ -1,4 +1,5 @@
-﻿Imports System.Data
+﻿Option Strict On
+
 Imports System.Data.SqlClient
 
 Public Class Class_SisEstados
@@ -142,7 +143,6 @@ Public Class Class_SisEstados
             Me._CODIGO_ESTADO = sCodigo
             If Me.Consultar = True Then
                 Me._Existe = True
-                'Throw New Exception("El artículo no existe.")
             End If
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "New", ex)
@@ -156,7 +156,6 @@ Public Class Class_SisEstados
             Me._CODIGO_PAIS_SAT = sCodigoEstadoPaisSAT
             If Me.ConsultarConCodigoTipoSAT = True Then
                 Me._Existe = True
-                'Throw New Exception("El artículo no existe.")
             End If
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, "New", ex)
@@ -175,9 +174,10 @@ Public Class Class_SisEstados
 
 #Region "Métodos y procedimientos"
     Public Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("SELECT CODIGO_ESTADO,NOMBRE_ESTADO,CODIGO_ESTADO_NUMERICO,/*NOMBRE_ESTADO_SUA,CODIGO_ESTADO_BANAMEX*/,CODIGO_PAIS_SAT,CODIGO_ESTADO_SAT " & _
-                                  "FROM SIS_ESTADOS " & _
+        Dim cmd As New SqlCommand("SELECT CODIGO_ESTADO,NOMBRE_ESTADO,CODIGO_ESTADO_NUMERICO,/*NOMBRE_ESTADO_SUA,CODIGO_ESTADO_BANAMEX,*/CODIGO_PAIS_SAT,CODIGO_ESTADO_SAT " &
+                                  "FROM SIS_ESTADOS " &
                                   "WHERE CODIGO_ESTADO='" & sReplace(Me._CODIGO_ESTADO) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
@@ -187,21 +187,21 @@ Public Class Class_SisEstados
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
-                    Me._CODIGO_ESTADO = "" & dReader("CODIGO_ESTADO")
-                    Me._NOMBRE_ESTADO = Trim("" & dReader("NOMBRE_ESTADO").ToString)
-                    Me._CODIGO_ESTADO_NUMERICO = "" & dReader("CODIGO_ESTADO_NUMERICO")
+                If dReader.Read = True Then
+                    Me._CODIGO_ESTADO = "" & dReader("CODIGO_ESTADO").ToString
+                    Me._NOMBRE_ESTADO = "" & dReader("NOMBRE_ESTADO").ToString
+                    Me._CODIGO_ESTADO_NUMERICO = "" & dReader("CODIGO_ESTADO_NUMERICO").ToString
                     'Me._NOMBRE_ESTADO_SUA = Trim("" & dReader("NOMBRE_ESTADO_SUA").ToString)
                     'Me._CODIGO_ESTADO_BANAMEX = "" & dReader("CODIGO_ESTADO_BANAMEX")
-                    Me._CODIGO_PAIS_SAT = "" & dReader("CODIGO_PAIS_SAT")
-                    Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT")
+                    Me._CODIGO_PAIS_SAT = "" & dReader("CODIGO_PAIS_SAT").ToString
+                    Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT").ToString
                     'Me.ESTATUS = "" & dReader("ESTATUS").ToString
 
                     bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Catalogo, "Consultar", ex)
+                HandleError(Me.Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -211,9 +211,10 @@ Public Class Class_SisEstados
     End Function
 
     Public Function ConsultarConCodigoTipoSAT() As Boolean
+        Const sProcedure As String = "ConsultarConCodigoTipoSAT"
         Dim bResultado As Boolean = False
-        Dim cmd As New SqlCommand("SELECT CODIGO_ESTADO,NOMBRE_ESTADO,CODIGO_ESTADO_NUMERICO,/*NOMBRE_ESTADO_SUA,CODIGO_ESTADO_BANAMEX,*/CODIGO_PAIS_SAT,CODIGO_ESTADO_SAT " & _
-                                  "FROM SIS_ESTADOS " & _
+        Dim cmd As New SqlCommand("SELECT CODIGO_ESTADO,NOMBRE_ESTADO,CODIGO_ESTADO_NUMERICO,/*NOMBRE_ESTADO_SUA,CODIGO_ESTADO_BANAMEX,*/CODIGO_PAIS_SAT,CODIGO_ESTADO_SAT " &
+                                  "FROM SIS_ESTADOS " &
                                   "WHERE CODIGO_ESTADO_SAT='" & sReplace(Me._CODIGO_ESTADO_SAT) & "' AND CODIGO_PAIS_SAT='" & sReplace(Me._CODIGO_PAIS_SAT) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
@@ -223,21 +224,21 @@ Public Class Class_SisEstados
                 Me._Conexion.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
-                    Me._CODIGO_ESTADO = "" & dReader("CODIGO_ESTADO")
-                    Me._NOMBRE_ESTADO = Trim("" & dReader("NOMBRE_ESTADO").ToString)
-                    Me._CODIGO_ESTADO_NUMERICO = "" & dReader("CODIGO_ESTADO_NUMERICO")
+                If dReader.Read = True Then
+                    Me._CODIGO_ESTADO = "" & dReader("CODIGO_ESTADO").ToString
+                    Me._NOMBRE_ESTADO = "" & dReader("NOMBRE_ESTADO").ToString
+                    Me._CODIGO_ESTADO_NUMERICO = "" & dReader("CODIGO_ESTADO_NUMERICO").ToString
                     'Me._NOMBRE_ESTADO_SUA = Trim("" & dReader("NOMBRE_ESTADO_SUA").ToString)
                     'Me._CODIGO_ESTADO_BANAMEX = "" & dReader("CODIGO_ESTADO_BANAMEX")
-                    Me._CODIGO_PAIS_SAT = "" & dReader("CODIGO_PAIS_SAT")
-                    Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT")
+                    Me._CODIGO_PAIS_SAT = "" & dReader("CODIGO_PAIS_SAT").ToString
+                    Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT").ToString
                     'Me.ESTATUS = "" & dReader("ESTATUS").ToString
 
                     bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Catalogo, "Consultar", ex)
+                HandleError(Me.Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -247,13 +248,14 @@ Public Class Class_SisEstados
     End Function
 
     Public Function ObtenerElementos(ByVal sCodigoPaisSAT As String) As System.Data.DataTable
+        Const sProcedure As String = "ObtenerElementos"
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_ESTADO,NOMBRE_ESTADO FROM SIS_ESTADOS WHERE CODIGO_PAIS_SAT='" & sReplace(sCodigoPaisSAT) & "'" & _
+        Dim da As New SqlDataAdapter("SELECT CODIGO_ESTADO,NOMBRE_ESTADO FROM SIS_ESTADOS WHERE CODIGO_PAIS_SAT='" & sReplace(sCodigoPaisSAT) & "'" &
                                      "ORDER BY NOMBRE_ESTADO", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         Finally
             da.Dispose()
         End Try
@@ -275,12 +277,13 @@ Public Class Class_SisEstados
     End Function
 
     Public Function ObtenerElementos() As System.Data.DataTable
+        Const sProcedure As String = "ObtenerElementos"
         Dim dTable As New DataTable
         Dim da As New SqlDataAdapter("SELECT CODIGO_ESTADO,NOMBRE_ESTADO FROM VW_SIS_ESTADOS_EXTENDIDO ORDER BY ORDEN_PAIS,NOMBRE_ESTADO", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         Finally
             da.Dispose()
         End Try
