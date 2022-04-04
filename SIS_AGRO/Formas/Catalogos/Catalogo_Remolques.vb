@@ -1,7 +1,4 @@
 ﻿Option Strict On
-Imports System.Data
-Imports System.Data.SqlClient
-Imports CrystalDecisions.CrystalReports.Engine
 
 Public Class Catalogo_Remolques
     Private oRemolque As New Class_CatRemolques
@@ -107,122 +104,143 @@ Public Class Catalogo_Remolques
     End Sub
 
     Private Sub Cambia_Estado()
-        Select Case Me.Estado
-            Case enumEstados.NUEVO
-                Me.gBoxInformacion.Enabled = True
-                Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando"
-                Me.tsbNuevo.Enabled = False
-                Me.tsbEditar.Enabled = False
-                Me.tsbGrabar.Enabled = True
-                Me.tsbCancelar.Enabled = True
+        Const sProcedure As String = "Cambia_Estado"
+        Try
+            Select Case Me.Estado
+                Case enumEstados.NUEVO
+                    Me.gBoxInformacion.Enabled = True
+                    Me.gBoxBusquedaRapida.Enabled = False
+                    Me.tssLabelEstado.Text = "Agregando"
+                    Me.tsbNuevo.Enabled = False
+                    Me.tsbEditar.Enabled = False
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbCancelar.Enabled = True
 
-                Me.TxtCodigoRemolque.Enabled = False
-                Me.TxtNombre.Enabled = True
-                Me.TxtCodigoTipoRemolque.Enabled = True
-                Me.txtPlaca.Enabled = True
-                Me.CboEstatus.Enabled = False
-                Me.InicializaElemento()
+                    Me.TxtCodigoRemolque.Enabled = False
+                    Me.TxtNombre.Enabled = True
+                    Me.TxtCodigoTipoRemolque.Enabled = True
+                    Me.txtPlaca.Enabled = True
+                    Me.CboEstatus.Enabled = False
+                    Me.InicializaElemento()
 
-            Case enumEstados.EDICION
-                Me.gBoxInformacion.Enabled = True
-                Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Editando"
-                Me.tsbNuevo.Enabled = False
-                Me.tsbEditar.Enabled = False
-                Me.tsbGrabar.Enabled = True
-                Me.tsbCancelar.Enabled = True
+                Case enumEstados.EDICION
+                    Me.gBoxInformacion.Enabled = True
+                    Me.gBoxBusquedaRapida.Enabled = False
+                    Me.tssLabelEstado.Text = "Editando"
+                    Me.tsbNuevo.Enabled = False
+                    Me.tsbEditar.Enabled = False
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbCancelar.Enabled = True
 
-                Me.TxtCodigoRemolque.Enabled = False
-                Me.TxtNombre.Enabled = True
-                Me.TxtCodigoTipoRemolque.Enabled = True
-                Me.txtPlaca.Enabled = True
-                Me.CboEstatus.Enabled = True
+                    Me.TxtCodigoRemolque.Enabled = False
+                    Me.TxtNombre.Enabled = True
+                    Me.TxtCodigoTipoRemolque.Enabled = True
+                    Me.txtPlaca.Enabled = True
+                    Me.CboEstatus.Enabled = True
 
-            Case enumEstados.CONSULTA
-                Me.gBoxInformacion.Enabled = False
-                Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consultando"
-                Me.tsbNuevo.Enabled = True
-                Me.tsbEditar.Enabled = True
-                Me.tsbGrabar.Enabled = False
-                Me.tsbCancelar.Enabled = False
-                Me.txtFiltro.Focus()
-        End Select
-        Application.DoEvents()
+                Case enumEstados.CONSULTA
+                    Me.gBoxInformacion.Enabled = False
+                    Me.gBoxBusquedaRapida.Enabled = True
+                    Me.tssLabelEstado.Text = "Consultando"
+                    Me.tsbNuevo.Enabled = True
+                    Me.tsbEditar.Enabled = True
+                    Me.tsbGrabar.Enabled = False
+                    Me.tsbCancelar.Enabled = False
+                    Me.txtFiltro.Focus()
+            End Select
+            Application.DoEvents()
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Sub InicializaElemento()
-        Me.TxtCodigoRemolque.Text = ""
-        Me.TxtNombre.Text = ""
-        Me.TxtCodigoTipoRemolque.Text = ""
-        Me.LblNombreTipoRemolque.Text = ""
-        Me.txtPlaca.Text = ""
-        Me.CboEstatus.SelectedIndex = 0
+        Const sProcedure As String = "InicializaElemento"
+        Try
+            Me.TxtCodigoRemolque.Text = ""
+            Me.TxtNombre.Text = ""
+            Me.TxtCodigoTipoRemolque.Text = ""
+            Me.LblNombreTipoRemolque.Text = ""
+            Me.txtPlaca.Text = ""
+            Me.CboEstatus.SelectedIndex = 0
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Sub DesplegarElementos()
-        Dim oElementos As New Class_CatRemolques
-        With Me.Grid
-            .DataSource = oElementos.ObtenerElementos()
-            .Columns("CODIGO_REMOLQUE").Width = 50
-            .Columns("NOMBRE_REMOLQUE").Width = 200
-        End With
-
+        Const sProcedure As String = "DesplegarElementos"
+        Try
+            Dim oElementos As New Class_CatRemolques
+            With Me.Grid
+                .DataSource = oElementos.ObtenerElementos()
+                .Columns("CODIGO_REMOLQUE").Width = 50
+                .Columns("NOMBRE_REMOLQUE").Width = 200
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As String)
-        oRemolque = New Class_CatRemolques
-        oRemolque.CODIGO_REMOLQUE = iCodigo_Elemento
+        Const sProcedure As String = "LlenaElemento"
+        Try
+            oRemolque = New Class_CatRemolques
+            oRemolque.CODIGO_REMOLQUE = iCodigo_Elemento
 
-        If oRemolque.Consultar Then
-            With oRemolque
-                Me.TxtCodigoRemolque.Text = .CODIGO_REMOLQUE.ToString
-                Me.TxtNombre.Text = .NOMBRE_REMOLQUE
-                Me.txtPlaca.Text = .PLACA
-                Me.TxtCodigoTipoRemolque.Text = .CODIGO_TIPO_REMOLQUE.ToString
+            If oRemolque.Consultar = True Then
+                With oRemolque
+                    Me.TxtCodigoRemolque.Text = .CODIGO_REMOLQUE.ToString
+                    Me.TxtNombre.Text = .NOMBRE_REMOLQUE
+                    Me.txtPlaca.Text = .PLACA
+                    Me.TxtCodigoTipoRemolque.Text = .CODIGO_TIPO_REMOLQUE.ToString
 
-                If txtLEN(Me.TxtCodigoTipoRemolque.Text) Then
-                    Dim sql As New Class_find("SELECT NOMBRE_TIPO_REMOLQUE FROM CFDI_CAT_TIPOS_REMOLQUES WHERE CODIGO_TIPO_REMOLQUE='" & .CODIGO_TIPO_REMOLQUE & "' ")
+                    If txtLEN(Me.TxtCodigoTipoRemolque.Text) Then
+                        Dim sql As New Class_find("SELECT NOMBRE_TIPO_REMOLQUE FROM CFDI_CAT_TIPOS_REMOLQUES WHERE CODIGO_TIPO_REMOLQUE='" & .CODIGO_TIPO_REMOLQUE & "' ")
 
-                    If txtLEN(sql.Result1) Then
-                        Me.LblNombreTipoRemolque.Text = sql.Result1.ToString
+                        If txtLEN(sql.Result1) Then
+                            Me.LblNombreTipoRemolque.Text = sql.Result1.ToString
+                        End If
                     End If
-                End If
 
-                Me.txtPlaca.Text = .PLACA.ToString
+                    Me.txtPlaca.Text = .PLACA.ToString
 
-                If .ESTATUS = "A" Then
-                    Me.CboEstatus.SelectedIndex = 0
-                Else
-                    Me.CboEstatus.SelectedIndex = 1
-                End If
+                    If .ESTATUS = "A" Then
+                        Me.CboEstatus.SelectedIndex = 0
+                    Else
+                        Me.CboEstatus.SelectedIndex = 1
+                    End If
 
-            End With
-        End If
-        oRemolque = Nothing
+                End With
+            End If
+            oRemolque = Nothing
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
-    Private Sub Grabar_Elemento()
+    Private Function Grabar_Elemento() As Boolean
+        Const sProcedure As String = "Grabar_Elemento"
+
         oRemolque = New Class_CatRemolques
-        Dim Grabado As Boolean = False
+        Dim bResultado As Boolean = False
 
         If txtLEN(Me.TxtNombre.Text) = False Then
-            MsgBox("Asígne el nombre del remolque.", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("Asígne el nombre del remolque.", MsgBoxStyle.Exclamation, sProcedure)
             Me.TxtNombre.Focus()
-            Exit Sub
+            Return False
         End If
 
         If txtLEN(Me.TxtCodigoTipoRemolque.Text) = False Then
-            MsgBox("Asígne el código de tipo de remolque.", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("Asígne el código de tipo de remolque.", MsgBoxStyle.Exclamation, sProcedure)
             Me.TxtCodigoTipoRemolque.Focus()
-            Exit Sub
+            Return False
         End If
 
         If txtLEN(Me.txtPlaca.Text) = False Then
-            MsgBox("Asígne la placa del remolque", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("Asígne la placa del remolque", MsgBoxStyle.Exclamation, sProcedure)
             Me.txtPlaca.Focus()
-            Exit Sub
+            Return False
         End If
 
         Select Case Me.Estado
@@ -244,17 +262,17 @@ Public Class Catalogo_Remolques
 
                             Case enumEstados.NUEVO
                                 If .Grabar("INSERTAR") Then
-                                    Grabado = True
+                                    bResultado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If
                             Case enumEstados.EDICION
                                 If .Grabar("ACTUALIZAR") Then
-                                    Grabado = True
+                                    bResultado = True
                                     Me.Estado = enumEstados.CONSULTA
                                 End If
                         End Select
 
-                        If Grabado Then
+                        If bResultado Then
                             MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
                             Me.Refrescar()
                             Me.Cambia_Estado()
@@ -262,14 +280,16 @@ Public Class Catalogo_Remolques
 
                     End With
                 Catch ex As Exception
-                    HandleError(Me.Name, "Grabar", ex)
+                    HandleError(Me.Name, sProcedure, ex)
                     Me.Estado = enumEstados.CONSULTA
                     Me.Cambia_Estado()
                 Finally
                     oRemolque = Nothing
                 End Try
         End Select
-    End Sub
+
+        Return bResultado
+    End Function
 
 #End Region
 

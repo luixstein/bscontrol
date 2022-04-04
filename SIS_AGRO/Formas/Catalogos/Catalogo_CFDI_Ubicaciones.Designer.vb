@@ -39,25 +39,31 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.gb = New System.Windows.Forms.GroupBox()
+        Me.TxtNumeroInterior = New System.Windows.Forms.TextBox()
         Me.cboMunicipio = New System.Windows.Forms.ComboBox()
         Me.cboEstado = New System.Windows.Forms.ComboBox()
+        Me.LblNumeroInterior = New System.Windows.Forms.Label()
+        Me.LblCalle = New System.Windows.Forms.Label()
         Me.cboPaisDomicilio = New System.Windows.Forms.ComboBox()
-        Me.cboPaisResidenciaFiscal = New System.Windows.Forms.ComboBox()
+        Me.LblReferencia = New System.Windows.Forms.Label()
+        Me.TxtReferencia = New System.Windows.Forms.TextBox()
         Me.LblPaisDomicilio = New System.Windows.Forms.Label()
+        Me.LblCodigoPostal = New System.Windows.Forms.Label()
         Me.LblEstado = New System.Windows.Forms.Label()
+        Me.TxtCodigoPostal = New System.Windows.Forms.TextBox()
         Me.LblMunicipio = New System.Windows.Forms.Label()
+        Me.TxtCalle = New System.Windows.Forms.TextBox()
         Me.LblNombreLocalidad = New System.Windows.Forms.Label()
+        Me.LblNumeroExterior = New System.Windows.Forms.Label()
         Me.LblNombreColonia = New System.Windows.Forms.Label()
+        Me.TxtNumeroExterior = New System.Windows.Forms.TextBox()
         Me.TxtIdLocalidad = New System.Windows.Forms.TextBox()
+        Me.LblIdColonia = New System.Windows.Forms.Label()
         Me.LblIdLocalidad = New System.Windows.Forms.Label()
         Me.TxtIdColonia = New System.Windows.Forms.TextBox()
-        Me.LblIdColonia = New System.Windows.Forms.Label()
-        Me.TxtNumeroInterior = New System.Windows.Forms.TextBox()
-        Me.LblNumeroInterior = New System.Windows.Forms.Label()
-        Me.TxtNumeroExterior = New System.Windows.Forms.TextBox()
-        Me.LblNumeroExterior = New System.Windows.Forms.Label()
-        Me.TxtCalle = New System.Windows.Forms.TextBox()
-        Me.LblCalle = New System.Windows.Forms.Label()
+        Me.cboPaisResidenciaFiscal = New System.Windows.Forms.ComboBox()
+        Me.CboTipoUbicacion = New System.Windows.Forms.ComboBox()
         Me.TxtDistanciaRecorrida = New System.Windows.Forms.TextBox()
         Me.LblDistanciaRecorrida = New System.Windows.Forms.Label()
         Me.LblPaisResidenciaFiscal = New System.Windows.Forms.Label()
@@ -68,14 +74,9 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.TxtNombreRemitenteDestinatario = New System.Windows.Forms.TextBox()
         Me.LblNombreRemitenteDestinatario = New System.Windows.Forms.Label()
         Me.LblTipoUbicacion = New System.Windows.Forms.Label()
-        Me.CboTipoUbicacion = New System.Windows.Forms.ComboBox()
         Me.TxtIdUbicacion = New System.Windows.Forms.TextBox()
         Me.LblIdUbicacion = New System.Windows.Forms.Label()
         Me.LblDisplayNombreCliente = New System.Windows.Forms.Label()
-        Me.TxtCodigoPostal = New System.Windows.Forms.TextBox()
-        Me.LblCodigoPostal = New System.Windows.Forms.Label()
-        Me.TxtReferencia = New System.Windows.Forms.TextBox()
-        Me.LblReferencia = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.LblCodigoCliente = New System.Windows.Forms.Label()
         Me.TxtCodigoCliente = New System.Windows.Forms.TextBox()
@@ -84,14 +85,13 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.LblCodigoUbicacion = New System.Windows.Forms.Label()
         Me.TxtCodigoUbicacion = New System.Windows.Forms.TextBox()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.gb = New System.Windows.Forms.GroupBox()
         Me.tsMenu.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatusStripEstado.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
-        CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gb.SuspendLayout()
+        CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'tsMenu
@@ -101,7 +101,7 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(802, 27)
-        Me.tsMenu.TabIndex = 24
+        Me.tsMenu.TabIndex = 1
         Me.tsMenu.Text = "tsMenu"
         '
         'tsbNuevo
@@ -153,7 +153,7 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(489, 28)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(303, 550)
-        Me.gBoxBusquedaRapida.TabIndex = 22
+        Me.gBoxBusquedaRapida.TabIndex = 2
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
         '
@@ -175,7 +175,7 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.cboEstatusFiltro.MaxLength = 1
         Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
         Me.cboEstatusFiltro.Size = New System.Drawing.Size(36, 21)
-        Me.cboEstatusFiltro.TabIndex = 92
+        Me.cboEstatusFiltro.TabIndex = 1
         '
         'Grid
         '
@@ -254,6 +254,45 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
         '
+        'gb
+        '
+        Me.gb.Controls.Add(Me.TxtNumeroInterior)
+        Me.gb.Controls.Add(Me.cboMunicipio)
+        Me.gb.Controls.Add(Me.cboEstado)
+        Me.gb.Controls.Add(Me.LblNumeroInterior)
+        Me.gb.Controls.Add(Me.LblCalle)
+        Me.gb.Controls.Add(Me.cboPaisDomicilio)
+        Me.gb.Controls.Add(Me.LblReferencia)
+        Me.gb.Controls.Add(Me.TxtReferencia)
+        Me.gb.Controls.Add(Me.LblPaisDomicilio)
+        Me.gb.Controls.Add(Me.LblCodigoPostal)
+        Me.gb.Controls.Add(Me.LblEstado)
+        Me.gb.Controls.Add(Me.TxtCodigoPostal)
+        Me.gb.Controls.Add(Me.LblMunicipio)
+        Me.gb.Controls.Add(Me.TxtCalle)
+        Me.gb.Controls.Add(Me.LblNombreLocalidad)
+        Me.gb.Controls.Add(Me.LblNumeroExterior)
+        Me.gb.Controls.Add(Me.LblNombreColonia)
+        Me.gb.Controls.Add(Me.TxtNumeroExterior)
+        Me.gb.Controls.Add(Me.TxtIdLocalidad)
+        Me.gb.Controls.Add(Me.LblIdColonia)
+        Me.gb.Controls.Add(Me.LblIdLocalidad)
+        Me.gb.Controls.Add(Me.TxtIdColonia)
+        Me.gb.Location = New System.Drawing.Point(9, 271)
+        Me.gb.Name = "gb"
+        Me.gb.Size = New System.Drawing.Size(455, 241)
+        Me.gb.TabIndex = 9
+        Me.gb.TabStop = False
+        Me.gb.Text = "Domicilio"
+        '
+        'TxtNumeroInterior
+        '
+        Me.TxtNumeroInterior.Location = New System.Drawing.Point(327, 38)
+        Me.TxtNumeroInterior.MaxLength = 50
+        Me.TxtNumeroInterior.Name = "TxtNumeroInterior"
+        Me.TxtNumeroInterior.Size = New System.Drawing.Size(122, 20)
+        Me.TxtNumeroInterior.TabIndex = 2
+        '
         'cboMunicipio
         '
         Me.cboMunicipio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -263,7 +302,7 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.cboMunicipio.MaxLength = 80
         Me.cboMunicipio.Name = "cboMunicipio"
         Me.cboMunicipio.Size = New System.Drawing.Size(218, 21)
-        Me.cboMunicipio.TabIndex = 133
+        Me.cboMunicipio.TabIndex = 8
         '
         'cboEstado
         '
@@ -274,7 +313,25 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.cboEstado.MaxLength = 80
         Me.cboEstado.Name = "cboEstado"
         Me.cboEstado.Size = New System.Drawing.Size(218, 21)
-        Me.cboEstado.TabIndex = 132
+        Me.cboEstado.TabIndex = 7
+        '
+        'LblNumeroInterior
+        '
+        Me.LblNumeroInterior.AutoSize = True
+        Me.LblNumeroInterior.Location = New System.Drawing.Point(227, 42)
+        Me.LblNumeroInterior.Name = "LblNumeroInterior"
+        Me.LblNumeroInterior.Size = New System.Drawing.Size(84, 13)
+        Me.LblNumeroInterior.TabIndex = 115
+        Me.LblNumeroInterior.Text = "Número interior :"
+        '
+        'LblCalle
+        '
+        Me.LblCalle.AutoSize = True
+        Me.LblCalle.Location = New System.Drawing.Point(6, 16)
+        Me.LblCalle.Name = "LblCalle"
+        Me.LblCalle.Size = New System.Drawing.Size(36, 13)
+        Me.LblCalle.TabIndex = 111
+        Me.LblCalle.Text = "Calle :"
         '
         'cboPaisDomicilio
         '
@@ -285,27 +342,43 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.cboPaisDomicilio.MaxLength = 80
         Me.cboPaisDomicilio.Name = "cboPaisDomicilio"
         Me.cboPaisDomicilio.Size = New System.Drawing.Size(218, 21)
-        Me.cboPaisDomicilio.TabIndex = 131
+        Me.cboPaisDomicilio.TabIndex = 6
         '
-        'cboPaisResidenciaFiscal
+        'LblReferencia
         '
-        Me.cboPaisResidenciaFiscal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboPaisResidenciaFiscal.FormattingEnabled = True
-        Me.cboPaisResidenciaFiscal.Items.AddRange(New Object() {"A", "B"})
-        Me.cboPaisResidenciaFiscal.Location = New System.Drawing.Point(125, 222)
-        Me.cboPaisResidenciaFiscal.MaxLength = 80
-        Me.cboPaisResidenciaFiscal.Name = "cboPaisResidenciaFiscal"
-        Me.cboPaisResidenciaFiscal.Size = New System.Drawing.Size(218, 21)
-        Me.cboPaisResidenciaFiscal.TabIndex = 130
+        Me.LblReferencia.AutoSize = True
+        Me.LblReferencia.Location = New System.Drawing.Point(6, 117)
+        Me.LblReferencia.Name = "LblReferencia"
+        Me.LblReferencia.Size = New System.Drawing.Size(65, 13)
+        Me.LblReferencia.TabIndex = 92
+        Me.LblReferencia.Text = "Referencia :"
+        '
+        'TxtReferencia
+        '
+        Me.TxtReferencia.Location = New System.Drawing.Point(90, 114)
+        Me.TxtReferencia.MaxLength = 250
+        Me.TxtReferencia.Multiline = True
+        Me.TxtReferencia.Name = "TxtReferencia"
+        Me.TxtReferencia.Size = New System.Drawing.Size(218, 20)
+        Me.TxtReferencia.TabIndex = 5
         '
         'LblPaisDomicilio
         '
         Me.LblPaisDomicilio.AutoSize = True
         Me.LblPaisDomicilio.Location = New System.Drawing.Point(6, 142)
         Me.LblPaisDomicilio.Name = "LblPaisDomicilio"
-        Me.LblPaisDomicilio.Size = New System.Drawing.Size(78, 13)
+        Me.LblPaisDomicilio.Size = New System.Drawing.Size(35, 13)
         Me.LblPaisDomicilio.TabIndex = 129
-        Me.LblPaisDomicilio.Text = "País domicilio :"
+        Me.LblPaisDomicilio.Text = "País :"
+        '
+        'LblCodigoPostal
+        '
+        Me.LblCodigoPostal.AutoSize = True
+        Me.LblCodigoPostal.Location = New System.Drawing.Point(6, 218)
+        Me.LblCodigoPostal.Name = "LblCodigoPostal"
+        Me.LblCodigoPostal.Size = New System.Drawing.Size(77, 13)
+        Me.LblCodigoPostal.TabIndex = 94
+        Me.LblCodigoPostal.Text = "Código postal :"
         '
         'LblEstado
         '
@@ -316,6 +389,14 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.LblEstado.TabIndex = 126
         Me.LblEstado.Text = "Estado :"
         '
+        'TxtCodigoPostal
+        '
+        Me.TxtCodigoPostal.Location = New System.Drawing.Point(90, 215)
+        Me.TxtCodigoPostal.MaxLength = 12
+        Me.TxtCodigoPostal.Name = "TxtCodigoPostal"
+        Me.TxtCodigoPostal.Size = New System.Drawing.Size(63, 20)
+        Me.TxtCodigoPostal.TabIndex = 9
+        '
         'LblMunicipio
         '
         Me.LblMunicipio.AutoSize = True
@@ -324,6 +405,14 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.LblMunicipio.Size = New System.Drawing.Size(58, 13)
         Me.LblMunicipio.TabIndex = 123
         Me.LblMunicipio.Text = "Municipio :"
+        '
+        'TxtCalle
+        '
+        Me.TxtCalle.Location = New System.Drawing.Point(48, 13)
+        Me.TxtCalle.MaxLength = 100
+        Me.TxtCalle.Name = "TxtCalle"
+        Me.TxtCalle.Size = New System.Drawing.Size(401, 20)
+        Me.TxtCalle.TabIndex = 0
         '
         'LblNombreLocalidad
         '
@@ -334,6 +423,15 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.LblNombreLocalidad.TabIndex = 121
         Me.LblNombreLocalidad.Text = "_"
         '
+        'LblNumeroExterior
+        '
+        Me.LblNumeroExterior.AutoSize = True
+        Me.LblNumeroExterior.Location = New System.Drawing.Point(6, 42)
+        Me.LblNumeroExterior.Name = "LblNumeroExterior"
+        Me.LblNumeroExterior.Size = New System.Drawing.Size(87, 13)
+        Me.LblNumeroExterior.TabIndex = 113
+        Me.LblNumeroExterior.Text = "Número exterior :"
+        '
         'LblNombreColonia
         '
         Me.LblNombreColonia.AutoSize = True
@@ -343,13 +441,30 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.LblNombreColonia.TabIndex = 120
         Me.LblNombreColonia.Text = "_"
         '
+        'TxtNumeroExterior
+        '
+        Me.TxtNumeroExterior.Location = New System.Drawing.Point(96, 38)
+        Me.TxtNumeroExterior.MaxLength = 50
+        Me.TxtNumeroExterior.Name = "TxtNumeroExterior"
+        Me.TxtNumeroExterior.Size = New System.Drawing.Size(119, 20)
+        Me.TxtNumeroExterior.TabIndex = 1
+        '
         'TxtIdLocalidad
         '
         Me.TxtIdLocalidad.Location = New System.Drawing.Point(90, 88)
         Me.TxtIdLocalidad.MaxLength = 50
         Me.TxtIdLocalidad.Name = "TxtIdLocalidad"
         Me.TxtIdLocalidad.Size = New System.Drawing.Size(63, 20)
-        Me.TxtIdLocalidad.TabIndex = 118
+        Me.TxtIdLocalidad.TabIndex = 4
+        '
+        'LblIdColonia
+        '
+        Me.LblIdColonia.AutoSize = True
+        Me.LblIdColonia.Location = New System.Drawing.Point(6, 66)
+        Me.LblIdColonia.Name = "LblIdColonia"
+        Me.LblIdColonia.Size = New System.Drawing.Size(48, 13)
+        Me.LblIdColonia.TabIndex = 117
+        Me.LblIdColonia.Text = "Colonia :"
         '
         'LblIdLocalidad
         '
@@ -366,67 +481,29 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.TxtIdColonia.MaxLength = 50
         Me.TxtIdColonia.Name = "TxtIdColonia"
         Me.TxtIdColonia.Size = New System.Drawing.Size(63, 20)
-        Me.TxtIdColonia.TabIndex = 116
+        Me.TxtIdColonia.TabIndex = 3
         '
-        'LblIdColonia
+        'cboPaisResidenciaFiscal
         '
-        Me.LblIdColonia.AutoSize = True
-        Me.LblIdColonia.Location = New System.Drawing.Point(6, 66)
-        Me.LblIdColonia.Name = "LblIdColonia"
-        Me.LblIdColonia.Size = New System.Drawing.Size(48, 13)
-        Me.LblIdColonia.TabIndex = 117
-        Me.LblIdColonia.Text = "Colonia :"
+        Me.cboPaisResidenciaFiscal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboPaisResidenciaFiscal.FormattingEnabled = True
+        Me.cboPaisResidenciaFiscal.Items.AddRange(New Object() {"A", "B"})
+        Me.cboPaisResidenciaFiscal.Location = New System.Drawing.Point(125, 222)
+        Me.cboPaisResidenciaFiscal.MaxLength = 80
+        Me.cboPaisResidenciaFiscal.Name = "cboPaisResidenciaFiscal"
+        Me.cboPaisResidenciaFiscal.Size = New System.Drawing.Size(218, 21)
+        Me.cboPaisResidenciaFiscal.TabIndex = 7
         '
-        'TxtNumeroInterior
+        'CboTipoUbicacion
         '
-        Me.TxtNumeroInterior.Location = New System.Drawing.Point(327, 38)
-        Me.TxtNumeroInterior.MaxLength = 50
-        Me.TxtNumeroInterior.Name = "TxtNumeroInterior"
-        Me.TxtNumeroInterior.Size = New System.Drawing.Size(122, 20)
-        Me.TxtNumeroInterior.TabIndex = 114
-        '
-        'LblNumeroInterior
-        '
-        Me.LblNumeroInterior.AutoSize = True
-        Me.LblNumeroInterior.Location = New System.Drawing.Point(227, 42)
-        Me.LblNumeroInterior.Name = "LblNumeroInterior"
-        Me.LblNumeroInterior.Size = New System.Drawing.Size(84, 13)
-        Me.LblNumeroInterior.TabIndex = 115
-        Me.LblNumeroInterior.Text = "Número interior :"
-        '
-        'TxtNumeroExterior
-        '
-        Me.TxtNumeroExterior.Location = New System.Drawing.Point(96, 38)
-        Me.TxtNumeroExterior.MaxLength = 50
-        Me.TxtNumeroExterior.Name = "TxtNumeroExterior"
-        Me.TxtNumeroExterior.Size = New System.Drawing.Size(119, 20)
-        Me.TxtNumeroExterior.TabIndex = 112
-        '
-        'LblNumeroExterior
-        '
-        Me.LblNumeroExterior.AutoSize = True
-        Me.LblNumeroExterior.Location = New System.Drawing.Point(6, 42)
-        Me.LblNumeroExterior.Name = "LblNumeroExterior"
-        Me.LblNumeroExterior.Size = New System.Drawing.Size(87, 13)
-        Me.LblNumeroExterior.TabIndex = 113
-        Me.LblNumeroExterior.Text = "Número exterior :"
-        '
-        'TxtCalle
-        '
-        Me.TxtCalle.Location = New System.Drawing.Point(48, 13)
-        Me.TxtCalle.MaxLength = 100
-        Me.TxtCalle.Name = "TxtCalle"
-        Me.TxtCalle.Size = New System.Drawing.Size(401, 20)
-        Me.TxtCalle.TabIndex = 110
-        '
-        'LblCalle
-        '
-        Me.LblCalle.AutoSize = True
-        Me.LblCalle.Location = New System.Drawing.Point(6, 16)
-        Me.LblCalle.Name = "LblCalle"
-        Me.LblCalle.Size = New System.Drawing.Size(36, 13)
-        Me.LblCalle.TabIndex = 111
-        Me.LblCalle.Text = "Calle :"
+        Me.CboTipoUbicacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboTipoUbicacion.FormattingEnabled = True
+        Me.CboTipoUbicacion.Items.AddRange(New Object() {"Origen", "Destino"})
+        Me.CboTipoUbicacion.Location = New System.Drawing.Point(336, 81)
+        Me.CboTipoUbicacion.MaxLength = 1
+        Me.CboTipoUbicacion.Name = "CboTipoUbicacion"
+        Me.CboTipoUbicacion.Size = New System.Drawing.Size(71, 21)
+        Me.CboTipoUbicacion.TabIndex = 3
         '
         'TxtDistanciaRecorrida
         '
@@ -434,7 +511,7 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.TxtDistanciaRecorrida.MaxLength = 50
         Me.TxtDistanciaRecorrida.Name = "TxtDistanciaRecorrida"
         Me.TxtDistanciaRecorrida.Size = New System.Drawing.Size(66, 20)
-        Me.TxtDistanciaRecorrida.TabIndex = 108
+        Me.TxtDistanciaRecorrida.TabIndex = 8
         '
         'LblDistanciaRecorrida
         '
@@ -460,7 +537,7 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.MaxLength = 40
         Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Name = "TxtNumeroIdentificacionRegistroFiscalExtranjero"
         Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Size = New System.Drawing.Size(124, 20)
-        Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.TabIndex = 105
+        Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.TabIndex = 6
         '
         'LblNumeroIdentificacionResgistroFiscalExtranjero
         '
@@ -477,7 +554,7 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.TxtRfcRemitenteDestinatario.MaxLength = 13
         Me.TxtRfcRemitenteDestinatario.Name = "TxtRfcRemitenteDestinatario"
         Me.TxtRfcRemitenteDestinatario.Size = New System.Drawing.Size(211, 20)
-        Me.TxtRfcRemitenteDestinatario.TabIndex = 102
+        Me.TxtRfcRemitenteDestinatario.TabIndex = 5
         '
         'LblRfcRemitenteDestinatario
         '
@@ -494,7 +571,7 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.TxtNombreRemitenteDestinatario.MaxLength = 254
         Me.TxtNombreRemitenteDestinatario.Name = "TxtNombreRemitenteDestinatario"
         Me.TxtNombreRemitenteDestinatario.Size = New System.Drawing.Size(458, 20)
-        Me.TxtNombreRemitenteDestinatario.TabIndex = 100
+        Me.TxtNombreRemitenteDestinatario.TabIndex = 4
         '
         'LblNombreRemitenteDestinatario
         '
@@ -514,24 +591,13 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.LblTipoUbicacion.TabIndex = 99
         Me.LblTipoUbicacion.Text = "Tipo ubicación :"
         '
-        'CboTipoUbicacion
-        '
-        Me.CboTipoUbicacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CboTipoUbicacion.FormattingEnabled = True
-        Me.CboTipoUbicacion.Items.AddRange(New Object() {"Origen", "Destino"})
-        Me.CboTipoUbicacion.Location = New System.Drawing.Point(336, 81)
-        Me.CboTipoUbicacion.MaxLength = 1
-        Me.CboTipoUbicacion.Name = "CboTipoUbicacion"
-        Me.CboTipoUbicacion.Size = New System.Drawing.Size(71, 21)
-        Me.CboTipoUbicacion.TabIndex = 98
-        '
         'TxtIdUbicacion
         '
         Me.TxtIdUbicacion.Location = New System.Drawing.Point(105, 82)
         Me.TxtIdUbicacion.MaxLength = 8
         Me.TxtIdUbicacion.Name = "TxtIdUbicacion"
         Me.TxtIdUbicacion.Size = New System.Drawing.Size(128, 20)
-        Me.TxtIdUbicacion.TabIndex = 96
+        Me.TxtIdUbicacion.TabIndex = 2
         '
         'LblIdUbicacion
         '
@@ -550,41 +616,6 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.LblDisplayNombreCliente.Size = New System.Drawing.Size(13, 13)
         Me.LblDisplayNombreCliente.TabIndex = 95
         Me.LblDisplayNombreCliente.Text = "_"
-        '
-        'TxtCodigoPostal
-        '
-        Me.TxtCodigoPostal.Location = New System.Drawing.Point(90, 215)
-        Me.TxtCodigoPostal.MaxLength = 12
-        Me.TxtCodigoPostal.Name = "TxtCodigoPostal"
-        Me.TxtCodigoPostal.Size = New System.Drawing.Size(63, 20)
-        Me.TxtCodigoPostal.TabIndex = 3
-        '
-        'LblCodigoPostal
-        '
-        Me.LblCodigoPostal.AutoSize = True
-        Me.LblCodigoPostal.Location = New System.Drawing.Point(6, 218)
-        Me.LblCodigoPostal.Name = "LblCodigoPostal"
-        Me.LblCodigoPostal.Size = New System.Drawing.Size(77, 13)
-        Me.LblCodigoPostal.TabIndex = 94
-        Me.LblCodigoPostal.Text = "Código postal :"
-        '
-        'TxtReferencia
-        '
-        Me.TxtReferencia.Location = New System.Drawing.Point(90, 114)
-        Me.TxtReferencia.MaxLength = 250
-        Me.TxtReferencia.Multiline = True
-        Me.TxtReferencia.Name = "TxtReferencia"
-        Me.TxtReferencia.Size = New System.Drawing.Size(218, 20)
-        Me.TxtReferencia.TabIndex = 2
-        '
-        'LblReferencia
-        '
-        Me.LblReferencia.AutoSize = True
-        Me.LblReferencia.Location = New System.Drawing.Point(6, 117)
-        Me.LblReferencia.Name = "LblReferencia"
-        Me.LblReferencia.Size = New System.Drawing.Size(65, 13)
-        Me.LblReferencia.TabIndex = 92
-        Me.LblReferencia.Text = "Referencia :"
         '
         'Label2
         '
@@ -629,7 +660,7 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(71, 21)
-        Me.CboEstatus.TabIndex = 5
+        Me.CboEstatus.TabIndex = 10
         '
         'LblCodigoUbicacion
         '
@@ -651,37 +682,6 @@ Partial Class Catalogo_CFDI_Ubicaciones
         'ErrorProvider
         '
         Me.ErrorProvider.ContainerControl = Me
-        '
-        'gb
-        '
-        Me.gb.Controls.Add(Me.TxtNumeroInterior)
-        Me.gb.Controls.Add(Me.cboMunicipio)
-        Me.gb.Controls.Add(Me.cboEstado)
-        Me.gb.Controls.Add(Me.LblNumeroInterior)
-        Me.gb.Controls.Add(Me.LblCalle)
-        Me.gb.Controls.Add(Me.cboPaisDomicilio)
-        Me.gb.Controls.Add(Me.LblReferencia)
-        Me.gb.Controls.Add(Me.TxtReferencia)
-        Me.gb.Controls.Add(Me.LblPaisDomicilio)
-        Me.gb.Controls.Add(Me.LblCodigoPostal)
-        Me.gb.Controls.Add(Me.LblEstado)
-        Me.gb.Controls.Add(Me.TxtCodigoPostal)
-        Me.gb.Controls.Add(Me.LblMunicipio)
-        Me.gb.Controls.Add(Me.TxtCalle)
-        Me.gb.Controls.Add(Me.LblNombreLocalidad)
-        Me.gb.Controls.Add(Me.LblNumeroExterior)
-        Me.gb.Controls.Add(Me.LblNombreColonia)
-        Me.gb.Controls.Add(Me.TxtNumeroExterior)
-        Me.gb.Controls.Add(Me.TxtIdLocalidad)
-        Me.gb.Controls.Add(Me.LblIdColonia)
-        Me.gb.Controls.Add(Me.LblIdLocalidad)
-        Me.gb.Controls.Add(Me.TxtIdColonia)
-        Me.gb.Location = New System.Drawing.Point(9, 271)
-        Me.gb.Name = "gb"
-        Me.gb.Size = New System.Drawing.Size(455, 241)
-        Me.gb.TabIndex = 134
-        Me.gb.TabStop = False
-        Me.gb.Text = "Domicilio"
         '
         'Catalogo_CFDI_Ubicaciones
         '
@@ -706,9 +706,9 @@ Partial Class Catalogo_CFDI_Ubicaciones
         Me.StatusStripEstado.PerformLayout()
         Me.gBoxInformacion.ResumeLayout(False)
         Me.gBoxInformacion.PerformLayout()
-        CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gb.ResumeLayout(False)
         Me.gb.PerformLayout()
+        CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
