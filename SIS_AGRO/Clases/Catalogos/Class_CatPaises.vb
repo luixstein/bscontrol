@@ -175,6 +175,47 @@ Public Class Class_CatPaises
         Return dTable
     End Function
 
+    Public Function BusquedaVisual_PorCodigo() As String
+        Const sProcedure As String = "BusquedaVisual_PorCodigo"
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de países por código."
+        f.sCampo = "CODIGO_PAIS_SAT"
+        f.sOrder = "NOMBRE_PAIS"
+        f.sTable = "CAT_PAISES"
+        f.sQl = "SELECT CODIGO_PAIS_SAT,NOMBRE_PAIS FROM CAT_PAISES WHERE ESTATUS='A' AND "
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return Resultado
+    End Function
+
+    Public Function BusquedaVisual_PorDescripcion() As String
+        Const sProcedure As String = "BusquedaVisual_PorDescripcion"
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de países por nombre."
+        f.sCampo = "NOMBRE_PAIS"
+        f.sOrder = "NOMBRE_PAIS"
+        f.sTable = "CAT_PAISES"
+        f.sQl = "SELECT CODIGO_PAIS_SAT,NOMBRE_PAIS FROM CAT_PAISES WHERE ESTATUS='A' AND "
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return Resultado
+    End Function
 #End Region
 
 End Class

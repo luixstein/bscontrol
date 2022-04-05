@@ -262,20 +262,6 @@ Public Class Class_SisEstados
         Return dTable
     End Function
 
-    Public Function ObtenerElementosEstadosSAT(ByVal sCodigoPaisSAT As String) As System.Data.DataTable
-        Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_ESTADO_SAT,NOMBRE_ESTADO FROM SIS_ESTADOS WHERE CODIGO_PAIS_SAT='" & sReplace(sCodigoPaisSAT) & "'" & _
-                                     "ORDER BY NOMBRE_ESTADO", Me._Conexion)
-        Try
-            da.Fill(dTable)
-        Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
-        Finally
-            da.Dispose()
-        End Try
-        Return dTable
-    End Function
-
     Public Function ObtenerElementos() As System.Data.DataTable
         Const sProcedure As String = "ObtenerElementos"
         Dim dTable As New DataTable
@@ -288,6 +274,48 @@ Public Class Class_SisEstados
             da.Dispose()
         End Try
         Return dTable
+    End Function
+
+    Public Function BusquedaVisual_PorCodigoSAT(ByVal sCodigoPais As String) As String
+        Const sProcedure As String = "BusquedaVisual_PorCodigo"
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de estados por código SAT."
+        f.sCampo = "CODIGO_ESTADO_SAT"
+        f.sOrder = "NOMBRE_ESTADO"
+        f.sTable = "SIS_ESTADOS"
+        f.sQl = "SELECT CODIGO_ESTADO_SAT,NOMBRE_ESTADO FROM SIS_ESTADOS WHERE CODIGO_PAIS_SAT='" & sCodigoPais & "' AND "
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return Resultado
+    End Function
+
+    Public Function BusquedaVisual_PorDescripcion(ByVal sCodigoPais As String) As String
+        Const sProcedure As String = "BusquedaVisual_PorDescripcion"
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de estados por nombre."
+        f.sCampo = "NOMBRE_ESTADO"
+        f.sOrder = "NOMBRE_ESTADO"
+        f.sTable = "SIS_ESTADOS"
+        f.sQl = "SELECT CODIGO_ESTADO_SAT,NOMBRE_ESTADO FROM SIS_ESTADOS WHERE CODIGO_PAIS_SAT='" & sCodigoPais & "' AND "
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return Resultado
     End Function
 
 #End Region

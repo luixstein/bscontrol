@@ -135,6 +135,19 @@ Public Class Class_CatMunicipios
         End Try
     End Sub
 
+    Public Sub New(ByVal sCodigoMunicipio As String, ByVal sCodigoEstadoSAT As String)
+        Me.New()
+        Try
+            Me._CODIGO_MUNICIPIO = sCodigoMunicipio
+            Me._CODIGO_ESTADO_SAT = sCodigoEstadoSAT
+            If Me.ConsultarConEstadoSAT = True Then
+                Me._Existe = True
+            End If
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "New", ex)
+        End Try
+    End Sub
+
     Protected Overrides Sub Finalize()
         'Me._Conexion.Dispose()
         MyBase.Finalize()
@@ -149,6 +162,42 @@ Public Class Class_CatMunicipios
                                   "FROM CAT_MUNICIPIOS M " &
                                   "INNER JOIN SIS_ESTADOS E ON(M.CODIGO_ESTADO=E.CODIGO_ESTADO) " &
                                   "WHERE M.CODIGO_MUNICIPIO=" & Replace(Me._CODIGO_MUNICIPIO, "'", "''") & "", Me._Conexion)
+        Dim dReader As SqlDataReader
+        With cmd
+            .CommandTimeout = 0
+            .CommandType = CommandType.Text
+            Try
+                Me._Conexion.Open()
+                dReader = .ExecuteReader()
+
+                If dReader.Read = True Then
+                    Me._CODIGO_MUNICIPIO = "" & dReader("CODIGO_MUNICIPIO").ToString
+                    Me._CODIGO_MUNICIPIO_SAT = "" & dReader("CODIGO_MUNICIPIO_SAT").ToString
+                    Me._NOMBRE_MUNICIPIO = "" & dReader("NOMBRE_MUNICIPIO").ToString
+                    Me._CODIGO_ESTADO = "" & dReader("CODIGO_ESTADO").ToString
+                    Me._ESTATUS = "" & dReader("ESTATUS").ToString.ToString
+                    Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT").ToString
+
+                    bResultado = True
+                End If
+                dReader.Close()
+            Catch ex As Exception
+                HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+            End Try
+        End With
+        Return bResultado
+    End Function
+
+    Public Function ConsultarConEstadoSAT() As Boolean
+        Const sProcedure As String = "ConsultarConCodigoTipoSAT"
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand("SELECT M.CODIGO_MUNICIPIO,M.CODIGO_MUNICIPIO_SAT,M.NOMBRE_MUNICIPIO,M.CODIGO_ESTADO,M.ESTATUS,E.CODIGO_ESTADO_SAT " &
+                                  "FROM CAT_MUNICIPIOS M " &
+                                  "INNER JOIN SIS_ESTADOS E ON(M.CODIGO_ESTADO=E.CODIGO_ESTADO) " &
+                                  "WHERE CODIGO_MUNICIPIO=" & sReplace(Me._CODIGO_MUNICIPIO) & " AND CODIGO_ESTADO_SAT='" & sReplace(Me._CODIGO_ESTADO_SAT) & "'", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -193,18 +242,46 @@ Public Class Class_CatMunicipios
         Return dTable
     End Function
 
-    Public Function ObtenerElementosPorEstadoSAT(ByVal sCodigoEstadoSAT As String) As System.Data.DataTable
-        Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT M.CODIGO_MUNICIPIO,M.NOMBRE_MUNICIPIO FROM CAT_MUNICIPIOS M INNER JOIN SIS_ESTADOS E ON(M.CODIGO_ESTADO=E.CODIGO_ESTADO) WHERE M.ESTATUS='A' AND E.CODIGO_ESTADO_SAT='" & sReplace(sCodigoEstadoSAT) & "'" & _
-                                     "ORDER BY M.NOMBRE_MUNICIPIO", Me._Conexion)
+    Public Function BusquedaVisual_PorCodigo(ByVal sCodigoEstadoSAT As String) As String
+        Const sProcedure As String = "BusquedaVisual_PorCodigo"
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de municipios por código."
+        f.sCampo = "CODIGO_MUNICIPIO"
+        f.sOrder = "NOMBRE_MUNICIPIO"
+        f.sTable = "CAT_MUNICIPIOS"
+        f.sQl = "SELECT M.CODIGO_MUNICIPIO,M.NOMBRE_MUNICIPIO FROM CAT_MUNICIPIOS M INNER JOIN SIS_ESTADOS E ON(M.CODIGO_ESTADO=E.CODIGO_ESTADO) WHERE M.ESTATUS='A' AND E.CODIGO_ESTADO_SAT='" & sCodigoEstadoSAT & "' AND "
+        f.Inicia("")
+        f.ShowDialog()
         Try
-            da.Fill(dTable)
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
-        Finally
-            da.Dispose()
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
         End Try
-        Return dTable
+        Return Resultado
+    End Function
+
+    Public Function BusquedaVisual_PorDescripcion(ByVal sCodigoEstadoSAT As String) As String
+        Const sProcedure As String = "BusquedaVisual_PorDescripcion"
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+        f.Text = "Búsqueda de municipios por nombre."
+        f.sCampo = "NOMBRE_MUNICIPIO"
+        f.sOrder = "NOMBRE_MUNICIPIO"
+        f.sTable = "CAT_MUNICIPIOS"
+        f.sQl = "SELECT M.CODIGO_MUNICIPIO,M.NOMBRE_MUNICIPIO FROM CAT_MUNICIPIOS M INNER JOIN SIS_ESTADOS E ON(M.CODIGO_ESTADO=E.CODIGO_ESTADO) WHERE M.ESTATUS='A' AND E.CODIGO_ESTADO_SAT='" & sCodigoEstadoSAT & "' AND "
+        f.Inicia("")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return Resultado
     End Function
 
 #End Region

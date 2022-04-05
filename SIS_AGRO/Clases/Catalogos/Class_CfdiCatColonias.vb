@@ -139,6 +139,19 @@ Public Class Class_CfdiCatColonias
         End Try
     End Sub
 
+    Public Sub New(ByVal sIDColonia As String, ByVal sCodigoPostal As String)
+        Me.New()
+        Try
+            Me._ID_COLONIA = sIDColonia
+            Me._CODIGO_POSTAL = sCodigoPostal
+            If Me.ConsultarPorCodigoPostal = True Then
+                Me._Existe = True
+            End If
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "New", ex)
+        End Try
+    End Sub
+
     Protected Overrides Sub Finalize()
         'Me._Conexion.Dispose()
         MyBase.Finalize()
@@ -150,6 +163,42 @@ Public Class Class_CfdiCatColonias
         Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand("SELECT * FROM CFDI_CAT_COLONIAS WHERE ID_COLONIA='" & sReplace(Me._ID_COLONIA) & "'", Me._Conexion)
+        Dim dReader As SqlDataReader
+        With cmd
+            .CommandTimeout = 0
+            .CommandType = CommandType.Text
+            Try
+                Me._Conexion.Open()
+                dReader = .ExecuteReader()
+
+                If dReader.Read = True Then
+                    Me._ID_COLONIA = "" & dReader("ID_COLONIA").ToString
+                    Me._CODIGO_COLONIA = "" & dReader("CODIGO_COLONIA").ToString
+                    Me._NOMBRE_COLONIA = "" & dReader("NOMBRE_COLONIA").ToString
+                    Me._CODIGO_POSTAL = "" & dReader("CODIGO_POSTAL").ToString
+                    Me._ESTATUS = "" & dReader("ESTATUS").ToString
+                    Me._CODIGO_USUARIO_CREO = CType(dReader("CODIGO_USUARIO_CREO").ToString, Integer)
+                    Me._FECHA_CREO = CDate(dReader("FECHA_CREO").ToString)
+                    If Not (IsDBNull(dReader("CODIGO_USUARIO_MODIFICO"))) Then Me._CODIGO_USUARIO_MODIFICO = CInt("" & dReader("CODIGO_USUARIO_MODIFICO").ToString)
+                    If Not (IsDBNull(dReader("FECHA_MODIFICO"))) Then Me._FECHA_MODIFICO = CDate(dReader("FECHA_MODIFICO"))
+
+                    bResultado = True
+                End If
+                dReader.Close()
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+            End Try
+        End With
+        Return bResultado
+    End Function
+
+    Public Function ConsultarPorCodigoPostal() As Boolean
+        Const sProcedure As String = "Consultar"
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand("SELECT * FROM CFDI_CAT_COLONIAS WHERE ID_COLONIA='" & sReplace(Me._ID_COLONIA) & "' AND CODIGO_POSTAL='" & Me._CODIGO_POSTAL & "' ", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -225,7 +274,7 @@ Public Class Class_CfdiCatColonias
         Return dTable
     End Function
 
-    Public Function BusquedaVisual_PorCodigo() As String
+    Public Function BusquedaVisual_PorCodigo(ByVal sCodigoPostal As String) As String
         Const sProcedure As String = "BusquedaVisual_PorCodigo"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
@@ -233,7 +282,7 @@ Public Class Class_CfdiCatColonias
         f.sCampo = "CODIGO_COLONIA"
         f.sOrder = "NOMBRE_COLONIA"
         f.sTable = "CFDI_CAT_COLONIAS"
-        f.sQl = "SELECT ID_COLONIA,NOMBRE_COLONIA FROM CFDI_CAT_COLONIAS WHERE 1=1 AND "
+        f.sQl = "SELECT ID_COLONIA,NOMBRE_COLONIA FROM CFDI_CAT_COLONIAS WHERE ESTATUS='A' AND CODIGO_POSTAL='" & sCodigoPostal & "' AND "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -246,7 +295,7 @@ Public Class Class_CfdiCatColonias
         Return Resultado
     End Function
 
-    Public Function BusquedaVisual_PorDescripcion() As String
+    Public Function BusquedaVisual_PorDescripcion(ByVal sCodigoPostal As String) As String
         Const sProcedure As String = "BusquedaVisual_PorDescripcion"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
@@ -254,7 +303,7 @@ Public Class Class_CfdiCatColonias
         f.sCampo = "NOMBRE_COLONIA"
         f.sOrder = "NOMBRE_COLONIA"
         f.sTable = "CFDI_CAT_COLONIAS"
-        f.sQl = "SELECT ID_COLONIA,NOMBRE_COLONIA FROM CFDI_CAT_COLONIAS WHERE 1=1 AND "
+        f.sQl = "SELECT ID_COLONIA,NOMBRE_COLONIA FROM CFDI_CAT_COLONIAS WHERE ESTATUS='A' AND CODIGO_POSTAL='" & sCodigoPostal & "' AND "
         f.Inicia("")
         f.ShowDialog()
         Try

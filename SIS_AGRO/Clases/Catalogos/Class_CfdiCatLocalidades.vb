@@ -148,6 +148,18 @@ Public Class Class_CfdiCatLocalidades
         End Try
     End Sub
 
+    Public Sub New(ByVal sIDLocalidad As String, ByVal sCodigoMunicipio As String)
+        Me.New()
+        Try
+            Me._ID_LOCALIDAD = sIDLocalidad
+            If Me.ConsultarPorMunicipio(sCodigoMunicipio) = True Then
+                Me._Existe = True
+            End If
+        Catch ex As Exception
+            HandleError(Me._Nombre_Catalogo, "New", ex)
+        End Try
+    End Sub
+
     Protected Overrides Sub Finalize()
         'Me._Conexion.Dispose()
         MyBase.Finalize()
@@ -159,6 +171,43 @@ Public Class Class_CfdiCatLocalidades
         Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand("SELECT * FROM CFDI_CAT_LOCALIDADES WHERE ID_LOCALIDAD='" & sReplace(Me._ID_LOCALIDAD) & "'", Me._Conexion)
+        Dim dReader As SqlDataReader
+        With cmd
+            .CommandTimeout = 0
+            .CommandType = CommandType.Text
+            Try
+                Me._Conexion.Open()
+                dReader = .ExecuteReader()
+
+                If dReader.Read = True Then
+                    Me._ID_LOCALIDAD = "" & dReader("ID_LOCALIDAD").ToString
+                    Me._CODIGO_LOCALIDAD = "" & dReader("CODIGO_LOCALIDAD").ToString
+                    Me._CODIGO_ESTADO = "" & dReader("CODIGO_ESTADO").ToString
+                    Me._NOMBRE_LOCALIDAD = "" & dReader("NOMBRE_LOCALIDAD").ToString
+                    Me._ESTATUS = "" & dReader("ESTATUS").ToString
+                    Me._CODIGO_USUARIO_CREO = CType(dReader("CODIGO_USUARIO_CREO").ToString, Integer)
+                    Me._FECHA_CREO = CDate(dReader("FECHA_CREO").ToString)
+                    If Not (IsDBNull(dReader("CODIGO_USUARIO_MODIFICO"))) Then Me._CODIGO_USUARIO_MODIFICO = CInt("" & dReader("CODIGO_USUARIO_MODIFICO").ToString)
+                    If Not (IsDBNull(dReader("FECHA_MODIFICO"))) Then Me._FECHA_MODIFICO = CDate(dReader("FECHA_MODIFICO"))
+
+                    bResultado = True
+                End If
+                dReader.Close()
+            Catch ex As Exception
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+            End Try
+        End With
+        Return bResultado
+    End Function
+
+    Public Function ConsultarPorMunicipio(ByVal sCodigoMunicipio As String) As Boolean
+        Const sProcedure As String = "Consultar"
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand("SELECT * FROM CFDI_CAT_LOCALIDADES L INNER JOIN SIS_ESTADOS E ON(L.CODIGO_ESTADO=E.CODIGO_ESTADO) INNER JOIN CAT_MUNICIPIOS M ON(E.CODIGO_ESTADO=M.CODIGO_ESTADO) " &
+                                  "WHERE L.ID_LOCALIDAD='" & sReplace(Me._ID_LOCALIDAD) & "' AND M.CODIGO_MUNICIPIO=" & sCodigoMunicipio & " ", Me._Conexion)
         Dim dReader As SqlDataReader
         With cmd
             .CommandTimeout = 0
@@ -234,7 +283,7 @@ Public Class Class_CfdiCatLocalidades
         Return dTable
     End Function
 
-    Public Function BusquedaVisual_PorCodigo() As String
+    Public Function BusquedaVisual_PorCodigo(ByVal sCodigoMunicipio As String) As String
         Const sProcedure As String = "BusquedaVisual_PorCodigo"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
@@ -242,7 +291,8 @@ Public Class Class_CfdiCatLocalidades
         f.sCampo = "CODIGO_LOCALIDAD"
         f.sOrder = "NOMBRE_LOCALIDAD"
         f.sTable = "CFDI_CAT_LOCALIDADES"
-        f.sQl = "SELECT ID_LOCALIDAD,NOMBRE_LOCALIDAD FROM CFDI_CAT_LOCALIDADES WHERE 1=1 AND "
+        f.sQl = "SELECT L.ID_LOCALIDAD,L.NOMBRE_LOCALIDAD FROM CFDI_CAT_LOCALIDADES L INNER JOIN SIS_ESTADOS E ON(L.CODIGO_ESTADO=E.CODIGO_ESTADO) INNER JOIN CAT_MUNICIPIOS M ON(E.CODIGO_ESTADO=M.CODIGO_ESTADO) " & _
+                "WHERE L.ESTATUS='A' AND M.CODIGO_MUNICIPIO='" & sCodigoMunicipio & "' AND "
         f.Inicia("")
         f.ShowDialog()
         Try
@@ -255,7 +305,7 @@ Public Class Class_CfdiCatLocalidades
         Return Resultado
     End Function
 
-    Public Function BusquedaVisual_PorDescripcion() As String
+    Public Function BusquedaVisual_PorDescripcion(ByVal sCodigoMunicipio As String) As String
         Const sProcedure As String = "BusquedaVisual_PorDescripcion"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
@@ -263,7 +313,8 @@ Public Class Class_CfdiCatLocalidades
         f.sCampo = "NOMBRE_LOCALIDAD"
         f.sOrder = "NOMBRE_LOCALIDAD"
         f.sTable = "CFDI_CAT_LOCALIDADES"
-        f.sQl = "SELECT ID_LOCALIDAD,NOMBRE_LOCALIDAD FROM CFDI_CAT_LOCALIDADES WHERE 1=1 AND "
+        f.sQl = "SELECT L.ID_LOCALIDAD,L.NOMBRE_LOCALIDAD FROM CFDI_CAT_LOCALIDADES L INNER JOIN SIS_ESTADOS E ON(L.CODIGO_ESTADO=E.CODIGO_ESTADO) INNER JOIN CAT_MUNICIPIOS M ON(E.CODIGO_ESTADO=M.CODIGO_ESTADO) " & _
+                "WHERE L.ESTATUS='A' AND M.CODIGO_MUNICIPIO='" & sCodigoMunicipio & "' AND "
         f.Inicia("")
         f.ShowDialog()
         Try

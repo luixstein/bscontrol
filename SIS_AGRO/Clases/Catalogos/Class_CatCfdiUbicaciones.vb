@@ -22,7 +22,7 @@ Public Class Class_CatCfdiUbicaciones
     Private _ID_COLONIA As String ' Integer
     Private _ID_LOCALIDAD As String ' Integer
     Private _REFERENCIA As String
-    Private _CODIGO_MUNICIPIO As Integer
+    Private _CODIGO_MUNICIPIO As String
     Private _CODIGO_ESTADO_SAT As String
     Private _CODIGO_PAIS_SAT_DOMICILIO As String
     Private _CODIGO_POSTAL As String
@@ -51,13 +51,10 @@ Public Class Class_CatCfdiUbicaciones
 #Region "Propiedades"
 
 #Region "Propiedades Campos de la tabla"
-    Public Property CODIGO_UBICACION() As Integer
+    Public ReadOnly Property CODIGO_UBICACION() As Integer
         Get
             Return Me._CODIGO_UBICACION
         End Get
-        Set(ByVal Value As Integer)
-            Me._CODIGO_UBICACION = Value
-        End Set
     End Property
 
     Public Property CODIGO_CLIENTE() As String
@@ -78,13 +75,10 @@ Public Class Class_CatCfdiUbicaciones
         End Set
     End Property
 
-    Public Property ID_UBICACION() As String
+    Public ReadOnly Property ID_UBICACION() As String
         Get
             Return Me._ID_UBICACION
         End Get
-        Set(value As String)
-            Me._ID_UBICACION = value
-        End Set
     End Property
 
     Public Property RFC_REMITENTE_DESTINATARIO() As String
@@ -186,11 +180,11 @@ Public Class Class_CatCfdiUbicaciones
         End Set
     End Property
 
-    Public Property CODIGO_MUNICIPIO() As Integer
+    Public Property CODIGO_MUNICIPIO() As String
         Get
             Return Me._CODIGO_MUNICIPIO
         End Get
-        Set(value As Integer)
+        Set(value As String)
             Me._CODIGO_MUNICIPIO = value
         End Set
     End Property
@@ -346,7 +340,7 @@ Public Class Class_CatCfdiUbicaciones
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS.ToUpper
             sqlParametro = .Parameters.Add("@TIPO_UBICACION", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._TIPO_UBICACION.ToString.ToUpper
-            sqlParametro = .Parameters.Add("@ID_UBICACION", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._ID_UBICACION.ToString.ToUpper
+            'sqlParametro = .Parameters.Add("@ID_UBICACION", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._ID_UBICACION.ToString.ToUpper
             sqlParametro = .Parameters.Add("@RFC_REMITENTE_DESTINATARIO", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._RFC_REMITENTE_DESTINATARIO.ToString.ToUpper
             sqlParametro = .Parameters.Add("@NOMBRE_REMITENTE_DESTINATARIO", SqlDbType.NVarChar, 254) : sqlParametro.Value = Me._NOMBRE_REMITENTE_DESTINATARIO.ToUpper
             sqlParametro = .Parameters.Add("@NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO", SqlDbType.NVarChar, 40) : sqlParametro.Value = Me._NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO.ToUpper
@@ -355,10 +349,10 @@ Public Class Class_CatCfdiUbicaciones
             sqlParametro = .Parameters.Add("@CALLE", SqlDbType.NVarChar, 100) : sqlParametro.Value = Me._CALLE.ToUpper
             sqlParametro = .Parameters.Add("@NUMERO_EXTERIOR", SqlDbType.NVarChar, 55) : sqlParametro.Value = Me._NUMERO_EXTERIOR.ToUpper
             sqlParametro = .Parameters.Add("@NUMERO_INTERIOR", SqlDbType.NVarChar, 55) : sqlParametro.Value = Me._NUMERO_INTERIOR.ToUpper
-            sqlParametro = .Parameters.Add("@ID_COLONIA", SqlDbType.Int) : sqlParametro.Value = CInt(Me._ID_COLONIA)
-            sqlParametro = .Parameters.Add("@ID_LOCALIDAD", SqlDbType.Int) : sqlParametro.Value = CInt(Me._ID_LOCALIDAD)
+            sqlParametro = .Parameters.Add("@ID_COLONIA", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._ID_COLONIA), CInt(valorNumerico(Me._ID_COLONIA)), DBNull.Value)
+            sqlParametro = .Parameters.Add("@ID_LOCALIDAD", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._ID_LOCALIDAD), CInt(valorNumerico(Me._ID_LOCALIDAD)), DBNull.Value)
             sqlParametro = .Parameters.Add("@REFERENCIA", SqlDbType.NVarChar, 250) : sqlParametro.Value = Me._REFERENCIA.ToUpper
-            sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_MUNICIPIO)
+            sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = IIf(txtLEN(Me._CODIGO_MUNICIPIO), CInt(valorNumerico(Me._CODIGO_MUNICIPIO)), DBNull.Value)
             sqlParametro = .Parameters.Add("@CODIGO_ESTADO_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ESTADO_SAT.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT_DOMICILIO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT_DOMICILIO.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_POSTAL", SqlDbType.NVarChar, 12) : sqlParametro.Value = Me._CODIGO_POSTAL.ToUpper
@@ -428,7 +422,7 @@ Public Class Class_CatCfdiUbicaciones
                     If txtLEN(dReader("ID_COLONIA").ToString) = True Then Me._ID_COLONIA = "" & dReader("ID_COLONIA").ToString
                     If txtLEN(dReader("ID_LOCALIDAD").ToString) = True Then Me.ID_LOCALIDAD = "" & dReader("ID_LOCALIDAD").ToString
                     Me._REFERENCIA = "" & dReader("REFERENCIA").ToString
-                    If txtLEN(dReader("CODIGO_MUNICIPIO").ToString) = True Then Me._CODIGO_MUNICIPIO = CType(dReader("CODIGO_MUNICIPIO").ToString, Integer)
+                    Me._CODIGO_MUNICIPIO = "" & dReader("CODIGO_MUNICIPIO").ToString
                     Me._CODIGO_ESTADO_SAT = "" & dReader("CODIGO_ESTADO_SAT").ToString
                     Me._CODIGO_PAIS_SAT_DOMICILIO = "" & dReader("CODIGO_PAIS_SAT_DOMICILIO").ToString
                     Me._CODIGO_POSTAL = "" & dReader("CODIGO_POSTAL").ToString
@@ -484,7 +478,7 @@ Public Class Class_CatCfdiUbicaciones
     Public Function ObtenerElementosFiltro(ByVal Filtro As String, ByVal ESTATUS As String) As System.Data.DataTable
         Const sProcedure As String = "ObtenerElementosFiltro"
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT CODIGO_UBICACION, ID_UBICACION FROM CFDI_CAT_UBICACIONES WHERE ID_UBICACION LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & ESTATUS & "' ORDER BY ID_UBICACION", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_UBICACION,ID_UBICACION,NOMBRE_REMITENTE_DESTINATARIO FROM CFDI_CAT_UBICACIONES WHERE NOMBRE_REMITENTE_DESTINATARIO LIKE '" & Filtro.ToString & "%' AND ESTATUS='" & ESTATUS & "' ORDER BY NOMBRE_REMITENTE_DESTINATARIO", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
