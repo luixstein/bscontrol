@@ -1340,6 +1340,12 @@
     <Compile Include="Formas\Utilerias\BusquedaCatalogoProductosServicios.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formas\Utilerias\FrmCodigosPostales.Designer.vb">
+      <DependentUpon>FrmCodigosPostales.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formas\Utilerias\FrmCodigosPostales.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formas\Utilerias\frmEmbarquesMasivos.designer.vb">
       <DependentUpon>frmEmbarquesMasivos.vb</DependentUpon>
     </Compile>
@@ -2550,6 +2556,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Utilerias\Busqueda_General.resx">
       <DependentUpon>Busqueda_General.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formas\Utilerias\FrmCodigosPostales.resx">
+      <DependentUpon>FrmCodigosPostales.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formas\Utilerias\frmEmbarquesMasivos.resx">
       <DependentUpon>frmEmbarquesMasivos.vb</DependentUpon>

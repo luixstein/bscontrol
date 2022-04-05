@@ -65,7 +65,7 @@ Public Class Ventas_CartaPorte
 
     Private Sub tsbGrabar_Click(sender As Object, e As EventArgs) Handles tsbGrabar.Click
         If Me.Grabar() = True Then
-            MsgBox("Carta porte grabada satisfactoriamente.", MsgBoxStyle.Exclamation, Me.Text)
+            MsgBox("Carta porte grabada satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
             Me.Consultar()
             'Me.Close()
         End If

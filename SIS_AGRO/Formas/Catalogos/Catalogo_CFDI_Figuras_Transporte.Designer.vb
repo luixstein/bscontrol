@@ -99,7 +99,7 @@ Partial Class Catalogo_CFDI_Figuras_Transporte
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbCancelar, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1069, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(873, 27)
         Me.tsMenu.TabIndex = 1
         Me.tsMenu.Text = "tsMenu"
         '
@@ -108,7 +108,7 @@ Partial Class Catalogo_CFDI_Figuras_Transporte
         Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
         Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNuevo.Name = "tsbNuevo"
-        Me.tsbNuevo.Size = New System.Drawing.Size(76, 24)
+        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
         Me.tsbNuevo.Text = "&Nuevo"
         '
         'tsbEditar
@@ -116,7 +116,7 @@ Partial Class Catalogo_CFDI_Figuras_Transporte
         Me.tsbEditar.Image = CType(resources.GetObject("tsbEditar.Image"), System.Drawing.Image)
         Me.tsbEditar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbEditar.Name = "tsbEditar"
-        Me.tsbEditar.Size = New System.Drawing.Size(72, 24)
+        Me.tsbEditar.Size = New System.Drawing.Size(61, 24)
         Me.tsbEditar.Text = "&Editar"
         '
         'tsbGrabar
@@ -124,7 +124,7 @@ Partial Class Catalogo_CFDI_Figuras_Transporte
         Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
         Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbGrabar.Name = "tsbGrabar"
-        Me.tsbGrabar.Size = New System.Drawing.Size(78, 24)
+        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
         Me.tsbGrabar.Text = "&Grabar"
         '
         'tsbCancelar
@@ -132,7 +132,7 @@ Partial Class Catalogo_CFDI_Figuras_Transporte
         Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
         Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCancelar.Name = "tsbCancelar"
-        Me.tsbCancelar.Size = New System.Drawing.Size(90, 24)
+        Me.tsbCancelar.Size = New System.Drawing.Size(77, 24)
         Me.tsbCancelar.Text = "&Cancelar"
         '
         'tsbSalir
@@ -140,7 +140,7 @@ Partial Class Catalogo_CFDI_Figuras_Transporte
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
         Me.tsbSalir.Text = "&Salir"
         '
         'gBoxBusquedaRapida
@@ -149,11 +149,9 @@ Partial Class Catalogo_CFDI_Figuras_Transporte
         Me.gBoxBusquedaRapida.Controls.Add(Me.cboEstatusFiltro)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
-        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(652, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
+        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(489, 28)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(404, 642)
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(374, 522)
         Me.gBoxBusquedaRapida.TabIndex = 22
         Me.gBoxBusquedaRapida.TabStop = False
         Me.gBoxBusquedaRapida.Text = "Búsqueda rápida"
@@ -161,10 +159,9 @@ Partial Class Catalogo_CFDI_Figuras_Transporte
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(268, 26)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Location = New System.Drawing.Point(279, 21)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(63, 17)
+        Me.Label1.Size = New System.Drawing.Size(48, 13)
         Me.Label1.TabIndex = 92
         Me.Label1.Text = "Estatus :"
         '
@@ -173,11 +170,10 @@ Partial Class Catalogo_CFDI_Figuras_Transporte
         Me.cboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboEstatusFiltro.FormattingEnabled = True
         Me.cboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
-        Me.cboEstatusFiltro.Location = New System.Drawing.Point(339, 22)
-        Me.cboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboEstatusFiltro.Location = New System.Drawing.Point(332, 18)
         Me.cboEstatusFiltro.MaxLength = 1
         Me.cboEstatusFiltro.Name = "cboEstatusFiltro"
-        Me.cboEstatusFiltro.Size = New System.Drawing.Size(47, 24)
+        Me.cboEstatusFiltro.Size = New System.Drawing.Size(36, 21)
         Me.cboEstatusFiltro.TabIndex = 92
         '
         'Grid
@@ -187,46 +183,43 @@ Partial Class Catalogo_CFDI_Figuras_Transporte
         Me.Grid.AllowUserToResizeColumns = False
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Grid.Location = New System.Drawing.Point(8, 54)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
+        Me.Grid.Location = New System.Drawing.Point(6, 44)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
         Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Grid.Size = New System.Drawing.Size(387, 581)
+        Me.Grid.Size = New System.Drawing.Size(362, 472)
         Me.Grid.TabIndex = 112
         '
         'txtFiltro
         '
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFiltro.Location = New System.Drawing.Point(8, 23)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFiltro.Location = New System.Drawing.Point(6, 19)
         Me.txtFiltro.Name = "txtFiltro"
-        Me.txtFiltro.Size = New System.Drawing.Size(252, 22)
+        Me.txtFiltro.Size = New System.Drawing.Size(261, 20)
         Me.txtFiltro.TabIndex = 0
         '
         'StatusStripEstado
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 680)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 551)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1069, 25)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(873, 22)
         Me.StatusStripEstado.TabIndex = 25
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
         'tssLabel
         '
         Me.tssLabel.Name = "tssLabel"
-        Me.tssLabel.Size = New System.Drawing.Size(61, 20)
+        Me.tssLabel.Size = New System.Drawing.Size(48, 17)
         Me.tssLabel.Text = "Estado :"
         '
         'tssLabelEstado
         '
         Me.tssLabelEstado.Name = "tssLabelEstado"
-        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
+        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
         '
         'gBoxInformacion
         '
@@ -249,11 +242,9 @@ Partial Class Catalogo_CFDI_Figuras_Transporte
         Me.gBoxInformacion.Controls.Add(Me.CboEstatus)
         Me.gBoxInformacion.Controls.Add(Me.LblCodigoFiguraTransporte)
         Me.gBoxInformacion.Controls.Add(Me.TxtCodigoFiguraTransporte)
-        Me.gBoxInformacion.Location = New System.Drawing.Point(16, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
+        Me.gBoxInformacion.Location = New System.Drawing.Point(12, 28)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
-        Me.gBoxInformacion.Size = New System.Drawing.Size(628, 642)
+        Me.gBoxInformacion.Size = New System.Drawing.Size(471, 522)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información"
@@ -261,29 +252,26 @@ Partial Class Catalogo_CFDI_Figuras_Transporte
         'LblNombrePaisResidenciaFiscal
         '
         Me.LblNombrePaisResidenciaFiscal.AutoSize = True
-        Me.LblNombrePaisResidenciaFiscal.Location = New System.Drawing.Point(255, 529)
-        Me.LblNombrePaisResidenciaFiscal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombrePaisResidenciaFiscal.Location = New System.Drawing.Point(191, 430)
         Me.LblNombrePaisResidenciaFiscal.Name = "LblNombrePaisResidenciaFiscal"
-        Me.LblNombrePaisResidenciaFiscal.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombrePaisResidenciaFiscal.Size = New System.Drawing.Size(13, 13)
         Me.LblNombrePaisResidenciaFiscal.TabIndex = 140
         Me.LblNombrePaisResidenciaFiscal.Text = "_"
         '
         'TxtPaisResidenciaFiscal
         '
-        Me.TxtPaisResidenciaFiscal.Location = New System.Drawing.Point(164, 526)
-        Me.TxtPaisResidenciaFiscal.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtPaisResidenciaFiscal.Location = New System.Drawing.Point(123, 427)
         Me.TxtPaisResidenciaFiscal.MaxLength = 50
         Me.TxtPaisResidenciaFiscal.Name = "TxtPaisResidenciaFiscal"
-        Me.TxtPaisResidenciaFiscal.Size = New System.Drawing.Size(83, 22)
+        Me.TxtPaisResidenciaFiscal.Size = New System.Drawing.Size(63, 20)
         Me.TxtPaisResidenciaFiscal.TabIndex = 7
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(8, 529)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Location = New System.Drawing.Point(6, 430)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(148, 17)
+        Me.Label3.Size = New System.Drawing.Size(113, 13)
         Me.Label3.TabIndex = 139
         Me.Label3.Text = "País residencia fiscal :"
         '
@@ -314,11 +302,9 @@ Partial Class Catalogo_CFDI_Figuras_Transporte
         Me.gb.Controls.Add(Me.TxtCalle)
         Me.gb.Controls.Add(Me.TxtNumeroExterior)
         Me.gb.Controls.Add(Me.LblNumeroExterior)
-        Me.gb.Location = New System.Drawing.Point(8, 186)
-        Me.gb.Margin = New System.Windows.Forms.Padding(4)
+        Me.gb.Location = New System.Drawing.Point(6, 151)
         Me.gb.Name = "gb"
-        Me.gb.Padding = New System.Windows.Forms.Padding(4)
-        Me.gb.Size = New System.Drawing.Size(607, 305)
+        Me.gb.Size = New System.Drawing.Size(455, 248)
         Me.gb.TabIndex = 5
         Me.gb.TabStop = False
         Me.gb.Text = "Domicilio"
@@ -326,357 +312,320 @@ Partial Class Catalogo_CFDI_Figuras_Transporte
         'LblNombreMunicipio
         '
         Me.LblNombreMunicipio.AutoSize = True
-        Me.LblNombreMunicipio.Location = New System.Drawing.Point(211, 123)
-        Me.LblNombreMunicipio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombreMunicipio.Location = New System.Drawing.Point(158, 100)
         Me.LblNombreMunicipio.Name = "LblNombreMunicipio"
-        Me.LblNombreMunicipio.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreMunicipio.Size = New System.Drawing.Size(13, 13)
         Me.LblNombreMunicipio.TabIndex = 135
         Me.LblNombreMunicipio.Text = "_"
         '
         'LblNombreEstado
         '
         Me.LblNombreEstado.AutoSize = True
-        Me.LblNombreEstado.Location = New System.Drawing.Point(211, 91)
-        Me.LblNombreEstado.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombreEstado.Location = New System.Drawing.Point(158, 74)
         Me.LblNombreEstado.Name = "LblNombreEstado"
-        Me.LblNombreEstado.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreEstado.Size = New System.Drawing.Size(13, 13)
         Me.LblNombreEstado.TabIndex = 134
         Me.LblNombreEstado.Text = "_"
         '
         'LblNombrePaisDomicilio
         '
         Me.LblNombrePaisDomicilio.AutoSize = True
-        Me.LblNombrePaisDomicilio.Location = New System.Drawing.Point(211, 59)
-        Me.LblNombrePaisDomicilio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombrePaisDomicilio.Location = New System.Drawing.Point(158, 48)
         Me.LblNombrePaisDomicilio.Name = "LblNombrePaisDomicilio"
-        Me.LblNombrePaisDomicilio.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombrePaisDomicilio.Size = New System.Drawing.Size(13, 13)
         Me.LblNombrePaisDomicilio.TabIndex = 133
         Me.LblNombrePaisDomicilio.Text = "_"
         '
         'TxtMunicipio
         '
-        Me.TxtMunicipio.Location = New System.Drawing.Point(120, 120)
-        Me.TxtMunicipio.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtMunicipio.Location = New System.Drawing.Point(90, 98)
         Me.TxtMunicipio.MaxLength = 50
         Me.TxtMunicipio.Name = "TxtMunicipio"
-        Me.TxtMunicipio.Size = New System.Drawing.Size(83, 22)
+        Me.TxtMunicipio.Size = New System.Drawing.Size(63, 20)
         Me.TxtMunicipio.TabIndex = 4
         '
         'TxtReferencia
         '
-        Me.TxtReferencia.Location = New System.Drawing.Point(130, 272)
-        Me.TxtReferencia.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtReferencia.Location = New System.Drawing.Point(98, 221)
         Me.TxtReferencia.MaxLength = 250
         Me.TxtReferencia.Multiline = True
         Me.TxtReferencia.Name = "TxtReferencia"
-        Me.TxtReferencia.Size = New System.Drawing.Size(289, 24)
+        Me.TxtReferencia.Size = New System.Drawing.Size(218, 20)
         Me.TxtReferencia.TabIndex = 10
         '
         'LblReferencia
         '
         Me.LblReferencia.AutoSize = True
-        Me.LblReferencia.Location = New System.Drawing.Point(10, 275)
-        Me.LblReferencia.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblReferencia.Location = New System.Drawing.Point(6, 223)
         Me.LblReferencia.Name = "LblReferencia"
-        Me.LblReferencia.Size = New System.Drawing.Size(85, 17)
+        Me.LblReferencia.Size = New System.Drawing.Size(65, 13)
         Me.LblReferencia.TabIndex = 92
         Me.LblReferencia.Text = "Referencia :"
         '
         'TxtEstado
         '
-        Me.TxtEstado.Location = New System.Drawing.Point(120, 88)
-        Me.TxtEstado.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtEstado.Location = New System.Drawing.Point(90, 72)
         Me.TxtEstado.MaxLength = 50
         Me.TxtEstado.Name = "TxtEstado"
-        Me.TxtEstado.Size = New System.Drawing.Size(83, 22)
+        Me.TxtEstado.Size = New System.Drawing.Size(63, 20)
         Me.TxtEstado.TabIndex = 3
         '
         'TxtPaisDomicilio
         '
-        Me.TxtPaisDomicilio.Location = New System.Drawing.Point(120, 56)
-        Me.TxtPaisDomicilio.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtPaisDomicilio.Location = New System.Drawing.Point(90, 46)
         Me.TxtPaisDomicilio.MaxLength = 50
         Me.TxtPaisDomicilio.Name = "TxtPaisDomicilio"
-        Me.TxtPaisDomicilio.Size = New System.Drawing.Size(83, 22)
+        Me.TxtPaisDomicilio.Size = New System.Drawing.Size(63, 20)
         Me.TxtPaisDomicilio.TabIndex = 2
         '
         'TxtNumeroInterior
         '
-        Me.TxtNumeroInterior.Location = New System.Drawing.Point(438, 242)
-        Me.TxtNumeroInterior.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtNumeroInterior.Location = New System.Drawing.Point(328, 197)
         Me.TxtNumeroInterior.MaxLength = 50
         Me.TxtNumeroInterior.Name = "TxtNumeroInterior"
-        Me.TxtNumeroInterior.Size = New System.Drawing.Size(161, 22)
+        Me.TxtNumeroInterior.Size = New System.Drawing.Size(122, 20)
         Me.TxtNumeroInterior.TabIndex = 9
         '
         'LblPaisDomicilio
         '
         Me.LblPaisDomicilio.AutoSize = True
-        Me.LblPaisDomicilio.Location = New System.Drawing.Point(8, 59)
-        Me.LblPaisDomicilio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblPaisDomicilio.Location = New System.Drawing.Point(6, 48)
         Me.LblPaisDomicilio.Name = "LblPaisDomicilio"
-        Me.LblPaisDomicilio.Size = New System.Drawing.Size(43, 17)
+        Me.LblPaisDomicilio.Size = New System.Drawing.Size(35, 13)
         Me.LblPaisDomicilio.TabIndex = 129
         Me.LblPaisDomicilio.Text = "País :"
         '
         'LblCodigoPostal
         '
         Me.LblCodigoPostal.AutoSize = True
-        Me.LblCodigoPostal.Location = New System.Drawing.Point(8, 29)
-        Me.LblCodigoPostal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblCodigoPostal.Location = New System.Drawing.Point(6, 24)
         Me.LblCodigoPostal.Name = "LblCodigoPostal"
-        Me.LblCodigoPostal.Size = New System.Drawing.Size(102, 17)
+        Me.LblCodigoPostal.Size = New System.Drawing.Size(77, 13)
         Me.LblCodigoPostal.TabIndex = 94
         Me.LblCodigoPostal.Text = "Código postal :"
         '
         'LblNumeroInterior
         '
         Me.LblNumeroInterior.AutoSize = True
-        Me.LblNumeroInterior.Location = New System.Drawing.Point(305, 247)
-        Me.LblNumeroInterior.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNumeroInterior.Location = New System.Drawing.Point(229, 201)
         Me.LblNumeroInterior.Name = "LblNumeroInterior"
-        Me.LblNumeroInterior.Size = New System.Drawing.Size(114, 17)
+        Me.LblNumeroInterior.Size = New System.Drawing.Size(84, 13)
         Me.LblNumeroInterior.TabIndex = 115
         Me.LblNumeroInterior.Text = "Número interior :"
         '
         'LblEstado
         '
         Me.LblEstado.AutoSize = True
-        Me.LblEstado.Location = New System.Drawing.Point(8, 88)
-        Me.LblEstado.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblEstado.Location = New System.Drawing.Point(6, 72)
         Me.LblEstado.Name = "LblEstado"
-        Me.LblEstado.Size = New System.Drawing.Size(60, 17)
+        Me.LblEstado.Size = New System.Drawing.Size(46, 13)
         Me.LblEstado.TabIndex = 126
         Me.LblEstado.Text = "Estado :"
         '
         'TxtCodigoPostal
         '
-        Me.TxtCodigoPostal.Location = New System.Drawing.Point(120, 26)
-        Me.TxtCodigoPostal.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtCodigoPostal.Location = New System.Drawing.Point(90, 21)
         Me.TxtCodigoPostal.MaxLength = 12
         Me.TxtCodigoPostal.Name = "TxtCodigoPostal"
-        Me.TxtCodigoPostal.Size = New System.Drawing.Size(83, 22)
+        Me.TxtCodigoPostal.Size = New System.Drawing.Size(63, 20)
         Me.TxtCodigoPostal.TabIndex = 1
         '
         'LblCalle
         '
         Me.LblCalle.AutoSize = True
-        Me.LblCalle.Location = New System.Drawing.Point(10, 215)
-        Me.LblCalle.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblCalle.Location = New System.Drawing.Point(6, 175)
         Me.LblCalle.Name = "LblCalle"
-        Me.LblCalle.Size = New System.Drawing.Size(47, 17)
+        Me.LblCalle.Size = New System.Drawing.Size(36, 13)
         Me.LblCalle.TabIndex = 111
         Me.LblCalle.Text = "Calle :"
         '
         'LblMunicipio
         '
         Me.LblMunicipio.AutoSize = True
-        Me.LblMunicipio.Location = New System.Drawing.Point(8, 120)
-        Me.LblMunicipio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblMunicipio.Location = New System.Drawing.Point(6, 98)
         Me.LblMunicipio.Name = "LblMunicipio"
-        Me.LblMunicipio.Size = New System.Drawing.Size(75, 17)
+        Me.LblMunicipio.Size = New System.Drawing.Size(58, 13)
         Me.LblMunicipio.TabIndex = 123
         Me.LblMunicipio.Text = "Municipio :"
         '
         'LblIdLocalidad
         '
         Me.LblIdLocalidad.AutoSize = True
-        Me.LblIdLocalidad.Location = New System.Drawing.Point(8, 154)
-        Me.LblIdLocalidad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblIdLocalidad.Location = New System.Drawing.Point(6, 125)
         Me.LblIdLocalidad.Name = "LblIdLocalidad"
-        Me.LblIdLocalidad.Size = New System.Drawing.Size(77, 17)
+        Me.LblIdLocalidad.Size = New System.Drawing.Size(59, 13)
         Me.LblIdLocalidad.TabIndex = 119
         Me.LblIdLocalidad.Text = "Localidad :"
         '
         'TxtIdLocalidad
         '
-        Me.TxtIdLocalidad.Location = New System.Drawing.Point(120, 151)
-        Me.TxtIdLocalidad.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtIdLocalidad.Location = New System.Drawing.Point(90, 123)
         Me.TxtIdLocalidad.MaxLength = 50
         Me.TxtIdLocalidad.Name = "TxtIdLocalidad"
-        Me.TxtIdLocalidad.Size = New System.Drawing.Size(83, 22)
+        Me.TxtIdLocalidad.Size = New System.Drawing.Size(63, 20)
         Me.TxtIdLocalidad.TabIndex = 5
         '
         'LblNombreLocalidad
         '
         Me.LblNombreLocalidad.AutoSize = True
-        Me.LblNombreLocalidad.Location = New System.Drawing.Point(213, 155)
-        Me.LblNombreLocalidad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombreLocalidad.Location = New System.Drawing.Point(160, 126)
         Me.LblNombreLocalidad.Name = "LblNombreLocalidad"
-        Me.LblNombreLocalidad.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreLocalidad.Size = New System.Drawing.Size(13, 13)
         Me.LblNombreLocalidad.TabIndex = 121
         Me.LblNombreLocalidad.Text = "_"
         '
         'TxtIdColonia
         '
-        Me.TxtIdColonia.Location = New System.Drawing.Point(120, 181)
-        Me.TxtIdColonia.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtIdColonia.Location = New System.Drawing.Point(90, 147)
         Me.TxtIdColonia.MaxLength = 50
         Me.TxtIdColonia.Name = "TxtIdColonia"
-        Me.TxtIdColonia.Size = New System.Drawing.Size(83, 22)
+        Me.TxtIdColonia.Size = New System.Drawing.Size(63, 20)
         Me.TxtIdColonia.TabIndex = 6
         '
         'LblIdColonia
         '
         Me.LblIdColonia.AutoSize = True
-        Me.LblIdColonia.Location = New System.Drawing.Point(8, 183)
-        Me.LblIdColonia.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblIdColonia.Location = New System.Drawing.Point(6, 149)
         Me.LblIdColonia.Name = "LblIdColonia"
-        Me.LblIdColonia.Size = New System.Drawing.Size(63, 17)
+        Me.LblIdColonia.Size = New System.Drawing.Size(48, 13)
         Me.LblIdColonia.TabIndex = 117
         Me.LblIdColonia.Text = "Colonia :"
         '
         'LblNombreColonia
         '
         Me.LblNombreColonia.AutoSize = True
-        Me.LblNombreColonia.Location = New System.Drawing.Point(213, 183)
-        Me.LblNombreColonia.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombreColonia.Location = New System.Drawing.Point(160, 149)
         Me.LblNombreColonia.Name = "LblNombreColonia"
-        Me.LblNombreColonia.Size = New System.Drawing.Size(16, 17)
+        Me.LblNombreColonia.Size = New System.Drawing.Size(13, 13)
         Me.LblNombreColonia.TabIndex = 120
         Me.LblNombreColonia.Text = "_"
         '
         'TxtCalle
         '
-        Me.TxtCalle.Location = New System.Drawing.Point(66, 211)
-        Me.TxtCalle.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtCalle.Location = New System.Drawing.Point(50, 171)
         Me.TxtCalle.MaxLength = 100
         Me.TxtCalle.Name = "TxtCalle"
-        Me.TxtCalle.Size = New System.Drawing.Size(533, 22)
+        Me.TxtCalle.Size = New System.Drawing.Size(401, 20)
         Me.TxtCalle.TabIndex = 7
         '
         'TxtNumeroExterior
         '
-        Me.TxtNumeroExterior.Location = New System.Drawing.Point(130, 242)
-        Me.TxtNumeroExterior.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtNumeroExterior.Location = New System.Drawing.Point(98, 197)
         Me.TxtNumeroExterior.MaxLength = 50
         Me.TxtNumeroExterior.Name = "TxtNumeroExterior"
-        Me.TxtNumeroExterior.Size = New System.Drawing.Size(157, 22)
+        Me.TxtNumeroExterior.Size = New System.Drawing.Size(119, 20)
         Me.TxtNumeroExterior.TabIndex = 8
         '
         'LblNumeroExterior
         '
         Me.LblNumeroExterior.AutoSize = True
-        Me.LblNumeroExterior.Location = New System.Drawing.Point(10, 247)
-        Me.LblNumeroExterior.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNumeroExterior.Location = New System.Drawing.Point(6, 201)
         Me.LblNumeroExterior.Name = "LblNumeroExterior"
-        Me.LblNumeroExterior.Size = New System.Drawing.Size(117, 17)
+        Me.LblNumeroExterior.Size = New System.Drawing.Size(87, 13)
         Me.LblNumeroExterior.TabIndex = 113
         Me.LblNumeroExterior.Text = "Número exterior :"
         '
         'TxtNumeroLicencia
         '
-        Me.TxtNumeroLicencia.Location = New System.Drawing.Point(157, 156)
-        Me.TxtNumeroLicencia.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtNumeroLicencia.Location = New System.Drawing.Point(118, 127)
         Me.TxtNumeroLicencia.MaxLength = 16
         Me.TxtNumeroLicencia.Name = "TxtNumeroLicencia"
-        Me.TxtNumeroLicencia.Size = New System.Drawing.Size(140, 22)
+        Me.TxtNumeroLicencia.Size = New System.Drawing.Size(106, 20)
         Me.TxtNumeroLicencia.TabIndex = 4
         '
         'LblRfcRemitenteDestinatario
         '
         Me.LblRfcRemitenteDestinatario.AutoSize = True
-        Me.LblRfcRemitenteDestinatario.Location = New System.Drawing.Point(8, 159)
-        Me.LblRfcRemitenteDestinatario.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblRfcRemitenteDestinatario.Location = New System.Drawing.Point(6, 129)
         Me.LblRfcRemitenteDestinatario.Name = "LblRfcRemitenteDestinatario"
-        Me.LblRfcRemitenteDestinatario.Size = New System.Drawing.Size(137, 17)
+        Me.LblRfcRemitenteDestinatario.Size = New System.Drawing.Size(104, 13)
         Me.LblRfcRemitenteDestinatario.TabIndex = 103
         Me.LblRfcRemitenteDestinatario.Text = "Número de licencia :"
         '
         'TxtRfc
         '
-        Me.TxtRfc.Location = New System.Drawing.Point(76, 124)
-        Me.TxtRfc.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtRfc.Location = New System.Drawing.Point(57, 101)
         Me.TxtRfc.MaxLength = 13
         Me.TxtRfc.Name = "TxtRfc"
-        Me.TxtRfc.Size = New System.Drawing.Size(140, 22)
+        Me.TxtRfc.Size = New System.Drawing.Size(106, 20)
         Me.TxtRfc.TabIndex = 3
         '
         'LblRfc
         '
         Me.LblRfc.AutoSize = True
-        Me.LblRfc.Location = New System.Drawing.Point(8, 127)
-        Me.LblRfc.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblRfc.Location = New System.Drawing.Point(6, 103)
         Me.LblRfc.Name = "LblRfc"
-        Me.LblRfc.Size = New System.Drawing.Size(43, 17)
+        Me.LblRfc.Size = New System.Drawing.Size(34, 13)
         Me.LblRfc.TabIndex = 101
         Me.LblRfc.Text = "RFC :"
         '
         'TxtNumeroIdentificacionRegistroFiscalExtranjero
         '
-        Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Location = New System.Drawing.Point(323, 499)
-        Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Location = New System.Drawing.Point(242, 405)
         Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.MaxLength = 40
         Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Name = "TxtNumeroIdentificacionRegistroFiscalExtranjero"
-        Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Size = New System.Drawing.Size(137, 22)
+        Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Size = New System.Drawing.Size(104, 20)
         Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.TabIndex = 6
         '
         'CboTipoFiguraTransporte
         '
         Me.CboTipoFiguraTransporte.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboTipoFiguraTransporte.FormattingEnabled = True
-        Me.CboTipoFiguraTransporte.Location = New System.Drawing.Point(171, 85)
-        Me.CboTipoFiguraTransporte.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboTipoFiguraTransporte.Location = New System.Drawing.Point(128, 69)
         Me.CboTipoFiguraTransporte.MaxLength = 1
         Me.CboTipoFiguraTransporte.Name = "CboTipoFiguraTransporte"
-        Me.CboTipoFiguraTransporte.Size = New System.Drawing.Size(127, 24)
+        Me.CboTipoFiguraTransporte.Size = New System.Drawing.Size(96, 21)
         Me.CboTipoFiguraTransporte.TabIndex = 2
         '
         'LblNumeroIdentificacionResgistroFiscalExtranjero
         '
         Me.LblNumeroIdentificacionResgistroFiscalExtranjero.AutoSize = True
-        Me.LblNumeroIdentificacionResgistroFiscalExtranjero.Location = New System.Drawing.Point(8, 502)
-        Me.LblNumeroIdentificacionResgistroFiscalExtranjero.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNumeroIdentificacionResgistroFiscalExtranjero.Location = New System.Drawing.Point(6, 408)
         Me.LblNumeroIdentificacionResgistroFiscalExtranjero.Name = "LblNumeroIdentificacionResgistroFiscalExtranjero"
-        Me.LblNumeroIdentificacionResgistroFiscalExtranjero.Size = New System.Drawing.Size(307, 17)
+        Me.LblNumeroIdentificacionResgistroFiscalExtranjero.Size = New System.Drawing.Size(228, 13)
         Me.LblNumeroIdentificacionResgistroFiscalExtranjero.TabIndex = 104
         Me.LblNumeroIdentificacionResgistroFiscalExtranjero.Text = "Número identificación registro fiscal extranjero :"
         '
         'LblDisplayTipoFiguraTransporte
         '
         Me.LblDisplayTipoFiguraTransporte.AutoSize = True
-        Me.LblDisplayTipoFiguraTransporte.Location = New System.Drawing.Point(8, 89)
-        Me.LblDisplayTipoFiguraTransporte.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayTipoFiguraTransporte.Location = New System.Drawing.Point(6, 72)
         Me.LblDisplayTipoFiguraTransporte.Name = "LblDisplayTipoFiguraTransporte"
-        Me.LblDisplayTipoFiguraTransporte.Size = New System.Drawing.Size(153, 17)
+        Me.LblDisplayTipoFiguraTransporte.Size = New System.Drawing.Size(113, 13)
         Me.LblDisplayTipoFiguraTransporte.TabIndex = 97
         Me.LblDisplayTipoFiguraTransporte.Text = "Tipo figura transporte :"
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(161, -140)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Location = New System.Drawing.Point(121, -114)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(241, 16)
+        Me.Label2.Size = New System.Drawing.Size(181, 13)
         Me.Label2.TabIndex = 91
         Me.Label2.Text = ".."
         '
         'LblNombre
         '
         Me.LblNombre.AutoSize = True
-        Me.LblNombre.Location = New System.Drawing.Point(8, 54)
-        Me.LblNombre.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblNombre.Location = New System.Drawing.Point(6, 44)
         Me.LblNombre.Name = "LblNombre"
-        Me.LblNombre.Size = New System.Drawing.Size(66, 17)
+        Me.LblNombre.Size = New System.Drawing.Size(50, 13)
         Me.LblNombre.TabIndex = 74
         Me.LblNombre.Text = "Nombre :"
         '
         'TxtNombreFiguraTransporte
         '
-        Me.TxtNombreFiguraTransporte.Location = New System.Drawing.Point(76, 50)
-        Me.TxtNombreFiguraTransporte.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtNombreFiguraTransporte.Location = New System.Drawing.Point(57, 41)
         Me.TxtNombreFiguraTransporte.MaxLength = 254
         Me.TxtNombreFiguraTransporte.Name = "TxtNombreFiguraTransporte"
-        Me.TxtNombreFiguraTransporte.Size = New System.Drawing.Size(544, 22)
+        Me.TxtNombreFiguraTransporte.Size = New System.Drawing.Size(409, 20)
         Me.TxtNombreFiguraTransporte.TabIndex = 1
         '
         'LblEstatus
         '
         Me.LblEstatus.AutoSize = True
-        Me.LblEstatus.Location = New System.Drawing.Point(8, 570)
-        Me.LblEstatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblEstatus.Location = New System.Drawing.Point(6, 463)
         Me.LblEstatus.Name = "LblEstatus"
-        Me.LblEstatus.Size = New System.Drawing.Size(63, 17)
+        Me.LblEstatus.Size = New System.Drawing.Size(48, 13)
         Me.LblEstatus.TabIndex = 22
         Me.LblEstatus.Text = "Estatus :"
         '
@@ -685,30 +634,27 @@ Partial Class Catalogo_CFDI_Figuras_Transporte
         Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
-        Me.CboEstatus.Location = New System.Drawing.Point(76, 567)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
+        Me.CboEstatus.Location = New System.Drawing.Point(57, 461)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
-        Me.CboEstatus.Size = New System.Drawing.Size(93, 24)
+        Me.CboEstatus.Size = New System.Drawing.Size(63, 21)
         Me.CboEstatus.TabIndex = 8
         '
         'LblCodigoFiguraTransporte
         '
         Me.LblCodigoFiguraTransporte.AutoSize = True
-        Me.LblCodigoFiguraTransporte.Location = New System.Drawing.Point(8, 22)
-        Me.LblCodigoFiguraTransporte.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblCodigoFiguraTransporte.Location = New System.Drawing.Point(6, 18)
         Me.LblCodigoFiguraTransporte.Name = "LblCodigoFiguraTransporte"
-        Me.LblCodigoFiguraTransporte.Size = New System.Drawing.Size(60, 17)
+        Me.LblCodigoFiguraTransporte.Size = New System.Drawing.Size(46, 13)
         Me.LblCodigoFiguraTransporte.TabIndex = 8
         Me.LblCodigoFiguraTransporte.Text = "Código :"
         '
         'TxtCodigoFiguraTransporte
         '
-        Me.TxtCodigoFiguraTransporte.Location = New System.Drawing.Point(76, 18)
-        Me.TxtCodigoFiguraTransporte.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtCodigoFiguraTransporte.Location = New System.Drawing.Point(57, 15)
         Me.TxtCodigoFiguraTransporte.MaxLength = 5
         Me.TxtCodigoFiguraTransporte.Name = "TxtCodigoFiguraTransporte"
-        Me.TxtCodigoFiguraTransporte.Size = New System.Drawing.Size(113, 22)
+        Me.TxtCodigoFiguraTransporte.Size = New System.Drawing.Size(86, 20)
         Me.TxtCodigoFiguraTransporte.TabIndex = 0
         '
         'ErrorProvider
@@ -717,15 +663,14 @@ Partial Class Catalogo_CFDI_Figuras_Transporte
         '
         'Catalogo_CFDI_Figuras_Transporte
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1069, 705)
+        Me.ClientSize = New System.Drawing.Size(873, 573)
         Me.Controls.Add(Me.tsMenu)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
         Me.Controls.Add(Me.StatusStripEstado)
         Me.Controls.Add(Me.gBoxInformacion)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_CFDI_Figuras_Transporte"
         Me.ShowIcon = False

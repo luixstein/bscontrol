@@ -305,7 +305,8 @@ Public Class Class_CfdiCatLocalidades
         Return Resultado
     End Function
 
-    Public Function BusquedaVisual_PorDescripcion(ByVal sCodigoMunicipio As String) As String
+    'Public Function BusquedaVisual_PorDescripcion(ByVal sCodigoMunicipio As String) As String
+    Public Function BusquedaVisual_PorDescripcion(ByVal sCodigoEstadoSAT As String) As String
         Const sProcedure As String = "BusquedaVisual_PorDescripcion"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
@@ -313,9 +314,13 @@ Public Class Class_CfdiCatLocalidades
         f.sCampo = "NOMBRE_LOCALIDAD"
         f.sOrder = "NOMBRE_LOCALIDAD"
         f.sTable = "CFDI_CAT_LOCALIDADES"
-        f.sQl = "SELECT L.ID_LOCALIDAD,L.NOMBRE_LOCALIDAD FROM CFDI_CAT_LOCALIDADES L INNER JOIN SIS_ESTADOS E ON(L.CODIGO_ESTADO=E.CODIGO_ESTADO) INNER JOIN CAT_MUNICIPIOS M ON(E.CODIGO_ESTADO=M.CODIGO_ESTADO) " & _
-                "WHERE L.ESTATUS='A' AND M.CODIGO_MUNICIPIO='" & sCodigoMunicipio & "' AND "
-        f.Inicia("")
+        f.sQl = "SELECT L.ID_LOCALIDAD,L.NOMBRE_LOCALIDAD FROM CFDI_CAT_LOCALIDADES L INNER JOIN SIS_ESTADOS E ON(L.CODIGO_ESTADO=E.CODIGO_ESTADO) " &
+                "WHERE L.ESTATUS='A' AND M.CODIGO_ESTADO_SAT='" & sCodigoEstadoSAT & "' AND "
+
+        'f.sQl = "SELECT L.ID_LOCALIDAD,L.NOMBRE_LOCALIDAD FROM CFDI_CAT_LOCALIDADES L INNER JOIN SIS_ESTADOS E ON(L.CODIGO_ESTADO=E.CODIGO_ESTADO) INNER JOIN CAT_MUNICIPIOS M ON(E.CODIGO_ESTADO=M.CODIGO_ESTADO) " &
+        '        "WHERE L.ESTATUS='A' AND M.CODIGO_MUNICIPIO='" & sCodigoMunicipio & "' AND "
+
+        f.Inicia("%")
         f.ShowDialog()
         Try
             If f.iRows > 0 Then

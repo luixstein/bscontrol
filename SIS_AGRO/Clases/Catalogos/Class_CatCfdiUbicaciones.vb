@@ -339,7 +339,7 @@ Public Class Class_CatCfdiUbicaciones
             sqlParametro = .Parameters.Add("@CODIGO_UBICACION", SqlDbType.Int) : sqlParametro.Value = Me._CODIGO_UBICACION : sqlParametro.Direction = ParameterDirection.InputOutput
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToString.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS.ToUpper
-            sqlParametro = .Parameters.Add("@TIPO_UBICACION", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._TIPO_UBICACION.ToString.ToUpper
+            sqlParametro = .Parameters.Add("@TIPO_UBICACION", SqlDbType.NVarChar, 10) : sqlParametro.Value = Me._TIPO_UBICACION 'No convertir en mayúsculas
             'sqlParametro = .Parameters.Add("@ID_UBICACION", SqlDbType.NVarChar, 8) : sqlParametro.Value = Me._ID_UBICACION.ToString.ToUpper
             sqlParametro = .Parameters.Add("@RFC_REMITENTE_DESTINATARIO", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._RFC_REMITENTE_DESTINATARIO.ToString.ToUpper
             sqlParametro = .Parameters.Add("@NOMBRE_REMITENTE_DESTINATARIO", SqlDbType.NVarChar, 254) : sqlParametro.Value = Me._NOMBRE_REMITENTE_DESTINATARIO.ToUpper
@@ -351,7 +351,7 @@ Public Class Class_CatCfdiUbicaciones
             sqlParametro = .Parameters.Add("@NUMERO_INTERIOR", SqlDbType.NVarChar, 55) : sqlParametro.Value = Me._NUMERO_INTERIOR.ToUpper
             sqlParametro = .Parameters.Add("@ID_COLONIA", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._ID_COLONIA), CInt(valorNumerico(Me._ID_COLONIA)), DBNull.Value)
             sqlParametro = .Parameters.Add("@ID_LOCALIDAD", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._ID_LOCALIDAD), CInt(valorNumerico(Me._ID_LOCALIDAD)), DBNull.Value)
-            sqlParametro = .Parameters.Add("@REFERENCIA", SqlDbType.NVarChar, 250) : sqlParametro.Value = Me._REFERENCIA.ToUpper
+            sqlParametro = .Parameters.Add("@REFERENCIA", SqlDbType.NVarChar, 250) : sqlParametro.Value = Me._REFERENCIA.Trim.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = IIf(txtLEN(Me._CODIGO_MUNICIPIO), CInt(valorNumerico(Me._CODIGO_MUNICIPIO)), DBNull.Value)
             sqlParametro = .Parameters.Add("@CODIGO_ESTADO_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ESTADO_SAT.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT_DOMICILIO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT_DOMICILIO.ToUpper

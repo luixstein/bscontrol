@@ -1010,6 +1010,7 @@ Public Class Class_CatClientes
             f.sQl = f.sQl & " PLAZA='" & Usuario.Codigo_Plaza.ToString & "' AND "
         End If
 
+        f.arrayWidthColumns = New Integer() {100, 500}
         f.Inicia("")
         f.ShowDialog()
         Try

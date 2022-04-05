@@ -334,7 +334,7 @@ Public Class Class_CatCfdiFigurasTransporte
             sqlParametro = .Parameters.Add("@NUMERO_INTERIOR", SqlDbType.NVarChar, 55) : sqlParametro.Value = Me._NUMERO_INTERIOR.ToUpper
             sqlParametro = .Parameters.Add("@ID_COLONIA", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._ID_COLONIA), CInt(valorNumerico(Me._ID_COLONIA)), DBNull.Value)
             sqlParametro = .Parameters.Add("@ID_LOCALIDAD", SqlDbType.Int) : sqlParametro.Value = IIf(txtLEN(Me._ID_LOCALIDAD), CInt(valorNumerico(Me._ID_LOCALIDAD)), DBNull.Value)
-            sqlParametro = .Parameters.Add("@REFERENCIA", SqlDbType.NVarChar, 250) : sqlParametro.Value = Me._REFERENCIA.ToUpper
+            sqlParametro = .Parameters.Add("@REFERENCIA", SqlDbType.NVarChar, 250) : sqlParametro.Value = Me._REFERENCIA.Trim.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_MUNICIPIO", SqlDbType.SmallInt) : sqlParametro.Value = IIf(txtLEN(Me._CODIGO_MUNICIPIO), CInt(valorNumerico(Me._CODIGO_MUNICIPIO)), DBNull.Value)
             sqlParametro = .Parameters.Add("@CODIGO_ESTADO_SAT", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_ESTADO_SAT.ToUpper
             sqlParametro = .Parameters.Add("@CODIGO_PAIS_SAT_DOMICILIO", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_PAIS_SAT_DOMICILIO.ToUpper

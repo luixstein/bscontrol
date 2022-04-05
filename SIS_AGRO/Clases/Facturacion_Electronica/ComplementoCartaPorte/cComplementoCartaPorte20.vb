@@ -624,7 +624,7 @@ Friend Class cComplementoCartaPorte20
                         End If
 
                         If txtLEN(Me.FiguraTransporte.TiposFigura.Item(i).Domicilio.Municipio) = True Then
-                            .setAttribute("Municipio", Me.Ubicaciones.Item(i).Domicilio.Municipio) 'optional
+                            .setAttribute("Municipio", Me.FiguraTransporte.TiposFigura.Item(i).Domicilio.Municipio) 'optional
                         End If
 
                         If txtLEN(Me.FiguraTransporte.TiposFigura.Item(i).Domicilio.Estado) = True Then

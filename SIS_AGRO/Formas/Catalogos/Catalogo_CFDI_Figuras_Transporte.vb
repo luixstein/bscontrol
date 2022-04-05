@@ -1,7 +1,7 @@
 ﻿Option Strict On
-Imports System.Data
+
 Imports System.Data.SqlClient
-Imports CrystalDecisions.CrystalReports.Engine
+
 Public Class Catalogo_CFDI_Figuras_Transporte
     Private oFiguraTransporte As New Class_CatCfdiFigurasTransporte
 
@@ -54,6 +54,7 @@ Public Class Catalogo_CFDI_Figuras_Transporte
 #Region "Propiedades de campos privados"
 
 #End Region
+
 #Region "Propiedades de campos de sistema"
     Public ReadOnly Property Nombre_Catalogo() As String
         Get
@@ -156,111 +157,128 @@ Public Class Catalogo_CFDI_Figuras_Transporte
     End Sub
 
     Private Sub Cambia_Estado()
-        Select Case Me.Estado
-            Case enumEstados.NUEVO
-                Me.gBoxInformacion.Enabled = True
-                Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Agregando nuevo " & Me.msgElemento
-                Me.tsbNuevo.Enabled = False
-                Me.tsbEditar.Enabled = False
-                Me.tsbGrabar.Enabled = True
-                Me.tsbCancelar.Enabled = True
+        Const sProcedure As String = "Cambia_Estado"
+        Try
+            Select Case Me.Estado
+                Case enumEstados.NUEVO
+                    Me.gBoxInformacion.Enabled = True
+                    Me.gBoxBusquedaRapida.Enabled = False
+                    Me.tssLabelEstado.Text = "Agregando nuevo " & Me.msgElemento
+                    Me.tsbNuevo.Enabled = False
+                    Me.tsbEditar.Enabled = False
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbCancelar.Enabled = True
 
-                Me.TxtCodigoFiguraTransporte.Enabled = False
-                Me.TxtNombreFiguraTransporte.Enabled = True
-                Me.CboTipoFiguraTransporte.Enabled = True
-                Me.TxtRfc.Enabled = True
-                Me.TxtNumeroLicencia.Enabled = True
-                Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Enabled = True
-                Me.TxtPaisResidenciaFiscal.Enabled = True
-                Me.TxtCalle.Enabled = True
-                Me.TxtNumeroExterior.Enabled = True
-                Me.TxtNumeroInterior.Enabled = True
-                Me.TxtIdColonia.Enabled = True
-                Me.TxtIdLocalidad.Enabled = True
-                Me.TxtReferencia.Enabled = True
-                Me.TxtMunicipio.Enabled = True
-                Me.TxtEstado.Enabled = True
-                Me.TxtPaisDomicilio.Enabled = True
-                Me.TxtCodigoPostal.Enabled = True
-                Me.CboEstatus.Enabled = False
+                    Me.TxtCodigoFiguraTransporte.Enabled = False
+                    Me.TxtNombreFiguraTransporte.Enabled = True
+                    Me.CboTipoFiguraTransporte.Enabled = True
+                    Me.TxtRfc.Enabled = True
+                    Me.TxtNumeroLicencia.Enabled = True
+                    Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Enabled = True
+                    Me.TxtPaisResidenciaFiscal.Enabled = True
+                    Me.TxtCalle.Enabled = True
+                    Me.TxtNumeroExterior.Enabled = True
+                    Me.TxtNumeroInterior.Enabled = True
+                    Me.TxtIdColonia.Enabled = True
+                    Me.TxtIdLocalidad.Enabled = True
+                    Me.TxtReferencia.Enabled = True
+                    Me.TxtMunicipio.Enabled = True
+                    Me.TxtEstado.Enabled = True
+                    Me.TxtPaisDomicilio.Enabled = True
+                    Me.TxtCodigoPostal.Enabled = True
+                    Me.CboEstatus.Enabled = False
 
-                Me.InicializaElemento()
-                Me.TxtNombreFiguraTransporte.Focus()
+                    Me.InicializaElemento()
+                    Me.TxtNombreFiguraTransporte.Focus()
 
-            Case enumEstados.EDICION
-                Me.gBoxInformacion.Enabled = True
-                Me.gBoxBusquedaRapida.Enabled = False
-                Me.tssLabelEstado.Text = "Edición"
-                Me.tsbNuevo.Enabled = False
-                Me.tsbEditar.Enabled = False
-                Me.tsbGrabar.Enabled = True
-                Me.tsbCancelar.Enabled = True
+                Case enumEstados.EDICION
+                    Me.gBoxInformacion.Enabled = True
+                    Me.gBoxBusquedaRapida.Enabled = False
+                    Me.tssLabelEstado.Text = "Edición"
+                    Me.tsbNuevo.Enabled = False
+                    Me.tsbEditar.Enabled = False
+                    Me.tsbGrabar.Enabled = True
+                    Me.tsbCancelar.Enabled = True
 
-                Me.TxtCodigoFiguraTransporte.Enabled = False
-                Me.TxtNombreFiguraTransporte.Enabled = True
-                Me.CboTipoFiguraTransporte.Enabled = True
-                Me.TxtRfc.Enabled = True
-                Me.TxtNumeroLicencia.Enabled = True
-                Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Enabled = True
-                Me.TxtPaisResidenciaFiscal.Enabled = True
-                Me.TxtCalle.Enabled = True
-                Me.TxtNumeroExterior.Enabled = True
-                Me.TxtNumeroInterior.Enabled = True
-                Me.TxtIdColonia.Enabled = True
-                Me.TxtIdLocalidad.Enabled = True
-                Me.TxtReferencia.Enabled = True
-                Me.TxtMunicipio.Enabled = True
-                Me.TxtEstado.Enabled = True
-                Me.TxtPaisDomicilio.Enabled = True
-                Me.TxtCodigoPostal.Enabled = True
-                Me.CboEstatus.Enabled = False
+                    Me.TxtCodigoFiguraTransporte.Enabled = False
+                    Me.TxtNombreFiguraTransporte.Enabled = True
+                    Me.CboTipoFiguraTransporte.Enabled = True
+                    Me.TxtRfc.Enabled = True
+                    Me.TxtNumeroLicencia.Enabled = True
+                    Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Enabled = True
+                    Me.TxtPaisResidenciaFiscal.Enabled = True
+                    Me.TxtCalle.Enabled = True
+                    Me.TxtNumeroExterior.Enabled = True
+                    Me.TxtNumeroInterior.Enabled = True
+                    Me.TxtIdColonia.Enabled = True
+                    Me.TxtIdLocalidad.Enabled = True
+                    Me.TxtReferencia.Enabled = True
+                    Me.TxtMunicipio.Enabled = True
+                    Me.TxtEstado.Enabled = True
+                    Me.TxtPaisDomicilio.Enabled = True
+                    Me.TxtCodigoPostal.Enabled = True
+                    Me.CboEstatus.Enabled = False
 
-                Me.TxtNombreFiguraTransporte.Focus()
+                    Me.TxtNombreFiguraTransporte.Focus()
 
-            Case enumEstados.CONSULTA
-                Me.gBoxInformacion.Enabled = False
-                Me.gBoxBusquedaRapida.Enabled = True
-                Me.tssLabelEstado.Text = "Consulta"
-                Me.tsbNuevo.Enabled = True
-                Me.tsbEditar.Enabled = True
-                Me.tsbGrabar.Enabled = False
-                Me.tsbCancelar.Enabled = False
-                Me.txtFiltro.Focus()
-        End Select
-        Application.DoEvents()
+                Case enumEstados.CONSULTA
+                    Me.gBoxInformacion.Enabled = False
+                    Me.gBoxBusquedaRapida.Enabled = True
+                    Me.tssLabelEstado.Text = "Consulta"
+                    Me.tsbNuevo.Enabled = True
+                    Me.tsbEditar.Enabled = True
+                    Me.tsbGrabar.Enabled = False
+                    Me.tsbCancelar.Enabled = False
+                    Me.txtFiltro.Focus()
+            End Select
+            Application.DoEvents()
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Sub InicializaElemento()
-        Me.TxtCodigoFiguraTransporte.Text = ""
-        Me.TxtNombreFiguraTransporte.Text = ""
-        Me.CboTipoFiguraTransporte.SelectedIndex = -1
-        Me.TxtRfc.Text = ""
-        Me.TxtNumeroLicencia.Text = ""
-        Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Text = ""
-        Me.TxtPaisResidenciaFiscal.Text = "" : Me.LblNombrePaisResidenciaFiscal.Text = ""
-        Me.TxtCalle.Text = ""
-        Me.TxtNumeroExterior.Text = ""
-        Me.TxtNumeroInterior.Text = ""
-        Me.TxtIdColonia.Text = "" : Me.LblNombreColonia.Text = ""
-        Me.TxtIdLocalidad.Text = "" : Me.LblNombreLocalidad.Text = ""
-        Me.TxtReferencia.Text = ""
-        Me.TxtMunicipio.Text = "" : Me.LblNombreMunicipio.Text = ""
-        Me.TxtEstado.Text = "" : Me.LblNombreEstado.Text = ""
-        Me.TxtPaisDomicilio.Text = "MEX" : Me.LblNombrePaisDomicilio.Text = "MEXICO"
-        Me.TxtCodigoPostal.Text = ""
-        Me.CboEstatus.SelectedIndex = 0
+        Const sProcedure As String = "InicializaElemento"
+        Try
+            Me.TxtCodigoFiguraTransporte.Text = ""
+            Me.TxtNombreFiguraTransporte.Text = ""
+            Me.CboTipoFiguraTransporte.SelectedIndex = -1
+            Me.TxtRfc.Text = ""
+            Me.TxtNumeroLicencia.Text = ""
+            Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Text = ""
+            Me.TxtPaisResidenciaFiscal.Text = "" : Me.LblNombrePaisResidenciaFiscal.Text = ""
+            Me.TxtCalle.Text = ""
+            Me.TxtNumeroExterior.Text = ""
+            Me.TxtNumeroInterior.Text = ""
+            Me.TxtIdColonia.Text = "" : Me.LblNombreColonia.Text = ""
+            Me.TxtIdLocalidad.Text = "" : Me.LblNombreLocalidad.Text = ""
+            Me.TxtReferencia.Text = ""
+            Me.TxtMunicipio.Text = "" : Me.LblNombreMunicipio.Text = ""
+            Me.TxtEstado.Text = "" : Me.LblNombreEstado.Text = ""
+            Me.TxtPaisDomicilio.Text = "MEX" : Me.LblNombrePaisDomicilio.Text = "MEXICO"
+            Me.TxtCodigoPostal.Text = ""
+            Me.CboEstatus.SelectedIndex = 0
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Sub DesplegarElementos()
-        With Me.Grid
-            .DataSource = oFiguraTransporte.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
-            .Columns("CODIGO_FIGURA_TRANSPORTE").Width = 100
-            .Columns("NOMBRE_FIGURA_TRANSPORTE").Width = 250
-        End With
+        Const sProcedure As String = "DesplegarElementos"
+        Try
+            With Me.Grid
+                .DataSource = oFiguraTransporte.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.cboEstatusFiltro.Text)
+                .Columns("CODIGO_FIGURA_TRANSPORTE").Width = 100
+                .Columns("NOMBRE_FIGURA_TRANSPORTE").Width = 250
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Sub DesplegarTiposFigurasTransporte()
+        Const sProcedure As String = "DesplegarTiposFigurasTransporte"
         Try
             Me.CboTipoFiguraTransporte.DataSource = Nothing
             Dim oElementos As New Class_CfdiCatTiposFiguraTransporte
@@ -273,89 +291,97 @@ Public Class Catalogo_CFDI_Figuras_Transporte
                 .SelectedIndex = -1
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarTiposFigurasTransporte", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub LlenaElemento(ByVal iCodigo_Elemento As String)
-        Dim sql As Class_find
-        Me.oFiguraTransporte.CODIGO_FIGURA_TRANSPORTE = iCodigo_Elemento
+        Const sProcedure As String = "LlenaElemento"
+        Try
+            Me.InicializaElemento()
 
-        If Me.oFiguraTransporte.Consultar Then
-            With Me.oFiguraTransporte
-                Me.TxtCodigoFiguraTransporte.Text = .CODIGO_FIGURA_TRANSPORTE
-                Me.TxtNombreFiguraTransporte.Text = .NOMBRE_FIGURA_TRANSPORTE
-                Me.CboTipoFiguraTransporte.SelectedValue = .CODIGO_TIPO_FIGURA_TRANSPORTE
-                Me.TxtRfc.Text = .RFC
-                Me.TxtNumeroLicencia.Text = .NUMERO_LICENCIA
-                Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Text = .NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO
-                Me.TxtCalle.Text = .CALLE
-                Me.TxtNumeroExterior.Text = .NUMERO_EXTERIOR
-                Me.TxtNumeroInterior.Text = .NUMERO_INTERIOR
-                Me.TxtReferencia.Text = .REFERENCIA
-                Me.TxtCodigoPostal.Text = .CODIGO_POSTAL
+            Dim sql As Class_find
+            Me.oFiguraTransporte.CODIGO_FIGURA_TRANSPORTE = iCodigo_Elemento
 
-                Me.TxtPaisResidenciaFiscal.Text = .CODIGO_PAIS_SAT_RESIDENCIA_FISCAL
-                If txtLEN(Me.TxtPaisResidenciaFiscal.Text) Then
-                    sql = New Class_find("SELECT NOMBRE_PAIS FROM CAT_PAISES WHERE CODIGO_PAIS_SAT='" & .CODIGO_PAIS_SAT_RESIDENCIA_FISCAL & "' ")
-                    If txtLEN(sql.Result1) Then
-                        Me.LblNombrePaisResidenciaFiscal.Text = sql.Result1
+            If Me.oFiguraTransporte.Consultar = True Then
+                With Me.oFiguraTransporte
+                    Me.TxtCodigoFiguraTransporte.Text = .CODIGO_FIGURA_TRANSPORTE
+                    Me.TxtNombreFiguraTransporte.Text = .NOMBRE_FIGURA_TRANSPORTE
+                    Me.CboTipoFiguraTransporte.SelectedValue = .CODIGO_TIPO_FIGURA_TRANSPORTE
+                    Me.TxtRfc.Text = .RFC
+                    Me.TxtNumeroLicencia.Text = .NUMERO_LICENCIA
+                    Me.TxtNumeroIdentificacionRegistroFiscalExtranjero.Text = .NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO
+                    Me.TxtCalle.Text = .CALLE
+                    Me.TxtNumeroExterior.Text = .NUMERO_EXTERIOR
+                    Me.TxtNumeroInterior.Text = .NUMERO_INTERIOR
+                    Me.TxtReferencia.Text = .REFERENCIA
+                    Me.TxtCodigoPostal.Text = .CODIGO_POSTAL
+
+                    Me.TxtPaisResidenciaFiscal.Text = .CODIGO_PAIS_SAT_RESIDENCIA_FISCAL
+                    If txtLEN(Me.TxtPaisResidenciaFiscal.Text) Then
+                        sql = New Class_find("SELECT NOMBRE_PAIS FROM CAT_PAISES WHERE CODIGO_PAIS_SAT='" & .CODIGO_PAIS_SAT_RESIDENCIA_FISCAL & "' ")
+                        If txtLEN(sql.Result1) Then
+                            Me.LblNombrePaisResidenciaFiscal.Text = sql.Result1
+                        End If
                     End If
-                End If
 
-                Me.TxtPaisDomicilio.Text = .CODIGO_PAIS_SAT_DOMICILIO
-                If txtLEN(Me.TxtPaisDomicilio.Text) Then
-                    sql = New Class_find("SELECT NOMBRE_PAIS FROM CAT_PAISES WHERE CODIGO_PAIS_SAT='" & .CODIGO_PAIS_SAT_DOMICILIO & "' ")
-                    If txtLEN(sql.Result1) Then
-                        Me.LblNombrePaisDomicilio.Text = sql.Result1
+                    Me.TxtPaisDomicilio.Text = .CODIGO_PAIS_SAT_DOMICILIO
+                    If txtLEN(Me.TxtPaisDomicilio.Text) Then
+                        sql = New Class_find("SELECT NOMBRE_PAIS FROM CAT_PAISES WHERE CODIGO_PAIS_SAT='" & .CODIGO_PAIS_SAT_DOMICILIO & "' ")
+                        If txtLEN(sql.Result1) Then
+                            Me.LblNombrePaisDomicilio.Text = sql.Result1
+                        End If
                     End If
-                End If
 
-                Me.TxtEstado.Text = .CODIGO_ESTADO_SAT
-                If txtLEN(Me.TxtEstado.Text) Then
-                    sql = New Class_find("SELECT NOMBRE_ESTADO FROM SIS_ESTADOS WHERE CODIGO_ESTADO_SAT='" & .CODIGO_ESTADO_SAT & "' ")
-                    If txtLEN(sql.Result1) Then
-                        Me.LblNombreEstado.Text = sql.Result1
+                    Me.TxtEstado.Text = .CODIGO_ESTADO_SAT
+                    If txtLEN(Me.TxtEstado.Text) Then
+                        sql = New Class_find("SELECT NOMBRE_ESTADO FROM SIS_ESTADOS WHERE CODIGO_ESTADO_SAT='" & .CODIGO_ESTADO_SAT & "' ")
+                        If txtLEN(sql.Result1) Then
+                            Me.LblNombreEstado.Text = sql.Result1
+                        End If
                     End If
-                End If
 
-                Me.TxtMunicipio.Text = .CODIGO_MUNICIPIO
-                If txtLEN(Me.TxtMunicipio.Text) Then
-                    sql = New Class_find("SELECT NOMBRE_MUNICIPIO FROM CAT_MUNICIPIOS WHERE CODIGO_MUNICIPIO_SAT='" & .CODIGO_MUNICIPIO & "' ")
-                    If txtLEN(sql.Result1) Then
-                        Me.LblNombreMunicipio.Text = sql.Result1
+                    Me.TxtMunicipio.Text = .CODIGO_MUNICIPIO
+                    If txtLEN(Me.TxtMunicipio.Text) Then
+                        sql = New Class_find("SELECT NOMBRE_MUNICIPIO FROM CAT_MUNICIPIOS WHERE CODIGO_MUNICIPIO='" & .CODIGO_MUNICIPIO & "' ")
+                        If txtLEN(sql.Result1) Then
+                            Me.LblNombreMunicipio.Text = sql.Result1
+                        End If
                     End If
-                End If
 
-                Me.TxtIdColonia.Text = .ID_COLONIA
-                If txtLEN(Me.TxtIdColonia.Text) Then
-                    sql = New Class_find("SELECT NOMBRE_COLONIA FROM CFDI_CAT_COLONIAS WHERE ID_COLONIA='" & .ID_COLONIA & "' ")
-                    If txtLEN(sql.Result1) Then
-                        Me.LblNombreColonia.Text = sql.Result1
+                    Me.TxtIdColonia.Text = .ID_COLONIA
+                    If txtLEN(Me.TxtIdColonia.Text) Then
+                        sql = New Class_find("SELECT NOMBRE_COLONIA FROM CFDI_CAT_COLONIAS WHERE ID_COLONIA='" & .ID_COLONIA & "' ")
+                        If txtLEN(sql.Result1) Then
+                            Me.LblNombreColonia.Text = sql.Result1
+                        End If
                     End If
-                End If
 
-                Me.TxtIdLocalidad.Text = .ID_LOCALIDAD
-                If txtLEN(Me.TxtIdLocalidad.Text) Then
-                    sql = New Class_find("SELECT NOMBRE_LOCALIDAD FROM CFDI_CAT_LOCALIDADES WHERE ID_LOCALIDAD='" & .ID_LOCALIDAD & "' ")
-                    If txtLEN(sql.Result1) Then
-                        Me.LblNombreLocalidad.Text = sql.Result1
+                    Me.TxtIdLocalidad.Text = .ID_LOCALIDAD
+                    If txtLEN(Me.TxtIdLocalidad.Text) Then
+                        sql = New Class_find("SELECT NOMBRE_LOCALIDAD FROM CFDI_CAT_LOCALIDADES WHERE ID_LOCALIDAD='" & .ID_LOCALIDAD & "' ")
+                        If txtLEN(sql.Result1) Then
+                            Me.LblNombreLocalidad.Text = sql.Result1
+                        End If
                     End If
-                End If
 
 
-                If .ESTATUS = "A" Then
-                    Me.CboEstatus.SelectedIndex = 0
-                Else
-                    Me.CboEstatus.SelectedIndex = 1
-                End If
+                    If .ESTATUS = "A" Then
+                        Me.CboEstatus.SelectedIndex = 0
+                    Else
+                        Me.CboEstatus.SelectedIndex = 1
+                    End If
 
-            End With
-        End If
+                End With
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
-    Private Sub Grabar_Elemento()
-        Dim Grabado As Boolean = False
+    Private Function Grabar_Elemento() As Boolean
+        Const sProcedure As String = "Grabar_Elemento"
+        Dim bResultado As Boolean = False
         Select Case Me.Estado
             Case enumEstados.NUEVO, enumEstados.EDICION
                 Try
@@ -386,32 +412,32 @@ Public Class Catalogo_CFDI_Figuras_Transporte
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 If .Grabar("INSERTAR") Then
-                                    Grabado = True
+                                    bResultado = True
                                     Me.Estado = enumEstados.NUEVO
                                 End If
                             Case enumEstados.EDICION
                                 If .Grabar("ACTUALIZAR") Then
-                                    Grabado = True
+                                    bResultado = True
                                 End If
                         End Select
 
                         Me.Estado = enumEstados.CONSULTA
-                        If Grabado Then
-                            MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
+                        If bResultado = True Then
+                            MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
                             Me.Refrescar()
                             Me.Cambia_Estado()
                         End If
 
                     End With
                 Catch ex As Exception
-                    HandleError(Me.Name, "Grabar", ex)
+                    HandleError(Me.Name, sProcedure, ex)
                     Me.Estado = enumEstados.CONSULTA
                     Me.Cambia_Estado()
                 Finally
 
                 End Try
         End Select
-    End Sub
+    End Function
 
     Private Function Validar() As Boolean
         Const sProcedure As String = "Validar"
@@ -419,30 +445,30 @@ Public Class Catalogo_CFDI_Figuras_Transporte
 
         Try
             If txtLEN(Me.TxtNombreFiguraTransporte.Text) = False Then
-                MsgBox("Capture el nombre.", MsgBoxStyle.Exclamation, Me.Name)
+                MsgBox("Capture el nombre.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtNombreFiguraTransporte.Focus()
-                Return bResultado
+                Return False
             End If
 
             If Me.CboTipoFiguraTransporte.SelectedIndex = -1 Then
-                MsgBox("Seleccione un tipo de figura.", MsgBoxStyle.Exclamation, Me.Name)
+                MsgBox("Seleccione un tipo de figura.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.CboTipoFiguraTransporte.Focus()
-                Return bResultado
+                Return False
             End If
 
             If txtLEN(Me.TxtRfc.Text) = False Then
-                MsgBox("Capture el RFC.", MsgBoxStyle.Exclamation, Me.Name)
+                MsgBox("Capture el RFC.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtRfc.Focus()
-                Return bResultado
+                Return False
             End If
 
             Dim oTipoFigura As New Class_CfdiCatTiposFiguraTransporte(Me.CboTipoFiguraTransporte.SelectedValue.ToString)
 
             If oTipoFigura.VALIDA_LICENCIA = True Then
                 If txtLEN(Me.TxtNumeroLicencia.Text) = False Then
-                    MsgBox("Capture el número de licencia que es obligatoria cuando el tipo de figura es " & Me.CboTipoFiguraTransporte.Text & ".", MsgBoxStyle.Exclamation, Me.Name)
+                    MsgBox("Capture el número de licencia que es obligatoria cuando el tipo de figura es " & Me.CboTipoFiguraTransporte.Text & ".", MsgBoxStyle.Exclamation, sProcedure)
                     Me.TxtNumeroLicencia.Focus()
-                    Return bResultado
+                    Return False
                 End If
             End If
 
@@ -450,38 +476,36 @@ Public Class Catalogo_CFDI_Figuras_Transporte
             If txtLEN(Me.TxtCodigoPostal.Text) = False Then
                 MsgBox("Capture un código postal.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtCodigoPostal.Focus()
-                Return bResultado
+                Return False
             End If
 
             If txtLEN(Me.TxtPaisDomicilio.Text) = False Then
-                MsgBox("Capture un código de país de domicilio.", MsgBoxStyle.Exclamation, sProcedure)
+                MsgBox("Capture el país del domicilio.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtPaisDomicilio.Focus()
-                Return bResultado
+                Return False
             End If
 
             If txtLEN(Me.TxtEstado.Text) = False Then
-                MsgBox("Capture un código de estado.", MsgBoxStyle.Exclamation, sProcedure)
+                MsgBox("Capture el estado.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtEstado.Focus()
-                Return bResultado
+                Return False
             End If
 
-            If txtLEN(Me.TxtCalle.Text) = False Then
-                MsgBox("Capture una calle.", MsgBoxStyle.Exclamation, sProcedure)
-                Me.TxtCalle.Focus()
-                Return bResultado
-            End If
+            'If txtLEN(Me.TxtCalle.Text) = False Then
+            '    MsgBox("Capture una calle.", MsgBoxStyle.Exclamation, sProcedure)
+            '    Me.TxtCalle.Focus()
+            '    Return bResultado
+            'End If
 
-            If txtLEN(Me.TxtNumeroExterior.Text) = False Then
-                MsgBox("Capture un número exterior.", MsgBoxStyle.Exclamation, sProcedure)
-                Me.TxtNumeroExterior.Focus()
-                Return bResultado
-            End If
+            'If txtLEN(Me.TxtNumeroExterior.Text) = False Then
+            '    MsgBox("Capture un número exterior.", MsgBoxStyle.Exclamation, sProcedure)
+            '    Me.TxtNumeroExterior.Focus()
+            '    Return bResultado
+            'End If
 
             If Me.ValidaRelacionDatosDomicilio() = False Then
-                MsgBox("No coinciden los datos de domicilio (código postal, país, estado).", MsgBoxStyle.Exclamation, sProcedure)
-                Return bResultado
+                Return False
             End If
-
 
             bResultado = True
 
@@ -498,32 +522,75 @@ Public Class Catalogo_CFDI_Figuras_Transporte
         Dim sQuery As String
 
         Try
-            sQuery = "SELECT TOP 1 1 FROM CAT_PAISES P INNER JOIN SIS_ESTADOS E ON(P.CODIGO_PAIS_SAT=E.CODIGO_PAIS_SAT) INNER JOIN CAT_MUNICIPIOS M ON(E.CODIGO_ESTADO=M.CODIGO_ESTADO) " & _
-                     "INNER JOIN CFDI_CAT_LOCALIDADES L ON(E.CODIGO_ESTADO=L.CODIGO_ESTADO) INNER JOIN CFDI_CAT_CODIGOS_POSTALES CP ON(L.CODIGO_LOCALIDAD=CP.CODIGO_LOCALIDAD) " & _
-                     "INNER JOIN CFDI_CAT_COLONIAS C ON(CP.CODIGO_POSTAL=C.CODIGO_POSTAL) " & _
-                     "WHERE CP.CODIGO_POSTAL='" & Me.TxtCodigoPostal.Text & "' AND P.CODIGO_PAIS_SAT='" & Me.TxtPaisDomicilio.Text & "' AND E.CODIGO_ESTADO_SAT='" & Me.TxtEstado.Text & "' " 'Campos obligatorios
+            'sQuery = "SELECT TOP 1 1 FROM CAT_PAISES P INNER JOIN SIS_ESTADOS E ON(P.CODIGO_PAIS_SAT=E.CODIGO_PAIS_SAT) INNER JOIN CAT_MUNICIPIOS M ON(E.CODIGO_ESTADO=M.CODIGO_ESTADO) " & _
+            '         "INNER JOIN CFDI_CAT_LOCALIDADES L ON(E.CODIGO_ESTADO=L.CODIGO_ESTADO) INNER JOIN CFDI_CAT_CODIGOS_POSTALES CP ON(L.CODIGO_LOCALIDAD=CP.CODIGO_LOCALIDAD) " & _
+            '         "INNER JOIN CFDI_CAT_COLONIAS C ON(CP.CODIGO_POSTAL=C.CODIGO_POSTAL) " & _
+            '         "WHERE CP.CODIGO_POSTAL='" & Me.TxtCodigoPostal.Text & "' AND P.CODIGO_PAIS_SAT='" & Me.TxtPaisDomicilio.Text & "' AND E.CODIGO_ESTADO_SAT='" & Me.TxtEstado.Text & "' " 'Campos obligatorios
 
-            'Campos opcionales
-            If txtLEN(Me.TxtMunicipio.Text) Then
-                sQuery = sQuery + "AND M.CODIGO_MUNICIPIO=" & Me.TxtMunicipio.Text & " "
+            ''Campos opcionales
+            'If txtLEN(Me.TxtMunicipio.Text) Then
+            '    sQuery = sQuery + "AND M.CODIGO_MUNICIPIO=" & Me.TxtMunicipio.Text & " "
 
-                If txtLEN(Me.TxtIdLocalidad.Text) Then
-                    sQuery = sQuery + "AND L.ID_LOCALIDAD=" & Me.TxtIdLocalidad.Text & " "
+            '    If txtLEN(Me.TxtIdLocalidad.Text) Then
+            '        sQuery = sQuery + "AND L.ID_LOCALIDAD=" & Me.TxtIdLocalidad.Text & " "
 
-                    If txtLEN(Me.TxtIdColonia.Text) Then
-                        sQuery = sQuery + "AND C.ID_COLONIA=" & Me.TxtIdColonia.Text & " "
-                    End If
+            '        If txtLEN(Me.TxtIdColonia.Text) Then
+            '            sQuery = sQuery + "AND C.ID_COLONIA=" & Me.TxtIdColonia.Text & " "
+            '        End If
 
-                End If
-            End If
+            '    End If
+            'End If
+
+            'Dim sql As New Class_find(sQuery)
+
+            'If sql.Result1 = "1" Then
+            '    bResultado = True
+            'Else
+            '    bResultado = False
+            'End If
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            sQuery = "SELECT TOP 1 1 " &
+                     "FROM CAT_PAISES P " &
+                     "INNER JOIN SIS_ESTADOS E ON(P.CODIGO_PAIS_SAT=E.CODIGO_PAIS_SAT) " &
+                     "WHERE P.CODIGO_PAIS_SAT='" & sReplace(Me.TxtPaisDomicilio.Text) & "' AND E.CODIGO_ESTADO_SAT='" & sReplace(Me.TxtEstado.Text) & "' " 'Campos obligatorios
 
             Dim sql As New Class_find(sQuery)
 
-            If sql.Result1 = "1" Then
-                bResultado = True
-            Else
-                bResultado = False
+            If txtLEN(sql.Result1) = False Then
+                MsgBox("No coinciden los datos de domicilio país y estado.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
             End If
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            sQuery = "SELECT TOP 1 1 " &
+                     "FROM CFDI_CAT_CODIGOS_POSTALES CP " &
+                     "INNER JOIN SIS_ESTADOS E ON(CP.CODIGO_ESTADO_SAT=E.CODIGO_ESTADO_SAT) " &
+                     "LEFT JOIN CAT_MUNICIPIOS M ON(CP.CODIGO_MUNICIPIO_SAT=M.CODIGO_MUNICIPIO_SAT AND E.CODIGO_ESTADO=M.CODIGO_ESTADO) " &
+                     "LEFT JOIN CFDI_CAT_COLONIAS COL ON(CP.CODIGO_POSTAL=COL.CODIGO_POSTAL) " &
+                     "LEFT JOIN CFDI_CAT_LOCALIDADES LOC ON(CP.CODIGO_LOCALIDAD=LOC.CODIGO_LOCALIDAD AND E.CODIGO_ESTADO=LOC.CODIGO_ESTADO) " &
+                     "WHERE CP.CODIGO_POSTAL='" & sReplace(Me.TxtCodigoPostal.Text) & "' AND CP.CODIGO_ESTADO_SAT='" & Me.TxtEstado.Text & "' "
+
+            If txtLEN(Me.TxtMunicipio.Text) = True Then
+                sQuery = sQuery + " AND M.CODIGO_MUNICIPIO=" & sReplace(Me.TxtMunicipio.Text) & " "
+            End If
+
+            If txtLEN(Me.TxtIdLocalidad.Text) = True Then
+                sQuery = sQuery + " AND LOC.ID_LOCALIDAD=" & sReplace(Me.TxtIdLocalidad.Text) & " "
+            End If
+
+            If txtLEN(Me.TxtIdColonia.Text) = True Then
+                sQuery = sQuery + " AND COL.ID_COLONIA=" & sReplace(Me.TxtIdColonia.Text) & " "
+            End If
+
+            sql = New Class_find(sQuery)
+
+            If txtLEN(sql.Result1) = False Then
+                MsgBox("No coinciden los datos de domicilio para este código postal según el SAT, verifique la tabla de este código postal.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            bResultado = True
 
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -585,19 +652,14 @@ Public Class Catalogo_CFDI_Figuras_Transporte
 #End Region
 
 #Region "Eventos Genericos"
-
-    Private Sub TxtCodigoPostal_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
-        If e.KeyCode = Keys.Return Then
-            tsbGrabar.PerformClick()
-        End If
-    End Sub
-
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreFiguraTransporte.KeyPress, TxtRfc.KeyPress, TxtNumeroLicencia.KeyPress, TxtNumeroIdentificacionRegistroFiscalExtranjero.KeyPress, CboTipoFiguraTransporte.KeyPress, TxtPaisDomicilio.KeyPress, TxtPaisResidenciaFiscal.KeyPress, TxtEstado.KeyPress, TxtMunicipio.KeyPress, _
-        TxtCalle.KeyPress, TxtNumeroExterior.KeyPress, TxtNumeroInterior.KeyPress
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtNombreFiguraTransporte.KeyPress, TxtRfc.KeyPress, TxtNumeroLicencia.KeyPress,
+        TxtNumeroIdentificacionRegistroFiscalExtranjero.KeyPress, CboTipoFiguraTransporte.KeyPress, TxtPaisDomicilio.KeyPress, TxtPaisResidenciaFiscal.KeyPress, TxtEstado.KeyPress, TxtMunicipio.KeyPress,
+        TxtCalle.KeyPress, TxtNumeroExterior.KeyPress, TxtNumeroInterior.KeyPress, TxtIdColonia.KeyPress, TxtIdLocalidad.KeyPress, TxtReferencia.KeyPress
         txtNoBeep(e)
     End Sub
 
-    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreFiguraTransporte.KeyDown, TxtCodigoPostal.KeyDown, CboEstatus.KeyDown, TxtRfc.KeyDown, TxtNumeroLicencia.KeyDown, TxtNumeroIdentificacionRegistroFiscalExtranjero.KeyDown
+    Private Sub txt_Keydown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtNombreFiguraTransporte.KeyDown, TxtCodigoPostal.KeyDown, CboEstatus.KeyDown, TxtRfc.KeyDown, TxtNumeroLicencia.KeyDown,
+        TxtNumeroIdentificacionRegistroFiscalExtranjero.KeyDown, TxtNumeroExterior.KeyDown, TxtNumeroInterior.KeyDown, CboTipoFiguraTransporte.KeyDown, TxtCalle.KeyDown, TxtReferencia.KeyDown
         If e.KeyCode = Keys.Return Then
             SendKeys.Send("{TAB}")
         End If
@@ -607,18 +669,21 @@ Public Class Catalogo_CFDI_Figuras_Transporte
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
-
 #End Region
 
-
 #Region "Keydown específicos"
-
     Private Sub txtIdColonia_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtIdColonia.KeyDown
+        Const sProcedure As String = "txtIdColonia_KeyDown"
         Dim oColonia As New Class_CfdiCatColonias
         Try
             Select Case e.KeyCode
                 Case Keys.F6
 Buscar:
+                    If txtLEN(Me.TxtCodigoPostal.Text) = False Then
+                        MsgBox("Capture primero el código postal.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return
+                    End If
+
                     Dim sColonia = oColonia.BusquedaVisual_PorDescripcion(Me.TxtCodigoPostal.Text)
                     If txtLEN(sColonia) = True Then
                         Me.TxtIdColonia.Text = sColonia
@@ -628,7 +693,13 @@ Buscar:
                 Case Keys.Enter
                     If txtLEN(Me.TxtIdColonia.Text) = False Then
                         Me.LblNombreColonia.Text = ""
-                        GoTo Buscar : Return
+                        'GoTo Buscar : Return
+                        txtTAB(e) : Return
+                    End If
+
+                    If txtLEN(Me.TxtCodigoPostal.Text) = False Then
+                        MsgBox("Capture primero el código postal.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return
                     End If
 Enter:
                     oColonia = New Class_CfdiCatColonias(Me.TxtIdColonia.Text, Me.TxtCodigoPostal.Text)
@@ -647,15 +718,20 @@ Enter:
             End Select
 
         Catch ex As Exception
-            HandleError(Me.Name, "txtIdColonia_KeyDown", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub txtIdLocalidad_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtIdLocalidad.KeyDown
+        Const sProcedure As String = "txtIdLocalidad_KeyDown"
         Dim oLocalidad As New Class_CfdiCatLocalidades
         Try
             Select Case e.KeyCode
                 Case Keys.F6
+                    If txtLEN(Me.TxtEstado.Text) = False Then
+                        Me.LblEstado.Text = ""
+                        MsgBox("", MsgBoxStyle.Exclamation, sProcedure)
+                    End If
 Buscar:
                     Dim sLocalidad = oLocalidad.BusquedaVisual_PorDescripcion(Me.TxtMunicipio.Text)
                     If txtLEN(sLocalidad) = True Then
@@ -666,7 +742,8 @@ Buscar:
                 Case Keys.Enter
                     If txtLEN(Me.TxtIdLocalidad.Text) = False Then
                         Me.LblNombreLocalidad.Text = ""
-                        GoTo Buscar : Return
+                        'GoTo Buscar : Return
+                        txtTAB(e) : Return
                     End If
 Enter:
                     oLocalidad = New Class_CfdiCatLocalidades(TxtIdLocalidad.Text, Me.TxtMunicipio.Text)
@@ -685,11 +762,12 @@ Enter:
             End Select
 
         Catch ex As Exception
-            HandleError(Me.Name, "txtIdLocalidad_KeyDown", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub TxtPaisDomicilio_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtPaisDomicilio.KeyDown
+        Const sProcedure As String = "TxtPaisDomicilio_KeyDown"
         Dim oPais As New Class_CatPaises
         Try
             Select Case e.KeyCode
@@ -723,11 +801,12 @@ Enter:
             End Select
 
         Catch ex As Exception
-            HandleError(Me.Name, "TxtPaisDomicilio_KeyDown", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub TxtPaisResidenciaFiscal_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtPaisResidenciaFiscal.KeyDown
+        Const sProcedure As String = "TxtPaisResidenciaFiscal_KeyDown"
         Dim oPais As New Class_CatPaises
         Try
             Select Case e.KeyCode
@@ -742,7 +821,8 @@ Buscar:
                 Case Keys.Enter
                     If txtLEN(Me.TxtPaisResidenciaFiscal.Text) = False Then
                         Me.LblNombrePaisResidenciaFiscal.Text = ""
-                        GoTo Buscar : Return
+                        'GoTo Buscar : Return
+                        Me.tsbGrabar.PerformClick() : Return
                     End If
 Enter:
                     oPais = New Class_CatPaises(TxtPaisResidenciaFiscal.Text)
@@ -761,15 +841,16 @@ Enter:
             End Select
 
         Catch ex As Exception
-            HandleError(Me.Name, "TxtPaisResidenciaFiscal_KeyDown", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub TxtEstado_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtEstado.KeyDown
+        Const sProcedure As String = "TxtEstado_KeyDown"
         Dim oEstado As New Class_SisEstados
         Try
             If txtLEN(Me.TxtPaisDomicilio.Text) = False Then
-                MsgBox("Asígne un código de país.", MsgBoxStyle.Exclamation, "TxtEstado_KeyDown")
+                MsgBox("Asígne un código de país.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtEstado.Text = "" : Me.LblNombreEstado.Text = ""
                 Exit Sub
             End If
@@ -802,17 +883,18 @@ Enter:
             End Select
 
         Catch ex As Exception
-            HandleError(Me.Name, "TxtEstado_KeyDown", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub TxtMunicipio_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtMunicipio.KeyDown
+        Const sProcedure As String = "TxtMunicipio_KeyDown"
         Dim oMunicipio As New Class_CatMunicipios
         Try
             If txtLEN(Me.TxtEstado.Text) = False Then
-                MsgBox("Asígne un código de estado.", MsgBoxStyle.Exclamation, "TxtMunicipio_KeyDown")
+                MsgBox("Asígne un código de estado.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtMunicipio.Text = "" : Me.LblNombreMunicipio.Text = ""
-                Exit Sub
+                Return
             End If
 
             Select Case e.KeyCode
@@ -827,7 +909,8 @@ Buscar:
                 Case Keys.Enter
                     If txtLEN(Me.TxtMunicipio.Text) = False Then
                         Me.LblNombreMunicipio.Text = ""
-                        GoTo Buscar : Return
+                        'GoTo Buscar : Return
+                        txtTAB(e) : Return
                     End If
 Enter:
                     oMunicipio = New Class_CatMunicipios(TxtMunicipio.Text, Me.TxtEstado.Text)
@@ -846,19 +929,11 @@ Enter:
             End Select
 
         Catch ex As Exception
-            HandleError(Me.Name, "TxtMunicipio_KeyDown", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
 #End Region
-
-#Region "Validating específicos"
-
-#End Region
-
-    Private Sub CboFiltroHoja_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Refrescar()
-    End Sub
 
 #End Region
 
