@@ -75,6 +75,31 @@ Public Class Ventas_CartaPorte
         Me.oCartaPorte.Imprimir()
     End Sub
 
+    Private Sub tsbCatUbicaciones_Click(sender As Object, e As EventArgs) Handles tsbCatUbicaciones.Click
+        Dim oUbicaciones As New Catalogo_CFDI_Ubicaciones
+        'oUbicaciones.MdiParent = Me
+        oUbicaciones.ShowDialog()
+        oUbicaciones.Dispose()
+    End Sub
+
+    Private Sub tsbCatFigurasTransporte_Click(sender As Object, e As EventArgs) Handles tsbCatFigurasTransporte.Click
+        Dim oFigurasTransporte As New Catalogo_CFDI_Figuras_Transporte
+        oFigurasTransporte.ShowDialog()
+        oFigurasTransporte.Dispose()
+    End Sub
+
+    Private Sub tsbCatVehiculos_Click(sender As Object, e As EventArgs) Handles tsbCatVehiculos.Click
+        Dim oVehiculos As New Catalogo_Vehiculos
+        oVehiculos.ShowDialog()
+        oVehiculos.Dispose()
+    End Sub
+
+    Private Sub tsbCatRemolques_Click(sender As Object, e As EventArgs) Handles tsbCatRemolques.Click
+        Dim oRemolques As New Catalogo_Remolques
+        oRemolques.ShowDialog()
+        oRemolques.Dispose()
+    End Sub
+
     Private Sub tsbSalir_Click(sender As Object, e As EventArgs) Handles tsbSalir.Click
         Me.Close()
     End Sub
@@ -664,14 +689,16 @@ Enter:
                     Return False
                 End If
 
-                If oUbicacion.TIPO_UBICACION = "Origen" Then
+                'If oUbicacion.TIPO_UBICACION = "Origen" Then
+                If Me.GridUbicaciones.Cell(i, Me.iGyUbTipo).Text = "Origen" Then
                     bUbicacionOrigenEncontrada = True
 
                     If valorNumericoD(Me.GridUbicaciones.Cell(i, Me.iGyUbDistanciaRecorrida).Text) <> 0 Then
                         MsgBox("La distancia recorrida de la ubicación del renglón #" & i.ToString & " debe ser cero al ser tipo origen.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
                     End If
-                ElseIf oUbicacion.TIPO_UBICACION = "Destino" Then
+                    'ElseIf oUbicacion.TIPO_UBICACION = "Destino" Then
+                ElseIf Me.GridUbicaciones.Cell(i, Me.iGyUbTipo).Text = "Destino" Then
                     bUbicacionDestinoEncontrada = True
 
                     If valorNumericoD(Me.GridUbicaciones.Cell(i, Me.iGyUbDistanciaRecorrida).Text) <= 0 Then

@@ -89,8 +89,12 @@ Partial Class Ventas_CartaPorte
         Me.tsMenu = New System.Windows.Forms.ToolStrip()
         Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
         Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
-        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
+        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
+        Me.tsbCatUbicaciones = New System.Windows.Forms.ToolStripButton()
+        Me.tsbCatFigurasTransporte = New System.Windows.Forms.ToolStripButton()
+        Me.tsbCatVehiculos = New System.Windows.Forms.ToolStripButton()
+        Me.tsbCatRemolques = New System.Windows.Forms.ToolStripButton()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.gbMercancias.SuspendLayout()
@@ -766,7 +770,7 @@ Partial Class Ventas_CartaPorte
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbCatUbicaciones, Me.tsbCatFigurasTransporte, Me.tsbCatVehiculos, Me.tsbCatRemolques, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1213, 27)
@@ -789,14 +793,6 @@ Partial Class Ventas_CartaPorte
         Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
         Me.tsbGrabar.Text = "&Grabar"
         '
-        'tsbSalir
-        '
-        Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
-        Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
-        Me.tsbSalir.Text = "&Salir"
-        '
         'tsbImprimir
         '
         Me.tsbImprimir.Image = CType(resources.GetObject("tsbImprimir.Image"), System.Drawing.Image)
@@ -805,6 +801,46 @@ Partial Class Ventas_CartaPorte
         Me.tsbImprimir.Size = New System.Drawing.Size(77, 24)
         Me.tsbImprimir.Text = "&Imprimir"
         Me.tsbImprimir.ToolTipText = "Imprimir"
+        '
+        'tsbSalir
+        '
+        Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
+        Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbSalir.Name = "tsbSalir"
+        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
+        Me.tsbSalir.Text = "&Salir"
+        '
+        'tsbCatUbicaciones
+        '
+        Me.tsbCatUbicaciones.Image = CType(resources.GetObject("tsbCatUbicaciones.Image"), System.Drawing.Image)
+        Me.tsbCatUbicaciones.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbCatUbicaciones.Name = "tsbCatUbicaciones"
+        Me.tsbCatUbicaciones.Size = New System.Drawing.Size(95, 24)
+        Me.tsbCatUbicaciones.Text = "Ubicaciones"
+        '
+        'tsbCatFigurasTransporte
+        '
+        Me.tsbCatFigurasTransporte.Image = CType(resources.GetObject("tsbCatFigurasTransporte.Image"), System.Drawing.Image)
+        Me.tsbCatFigurasTransporte.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbCatFigurasTransporte.Name = "tsbCatFigurasTransporte"
+        Me.tsbCatFigurasTransporte.Size = New System.Drawing.Size(124, 24)
+        Me.tsbCatFigurasTransporte.Text = "FigurasTransporte"
+        '
+        'tsbCatVehiculos
+        '
+        Me.tsbCatVehiculos.Image = CType(resources.GetObject("tsbCatVehiculos.Image"), System.Drawing.Image)
+        Me.tsbCatVehiculos.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbCatVehiculos.Name = "tsbCatVehiculos"
+        Me.tsbCatVehiculos.Size = New System.Drawing.Size(81, 24)
+        Me.tsbCatVehiculos.Text = "Vehiculos"
+        '
+        'tsbCatRemolques
+        '
+        Me.tsbCatRemolques.Image = CType(resources.GetObject("tsbCatRemolques.Image"), System.Drawing.Image)
+        Me.tsbCatRemolques.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbCatRemolques.Name = "tsbCatRemolques"
+        Me.tsbCatRemolques.Size = New System.Drawing.Size(90, 24)
+        Me.tsbCatRemolques.Text = "Remolques"
         '
         'Ventas_CartaPorte
         '
@@ -905,4 +941,8 @@ Partial Class Ventas_CartaPorte
     Friend WithEvents TextBox2 As TextBox
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents tsbImprimir As ToolStripButton
+    Friend WithEvents tsbCatUbicaciones As ToolStripButton
+    Friend WithEvents tsbCatFigurasTransporte As ToolStripButton
+    Friend WithEvents tsbCatVehiculos As ToolStripButton
+    Friend WithEvents tsbCatRemolques As ToolStripButton
 End Class

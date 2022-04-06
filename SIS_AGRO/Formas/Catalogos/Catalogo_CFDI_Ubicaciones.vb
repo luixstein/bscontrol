@@ -555,7 +555,7 @@ Public Class Catalogo_CFDI_Ubicaciones
                      "INNER JOIN SIS_ESTADOS E ON(CP.CODIGO_ESTADO_SAT=E.CODIGO_ESTADO_SAT) " &
                      "LEFT JOIN CAT_MUNICIPIOS M ON(CP.CODIGO_MUNICIPIO_SAT=M.CODIGO_MUNICIPIO_SAT AND E.CODIGO_ESTADO=M.CODIGO_ESTADO) " &
                      "LEFT JOIN CFDI_CAT_COLONIAS COL ON(CP.CODIGO_POSTAL=COL.CODIGO_POSTAL) " &
-                     "LEFT JOIN CFDI_CAT_LOCALIDADES LOC ON(CP.CODIGO_LOCALIDAD=LOC.CODIGO_LOCALIDAD AND E.CODIGO_ESTADO=LOC.CODIGO_ESTADO) " &
+                     "LEFT JOIN CFDI_CAT_LOCALIDADES LOC ON(CP.CODIGO_LOCALIDAD=LOC.CODIGO_LOCALIDAD AND E.CODIGO_ESTADO_SAT=LOC.CODIGO_ESTADO_SAT) " &
                      "WHERE CP.CODIGO_POSTAL='" & sReplace(Me.TxtCodigoPostal.Text) & "' AND CP.CODIGO_ESTADO_SAT='" & Me.TxtEstado.Text & "' "
 
             If txtLEN(Me.TxtMunicipio.Text) = True Then
@@ -784,18 +784,18 @@ Enter:
     End Sub
 
     Private Sub txtIdLocalidad_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtIdLocalidad.KeyDown
+        Const sProcedure As String = "txtIdLocalidad_KeyDown"
         Dim oLocalidad As New Class_CfdiCatLocalidades
         Try
-            If txtLEN(Me.TxtMunicipio.Text) = False Then
-                MsgBox("Asígne un municipio.", MsgBoxStyle.Exclamation, "txtIdLocalidad_KeyDown")
-                Me.TxtIdLocalidad.Text = "" : Me.LblNombreLocalidad.Text = ""
-                Exit Sub
-            End If
-
             Select Case e.KeyCode
                 Case Keys.F6
+                    If txtLEN(Me.TxtEstado.Text) = False Then
+                        Me.LblNombreEstado.Text = ""
+                        MsgBox("Seleccione primero el estado.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return
+                    End If
 Buscar:
-                    Dim sLocalidad = oLocalidad.BusquedaVisual_PorDescripcion(Me.TxtMunicipio.Text)
+                    Dim sLocalidad = oLocalidad.BusquedaVisual_PorDescripcion(Me.TxtEstado.Text)
                     If txtLEN(sLocalidad) = True Then
                         Me.TxtIdLocalidad.Text = sLocalidad
                         GoTo Enter : Return
@@ -807,14 +807,20 @@ Buscar:
                         'GoTo Buscar : Return
                         txtTAB(e) : Return
                     End If
+
+                    If txtLEN(Me.TxtEstado.Text) = False Then
+                        Me.LblNombreEstado.Text = ""
+                        MsgBox("Seleccione primero el estado.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return
+                    End If
 Enter:
-                    oLocalidad = New Class_CfdiCatLocalidades(TxtIdLocalidad.Text, Me.TxtMunicipio.Text)
+                    oLocalidad = New Class_CfdiCatLocalidades(Me.TxtIdLocalidad.Text, Me.TxtEstado.Text)
 
                     If oLocalidad.Existe = False Then
                         Me.LblNombreLocalidad.Text = ""
                         GoTo Buscar : Return
                     ElseIf oLocalidad.ESTATUS = "B" Then
-                        MsgBox("La localidad " & TxtIdLocalidad.Text & " está dada de baja.", MsgBoxStyle.Exclamation, Me.Text)
+                        MsgBox("La localidad " & Me.TxtIdLocalidad.Text & " está dada de baja.", MsgBoxStyle.Exclamation, sProcedure)
                         GoTo Buscar : Return
                     End If
 
@@ -824,7 +830,7 @@ Enter:
             End Select
 
         Catch ex As Exception
-            HandleError(Me.Name, "txtIdLocalidad_KeyDown", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
