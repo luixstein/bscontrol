@@ -603,7 +603,7 @@ Module FacturacionElectronica33
         Return arr
     End Function
 
-    Public Function FormatTipoCambio(ByVal dTipoCambio As Double, Optional ByVal bConSignoMoneda As Boolean = True, Optional ByVal dDecimales As Integer = 4) As String
+    Public Function FormatTipoCambio(ByVal dTipoCambio As Double, Optional ByVal bConSignoMoneda As Boolean = True, Optional ByVal dDecimales As Integer = 6) As String
         Const sProcedure As String = "FormatTipoCambio"
         Dim sResultado As String = ""
         Try

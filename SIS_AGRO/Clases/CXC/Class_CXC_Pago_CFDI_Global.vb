@@ -52,6 +52,11 @@ Public Class Class_CXC_Pago_CFDI_Global
     Private _SELLO_PAGO As String
     Private _RFCPROVCERTIF As String
     Private _LEYENDA As String
+    Private _EXPORTACION As String
+    Private _RFC_RECEPTOR As String
+    Private _CODIGO_REGIMEN_FISCAL_RECEPTOR As String
+    Private _NOMBRE_RECEPTOR As String
+    Private _DOMICILIO_FISCAL_RECEPTOR As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -73,9 +78,7 @@ Public Class Class_CXC_Pago_CFDI_Global
 #End Region
 
 #Region "Propiedades"
-
 #Region "Propiedades Campos de la tabla"
-
     'Public Property FOLIO_VENTA() As String
     '    Get
     '        Return Me._FOLIO_VENTA
@@ -96,6 +99,7 @@ Public Class Class_CXC_Pago_CFDI_Global
             Return Me._FOLIO_PAGO
         End Get
     End Property
+
     Public ReadOnly Property ESTATUS_PAGO() As String
         Get
             Return Me._ESTATUS_PAGO
@@ -315,6 +319,35 @@ Public Class Class_CXC_Pago_CFDI_Global
         End Get
     End Property
 
+    Public ReadOnly Property EXPORTACION() As String
+        Get
+            Return Me._EXPORTACION
+        End Get
+    End Property
+
+    Public ReadOnly Property RFC_RECEPTOR() As String
+        Get
+            Return Me._RFC_RECEPTOR
+        End Get
+    End Property
+
+    Public ReadOnly Property CODIGO_REGIMEN_FISCAL_RECEPTOR() As String
+        Get
+            Return Me._CODIGO_REGIMEN_FISCAL_RECEPTOR
+        End Get
+    End Property
+
+    Public ReadOnly Property NOMBRE_RECEPTOR() As String
+        Get
+            Return Me._NOMBRE_RECEPTOR
+        End Get
+    End Property
+
+    Public ReadOnly Property DOMICILIO_FISCAL_RECEPTOR() As String
+        Get
+            Return Me._DOMICILIO_FISCAL_RECEPTOR
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -406,6 +439,7 @@ Public Class Class_CXC_Pago_CFDI_Global
 
 #Region "Métodos y procedimientos"
     Public Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
 
         Dim sSQL As String = ""
@@ -470,6 +504,11 @@ Public Class Class_CXC_Pago_CFDI_Global
                     Me._SELLO_PAGO = "" & dReader("SELLO_PAGO").ToString
                     Me._RFCPROVCERTIF = "" & dReader("RFCPROVCERTIF").ToString
                     Me._LEYENDA = "" & dReader("LEYENDA").ToString
+                    Me._EXPORTACION = "" & dReader("EXPORTACION").ToString
+                    Me._RFC_RECEPTOR = "" & dReader("RFC_RECEPTOR").ToString
+                    Me._CODIGO_REGIMEN_FISCAL_RECEPTOR = "" & dReader("CODIGO_REGIMEN_FISCAL_RECEPTOR").ToString
+                    Me._NOMBRE_RECEPTOR = "" & dReader("NOMBRE_RECEPTOR").ToString
+                    Me._DOMICILIO_FISCAL_RECEPTOR = "" & dReader("DOMICILIO_FISCAL_RECEPTOR").ToString
 
                     Me._SERIE = "" & dReader("SERIE").ToString
                     Me._FELECTRONICA_CER = "" & dReader("FELECTRONICA_CER").ToString
@@ -482,7 +521,7 @@ Public Class Class_CXC_Pago_CFDI_Global
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Consultar", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()

@@ -970,7 +970,7 @@ Module FacturacionElectronica40
             End With
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Receptor''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            With Cfd.Receptor 'Note que Rfc,Nombre,DomicilioFiscalReceptor,RegimenFiscalReceptor y UsoCFDI salen de la devolción(ya están grabados) y no del cliente.
+            With Cfd.Receptor 'Note que Rfc,Nombre,DomicilioFiscalReceptor,RegimenFiscalReceptor y UsoCFDI salen de la devolución(ya están grabados) y no del cliente.
                 .Rfc = oDescuento.RFC_RECEPTOR
                 .Nombre = oDescuento.NOMBRE_RECEPTOR
                 .DomicilioFiscalReceptor = oDescuento.DOMICILIO_FISCAL_RECEPTOR
@@ -1152,4 +1152,209 @@ Module FacturacionElectronica40
 
         Return bResultado
     End Function
+
+    Public Function GeneraPagoElectronico40(ByVal oPago As Class_CXC_Pago_CFDI_Global, ByVal bMostrarMensaje As Boolean, ByVal sRutaXML As String) As Boolean
+        Const sProcedure As String = "GeneraPagoElectronico40"
+        Dim bResultado As Boolean = False
+
+        Dim sPlaza As String, ComprobanteFecha As String, PagoFechaPago As String
+        Dim Cfd As New cComprobante40
+
+        Try
+            Dim oBanco As New Class_Bancos_CXC(oPago.FOLIO_BANCO)
+            Dim oBancoDetalle As New Class_Bancos_CXC_Detalle(oPago.FOLIO_BANCO)
+
+            If oBanco.Existe = False Then
+                MsgBox("No se encontró el movimento de bancos global.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If oBancoDetalle.EXISTE = False Then
+                MsgBox("No se encontró el movimento de bancos detalle.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            'Nota en el comprobante va la fecha del depósito.
+            'ComprobanteFecha = Format(oBanco.FECHA, "yyyy-MM-dd") & "T" & Format(oBanco.FECHA_SERVIDOR, "HH:mm:ss")
+            ComprobanteFecha = Format(oBanco.FECHA_EMISION_CFDI, "yyyy-MM-dd") & "T" & Format(oBanco.FECHA_EMISION_CFDI, "HH:mm:ss")
+
+            'Debemos validar la fecha del comprobante y no la del pago.
+            If ValidaDatosGeneralesCFDI(FechaSatAFechaNormal(ComprobanteFecha), oPago.FELECTRONICA_CER, oPago.FELECTRONICA_KEY, oPago.FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA) = False Then
+                Return False
+            End If
+
+            sPlaza = oPago.CODIGO_PLAZA.ToString
+
+            If sPlaza <> Usuario.Codigo_Plaza.ToString Then
+                If sPlaza <> Plaza.CODIGO_PLAZA.ToString Then 'Si ya estaba cargada la plaza de la factura, no se cargará de nuevo para evitar consultas.
+                    tPlazaFacturaElectronica = New Class_SisPlazas(CInt(sPlaza))
+                End If
+            Else
+                tPlazaFacturaElectronica = Plaza 'Plaza ya cargada en el inicio de sesión del usuario.
+            End If
+
+            PagoFechaPago = Format(oPago.FECHA_PAGO, "yyyy-MM-dd") & "T" & Format(oPago.FECHA_PAGO, "HH:mm:ss")
+
+            'No funcionó poner las 12 por ser antes que la fecha del comprobante(si es que es del mismo dia), ya la propia fecha_pago tiene la hora grabada necesaria
+            'PagoFechaPago = Format(oPago.FECHA_PAGO, "yyyy-MM-dd") & "T" & "12:00:00" 'Fijos a las 12 todos para no pedir la hora de pago al cliente
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Datos globales''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            With Cfd
+                .FolioCompleto = oPago.FOLIO_PAGO
+                .Version = Empresa_Sistema.VERSION_ESQUEMA_CFD
+                .Serie = oPago.SERIE
+                .Folio = oPago.FOLIO_NUMERICO
+                .Fecha = ComprobanteFecha
+                .Sello = ""                     'Inicialmente va en blanco, posteriormente se genera
+                .FormaPago = ""                 'Sat dice Omitir
+                .NoCertificado = ""             'Se llenan dentro de Cfd.Sellar(clase comprobante) y dentro se llama a SellarFactura(modulo FacturacionElectronica)
+                .Certificado = ""               'Igual que el anterior
+                .CondicionesDePago = ""         'Sat dice Omitir
+                .SubTotal = "0"                 'Sat dice 0
+                .Descuento = ""                 'Sat dice Omitir
+                .Moneda = "XXX"                 'Sat dice XXX
+                .TipoCambio = ""                'Sat dice Omitir
+                .Total = "0"                    'Sat dice 0
+                .TipoDeComprobante = "P"        'Sat dice P
+                .Exportacion = oPago.EXPORTACION
+                .MetodoPago = ""                'Sat dice Omitir
+                .LugarExpedicion = tPlazaFacturaElectronica.CODIGO_POSTAL
+                .Confirmacion = ""              'Nosotros no lo usaremos de momento
+            End With
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''CfdiRelacionados''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'Nota en caso de pagos aqui no van las facturas que pagan, iria mas bien algún uuid que esta sustituyendo.
+            'Cfd.CfdiRelacionados.TipoRelacion = "01"
+            'Cfd.CfdiRelacionados.Add ("F664C038-474C-414E-B40D-2E8C4A3EFCAC")
+
+            'Se pregunta por que no todas las facturas tienen relación.
+            If txtLEN("" & oBanco.CODIGO_TIPO_RELACION_CFDI) = True Then
+                Cfd.CfdiRelacionados.TipoRelacion = oBanco.CODIGO_TIPO_RELACION_CFDI
+
+                Dim dtPagosRelacionados As DataTable = oBanco.ObtienePagosRelacionados()
+                Dim FaltanUUIDRelacionados As Boolean = False
+
+                If dtPagosRelacionados.Rows.Count = 0 Then
+                    MsgBox("No se encontraron los cfdis relacionados(pagos) al pago.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                For Each dRow As DataRow In dtPagosRelacionados.Rows
+                    If txtLEN("" & dRow("FOLIO_FISCAL_SAT").ToString) = False Then
+                        MsgBox("El pago " & dRow("FOLIO_PAGO").ToString & " no tiene UUID(posiblemente no esta timbrada).", vbExclamation, sProcedure)
+                        FaltanUUIDRelacionados = True
+                    End If
+
+                    Cfd.CfdiRelacionados.Add(dRow("FOLIO_FISCAL_SAT").ToString) 'uuids
+                Next
+
+                'En caso de que alguna factura no este timbrada se aborta el proceso.
+                If FaltanUUIDRelacionados = True Then
+                    Return False
+                End If
+            End If
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Emisor''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            With Cfd.Emisor
+                .Rfc = fElectronicaValidaCampo(Empresa_Sistema.RFC)
+                .Nombre = fElectronicaValidaCampo(Empresa_Sistema.NOMBRE_EMPRESA)
+                .RegimenFiscal = fElectronicaValidaCampo(oPago.CODIGO_REGIMEN_FISCAL)
+            End With
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Receptor''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            With Cfd.Receptor
+                .Rfc = oPago.RFC_RECEPTOR
+                .Nombre = oPago.NOMBRE_RECEPTOR
+                .DomicilioFiscalReceptor = oPago.DOMICILIO_FISCAL_RECEPTOR
+                .ResidenciaFiscal = ""  'usarlo sólo cuando el rfc sea extranjero y haya cce o numregid
+                .NumRegIdTrib = ""
+                .RegimenFiscalReceptor = oPago.CODIGO_REGIMEN_FISCAL_RECEPTOR
+                .UsoCFDI = oPago.CODIGO_USO_CFDI
+            End With
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Conceptos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            Dim ConceptoImpuestoTraslados As New iConceptoImpuestoTraslados40 'El SAT dice en la guia de complemento de pagos : Este nodo no debe existir , solamente le hacemos new
+            Dim ConceptoImpuestoRetenciones As New iConceptoImpuestoRetenciones40 'El SAT dice en la guia de complemento de pagos : Este nodo no debe existir , solamente le hacemos new
+
+            'El sat en la guia dice que debe llevar sólo un renglón del siguiente modo:
+            Cfd.Conceptos.Add("84111506", "", "1", "ACT", "", "Pago", "0", "0", "", "01", ConceptoImpuestoTraslados, ConceptoImpuestoRetenciones)
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Impuestos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'Nodo: Impuestos(del nodo comprobante),El SAT dice en la guia de complemento de pagos : Este nodo no debe existir
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Complemento pagos'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Dim complementoPagos As New cComplementoPagos20
+
+            complementoPagos.CfdComprobanteLectura = Cfd 'Se ocupan validar ciertos datos del comprobante, por ello se le pasa el objeto
+
+            With complementoPagos
+                .Version = "1.0"
+                .FechaPago = PagoFechaPago
+                .FormaDePagoP = oBancoDetalle.CODIGO_METODO_PAGO
+                .MonedaP = oBancoDetalle.CODIGO_MONEDA_SAT
+
+                'Ya vendrá con su dato correspondiente, desde el grabar ya se hizo el if para ya no tener que preguntar
+                'preguntamos sólo porque si fuera 1 no queremos que le ponga el formato de los 6 decimales
+                .TipoCambioP = IIf(oBancoDetalle.TIPO_CAMBIO = CDec("1"), "1", FormatTipoCambio(oBancoDetalle.TIPO_CAMBIO)).ToString
+
+                .Monto = Format(oPago.MONTO, "#0.00")
+                .NumOperacion = oBancoDetalle.FOLIO_DETALLE
+                .RfcEmisorCtaOrd = ""
+                .NomBancoOrdExt = oBancoDetalle.NOMBRE_BANCO_EMISOR_EXTRANJERO
+                .CtaOrdenante = oBancoDetalle.CUENTA_EMISOR
+                .RfcEmisorCtaBen = ""
+                .CtaBeneficiario = oBancoDetalle.CUENTA_DESTINO
+
+                .TipoCadPago = "" 'Omitir de momento
+                .CertPago = "" 'Omitir de momento
+                .CadPago = "" 'Omitir de momento
+                .SelloPago = "" 'Omitir de momento
+
+                Dim dTablaPagosDetalle As DataTable = oPago.ObtenerPagosDetalle
+
+                If dTablaPagosDetalle.Rows.Count = 0 Then
+                    MsgBox("No se encontró el detalle del pago " & oPago.FOLIO_PAGO, MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                For Each dRow As DataRow In dTablaPagosDetalle.Rows
+
+                    Dim oPagoDetalle As New Class_CXC_Pago_CFDI_Detalle(dRow("FOLIO_CXC").ToString)
+
+                    If oPagoDetalle.EXISTE = False Then
+                        MsgBox("No se encontró el detalle del subpago " & dRow("FOLIO_CXC").ToString, MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                    .DoctoRelacionados.Add(oPagoDetalle.FACTURA_FOLIO_FISCAL_SAT, oPagoDetalle.FACTURA_SERIE, oPagoDetalle.FACTURA_FOLIO_NUMERICO,
+                                           oPagoDetalle.CODIGO_MONEDA_SAT_DR,
+                                           IIf(oPagoDetalle.CODIGO_MONEDA_SAT_DR <> complementoPagos.MonedaP, FormatTipoCambio(oPagoDetalle.TIPO_CAMBIO_DR, False, 6), "").ToString,
+                                           oPagoDetalle.CODIGO_METODO_PAGO_EVENTO_DR, oPagoDetalle.NUMERO_PARCIALIDAD,
+                                           Format(oPagoDetalle.IMPORTE_SALDO_ANTERIOR, "#0.00"), Format(oPagoDetalle.IMPORTE_PAGADO, "#0.00"), Format(oPagoDetalle.IMPORTE_SALDO_INSOLUTO, "#0.00"),)
+                Next
+
+            End With
+
+            Cfd.ComplementoPagos20 = complementoPagos
+
+            'Fin de llenado de nodos del comprobante''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            If Cfd.GeneraCFD(TipoComprobante.PAGO_CXC, sRutaXML) = True Then
+                bResultado = True
+                If bMostrarMensaje = True Then
+                    MsgBox("Pago timbrado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
+                End If
+            End If
+
+            oBanco = Nothing
+            oBancoDetalle = Nothing
+
+        Catch ex As Exception
+            HandleError(nombreModulo, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
 End Module
