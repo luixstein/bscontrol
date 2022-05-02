@@ -1,0 +1,3177 @@
+Ôªø<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class Catalogo_Clientes
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Catalogo_Clientes))
+        Me.tsMenu = New System.Windows.Forms.ToolStrip()
+        Me.tsbNuevo = New System.Windows.Forms.ToolStripButton()
+        Me.tsbEditar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbGrabar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbEliminar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbCancelar = New System.Windows.Forms.ToolStripButton()
+        Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
+        Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
+        Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.txtNumeroRegistroIdentificadorExtranjero = New System.Windows.Forms.MaskedTextBox()
+        Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
+        Me.cboUsoCFDI = New System.Windows.Forms.ComboBox()
+        Me.TxtIdRelacion = New System.Windows.Forms.TextBox()
+        Me.LblDisplayCodigoPropietario = New System.Windows.Forms.Label()
+        Me.LblNombrePropietario = New System.Windows.Forms.Label()
+        Me.TxtCodigoPropietario = New System.Windows.Forms.TextBox()
+        Me.chkEsContribuyenteIEPS = New System.Windows.Forms.CheckBox()
+        Me.lblDisplayNumeroRegistroIdentificadorExtranjero = New System.Windows.Forms.Label()
+        Me.cboTipoMercado = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayTipoCliente = New System.Windows.Forms.Label()
+        Me.lblDisplayTipoPersona = New System.Windows.Forms.Label()
+        Me.cboTipoPersona = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayCelCliente = New System.Windows.Forms.Label()
+        Me.txtNumeroCelular = New System.Windows.Forms.TextBox()
+        Me.LblDisplayTelefonoCliente = New System.Windows.Forms.Label()
+        Me.txtNumeroTelefono = New System.Windows.Forms.TextBox()
+        Me.lblDisplayCURP = New System.Windows.Forms.Label()
+        Me.txtCurp = New System.Windows.Forms.TextBox()
+        Me.lblDisplayRFC = New System.Windows.Forms.Label()
+        Me.txtRfc = New System.Windows.Forms.TextBox()
+        Me.LblDisplayNombreCultivo = New System.Windows.Forms.Label()
+        Me.TxtNombreCliente = New System.Windows.Forms.TextBox()
+        Me.LblEstatus = New System.Windows.Forms.Label()
+        Me.CboEstatus = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayCodigo = New System.Windows.Forms.Label()
+        Me.txtCodigoCliente = New System.Windows.Forms.TextBox()
+        Me.lblDisplayCalle = New System.Windows.Forms.Label()
+        Me.txtCalle = New System.Windows.Forms.TextBox()
+        Me.lblDisplayNumExterior = New System.Windows.Forms.Label()
+        Me.txtNumeroExterior = New System.Windows.Forms.TextBox()
+        Me.lblDisplayNumInterior = New System.Windows.Forms.Label()
+        Me.txtNumeroInterior = New System.Windows.Forms.TextBox()
+        Me.lblDisplayColonia = New System.Windows.Forms.Label()
+        Me.txtColonia = New System.Windows.Forms.TextBox()
+        Me.lblDisplayLocalidad = New System.Windows.Forms.Label()
+        Me.txtLocalidad = New System.Windows.Forms.TextBox()
+        Me.lblDisplayEstado = New System.Windows.Forms.Label()
+        Me.cboEstado = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayPais = New System.Windows.Forms.Label()
+        Me.lblDisplayCP = New System.Windows.Forms.Label()
+        Me.txtCodigoPostal = New System.Windows.Forms.TextBox()
+        Me.gbDatosVentas = New System.Windows.Forms.GroupBox()
+        Me.TxtCodigoAlmacen = New System.Windows.Forms.TextBox()
+        Me.LblAlmacenCliente = New System.Windows.Forms.Label()
+        Me.chkPermitirVentaCredito = New System.Windows.Forms.CheckBox()
+        Me.cboVendedor = New System.Windows.Forms.ComboBox()
+        Me.cboZona = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayVendedor = New System.Windows.Forms.Label()
+        Me.lblDisplayZona = New System.Windows.Forms.Label()
+        Me.gbCuentasContables = New System.Windows.Forms.GroupBox()
+        Me.BtnGeneraCuentaContableDolares = New System.Windows.Forms.Button()
+        Me.lblDisplayCuentaConDolares = New System.Windows.Forms.Label()
+        Me.txtCuentaContableDolares = New System.Windows.Forms.TextBox()
+        Me.lblCuentaContable = New System.Windows.Forms.Label()
+        Me.txtCuentaContable = New System.Windows.Forms.TextBox()
+        Me.gbDomicilio = New System.Windows.Forms.GroupBox()
+        Me.cboPais = New System.Windows.Forms.ComboBox()
+        Me.cboMunicipio = New System.Windows.Forms.ComboBox()
+        Me.txtCiudad = New System.Windows.Forms.TextBox()
+        Me.lblDisplayCiudad = New System.Windows.Forms.Label()
+        Me.gbCxc = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayLimiteCredito = New System.Windows.Forms.Label()
+        Me.txtLimiteCredito = New System.Windows.Forms.TextBox()
+        Me.lblDisplayDiasPlazo = New System.Windows.Forms.Label()
+        Me.txtDiasPlazo = New System.Windows.Forms.TextBox()
+        Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
+        Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
+        Me.gbFechaAlta = New System.Windows.Forms.GroupBox()
+        Me.DpFecha = New System.Windows.Forms.DateTimePicker()
+        Me.lblDisplayFechaAlta = New System.Windows.Forms.Label()
+        Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
+        Me.CboEstatusFiltro = New System.Windows.Forms.ComboBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.rbtCodigoCliente = New System.Windows.Forms.RadioButton()
+        Me.rbtNombreCliente = New System.Windows.Forms.RadioButton()
+        Me.Grid = New System.Windows.Forms.DataGridView()
+        Me.txtFiltro = New System.Windows.Forms.TextBox()
+        Me.gbCorreo = New System.Windows.Forms.GroupBox()
+        Me.lblCorreoClientePagos = New System.Windows.Forms.Label()
+        Me.txtCorreoClientePagos = New System.Windows.Forms.TextBox()
+        Me.cboNombreXML = New System.Windows.Forms.ComboBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.lblDisplayCorreoCliente = New System.Windows.Forms.Label()
+        Me.txtCorreoCliente = New System.Windows.Forms.TextBox()
+        Me.gbMetodoPago = New System.Windows.Forms.GroupBox()
+        Me.cboFormaPagoUSD = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayNCuentaDlls = New System.Windows.Forms.Label()
+        Me.txtNumeroCuentaDolares = New System.Windows.Forms.TextBox()
+        Me.lblDisplayFormaPagoUSD = New System.Windows.Forms.Label()
+        Me.cboFormaPago = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayNumCuenta = New System.Windows.Forms.Label()
+        Me.txtNumeroCuenta = New System.Windows.Forms.TextBox()
+        Me.lblDisplayFormaPago = New System.Windows.Forms.Label()
+        Me.tsMenu.SuspendLayout()
+        Me.gBoxInformacion.SuspendLayout()
+        Me.gbDatosVentas.SuspendLayout()
+        Me.gbCuentasContables.SuspendLayout()
+        Me.gbDomicilio.SuspendLayout()
+        Me.gbCxc.SuspendLayout()
+        Me.StatusStripEstado.SuspendLayout()
+        CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.gbFechaAlta.SuspendLayout()
+        Me.gBoxBusquedaRapida.SuspendLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.gbCorreo.SuspendLayout()
+        Me.gbMetodoPago.SuspendLayout()
+        Me.SuspendLayout()
+        '
+        'tsMenu
+        '
+        Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbEliminar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
+        Me.tsMenu.Location = New System.Drawing.Point(0, 0)
+        Me.tsMenu.Name = "tsMenu"
+        Me.tsMenu.Size = New System.Drawing.Size(1162, 27)
+        Me.tsMenu.TabIndex = 8
+        Me.tsMenu.Text = "tsMenu"
+        '
+        'tsbNuevo
+        '
+        Me.tsbNuevo.Image = CType(resources.GetObject("tsbNuevo.Image"), System.Drawing.Image)
+        Me.tsbNuevo.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbNuevo.Name = "tsbNuevo"
+        Me.tsbNuevo.Size = New System.Drawing.Size(66, 24)
+        Me.tsbNuevo.Text = "&Nuevo"
+        '
+        'tsbEditar
+        '
+        Me.tsbEditar.Image = CType(resources.GetObject("tsbEditar.Image"), System.Drawing.Image)
+        Me.tsbEditar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbEditar.Name = "tsbEditar"
+        Me.tsbEditar.Size = New System.Drawing.Size(61, 24)
+        Me.tsbEditar.Text = "&Editar"
+        '
+        'tsbGrabar
+        '
+        Me.tsbGrabar.Image = CType(resources.GetObject("tsbGrabar.Image"), System.Drawing.Image)
+        Me.tsbGrabar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbGrabar.Name = "tsbGrabar"
+        Me.tsbGrabar.Size = New System.Drawing.Size(66, 24)
+        Me.tsbGrabar.Text = "&Grabar"
+        '
+        'tsbEliminar
+        '
+        Me.tsbEliminar.Image = CType(resources.GetObject("tsbEliminar.Image"), System.Drawing.Image)
+        Me.tsbEliminar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbEliminar.Name = "tsbEliminar"
+        Me.tsbEliminar.Size = New System.Drawing.Size(74, 24)
+        Me.tsbEliminar.Text = "Eliminar"
+        '
+        'tsbCancelar
+        '
+        Me.tsbCancelar.Image = CType(resources.GetObject("tsbCancelar.Image"), System.Drawing.Image)
+        Me.tsbCancelar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbCancelar.Name = "tsbCancelar"
+        Me.tsbCancelar.Size = New System.Drawing.Size(77, 24)
+        Me.tsbCancelar.Text = "&Cancelar"
+        '
+        'tsbImprimirListado
+        '
+        Me.tsbImprimirListado.Image = CType(resources.GetObject("tsbImprimirListado.Image"), System.Drawing.Image)
+        Me.tsbImprimirListado.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbImprimirListado.Name = "tsbImprimirListado"
+        Me.tsbImprimirListado.Size = New System.Drawing.Size(115, 24)
+        Me.tsbImprimirListado.Text = "&Imprimir listado"
+        '
+        'tsbSalir
+        '
+        Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
+        Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbSalir.Name = "tsbSalir"
+        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
+        Me.tsbSalir.Text = "&Salir"
+        '
+        'gBoxInformacion
+        '
+        Me.gBoxInformacion.Controls.Add(Me.txtNumeroRegistroIdentificadorExtranjero)
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayUsoCFDI)
+        Me.gBoxInformacion.Controls.Add(Me.cboUsoCFDI)
+        Me.gBoxInformacion.Controls.Add(Me.TxtIdRelacion)
+        Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodigoPropietario)
+        Me.gBoxInformacion.Controls.Add(Me.LblNombrePropietario)
+        Me.gBoxInformacion.Controls.Add(Me.TxtCodigoPropietario)
+        Me.gBoxInformacion.Controls.Add(Me.chkEsContribuyenteIEPS)
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayNumeroRegistroIdentificadorExtranjero)
+        Me.gBoxInformacion.Controls.Add(Me.cboTipoMercado)
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayTipoCliente)
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayTipoPersona)
+        Me.gBoxInformacion.Controls.Add(Me.cboTipoPersona)
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayCelCliente)
+        Me.gBoxInformacion.Controls.Add(Me.txtNumeroCelular)
+        Me.gBoxInformacion.Controls.Add(Me.LblDisplayTelefonoCliente)
+        Me.gBoxInformacion.Controls.Add(Me.txtNumeroTelefono)
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayCURP)
+        Me.gBoxInformacion.Controls.Add(Me.txtCurp)
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayRFC)
+        Me.gBoxInformacion.Controls.Add(Me.txtRfc)
+        Me.gBoxInformacion.Controls.Add(Me.LblDisplayNombreCultivo)
+        Me.gBoxInformacion.Controls.Add(Me.TxtNombreCliente)
+        Me.gBoxInformacion.Controls.Add(Me.LblEstatus)
+        Me.gBoxInformacion.Controls.Add(Me.CboEstatus)
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayCodigo)
+        Me.gBoxInformacion.Controls.Add(Me.txtCodigoCliente)
+        Me.gBoxInformacion.Location = New System.Drawing.Point(12, 28)
+        Me.gBoxInformacion.Name = "gBoxInformacion"
+        Me.gBoxInformacion.Size = New System.Drawing.Size(395, 341)
+        Me.gBoxInformacion.TabIndex = 0
+        Me.gBoxInformacion.TabStop = False
+        Me.gBoxInformacion.Text = "Datos generales"
+        '
+        'txtNumeroRegistroIdentificadorExtranjero
+        '
+        Me.txtNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(106, 270)
+        Me.txtNumeroRegistroIdentificadorExtranjero.Mask = "000000000"
+        Me.txtNumeroRegistroIdentificadorExtranjero.Name = "txtNumeroRegistroIdentificadorExtranjero"
+        Me.txtNumeroRegistroIdentificadorExtranjero.Size = New System.Drawing.Size(100, 20)
+        Me.txtNumeroRegistroIdentificadorExtranjero.TabIndex = 11
+        '
+        'lblDisplayUsoCFDI
+        '
+        Me.lblDisplayUsoCFDI.AutoSize = True
+        Me.lblDisplayUsoCFDI.Location = New System.Drawing.Point(6, 243)
+        Me.lblDisplayUsoCFDI.Name = "lblDisplayUsoCFDI"
+        Me.lblDisplayUsoCFDI.Size = New System.Drawing.Size(76, 13)
+        Me.lblDisplayUsoCFDI.TabIndex = 132
+        Me.lblDisplayUsoCFDI.Text = "Uso del CFDI :"
+        '
+        'cboUsoCFDI
+        '
+        Me.cboUsoCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboUsoCFDI.FormattingEnabled = True
+        Me.cboUsoCFDI.Items.AddRange(New Object() {"MORAL", "FISICA"})
+        Me.cboUsoCFDI.Location = New System.Drawing.Point(87, 240)
+        Me.cboUsoCFDI.MaxLength = 1
+        Me.cboUsoCFDI.Name = "cboUsoCFDI"
+        Me.cboUsoCFDI.Size = New System.Drawing.Size(301, 21)
+        Me.cboUsoCFDI.TabIndex = 10
+        '
+        'TxtIdRelacion
+        '
+        Me.TxtIdRelacion.Location = New System.Drawing.Point(209, 45)
+        Me.TxtIdRelacion.MaxLength = 6
+        Me.TxtIdRelacion.Name = "TxtIdRelacion"
+        Me.TxtIdRelacion.Size = New System.Drawing.Size(92, 20)
+        Me.TxtIdRelacion.TabIndex = 130
+        Me.TxtIdRelacion.Visible = False
+        '
+        'LblDisplayCodigoPropietario
+        '
+        Me.LblDisplayCodigoPropietario.Location = New System.Drawing.Point(6, 42)
+        Me.LblDisplayCodigoPropietario.Name = "LblDisplayCodigoPropietario"
+        Me.LblDisplayCodigoPropietario.Size = New System.Drawing.Size(66, 27)
+        Me.LblDisplayCodigoPropietario.TabIndex = 129
+        Me.LblDisplayCodigoPropietario.Text = "C√≥digo " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "propietario :"
+        '
+        'LblNombrePropietario
+        '
+        Me.LblNombrePropietario.AutoSize = True
+        Me.LblNombrePropietario.Location = New System.Drawing.Point(76, 68)
+        Me.LblNombrePropietario.Name = "LblNombrePropietario"
+        Me.LblNombrePropietario.Size = New System.Drawing.Size(13, 13)
+        Me.LblNombrePropietario.TabIndex = 128
+        Me.LblNombrePropietario.Text = "_"
+        '
+        'TxtCodigoPropietario
+        '
+        Me.TxtCodigoPropietario.Location = New System.Drawing.Point(76, 45)
+        Me.TxtCodigoPropietario.MaxLength = 6
+        Me.TxtCodigoPropietario.Name = "TxtCodigoPropietario"
+        Me.TxtCodigoPropietario.Size = New System.Drawing.Size(114, 20)
+        Me.TxtCodigoPropietario.TabIndex = 1
+        '
+        'chkEsContribuyenteIEPS
+        '
+        Me.chkEsContribuyenteIEPS.Location = New System.Drawing.Point(117, 298)
+        Me.chkEsContribuyenteIEPS.Name = "chkEsContribuyenteIEPS"
+        Me.chkEsContribuyenteIEPS.Size = New System.Drawing.Size(258, 31)
+        Me.chkEsContribuyenteIEPS.TabIndex = 12
+        Me.chkEsContribuyenteIEPS.Text = "Es contribuyente del IEPS ? ( Si se le desglosar√° por separado)"
+        Me.chkEsContribuyenteIEPS.UseVisualStyleBackColor = True
+        '
+        'lblDisplayNumeroRegistroIdentificadorExtranjero
+        '
+        Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(6, 267)
+        Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Name = "lblDisplayNumeroRegistroIdentificadorExtranjero"
+        Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Size = New System.Drawing.Size(105, 27)
+        Me.lblDisplayNumeroRegistroIdentificadorExtranjero.TabIndex = 125
+        Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Text = "Num registro id extranjero (TAX ID) :"
+        '
+        'cboTipoMercado
+        '
+        Me.cboTipoMercado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTipoMercado.FormattingEnabled = True
+        Me.cboTipoMercado.Location = New System.Drawing.Point(77, 19)
+        Me.cboTipoMercado.Name = "cboTipoMercado"
+        Me.cboTipoMercado.Size = New System.Drawing.Size(211, 21)
+        Me.cboTipoMercado.TabIndex = 0
+        '
+        'lblDisplayTipoCliente
+        '
+        Me.lblDisplayTipoCliente.AutoSize = True
+        Me.lblDisplayTipoCliente.Location = New System.Drawing.Point(6, 22)
+        Me.lblDisplayTipoCliente.Name = "lblDisplayTipoCliente"
+        Me.lblDisplayTipoCliente.Size = New System.Drawing.Size(65, 13)
+        Me.lblDisplayTipoCliente.TabIndex = 121
+        Me.lblDisplayTipoCliente.Text = "Tipo cliente:"
+        '
+        'lblDisplayTipoPersona
+        '
+        Me.lblDisplayTipoPersona.AutoSize = True
+        Me.lblDisplayTipoPersona.Location = New System.Drawing.Point(219, 140)
+        Me.lblDisplayTipoPersona.Name = "lblDisplayTipoPersona"
+        Me.lblDisplayTipoPersona.Size = New System.Drawing.Size(75, 13)
+        Me.lblDisplayTipoPersona.TabIndex = 119
+        Me.lblDisplayTipoPersona.Text = "Tipo persona :"
+        '
+        'cboTipoPersona
+        '
+        Me.cboTipoPersona.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTipoPersona.FormattingEnabled = True
+        Me.cboTipoPersona.Items.AddRange(New Object() {"MORAL", "FISICA"})
+        Me.cboTipoPersona.Location = New System.Drawing.Point(300, 136)
+        Me.cboTipoPersona.MaxLength = 1
+        Me.cboTipoPersona.Name = "cboTipoPersona"
+        Me.cboTipoPersona.Size = New System.Drawing.Size(89, 21)
+        Me.cboTipoPersona.TabIndex = 6
+        '
+        'lblDisplayCelCliente
+        '
+        Me.lblDisplayCelCliente.AutoSize = True
+        Me.lblDisplayCelCliente.Location = New System.Drawing.Point(6, 218)
+        Me.lblDisplayCelCliente.Name = "lblDisplayCelCliente"
+        Me.lblDisplayCelCliente.Size = New System.Drawing.Size(55, 13)
+        Me.lblDisplayCelCliente.TabIndex = 117
+        Me.lblDisplayCelCliente.Text = "# Celular :"
+        '
+        'txtNumeroCelular
+        '
+        Me.txtNumeroCelular.Location = New System.Drawing.Point(77, 215)
+        Me.txtNumeroCelular.MaxLength = 15
+        Me.txtNumeroCelular.Name = "txtNumeroCelular"
+        Me.txtNumeroCelular.Size = New System.Drawing.Size(129, 20)
+        Me.txtNumeroCelular.TabIndex = 9
+        '
+        'LblDisplayTelefonoCliente
+        '
+        Me.LblDisplayTelefonoCliente.AutoSize = True
+        Me.LblDisplayTelefonoCliente.Location = New System.Drawing.Point(6, 192)
+        Me.LblDisplayTelefonoCliente.Name = "LblDisplayTelefonoCliente"
+        Me.LblDisplayTelefonoCliente.Size = New System.Drawing.Size(65, 13)
+        Me.LblDisplayTelefonoCliente.TabIndex = 115
+        Me.LblDisplayTelefonoCliente.Text = "# Telefono :"
+        '
+        'txtNumeroTelefono
+        '
+        Me.txtNumeroTelefono.Location = New System.Drawing.Point(76, 189)
+        Me.txtNumeroTelefono.MaxLength = 15
+        Me.txtNumeroTelefono.Name = "txtNumeroTelefono"
+        Me.txtNumeroTelefono.Size = New System.Drawing.Size(130, 20)
+        Me.txtNumeroTelefono.TabIndex = 8
+        '
+        'lblDisplayCURP
+        '
+        Me.lblDisplayCURP.AutoSize = True
+        Me.lblDisplayCURP.Location = New System.Drawing.Point(6, 166)
+        Me.lblDisplayCURP.Name = "lblDisplayCURP"
+        Me.lblDisplayCURP.Size = New System.Drawing.Size(43, 13)
+        Me.lblDisplayCURP.TabIndex = 113
+        Me.lblDisplayCURP.Text = "CURP :"
+        '
+        'txtCurp
+        '
+        Me.txtCurp.Location = New System.Drawing.Point(76, 163)
+        Me.txtCurp.MaxLength = 18
+        Me.txtCurp.Name = "txtCurp"
+        Me.txtCurp.Size = New System.Drawing.Size(130, 20)
+        Me.txtCurp.TabIndex = 7
+        '
+        'lblDisplayRFC
+        '
+        Me.lblDisplayRFC.AutoSize = True
+        Me.lblDisplayRFC.Location = New System.Drawing.Point(6, 140)
+        Me.lblDisplayRFC.Name = "lblDisplayRFC"
+        Me.lblDisplayRFC.Size = New System.Drawing.Size(34, 13)
+        Me.lblDisplayRFC.TabIndex = 111
+        Me.lblDisplayRFC.Text = "RFC :"
+        '
+        'txtRfc
+        '
+        Me.txtRfc.Location = New System.Drawing.Point(77, 137)
+        Me.txtRfc.MaxLength = 13
+        Me.txtRfc.Name = "txtRfc"
+        Me.txtRfc.Size = New System.Drawing.Size(129, 20)
+        Me.txtRfc.TabIndex = 5
+        '
+        'LblDisplayNombreCultivo
+        '
+        Me.LblDisplayNombreCultivo.AutoSize = True
+        Me.LblDisplayNombreCultivo.Location = New System.Drawing.Point(6, 114)
+        Me.LblDisplayNombreCultivo.Name = "LblDisplayNombreCultivo"
+        Me.LblDisplayNombreCultivo.Size = New System.Drawing.Size(50, 13)
+        Me.LblDisplayNombreCultivo.TabIndex = 74
+        Me.LblDisplayNombreCultivo.Text = "Nombre :"
+        '
+        'TxtNombreCliente
+        '
+        Me.TxtNombreCliente.Location = New System.Drawing.Point(77, 111)
+        Me.TxtNombreCliente.MaxLength = 120
+        Me.TxtNombreCliente.Name = "TxtNombreCliente"
+        Me.TxtNombreCliente.Size = New System.Drawing.Size(312, 20)
+        Me.TxtNombreCliente.TabIndex = 4
+        '
+        'LblEstatus
+        '
+        Me.LblEstatus.AutoSize = True
+        Me.LblEstatus.Location = New System.Drawing.Point(275, 88)
+        Me.LblEstatus.Name = "LblEstatus"
+        Me.LblEstatus.Size = New System.Drawing.Size(48, 13)
+        Me.LblEstatus.TabIndex = 22
+        Me.LblEstatus.Text = "Estatus :"
+        '
+        'CboEstatus
+        '
+        Me.CboEstatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboEstatus.FormattingEnabled = True
+        Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
+        Me.CboEstatus.Location = New System.Drawing.Point(325, 84)
+        Me.CboEstatus.MaxLength = 1
+        Me.CboEstatus.Name = "CboEstatus"
+        Me.CboEstatus.Size = New System.Drawing.Size(64, 21)
+        Me.CboEstatus.TabIndex = 3
+        '
+        'lblDisplayCodigo
+        '
+        Me.lblDisplayCodigo.AutoSize = True
+        Me.lblDisplayCodigo.Location = New System.Drawing.Point(6, 88)
+        Me.lblDisplayCodigo.Name = "lblDisplayCodigo"
+        Me.lblDisplayCodigo.Size = New System.Drawing.Size(46, 13)
+        Me.lblDisplayCodigo.TabIndex = 8
+        Me.lblDisplayCodigo.Text = "C√≥digo :"
+        '
+        'txtCodigoCliente
+        '
+        Me.txtCodigoCliente.Location = New System.Drawing.Point(77, 85)
+        Me.txtCodigoCliente.MaxLength = 6
+        Me.txtCodigoCliente.Name = "txtCodigoCliente"
+        Me.txtCodigoCliente.Size = New System.Drawing.Size(129, 20)
+        Me.txtCodigoCliente.TabIndex = 2
+        '
+        'lblDisplayCalle
+        '
+        Me.lblDisplayCalle.AutoSize = True
+        Me.lblDisplayCalle.Location = New System.Drawing.Point(7, 101)
+        Me.lblDisplayCalle.Name = "lblDisplayCalle"
+        Me.lblDisplayCalle.Size = New System.Drawing.Size(36, 13)
+        Me.lblDisplayCalle.TabIndex = 93
+        Me.lblDisplayCalle.Text = "Calle :"
+        '
+        'txtCalle
+        '
+        Me.txtCalle.Location = New System.Drawing.Point(76, 98)
+        Me.txtCalle.MaxLength = 100
+        Me.txtCalle.Name = "txtCalle"
+        Me.txtCalle.Size = New System.Drawing.Size(312, 20)
+        Me.txtCalle.TabIndex = 4
+        '
+        'lblDisplayNumExterior
+        '
+        Me.lblDisplayNumExterior.AutoSize = True
+        Me.lblDisplayNumExterior.Location = New System.Drawing.Point(7, 127)
+        Me.lblDisplayNumExterior.Name = "lblDisplayNumExterior"
+        Me.lblDisplayNumExterior.Size = New System.Drawing.Size(58, 13)
+        Me.lblDisplayNumExterior.TabIndex = 95
+        Me.lblDisplayNumExterior.Text = "# Exterior :"
+        '
+        'txtNumeroExterior
+        '
+        Me.txtNumeroExterior.Location = New System.Drawing.Point(76, 124)
+        Me.txtNumeroExterior.MaxLength = 20
+        Me.txtNumeroExterior.Name = "txtNumeroExterior"
+        Me.txtNumeroExterior.Size = New System.Drawing.Size(102, 20)
+        Me.txtNumeroExterior.TabIndex = 5
+        '
+        'lblDisplayNumInterior
+        '
+        Me.lblDisplayNumInterior.AutoSize = True
+        Me.lblDisplayNumInterior.Location = New System.Drawing.Point(225, 127)
+        Me.lblDisplayNumInterior.Name = "lblDisplayNumInterior"
+        Me.lblDisplayNumInterior.Size = New System.Drawing.Size(55, 13)
+        Me.lblDisplayNumInterior.TabIndex = 97
+        Me.lblDisplayNumInterior.Text = "# Interior :"
+        '
+        'txtNumeroInterior
+        '
+        Me.txtNumeroInterior.Location = New System.Drawing.Point(286, 124)
+        Me.txtNumeroInterior.MaxLength = 20
+        Me.txtNumeroInterior.Name = "txtNumeroInterior"
+        Me.txtNumeroInterior.Size = New System.Drawing.Size(102, 20)
+        Me.txtNumeroInterior.TabIndex = 6
+        '
+        'lblDisplayColonia
+        '
+        Me.lblDisplayColonia.AutoSize = True
+        Me.lblDisplayColonia.Location = New System.Drawing.Point(7, 153)
+        Me.lblDisplayColonia.Name = "lblDisplayColonia"
+        Me.lblDisplayColonia.Size = New System.Drawing.Size(48, 13)
+        Me.lblDisplayColonia.TabIndex = 99
+        Me.lblDisplayColonia.Text = "Colonia :"
+        '
+        'txtColonia
+        '
+        Me.txtColonia.Location = New System.Drawing.Point(76, 150)
+        Me.txtColonia.MaxLength = 50
+        Me.txtColonia.Name = "txtColonia"
+        Me.txtColonia.Size = New System.Drawing.Size(312, 20)
+        Me.txtColonia.TabIndex = 7
+        '
+        'lblDisplayLocalidad
+        '
+        Me.lblDisplayLocalidad.AutoSize = True
+        Me.lblDisplayLocalidad.Location = New System.Drawing.Point(7, 179)
+        Me.lblDisplayLocalidad.Name = "lblDisplayLocalidad"
+        Me.lblDisplayLocalidad.Size = New System.Drawing.Size(59, 13)
+        Me.lblDisplayLocalidad.TabIndex = 103
+        Me.lblDisplayLocalidad.Text = "Localidad :"
+        '
+        'txtLocalidad
+        '
+        Me.txtLocalidad.Location = New System.Drawing.Point(76, 176)
+        Me.txtLocalidad.MaxLength = 50
+        Me.txtLocalidad.Name = "txtLocalidad"
+        Me.txtLocalidad.Size = New System.Drawing.Size(312, 20)
+        Me.txtLocalidad.TabIndex = 8
+        '
+        'lblDisplayEstado
+        '
+        Me.lblDisplayEstado.AutoSize = True
+        Me.lblDisplayEstado.Location = New System.Drawing.Point(7, 48)
+        Me.lblDisplayEstado.Name = "lblDisplayEstado"
+        Me.lblDisplayEstado.Size = New System.Drawing.Size(46, 13)
+        Me.lblDisplayEstado.TabIndex = 104
+        Me.lblDisplayEstado.Text = "Estado :"
+        '
+        'cboEstado
+        '
+        Me.cboEstado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboEstado.FormattingEnabled = True
+        Me.cboEstado.Items.AddRange(New Object() {"A", "B"})
+        Me.cboEstado.Location = New System.Drawing.Point(77, 45)
+        Me.cboEstado.MaxLength = 80
+        Me.cboEstado.Name = "cboEstado"
+        Me.cboEstado.Size = New System.Drawing.Size(313, 21)
+        Me.cboEstado.TabIndex = 1
+        '
+        'lblDisplayPais
+        '
+        Me.lblDisplayPais.AutoSize = True
+        Me.lblDisplayPais.Location = New System.Drawing.Point(7, 22)
+        Me.lblDisplayPais.Name = "lblDisplayPais"
+        Me.lblDisplayPais.Size = New System.Drawing.Size(35, 13)
+        Me.lblDisplayPais.TabIndex = 107
+        Me.lblDisplayPais.Text = "Pa√≠s :"
+        '
+        'lblDisplayCP
+        '
+        Me.lblDisplayCP.AutoSize = True
+        Me.lblDisplayCP.Location = New System.Drawing.Point(7, 205)
+        Me.lblDisplayCP.Name = "lblDisplayCP"
+        Me.lblDisplayCP.Size = New System.Drawing.Size(77, 13)
+        Me.lblDisplayCP.TabIndex = 109
+        Me.lblDisplayCP.Text = "C√≥digo postal :"
+        '
+        'txtCodigoPostal
+        '
+        Me.txtCodigoPostal.Location = New System.Drawing.Point(87, 202)
+        Me.txtCodigoPostal.MaxLength = 10
+        Me.txtCodigoPostal.Name = "txtCodigoPostal"
+        Me.txtCodigoPostal.Size = New System.Drawing.Size(130, 20)
+        Me.txtCodigoPostal.TabIndex = 9
+        '
+        'gbDatosVentas
+        '
+        Me.gbDatosVentas.Controls.Add(Me.TxtCodigoAlmacen)
+        Me.gbDatosVentas.Controls.Add(Me.LblAlmacenCliente)
+        Me.gbDatosVentas.Controls.Add(Me.chkPermitirVentaCredito)
+        Me.gbDatosVentas.Controls.Add(Me.cboVendedor)
+        Me.gbDatosVentas.Controls.Add(Me.cboZona)
+        Me.gbDatosVentas.Controls.Add(Me.lblDisplayVendedor)
+        Me.gbDatosVentas.Controls.Add(Me.lblDisplayZona)
+        Me.gbDatosVentas.Location = New System.Drawing.Point(414, 28)
+        Me.gbDatosVentas.Name = "gbDatosVentas"
+        Me.gbDatosVentas.Size = New System.Drawing.Size(349, 116)
+        Me.gbDatosVentas.TabIndex = 2
+        Me.gbDatosVentas.TabStop = False
+        Me.gbDatosVentas.Text = "Datos de ventas :"
+        '
+        'TxtCodigoAlmacen
+        '
+        Me.TxtCodigoAlmacen.Location = New System.Drawing.Point(115, 85)
+        Me.TxtCodigoAlmacen.MaxLength = 15
+        Me.TxtCodigoAlmacen.Name = "TxtCodigoAlmacen"
+        Me.TxtCodigoAlmacen.Size = New System.Drawing.Size(140, 20)
+        Me.TxtCodigoAlmacen.TabIndex = 3
+        '
+        'LblAlmacenCliente
+        '
+        Me.LblAlmacenCliente.AutoSize = True
+        Me.LblAlmacenCliente.Location = New System.Drawing.Point(6, 88)
+        Me.LblAlmacenCliente.Name = "LblAlmacenCliente"
+        Me.LblAlmacenCliente.Size = New System.Drawing.Size(88, 13)
+        Me.LblAlmacenCliente.TabIndex = 75
+        Me.LblAlmacenCliente.Text = "Almac√©n cliente :"
+        '
+        'chkPermitirVentaCredito
+        '
+        Me.chkPermitirVentaCredito.AutoSize = True
+        Me.chkPermitirVentaCredito.Location = New System.Drawing.Point(115, 62)
+        Me.chkPermitirVentaCredito.Name = "chkPermitirVentaCredito"
+        Me.chkPermitirVentaCredito.Size = New System.Drawing.Size(140, 17)
+        Me.chkPermitirVentaCredito.TabIndex = 2
+        Me.chkPermitirVentaCredito.Text = "Permitir venta de cr√©dito"
+        Me.chkPermitirVentaCredito.UseVisualStyleBackColor = True
+        '
+        'cboVendedor
+        '
+        Me.cboVendedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboVendedor.FormattingEnabled = True
+        Me.cboVendedor.Items.AddRange(New Object() {"A", "B"})
+        Me.cboVendedor.Location = New System.Drawing.Point(115, 38)
+        Me.cboVendedor.MaxLength = 1
+        Me.cboVendedor.Name = "cboVendedor"
+        Me.cboVendedor.Size = New System.Drawing.Size(140, 21)
+        Me.cboVendedor.TabIndex = 1
+        '
+        'cboZona
+        '
+        Me.cboZona.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboZona.Enabled = False
+        Me.cboZona.FormattingEnabled = True
+        Me.cboZona.Items.AddRange(New Object() {"A", "B"})
+        Me.cboZona.Location = New System.Drawing.Point(115, 14)
+        Me.cboZona.MaxLength = 1
+        Me.cboZona.Name = "cboZona"
+        Me.cboZona.Size = New System.Drawing.Size(140, 21)
+        Me.cboZona.TabIndex = 0
+        '
+        'lblDisplayVendedor
+        '
+        Me.lblDisplayVendedor.AutoSize = True
+        Me.lblDisplayVendedor.Location = New System.Drawing.Point(6, 42)
+        Me.lblDisplayVendedor.Name = "lblDisplayVendedor"
+        Me.lblDisplayVendedor.Size = New System.Drawing.Size(59, 13)
+        Me.lblDisplayVendedor.TabIndex = 74
+        Me.lblDisplayVendedor.Text = "Vendedor :"
+        '
+        'lblDisplayZona
+        '
+        Me.lblDisplayZona.AutoSize = True
+        Me.lblDisplayZona.Location = New System.Drawing.Point(6, 18)
+        Me.lblDisplayZona.Name = "lblDisplayZona"
+        Me.lblDisplayZona.Size = New System.Drawing.Size(38, 13)
+        Me.lblDisplayZona.TabIndex = 8
+        Me.lblDisplayZona.Text = "Zona :"
+        '
+        'gbCuentasContables
+        '
+        Me.gbCuentasContables.Controls.Add(Me.BtnGeneraCuentaContableDolares)
+        Me.gbCuentasContables.Controls.Add(Me.lblDisplayCuentaConDolares)
+        Me.gbCuentasContables.Controls.Add(Me.txtCuentaContableDolares)
+        Me.gbCuentasContables.Controls.Add(Me.lblCuentaContable)
+        Me.gbCuentasContables.Controls.Add(Me.txtCuentaContable)
+        Me.gbCuentasContables.Location = New System.Drawing.Point(414, 150)
+        Me.gbCuentasContables.Name = "gbCuentasContables"
+        Me.gbCuentasContables.Size = New System.Drawing.Size(349, 98)
+        Me.gbCuentasContables.TabIndex = 3
+        Me.gbCuentasContables.TabStop = False
+        Me.gbCuentasContables.Text = "Datos contables :"
+        '
+        'BtnGeneraCuentaContableDolares
+        '
+        Me.BtnGeneraCuentaContableDolares.Location = New System.Drawing.Point(115, 65)
+        Me.BtnGeneraCuentaContableDolares.Margin = New System.Windows.Forms.Padding(2)
+        Me.BtnGeneraCuentaContableDolares.Name = "BtnGeneraCuentaContableDolares"
+        Me.BtnGeneraCuentaContableDolares.Size = New System.Drawing.Size(126, 19)
+        Me.BtnGeneraCuentaContableDolares.TabIndex = 75
+        Me.BtnGeneraCuentaContableDolares.Text = "Generar cuenta"
+        Me.BtnGeneraCuentaContableDolares.UseVisualStyleBackColor = True
+        '
+        'lblDisplayCuentaConDolares
+        '
+        Me.lblDisplayCuentaConDolares.AutoSize = True
+        Me.lblDisplayCuentaConDolares.Location = New System.Drawing.Point(6, 44)
+        Me.lblDisplayCuentaConDolares.Name = "lblDisplayCuentaConDolares"
+        Me.lblDisplayCuentaConDolares.Size = New System.Drawing.Size(99, 13)
+        Me.lblDisplayCuentaConDolares.TabIndex = 74
+        Me.lblDisplayCuentaConDolares.Text = "Cuenta en d√≥lares :"
+        '
+        'txtCuentaContableDolares
+        '
+        Me.txtCuentaContableDolares.Location = New System.Drawing.Point(115, 41)
+        Me.txtCuentaContableDolares.MaxLength = 20
+        Me.txtCuentaContableDolares.Name = "txtCuentaContableDolares"
+        Me.txtCuentaContableDolares.Size = New System.Drawing.Size(201, 20)
+        Me.txtCuentaContableDolares.TabIndex = 1
+        '
+        'lblCuentaContable
+        '
+        Me.lblCuentaContable.AutoSize = True
+        Me.lblCuentaContable.Location = New System.Drawing.Point(6, 18)
+        Me.lblCuentaContable.Name = "lblCuentaContable"
+        Me.lblCuentaContable.Size = New System.Drawing.Size(91, 13)
+        Me.lblCuentaContable.TabIndex = 8
+        Me.lblCuentaContable.Text = "Cuenta contable :"
+        '
+        'txtCuentaContable
+        '
+        Me.txtCuentaContable.Enabled = False
+        Me.txtCuentaContable.Location = New System.Drawing.Point(115, 15)
+        Me.txtCuentaContable.MaxLength = 20
+        Me.txtCuentaContable.Name = "txtCuentaContable"
+        Me.txtCuentaContable.Size = New System.Drawing.Size(201, 20)
+        Me.txtCuentaContable.TabIndex = 0
+        '
+        'gbDomicilio
+        '
+        Me.gbDomicilio.Controls.Add(Me.cboPais)
+        Me.gbDomicilio.Controls.Add(Me.cboMunicipio)
+        Me.gbDomicilio.Controls.Add(Me.lblDisplayCalle)
+        Me.gbDomicilio.Controls.Add(Me.txtCalle)
+        Me.gbDomicilio.Controls.Add(Me.txtNumeroExterior)
+        Me.gbDomicilio.Controls.Add(Me.lblDisplayNumExterior)
+        Me.gbDomicilio.Controls.Add(Me.txtNumeroInterior)
+        Me.gbDomicilio.Controls.Add(Me.lblDisplayNumInterior)
+        Me.gbDomicilio.Controls.Add(Me.txtColonia)
+        Me.gbDomicilio.Controls.Add(Me.lblDisplayCP)
+        Me.gbDomicilio.Controls.Add(Me.lblDisplayColonia)
+        Me.gbDomicilio.Controls.Add(Me.txtCodigoPostal)
+        Me.gbDomicilio.Controls.Add(Me.txtCiudad)
+        Me.gbDomicilio.Controls.Add(Me.lblDisplayPais)
+        Me.gbDomicilio.Controls.Add(Me.lblDisplayCiudad)
+        Me.gbDomicilio.Controls.Add(Me.txtLocalidad)
+        Me.gbDomicilio.Controls.Add(Me.cboEstado)
+        Me.gbDomicilio.Controls.Add(Me.lblDisplayLocalidad)
+        Me.gbDomicilio.Controls.Add(Me.lblDisplayEstado)
+        Me.gbDomicilio.Location = New System.Drawing.Point(12, 380)
+        Me.gbDomicilio.Name = "gbDomicilio"
+        Me.gbDomicilio.Size = New System.Drawing.Size(395, 234)
+        Me.gbDomicilio.TabIndex = 1
+        Me.gbDomicilio.TabStop = False
+        Me.gbDomicilio.Text = "Domicilio :"
+        '
+        'cboPais
+        '
+        Me.cboPais.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboPais.FormattingEnabled = True
+        Me.cboPais.Items.AddRange(New Object() {"A", "B"})
+        Me.cboPais.Location = New System.Drawing.Point(78, 18)
+        Me.cboPais.MaxLength = 80
+        Me.cboPais.Name = "cboPais"
+        Me.cboPais.Size = New System.Drawing.Size(147, 21)
+        Me.cboPais.TabIndex = 0
+        '
+        'cboMunicipio
+        '
+        Me.cboMunicipio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboMunicipio.FormattingEnabled = True
+        Me.cboMunicipio.Items.AddRange(New Object() {"A", "B"})
+        Me.cboMunicipio.Location = New System.Drawing.Point(77, 71)
+        Me.cboMunicipio.MaxLength = 80
+        Me.cboMunicipio.Name = "cboMunicipio"
+        Me.cboMunicipio.Size = New System.Drawing.Size(175, 21)
+        Me.cboMunicipio.TabIndex = 2
+        '
+        'txtCiudad
+        '
+        Me.txtCiudad.Location = New System.Drawing.Point(258, 71)
+        Me.txtCiudad.MaxLength = 50
+        Me.txtCiudad.Name = "txtCiudad"
+        Me.txtCiudad.ReadOnly = True
+        Me.txtCiudad.Size = New System.Drawing.Size(132, 20)
+        Me.txtCiudad.TabIndex = 3
+        '
+        'lblDisplayCiudad
+        '
+        Me.lblDisplayCiudad.AutoSize = True
+        Me.lblDisplayCiudad.Location = New System.Drawing.Point(7, 75)
+        Me.lblDisplayCiudad.Name = "lblDisplayCiudad"
+        Me.lblDisplayCiudad.Size = New System.Drawing.Size(46, 13)
+        Me.lblDisplayCiudad.TabIndex = 101
+        Me.lblDisplayCiudad.Text = "Ciudad :"
+        '
+        'gbCxc
+        '
+        Me.gbCxc.Controls.Add(Me.lblDisplayLimiteCredito)
+        Me.gbCxc.Controls.Add(Me.txtLimiteCredito)
+        Me.gbCxc.Controls.Add(Me.lblDisplayDiasPlazo)
+        Me.gbCxc.Controls.Add(Me.txtDiasPlazo)
+        Me.gbCxc.Location = New System.Drawing.Point(414, 254)
+        Me.gbCxc.Name = "gbCxc"
+        Me.gbCxc.Size = New System.Drawing.Size(349, 65)
+        Me.gbCxc.TabIndex = 4
+        Me.gbCxc.TabStop = False
+        Me.gbCxc.Text = "Cuentas por cobrar"
+        '
+        'lblDisplayLimiteCredito
+        '
+        Me.lblDisplayLimiteCredito.AutoSize = True
+        Me.lblDisplayLimiteCredito.Location = New System.Drawing.Point(6, 44)
+        Me.lblDisplayLimiteCredito.Name = "lblDisplayLimiteCredito"
+        Me.lblDisplayLimiteCredito.Size = New System.Drawing.Size(92, 13)
+        Me.lblDisplayLimiteCredito.TabIndex = 74
+        Me.lblDisplayLimiteCredito.Text = "L√≠mite de cr√©dito :"
+        '
+        'txtLimiteCredito
+        '
+        Me.txtLimiteCredito.Location = New System.Drawing.Point(115, 41)
+        Me.txtLimiteCredito.MaxLength = 10
+        Me.txtLimiteCredito.Name = "txtLimiteCredito"
+        Me.txtLimiteCredito.Size = New System.Drawing.Size(81, 20)
+        Me.txtLimiteCredito.TabIndex = 1
+        Me.txtLimiteCredito.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'lblDisplayDiasPlazo
+        '
+        Me.lblDisplayDiasPlazo.AutoSize = True
+        Me.lblDisplayDiasPlazo.Location = New System.Drawing.Point(6, 18)
+        Me.lblDisplayDiasPlazo.Name = "lblDisplayDiasPlazo"
+        Me.lblDisplayDiasPlazo.Size = New System.Drawing.Size(79, 13)
+        Me.lblDisplayDiasPlazo.TabIndex = 8
+        Me.lblDisplayDiasPlazo.Text = "D√≠as de plazo :"
+        '
+        'txtDiasPlazo
+        '
+        Me.txtDiasPlazo.Location = New System.Drawing.Point(115, 15)
+        Me.txtDiasPlazo.MaxLength = 3
+        Me.txtDiasPlazo.Name = "txtDiasPlazo"
+        Me.txtDiasPlazo.Size = New System.Drawing.Size(81, 20)
+        Me.txtDiasPlazo.TabIndex = 0
+        Me.txtDiasPlazo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'StatusStripEstado
+        '
+        Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
+        Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 646)
+        Me.StatusStripEstado.Name = "StatusStripEstado"
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1162, 22)
+        Me.StatusStripEstado.TabIndex = 15
+        Me.StatusStripEstado.Text = "StatusStrip1"
+        '
+        'tssLabel
+        '
+        Me.tssLabel.Name = "tssLabel"
+        Me.tssLabel.Size = New System.Drawing.Size(48, 17)
+        Me.tssLabel.Text = "Estado :"
+        '
+        'tssLabelEstado
+        '
+        Me.tssLabelEstado.Name = "tssLabelEstado"
+        Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
+        '
+        'ErrorProvider
+        '
+        Me.ErrorProvider.ContainerControl = Me
+        '
+        'gbFechaAlta
+        '
+        Me.gbFechaAlta.Controls.Add(Me.DpFecha)
+        Me.gbFechaAlta.Controls.Add(Me.lblDisplayFechaAlta)
+        Me.gbFechaAlta.Location = New System.Drawing.Point(414, 326)
+        Me.gbFechaAlta.Name = "gbFechaAlta"
+        Me.gbFechaAlta.Size = New System.Drawing.Size(349, 43)
+        Me.gbFechaAlta.TabIndex = 5
+        Me.gbFechaAlta.TabStop = False
+        Me.gbFechaAlta.Text = "Fecha"
+        '
+        'DpFecha
+        '
+        Me.DpFecha.Enabled = False
+        Me.DpFecha.Location = New System.Drawing.Point(115, 12)
+        Me.DpFecha.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
+        Me.DpFecha.Name = "DpFecha"
+        Me.DpFecha.Size = New System.Drawing.Size(201, 20)
+        Me.DpFecha.TabIndex = 0
+        '
+        'lblDisplayFechaAlta
+        '
+        Me.lblDisplayFechaAlta.AutoSize = True
+        Me.lblDisplayFechaAlta.Location = New System.Drawing.Point(6, 18)
+        Me.lblDisplayFechaAlta.Name = "lblDisplayFechaAlta"
+        Me.lblDisplayFechaAlta.Size = New System.Drawing.Size(47, 13)
+        Me.lblDisplayFechaAlta.TabIndex = 8
+        Me.lblDisplayFechaAlta.Text = "De alta :"
+        '
+        'gBoxBusquedaRapida
+        '
+        Me.gBoxBusquedaRapida.Controls.Add(Me.CboEstatusFiltro)
+        Me.gBoxBusquedaRapida.Controls.Add(Me.Label2)
+        Me.gBoxBusquedaRapida.Controls.Add(Me.rbtCodigoCliente)
+        Me.gBoxBusquedaRapida.Controls.Add(Me.rbtNombreCliente)
+        Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
+        Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
+        Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(769, 28)
+        Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
+        Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(384, 590)
+        Me.gBoxBusquedaRapida.TabIndex = 7
+        Me.gBoxBusquedaRapida.TabStop = False
+        Me.gBoxBusquedaRapida.Text = "B√∫squeda r√°pida"
+        '
+        'CboEstatusFiltro
+        '
+        Me.CboEstatusFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboEstatusFiltro.FormattingEnabled = True
+        Me.CboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
+        Me.CboEstatusFiltro.Location = New System.Drawing.Point(340, 37)
+        Me.CboEstatusFiltro.MaxLength = 1
+        Me.CboEstatusFiltro.Name = "CboEstatusFiltro"
+        Me.CboEstatusFiltro.Size = New System.Drawing.Size(38, 21)
+        Me.CboEstatusFiltro.TabIndex = 126
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(287, 41)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(48, 13)
+        Me.Label2.TabIndex = 126
+        Me.Label2.Text = "Estatus :"
+        '
+        'rbtCodigoCliente
+        '
+        Me.rbtCodigoCliente.AutoSize = True
+        Me.rbtCodigoCliente.Location = New System.Drawing.Point(100, 15)
+        Me.rbtCodigoCliente.Margin = New System.Windows.Forms.Padding(2)
+        Me.rbtCodigoCliente.Name = "rbtCodigoCliente"
+        Me.rbtCodigoCliente.Size = New System.Drawing.Size(92, 17)
+        Me.rbtCodigoCliente.TabIndex = 116
+        Me.rbtCodigoCliente.Text = "C√≥digo cliente"
+        Me.rbtCodigoCliente.UseVisualStyleBackColor = True
+        '
+        'rbtNombreCliente
+        '
+        Me.rbtNombreCliente.AutoSize = True
+        Me.rbtNombreCliente.Checked = True
+        Me.rbtNombreCliente.Location = New System.Drawing.Point(6, 15)
+        Me.rbtNombreCliente.Margin = New System.Windows.Forms.Padding(2)
+        Me.rbtNombreCliente.Name = "rbtNombreCliente"
+        Me.rbtNombreCliente.Size = New System.Drawing.Size(62, 17)
+        Me.rbtNombreCliente.TabIndex = 115
+        Me.rbtNombreCliente.TabStop = True
+        Me.rbtNombreCliente.Text = "Nombre"
+        Me.rbtNombreCliente.UseVisualStyleBackColor = True
+        '
+        'Grid
+        '
+        Me.Grid.AllowUserToAddRows = False
+        Me.Grid.AllowUserToDeleteRows = False
+        Me.Grid.AllowUserToResizeColumns = False
+        Me.Grid.AllowUserToResizeRows = False
+        Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Grid.Location = New System.Drawing.Point(6, 63)
+        Me.Grid.Name = "Grid"
+        Me.Grid.ReadOnly = True
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.Grid.Size = New System.Drawing.Size(370, 518)
+        Me.Grid.TabIndex = 114
+        '
+        'txtFiltro
+        '
+        Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtFiltro.Location = New System.Drawing.Point(6, 38)
+        Me.txtFiltro.Name = "txtFiltro"
+        Me.txtFiltro.Size = New System.Drawing.Size(276, 20)
+        Me.txtFiltro.TabIndex = 0
+        '
+        'gbCorreo
+        '
+        Me.gbCorreo.Controls.Add(Me.lblCorreoClientePagos)
+        Me.gbCorreo.Controls.Add(Me.txtCorreoClientePagos)
+        Me.gbCorreo.Controls.Add(Me.cboNombreXML)
+        Me.gbCorreo.Controls.Add(Me.Label1)
+        Me.gbCorreo.Controls.Add(Me.lblDisplayCorreoCliente)
+        Me.gbCorreo.Controls.Add(Me.txtCorreoCliente)
+        Me.gbCorreo.Location = New System.Drawing.Point(414, 375)
+        Me.gbCorreo.Name = "gbCorreo"
+        Me.gbCorreo.Size = New System.Drawing.Size(349, 140)
+        Me.gbCorreo.TabIndex = 6
+        Me.gbCorreo.TabStop = False
+        Me.gbCorreo.Text = "Correo :"
+        '
+        'lblCorreoClientePagos
+        '
+        Me.lblCorreoClientePagos.AutoSize = True
+        Me.lblCorreoClientePagos.Location = New System.Drawing.Point(6, 65)
+        Me.lblCorreoClientePagos.Name = "lblCorreoClientePagos"
+        Me.lblCorreoClientePagos.Size = New System.Drawing.Size(114, 13)
+        Me.lblCorreoClientePagos.TabIndex = 12
+        Me.lblCorreoClientePagos.Text = "Correo cliente(Pagos) :"
+        '
+        'txtCorreoClientePagos
+        '
+        Me.txtCorreoClientePagos.Location = New System.Drawing.Point(140, 63)
+        Me.txtCorreoClientePagos.MaxLength = 500
+        Me.txtCorreoClientePagos.Multiline = True
+        Me.txtCorreoClientePagos.Name = "txtCorreoClientePagos"
+        Me.txtCorreoClientePagos.Size = New System.Drawing.Size(201, 44)
+        Me.txtCorreoClientePagos.TabIndex = 11
+        '
+        'cboNombreXML
+        '
+        Me.cboNombreXML.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboNombreXML.FormattingEnabled = True
+        Me.cboNombreXML.Items.AddRange(New Object() {"RFCemisor-Serie-FolioNumerico", "RFCemisor-Fecha-SerieFolio", ""})
+        Me.cboNombreXML.Location = New System.Drawing.Point(140, 113)
+        Me.cboNombreXML.MaxLength = 1
+        Me.cboNombreXML.Name = "cboNombreXML"
+        Me.cboNombreXML.Size = New System.Drawing.Size(201, 21)
+        Me.cboNombreXML.TabIndex = 10
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(9, 115)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(76, 13)
+        Me.Label1.TabIndex = 9
+        Me.Label1.Text = "Formato XML :"
+        '
+        'lblDisplayCorreoCliente
+        '
+        Me.lblDisplayCorreoCliente.AutoSize = True
+        Me.lblDisplayCorreoCliente.Location = New System.Drawing.Point(6, 16)
+        Me.lblDisplayCorreoCliente.Name = "lblDisplayCorreoCliente"
+        Me.lblDisplayCorreoCliente.Size = New System.Drawing.Size(125, 13)
+        Me.lblDisplayCorreoCliente.TabIndex = 8
+        Me.lblDisplayCorreoCliente.Text = "Correo cliente(Facturas) :"
+        '
+        'txtCorreoCliente
+        '
+        Me.txtCorreoCliente.Location = New System.Drawing.Point(140, 13)
+        Me.txtCorreoCliente.MaxLength = 500
+        Me.txtCorreoCliente.Multiline = True
+        Me.txtCorreoCliente.Name = "txtCorreoCliente"
+        Me.txtCorreoCliente.Size = New System.Drawing.Size(201, 44)
+        Me.txtCorreoCliente.TabIndex = 0
+        '
+        'gbMetodoPago
+        '
+        Me.gbMetodoPago.Controls.Add(Me.cboFormaPagoUSD)
+        Me.gbMetodoPago.Controls.Add(Me.lblDisplayNCuentaDlls)
+        Me.gbMetodoPago.Controls.Add(Me.txtNumeroCuentaDolares)
+        Me.gbMetodoPago.Controls.Add(Me.lblDisplayFormaPagoUSD)
+        Me.gbMetodoPago.Controls.Add(Me.cboFormaPago)
+        Me.gbMetodoPago.Controls.Add(Me.lblDisplayNumCuenta)
+        Me.gbMetodoPago.Controls.Add(Me.txtNumeroCuenta)
+        Me.gbMetodoPago.Controls.Add(Me.lblDisplayFormaPago)
+        Me.gbMetodoPago.Location = New System.Drawing.Point(414, 522)
+        Me.gbMetodoPago.Name = "gbMetodoPago"
+        Me.gbMetodoPago.Size = New System.Drawing.Size(349, 116)
+        Me.gbMetodoPago.TabIndex = 7
+        Me.gbMetodoPago.TabStop = False
+        Me.gbMetodoPago.Text = "Forma de pago :"
+        '
+        'cboFormaPagoUSD
+        '
+        Me.cboFormaPagoUSD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboFormaPagoUSD.FormattingEnabled = True
+        Me.cboFormaPagoUSD.Items.AddRange(New Object() {"A", "B"})
+        Me.cboFormaPagoUSD.Location = New System.Drawing.Point(115, 64)
+        Me.cboFormaPagoUSD.MaxLength = 1
+        Me.cboFormaPagoUSD.Name = "cboFormaPagoUSD"
+        Me.cboFormaPagoUSD.Size = New System.Drawing.Size(204, 21)
+        Me.cboFormaPagoUSD.TabIndex = 2
+        '
+        'lblDisplayNCuentaDlls
+        '
+        Me.lblDisplayNCuentaDlls.AutoSize = True
+        Me.lblDisplayNCuentaDlls.Location = New System.Drawing.Point(6, 92)
+        Me.lblDisplayNCuentaDlls.Name = "lblDisplayNCuentaDlls"
+        Me.lblDisplayNCuentaDlls.Size = New System.Drawing.Size(97, 13)
+        Me.lblDisplayNCuentaDlls.TabIndex = 78
+        Me.lblDisplayNCuentaDlls.Text = "# de cuenta USD :"
+        '
+        'txtNumeroCuentaDolares
+        '
+        Me.txtNumeroCuentaDolares.Location = New System.Drawing.Point(115, 88)
+        Me.txtNumeroCuentaDolares.MaxLength = 4
+        Me.txtNumeroCuentaDolares.Name = "txtNumeroCuentaDolares"
+        Me.txtNumeroCuentaDolares.Size = New System.Drawing.Size(81, 20)
+        Me.txtNumeroCuentaDolares.TabIndex = 3
+        Me.txtNumeroCuentaDolares.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'lblDisplayFormaPagoUSD
+        '
+        Me.lblDisplayFormaPagoUSD.AutoSize = True
+        Me.lblDisplayFormaPagoUSD.Location = New System.Drawing.Point(6, 68)
+        Me.lblDisplayFormaPagoUSD.Name = "lblDisplayFormaPagoUSD"
+        Me.lblDisplayFormaPagoUSD.Size = New System.Drawing.Size(110, 13)
+        Me.lblDisplayFormaPagoUSD.TabIndex = 77
+        Me.lblDisplayFormaPagoUSD.Text = "Forma de pago USD :"
+        '
+        'cboFormaPago
+        '
+        Me.cboFormaPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboFormaPago.FormattingEnabled = True
+        Me.cboFormaPago.Items.AddRange(New Object() {"A", "B"})
+        Me.cboFormaPago.Location = New System.Drawing.Point(115, 17)
+        Me.cboFormaPago.MaxLength = 1
+        Me.cboFormaPago.Name = "cboFormaPago"
+        Me.cboFormaPago.Size = New System.Drawing.Size(204, 21)
+        Me.cboFormaPago.TabIndex = 0
+        '
+        'lblDisplayNumCuenta
+        '
+        Me.lblDisplayNumCuenta.AutoSize = True
+        Me.lblDisplayNumCuenta.Location = New System.Drawing.Point(6, 45)
+        Me.lblDisplayNumCuenta.Name = "lblDisplayNumCuenta"
+        Me.lblDisplayNumCuenta.Size = New System.Drawing.Size(95, 13)
+        Me.lblDisplayNumCuenta.TabIndex = 74
+        Me.lblDisplayNumCuenta.Text = "# de cuenta MXN:"
+        '
+        'txtNumeroCuenta
+        '
+        Me.txtNumeroCuenta.Location = New System.Drawing.Point(115, 41)
+        Me.txtNumeroCuenta.MaxLength = 4
+        Me.txtNumeroCuenta.Name = "txtNumeroCuenta"
+        Me.txtNumeroCuenta.Size = New System.Drawing.Size(81, 20)
+        Me.txtNumeroCuenta.TabIndex = 1
+        Me.txtNumeroCuenta.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'lblDisplayFormaPago
+        '
+        Me.lblDisplayFormaPago.AutoSize = True
+        Me.lblDisplayFormaPago.Location = New System.Drawing.Point(6, 21)
+        Me.lblDisplayFormaPago.Name = "lblDisplayFormaPago"
+        Me.lblDisplayFormaPago.Size = New System.Drawing.Size(111, 13)
+        Me.lblDisplayFormaPago.TabIndex = 8
+        Me.lblDisplayFormaPago.Text = "Forma de pago MXN :"
+        '
+        'Catalogo_Clientes
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(1162, 668)
+        Me.Controls.Add(Me.gbMetodoPago)
+        Me.Controls.Add(Me.gbCorreo)
+        Me.Controls.Add(Me.gBoxBusquedaRapida)
+        Me.Controls.Add(Me.gbFechaAlta)
+        Me.Controls.Add(Me.StatusStripEstado)
+        Me.Controls.Add(Me.gbCxc)
+        Me.Controls.Add(Me.gbDomicilio)
+        Me.Controls.Add(Me.gbCuentasContables)
+        Me.Controls.Add(Me.gbDatosVentas)
+        Me.Controls.Add(Me.gBoxInformacion)
+        Me.Controls.Add(Me.tsMenu)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MaximizeBox = False
+        Me.Name = "Catalogo_Clientes"
+        Me.ShowIcon = False
+        Me.Text = "Cat√°logo de clientes"
+        Me.tsMenu.ResumeLayout(False)
+        Me.tsMenu.PerformLayout()
+        Me.gBoxInformacion.ResumeLayout(False)
+        Me.gBoxInformacion.PerformLayout()
+        Me.gbDatosVentas.ResumeLayout(False)
+        Me.gbDatosVentas.PerformLayout()
+        Me.gbCuentasContables.ResumeLayout(False)
+        Me.gbCuentasContables.PerformLayout()
+        Me.gbDomicilio.ResumeLayout(False)
+        Me.gbDomicilio.PerformLayout()
+        Me.gbCxc.ResumeLayout(False)
+        Me.gbCxc.PerformLayout()
+        Me.StatusStripEstado.ResumeLayout(False)
+        Me.StatusStripEstado.PerformLayout()
+        CType(Me.ErrorProvider, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.gbFechaAlta.ResumeLayout(False)
+        Me.gbFechaAlta.PerformLayout()
+        Me.gBoxBusquedaRapida.ResumeLayout(False)
+        Me.gBoxBusquedaRapida.PerformLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.gbCorreo.ResumeLayout(False)
+        Me.gbCorreo.PerformLayout()
+        Me.gbMetodoPago.ResumeLayout(False)
+        Me.gbMetodoPago.PerformLayout()
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
+
+    End Sub
+    Friend WithEvents tsMenu As System.Windows.Forms.ToolStrip
+    Friend WithEvents tsbNuevo As System.Windows.Forms.ToolStripButton
+    Friend WithEvents tsbEditar As System.Windows.Forms.ToolStripButton
+    Friend WithEvents tsbGrabar As System.Windows.Forms.ToolStripButton
+    Friend WithEvents tsbCancelar As System.Windows.Forms.ToolStripButton
+    Friend WithEvents tsbImprimirListado As System.Windows.Forms.ToolStripButton
+    Friend WithEvents tsbSalir As System.Windows.Forms.ToolStripButton
+    Friend WithEvents gBoxInformacion As System.Windows.Forms.GroupBox
+    Friend WithEvents LblDisplayNombreCultivo As System.Windows.Forms.Label
+    Friend WithEvents TxtNombreCliente As System.Windows.Forms.TextBox
+    Friend WithEvents LblEstatus As System.Windows.Forms.Label
+    Friend WithEvents CboEstatus As System.Windows.Forms.ComboBox
+    Friend WithEvents lblDisplayCodigo As System.Windows.Forms.Label
+    Friend WithEvents txtCodigoCliente As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayNumExterior As System.Windows.Forms.Label
+    Friend WithEvents txtNumeroExterior As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayCalle As System.Windows.Forms.Label
+    Friend WithEvents txtCalle As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayLocalidad As System.Windows.Forms.Label
+    Friend WithEvents txtLocalidad As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayColonia As System.Windows.Forms.Label
+    Friend WithEvents txtColonia As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayNumInterior As System.Windows.Forms.Label
+    Friend WithEvents txtNumeroInterior As System.Windows.Forms.TextBox
+    Friend WithEvents cboEstado As System.Windows.Forms.ComboBox
+    Friend WithEvents lblDisplayEstado As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayPais As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayCURP As System.Windows.Forms.Label
+    Friend WithEvents txtCurp As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayRFC As System.Windows.Forms.Label
+    Friend WithEvents txtRfc As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayCP As System.Windows.Forms.Label
+    Friend WithEvents txtCodigoPostal As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayCelCliente As System.Windows.Forms.Label
+    Friend WithEvents txtNumeroCelular As System.Windows.Forms.TextBox
+    Friend WithEvents LblDisplayTelefonoCliente As System.Windows.Forms.Label
+    Friend WithEvents txtNumeroTelefono As System.Windows.Forms.TextBox
+    Friend WithEvents gbDatosVentas As System.Windows.Forms.GroupBox
+    Friend WithEvents lblDisplayVendedor As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayZona As System.Windows.Forms.Label
+    Friend WithEvents gbCuentasContables As System.Windows.Forms.GroupBox
+    Friend WithEvents lblDisplayCuentaConDolares As System.Windows.Forms.Label
+    Friend WithEvents txtCuentaContableDolares As System.Windows.Forms.TextBox
+    Friend WithEvents lblCuentaContable As System.Windows.Forms.Label
+    Friend WithEvents txtCuentaContable As System.Windows.Forms.TextBox
+    Friend WithEvents gbDomicilio As System.Windows.Forms.GroupBox
+    Friend WithEvents gbCxc As System.Windows.Forms.GroupBox
+    Friend WithEvents lblDisplayLimiteCredito As System.Windows.Forms.Label
+    Friend WithEvents txtLimiteCredito As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayDiasPlazo As System.Windows.Forms.Label
+    Friend WithEvents txtDiasPlazo As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayTipoPersona As System.Windows.Forms.Label
+    Friend WithEvents cboTipoPersona As System.Windows.Forms.ComboBox
+    Friend WithEvents StatusStripEstado As System.Windows.Forms.StatusStrip
+    Friend WithEvents tssLabel As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents tssLabelEstado As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents ErrorProvider As System.Windows.Forms.ErrorProvider
+    Friend WithEvents cboZona As System.Windows.Forms.ComboBox
+    Friend WithEvents cboVendedor As System.Windows.Forms.ComboBox
+    Friend WithEvents gbFechaAlta As System.Windows.Forms.GroupBox
+    Friend WithEvents lblDisplayFechaAlta As System.Windows.Forms.Label
+    Friend WithEvents DpFecha As System.Windows.Forms.DateTimePicker
+    Friend WithEvents chkPermitirVentaCredito As System.Windows.Forms.CheckBox
+    Friend WithEvents lblDisplayTipoCliente As System.Windows.Forms.Label
+    Friend WithEvents cboTipoMercado As System.Windows.Forms.ComboBox
+    Friend WithEvents gBoxBusquedaRapida As System.Windows.Forms.GroupBox
+    Friend WithEvents txtFiltro As System.Windows.Forms.TextBox
+    Friend WithEvents gbCorreo As System.Windows.Forms.GroupBox
+    Friend WithEvents lblDisplayCorreoCliente As System.Windows.Forms.Label
+    Friend WithEvents txtCorreoCliente As System.Windows.Forms.TextBox
+    Friend WithEvents gbMetodoPago As System.Windows.Forms.GroupBox
+    Friend WithEvents lblDisplayNumCuenta As System.Windows.Forms.Label
+    Friend WithEvents txtNumeroCuenta As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayFormaPago As System.Windows.Forms.Label
+    Friend WithEvents cboFormaPago As System.Windows.Forms.ComboBox
+    Friend WithEvents cboFormaPagoUSD As System.Windows.Forms.ComboBox
+    Friend WithEvents lblDisplayNCuentaDlls As System.Windows.Forms.Label
+    Friend WithEvents txtNumeroCuentaDolares As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayFormaPagoUSD As System.Windows.Forms.Label
+    Friend WithEvents cboNombreXML As System.Windows.Forms.ComboBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayNumeroRegistroIdentificadorExtranjero As System.Windows.Forms.Label
+    Friend WithEvents Grid As System.Windows.Forms.DataGridView
+    Friend WithEvents rbtNombreCliente As System.Windows.Forms.RadioButton
+    Friend WithEvents rbtCodigoCliente As System.Windows.Forms.RadioButton
+    Friend WithEvents CboEstatusFiltro As System.Windows.Forms.ComboBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents TxtCodigoAlmacen As System.Windows.Forms.TextBox
+    Friend WithEvents LblAlmacenCliente As System.Windows.Forms.Label
+    Friend WithEvents tsbEliminar As System.Windows.Forms.ToolStripButton
+    Friend WithEvents BtnGeneraCuentaContableDolares As System.Windows.Forms.Button
+    Friend WithEvents cboPais As System.Windows.Forms.ComboBox
+    Friend WithEvents cboMunicipio As System.Windows.Forms.ComboBox
+    Friend WithEvents txtCiudad As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayCiudad As System.Windows.Forms.Label
+    Friend WithEvents chkEsContribuyenteIEPS As System.Windows.Forms.CheckBox
+    Friend WithEvents LblDisplayCodigoPropietario As System.Windows.Forms.Label
+    Friend WithEvents LblNombrePropietario As System.Windows.Forms.Label
+    Friend WithEvents TxtCodigoPropietario As System.Windows.Forms.TextBox
+    Friend WithEvents TxtIdRelacion As System.Windows.Forms.TextBox
+    Friend WithEvents lblDisplayUsoCFDI As Label
+    Friend WithEvents cboUsoCFDI As ComboBox
+    Friend WithEvents txtNumeroRegistroIdentificadorExtranjero As MaskedTextBox
+    Friend WithEvents lblCorreoClientePagos As System.Windows.Forms.Label
+    Friend WithEvents txtCorreoClientePagos As System.Windows.Forms.TextBox
+End Class
+                                         –¥  £Ü   C¨C ∞¥  §ê   C∫C ∂¥  §	   CZ  Ò¥  •   Cp  ˜¥  •   C_ ˛¥  ¶&   Cå_ µ  ¶/   C©ˇ ˛¥  ß9   Cºˇ µ  ßB   C±  ¥  ®L   C≤ –¥  ®U   C*&  £¥  ©_   C5&  ©¥  ©h   CΩ7 £¥  ™r   Cÿ7 ©¥  ™{   C™— ∞¥  ´à   C∏— ∂¥  ´Ê   C˚É £¥  ¨   C
+Ñ ©¥  ¨˘   C7Ñ ◊¥  ≠   CFÑ ›¥  ≠b   Cø £¥  Æl   CÕ ©¥  Æu   C1 ∞¥  ØÄ   C? ∂¥  Øﬁ   C∏à ≥µ  ∞Ë   C à πµ  ∞Ò   CE© Nµ  ±¸   CN© Tµ  ±Z   CJ  £¥  ≤d   CU  ©¥  ≤m   CfC ◊¥  ≥x   C{C ›¥  ≥º   U Æ  ¥‘   $Ô Æ  ¥Ï   7Ô    ¥¯   "∞    µ¯¿	   ƒ     µú     V7 µ  µ«     œ9 µ  ∑ÿ     £7 µ  πr!    }8 µ  ª)—    Ö: µ  Ωä!    n5 µ  øô!    í{    ¡§!    ˇ    ¡z#    'V    ¡¨#    f    ¡ $    V    ¡º$    ˜U    ¬ò&    C [µ  ¬«     ÑB [µ  ƒ»&    ˘û µ  ∆ü¬
+    e{ #µ  »L'    ∂Ê µ   Ù'    £ µ  Ãx(    DÔ µ  Œ ‘    } #µ  –û∂    ÙÚ µ  “§(    •| #µ  ‘–(    Û ⁄µ  ÷")    ?† µ  ÿ,)   ƒ
+◊    ⁄|)    Wé    €X8   C   ¥  €b8   C%  –¥  €k8   C¨C ∞¥  ‹x8   C∫C ∂¥  ‹Ò8   C±  ¥  ›˚8   C≤ –¥  ›9   C*&  £¥  ﬁ9   C5&  ©¥  ﬁ9   CN £¥  ﬂ!9   Cl ©¥  ﬂ*9   C]e ∞¥  ‡49   Cqe ∂¥  ‡≠9   C˚É £¥  ·∑9   C
+Ñ ©¥  ·¿9   C7Ñ ◊¥  ‚Ã9   CFÑ ›¥  ‚*:   C-e £¥  „4:   CEe ©¥  „=:   C°e ∞¥  ‰G:   Cµe ∂¥  ‰P:   CZ  Ò¥  ÂZ:   Cp  ˜¥  Âc:   C_ ˛¥  Êm:   Cå_ µ  Êv:   C©ˇ ˛¥  ÁÄ:   Cºˇ µ  Áâ:   C1ï |¥  Ëì:   C<ï Ç¥  Ëú:   C|m â¥  È®:   Câm è¥  ÈÎ:   CùÑ â¥  Í¯:   C´Ñ è¥  Í;;   C¯z â¥  ÎH;   C{ è¥  Îã;   Cv â¥  Ïò;   CÜ è¥  Ï€;   Cá â¥  ÌË;   Cû è¥  Ì+<   C&è â¥  Ó8<   C3è è¥  Ó{<   CE© Nµ  Ôà<   CN© Tµ  ÔÊ<   CJ  £¥  <   CU  ©¥  ˘<   CfC ◊¥  Ò=   C{C ›¥  ÒH=   "∞    Ú¯¿	   ƒ     Ú‡=    V7 µ  Ú>    œ9 µ  Ù>    £7 µ  ˆ∂>    }8 µ  ¯)—    Ö: µ  ˙«>    n5 µ  ¸÷>    í{    ˛>    ˇ    ˛”@    'V    ˛A    f    ˛ÄA    V    ˛4B    ˜U    ˇ‹C    ·{ »   ˇ.D    C [µ  ˇ>    ÑB [µ  \D    ˘û µ  ü¬
+    e{ #µ  ‡D    ∂Ê µ  àE    €¢ µ  	F    DÔ µ   ‘    } #µ  8F    ÙÚ µ  àF    •| #µ  ®F    Û ⁄µ  ÓF    ?† µ  ¯F   ƒ
+◊    HG    Wé    “V   C±  ¥  ‹V   C≤ –¥  ÂV   C*&  £¥  ÔV   C5&  ©¥  ¯V   C   ¥  W   C%  –¥  W   C¨C ∞¥  W   C∫C ∂¥  ëW   CZ  Ò¥  õW   Cp  ˜¥  §W   C_ ˛¥  ÆW   Cå_ µ  ∑W   C©ˇ ˛¥  ¡W   Cºˇ µ   W   C1ï |¥  ‘W   C<ï Ç¥  ›W   C|m â¥   ËW   Câm è¥   +X   CùÑ â¥  !8X   C´Ñ è¥  !{X   C¯z â¥  "àX   C{ è¥  "ÀX   Cv â¥  #ÿX   CÜ è¥  #Y   Cá â¥  $(Y   Cû è¥  $kY   C&è â¥  %xY   C3è è¥  %ªY   CL £¥  &≈Y   Cm ©¥  &ŒY   C§Ñ ∞¥  'ÿY   CªÑ ∂¥  '6Z   C˚É £¥  (@Z   C
+Ñ ©¥  (IZ   C7Ñ ◊¥  )TZ   CFÑ ›¥  )≤Z   C@Ñ £¥  *ºZ   C[Ñ ©¥  *≈Z   C“Ñ ∞¥  +–Z   CÈÑ ∂¥  +[   C*b ∞¥  ,[   C:b ∂¥  ,&[   C≠` £¥  -0[   CΩ` ©¥  -9[   COa ∞¥  .C[   Cea ∂¥  .L[   CπÉ ∞¥  /V[   C”É ∂¥  /_[   CE© Nµ  0l[   CN© Tµ  0 [   C≤U ∞¥  1‘[   C≈U ∂¥  1M\   CåU £¥  2W\   CüU ©¥  2`\    a    3l\   Ì` Æ  4Ñ\   üz    4ê\   "∞    5¯¿	   ƒ     54]    ®é µ  5™]    V7 ÔªøOption Strict On
+Option Explicit On
+
+Imports System.IO
+Imports Microsoft.VisualBasic
+Imports System
+Imports System.ComponentModel
+Imports System.Data
+Imports System.Data.Common
+Imports System.Data.Sql
+Imports System.Data.SqlClient
+Imports System.Windows.Forms
+Imports System.Collections
+Imports System.Collections.Generic
+Imports CrystalDecisions.CrystalReports.Engine
+Imports System.Data.OleDb
+
+Public Class Frm_Nomina_AltaBajaIntegracionSUA
+    'Dim conexionMDB As New OleDbConnection(Empresa_Sistema.oSisEmpresaNomina.CONEXION_SUA_EVENTUALES)
+
+    Dim oSUA As New Class_Nomina_SUA
+    Dim oTrabajadores As New Class_CatTrabajadores
+    Dim oTemporada As New Class_NominaTemporada
+
+    Private igyCodigoTrabajador As Short = 1
+    Private igyNombreTrabajador As Short = 2
+    Private igyCURP As Short = 3
+    Private igyUnidadMedicaFamiliar As Short = 4
+    Private igyNumRegistroIMSS As Short = 5
+    Private igyUltimaFechaAlta As Short = 6
+    Private igyFechaAlta As Short = 7
+    Private igyFechaBaja As Short = 8
+    Private igyValidacionIMSS As Short = 9
+    Private igyClaveValidacionesIMSS As Short = 10
+    Private igyPercepciones As Short = 11
+    Private igyAdicional As Short = 12
+    Private igyTrabajo As Short = 13
+    Private igyDiferenciaDias As Short = 14
+    Private igyValidacionesControl As Short = 15
+    Private igyIdMovimiento As Short = 16
+
+    Private igyIntegracionCodigoTrabajador As Short = 1
+    Private igyIntegracionNombreTrabajador As Short = 2
+    Private igyIntegracionFechaAlta As Short = 3
+    Private igyIntegracionNombreTxtAlta As Short = 4
+    Private igyIntegracionIntegracionSuaAlta As Short = 5
+    Private igyIntegracionEstatusBaja As Short = 6
+    Private igyIntegracionFechaBaja As Short = 7
+    Private igyIntegracionNombreTxtBaja As Short = 8
+    Private igyIntegracionIntegracionSuaBaja As Short = 9
+    Private igyIntegracionRechasados As Short = 10
+
+    Dim sMovimiento As String = ""
+    Dim bConsultando As Boolean
+
+    Private Estado As enumEstados
+
+    Private Enum enumEstados
+        NUEVO
+        ALTA
+        BAJA
+    End Enum
+
+#Region "Opciones"
+
+#End Region
+#Region "Eventos de objetos"
+#Region "Eventos"
+    Private Sub Frm_Nomina_CapturaPercepciones_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.Inicializa()
+        Me.DesplegarSemanas()
+        Me.DesplegarValidaciones()
+        Me.DesplegarValidacionesControl()
+
+        Me.CboSemana.SelectedValue = Plaza.oSisPlazaNomina.NOMINA_NUMERO_SEMANA_ACTUAL 'sql.Result3.ToString
+        'Dim sql As New Class_find("SELECT DATEADD(DAY, (" & (CInt(Me.CboSemana.SelectedValue) - 1).ToString & "*7),FECHA1),DATEADD(DAY, (" & (CInt(Me.CboSemana.SelectedValue) - 1).ToString & "*7),FECHA1)+6 FROM NOMINA_TEMPORADAS WHERE ID_NOMINA_TEMPORADA=" & Plaza.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA)
+        'Me.DtpFecha1.Value = CDate(sql.Result1.ToString)
+        'Me.DtpFecha2.Value = CDate(sql.Result2.ToString)
+
+        Me.txtSueldoDiario.Text = FormatImporteContable(Plaza.oSisPlazaNomina.NOMINA_SUELDO_DIARIO, True)
+        Me.tbAltaBaja.SelectedIndex = 0
+    End Sub
+
+    Private Sub DtpFechas_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles DtpFecha1.KeyDown, DtpFecha2.KeyDown
+        Select Case e.KeyCode
+            Case Keys.Enter
+                SendKeys.Send("{TAB}")
+        End Select
+    End Sub
+
+    Private Sub GridSemanaTrabajadores_CellChange(ByVal Sender As Object, ByVal e As FlexCell.Grid.CellChangeEventArgs) Handles GridSemanaTrabajadores.CellChange
+        'e.Col
+        If bConsultando = True Or e.Row = 0 Then
+            Exit Sub
+        End If
+
+        Dim Columna As Integer, Renglon As Integer
+
+        Columna = e.Col
+        Renglon = e.Row
+
+        Me.validarFechasAltaBaja(Columna, Renglon)
+    End Sub
+
+    Private Sub validarFechasAltaBaja(ByVal Columna As Integer, ByVal Renglon As Integer)
+
+        If Columna = Me.igyFechaAlta Then
+            If txtLEN(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyUltimaFechaAlta).Text) Then
+                If CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text) < CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyUltimaFechaAlta).Text) Then
+                    MsgBox("La fecha de alta debe ser mayor o igual a la ultima fecha de alta.", MsgBoxStyle.Exclamation, "validarFechasAltaBaja")
+                    Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text = Now.ToString
+                    Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyUltimaFechaAlta).SetFocus()
+                    Exit Sub
+                Else
+                    If CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text) < Me.DtpFecha1.Value Then
+                        MsgBox("La fecha de alta debe ser mayor o igual a la fecha de inicio de la semana.", MsgBoxStyle.Exclamation, "validarFechasAltaBaja")
+                        Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text = Now.ToString
+                        Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyUltimaFechaAlta).SetFocus()
+                        Exit Sub
+                    End If
+                End If
+            Else
+                If CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text) < Me.DtpFecha1.Value Then
+                    MsgBox("La fecha de alta debe ser mayor o igual a la fecha de inicio de la semana.", MsgBoxStyle.Exclamation, "validarFechasAltaBaja")
+                    'bConsultando = True
+                    Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text = Now.ToString
+                    Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyUltimaFechaAlta).SetFocus()
+                    'bConsultando = False
+                    Exit Sub
+                End If
+            End If
+
+        ElseIf Columna = Me.igyFechaBaja Then
+            If Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaBaja).Text = "" Then
+                Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).SetFocus()
+                Exit Sub
+            End If
+            If CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaBaja).Text) < CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text) Then
+                MsgBox("La fecha de baja debe ser mayor o igual a la de alta.", MsgBoxStyle.Exclamation, "validarFechasAltaBaja")
+                Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaBaja).Text = Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text
+                Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaBaja).SetFocus()
+                Exit Sub
+            End If
+            Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyDiferenciaDias).Text = DateDiff(DateInterval.Day, CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text), CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaBaja).Text), FirstDayOfWeek.Sunday, FirstWeekOfYear.Jan1).ToString
+        End If
+    End Sub
+
+    Private Sub GridSemanaTrabajadores_Click(ByVal Sender As Object, ByVal e As System.EventArgs) Handles GridSemanaTrabajadores.Click
+        Dim Columna As Integer, Renglon As Integer
+
+        Columna = Me.GridSemanaTrabajadores.ActiveCell.Col
+        Renglon = Me.GridSemanaTrabajadores.ActiveCell.Row
+
+        If Columna = Me.igyFechaAlta Then
+            If Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text = "" Then
+                Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).SetFocus()
+                Exit Sub
+            End If
+            If txtLEN(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyUltimaFechaAlta).Text) Then
+                If CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text) < CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyUltimaFechaAlta).Text) Then
+                    MsgBox("La fecha de baja debe ser mayor o igual a la ultima fecha de alta.", MsgBoxStyle.Exclamation, "GeneraArchivoAltas")
+                    Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).SetFocus()
+                    Exit Sub
+                End If
+            End If
+
+        ElseIf Columna = Me.igyFechaBaja Then
+
+            If Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaBaja).Text = "" Then
+                Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).SetFocus()
+                Exit Sub
+            End If
+            If CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaBaja).Text) < CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text) Then
+                MsgBox("La fecha de baja debe ser mayor o igual a la de alta.", MsgBoxStyle.Exclamation, "GeneraArchivoAltas")
+                Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaBaja).SetFocus()
+                Exit Sub
+            End If
+            Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyDiferenciaDias).Text = DateDiff(DateInterval.Day, CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text), CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaBaja).Text), FirstDayOfWeek.Sunday, FirstWeekOfYear.Jan1).ToString
+
+        End If
+    End Sub
+
+    Private Sub GridSemanaTrabajadores_KeyDown(ByVal Sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridSemanaTrabajadores.KeyDown
+        Me.GestionaGrid(e)
+        'Me.FormateaGrid()
+    End Sub
+
+    Private Sub btnSemanaAnterior_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSemanaAnterior.Click
+        NavegadorSemanas("Anterior")
+    End Sub
+
+    Private Sub btnSemanaSiguiente_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSemanaSiguiente.Click
+        NavegadorSemanas("Siguiente")
+    End Sub
+
+    Private Sub btnConfirmar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnConfirmar.Click
+        If MsgBox("Deseas generar el movimiento de " & sMovimiento & " de la semana " & Me.CboSemana.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Confirmar") = MsgBoxResult.No Then
+            Exit Sub
+        End If
+
+        'Me.Consultar()
+
+        If Me.Validar() = False Then
+            Exit Sub
+        End If
+        If Me.sMovimiento = "ALTA" Then
+            If Me.GeneraArchivoAltas() = True Then
+                Me.tbAltaBaja.SelectedIndex = 1
+                Me.DesplegarArchivos()
+            End If
+        Else
+            If Me.GeneraArchivoBajas() = True Then
+                Me.tbAltaBaja.SelectedIndex = 1
+                Me.DesplegarArchivos()
+            End If
+        End If
+    End Sub
+
+    Private Sub btnEliminar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnEliminar.Click
+        If txtLEN(Me.cboTxtArchivos.Text) = True Then
+            If MsgBox("Deseas eliminar el " & Me.cboTxtArchivos.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Eliminar") = MsgBoxResult.No Then
+                Exit Sub
+            End If
+
+            If Me.EliminaArchivo() = False Then
+                Exit Sub
+            Else
+                Me.InicializaGridIntegracion()
+                Me.cboTxtArchivos.Refresh()
+                Me.cboTxtArchivos.DataSource = Nothing
+                Me.tbAltaBaja.SelectedIndex = 0
+                Me.DesplegarArchivos()
+            End If
+        Else
+            MsgBox("Seleccione un archivo. ", MsgBoxStyle.Exclamation, Me.Text)
+            Exit Sub
+        End If
+    End Sub
+
+    Private Sub cmbTxtArchivos_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboTxtArchivos.SelectedValueChanged
+        Me.ConsultarArchivo()
+    End Sub
+
+    Private Sub btnRegresar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRegresar.Click
+        Me.Inicializa()
+    End Sub
+
+    Private Sub btnRegresarIntegracion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRegresarIntegracion.Click
+        Me.InicializaGridIntegracion()
+        Me.cboTxtArchivos.Refresh()
+        Me.cboTxtArchivos.DataSource = Nothing
+        Me.tbAltaBaja.SelectedIndex = 0
+    End Sub
+
+    Private Sub CboSemana_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CboSemana.SelectedValueChanged
+        Try
+            If Me.CboSemana.Text = "" Then
+                Exit Sub
+            End If
+
+            Dim sql As New Class_find("SELECT DATEADD(DAY, (" & (CInt(Me.CboSemana.Text) - 1).ToString & "*7),FECHA1),DATEADD(DAY," & (CInt(Me.CboSemana.Text) - 1).ToString & "*7,FECHA1)+6 FROM NOMINA_TEMPORADAS WHERE ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA)
+            Me.DtpFecha1.Value = CDate(sql.Result1.ToString)
+            Me.DtpFecha2.Value = CDate(sql.Result2.ToString)
+
+            Me.lblModo.Text = ""
+            Me.InicializaGrid()
+            Me.Cambia_Estado(enumEstados.NUEVO)
+
+            Me.DesplegarArchivos()
+            'Me.Consultar()
+        Catch ex As Exception
+            HandleError(Me.Name, "CboSemana", ex)
+        End Try
+    End Sub
+
+    Private Sub btnGenerarAltas_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnGenerarAltas.Click
+        Me.btnConfirmar.Enabled = True
+        Me.btnRegresar.Enabled = True
+        Me.btnAltaAdicional.Enabled = True
+        'Me.sMovimiento = "ALTA"
+        'Me.lblModo.Text = Me.sMovimiento
+        Me.Cambia_Estado(enumEstados.ALTA)
+        'Me.btnIntegrar.Enabled = True
+
+        Me.Consultar()
+        Me.Totales()
+    End Sub
+
+    Private Sub btnGenerarBaja_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnGenerarBajas.Click
+        Me.btnConfirmar.Enabled = True
+        Me.btnRegresar.Enabled = True
+        Me.btnAltaAdicional.Enabled = True
+        'Me.sMovimiento = "BAJA"
+        'Me.lblModo.Text = Me.sMovimiento
+        Me.Cambia_Estado(enumEstados.BAJA)
+        'Me.btnIntegrar.Enabled = True
+        Me.Consultar()
+        Me.Totales()
+    End Sub
+
+    Private Sub CkbMarcarTodo_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CkbMarcarTodo.CheckedChanged
+        Dim i As Integer, sMarcar As String = "0"
+
+        If Me.CkbMarcarTodo.Checked = True Then
+            sMarcar = "1"
+        End If
+
+        For i = 1 To Me.GridIngracion.Rows - 1
+            If txtLEN(Me.GridIngracion.Cell(i, Me.igyIntegracionRechasados).Text) = True Then
+                Me.GridIngracion.Cell(i, Me.igyIntegracionRechasados).Text = sMarcar
+            Else
+                Me.GridIngracion.Cell(i, Me.igyIntegracionRechasados).Text = sMarcar
+            End If
+        Next i
+        Me.Totales()
+    End Sub
+
+    Private Sub btnIntegrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnIntegrar.Click
+        Me.GestionaIntegracion()
+    End Sub
+#End Region
+
+#Region "Eventos Genericos"
+    Private Sub txtTextoKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)  'txtFolioEmbarque.KeyPress
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles GridSemanaTrabajadores.KeyPress
+        txtSoloNumerosEnteros(e)
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub txtNumerosDecimalKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
+        Dim txt As TextBox = CType(sender, TextBox)
+        txtSoloNumerosDecimales(e, txt.Text)
+        txtNoBeep(e)
+    End Sub
+
+    Private Sub Cbo_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles CboSemana.KeyDown
+        Select Case e.KeyCode
+            Case Keys.Enter
+                SendKeys.Send("{TAB}")
+        End Select
+    End Sub
+#End Region
+
+#Region "Keydown espec√≠ficos"
+
+    Private Sub GridSemanaTrabajadores_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridSemanaTrabajadores.DoubleClick
+        Dim Columna As Integer, Renglon As Integer, vdg As String
+        Dim dTabla As DataTable
+       
+        Columna = Me.GridSemanaTrabajadores.Selection.FirstCol
+        Renglon = Me.GridSemanaTrabajadores.Selection.FirstRow
+
+        If Me.GridSemanaTrabajadores.Selection.FirstRow <> Me.GridSemanaTrabajadores.Selection.LastRow Then
+            Exit Sub
+        End If
+
+        If Columna = igyCodigoTrabajador Then
+            vdg = Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyCodigoTrabajador).Text
+            If txtLEN(vdg) = False Then
+                Exit Sub
+            End If
+
+            Dim Child As New Cat_Nomina_Trabajadores()
+            Child.StartPosition = FormStartPosition.CenterScreen
+            'Child.lstbElementos.SelectedValue = vdg.ToString
+            'Child.tsbEditar.PerformClick()
+            Child.CODIGO_TRABAJADOR = vdg.ToString
+            Child.ShowDialog()
+            Child.Dispose()
+
+            Dim oNominaMovimientos As New Class_NominaMovimientoSua
+            dTabla = oNominaMovimientos.ValidaInformacionIMSSTrabajador(vdg, CInt(Me.CboSemana.SelectedValue))
+
+            For Each drow As DataRow In dTabla.Rows
+                'Me.GridSemanaTrabajadores.AddItem(drow(0).ToString & Chr(9) & drow(0).ToString & Chr(9))
+                Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyValidacionIMSS).Text = drow(0).ToString
+                Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyClaveValidacionesIMSS).Text = drow(1).ToString
+            Next
+
+            Me.Totales()
+        End If
+    End Sub
+#End Region
+#End Region
+
+#Region "M√©todos y procedimientos"
+    Private Sub Inicializa()
+        Try
+            Me.DtpFecha1.Value = Date.Now
+            Me.DtpFecha2.Value = Date.Now
+            Me.dtFechaActualizar.Value = CDate(Date.Now.ToShortDateString) : Me.dtFechaActualizar.Enabled = False
+
+            Me.txtTotalImporte.Text = "0"
+            Me.txtTotalJornales.Text = "0"
+            'Me.CboSemana.SelectedValue = Empresa_Sistema.oSisEmpresaNomina.NOMINA_NUMERO_SEMANA_ACTUAL
+            Me.CboSemana.SelectedValue = 0
+            Me.lblModo.Text = ""
+            Me.InicializaGrid()
+            Me.InicializaGridIntegracion()
+        Catch ex As Exception
+            HandleError(Me.Name, "Inicializa", ex)
+        End Try
+    End Sub
+
+    Private Sub InicializaGrid()
+        Me.GridSemanaTrabajadores.DataSource = Nothing
+        FG_Grid_Limpiar(Me.GridSemanaTrabajadores)
+        Me.GridSemanaTrabajadores.Rows = 2
+        Me.GridSemanaTrabajadores.Cols = 17
+        Me.FormateaGrid()
+    End Sub
+
+    Private Sub InicializaGridIntegracion()
+        Me.GridIngracion.DataSource = Nothing
+        FG_Grid_Limpiar(Me.GridIngracion)
+        Me.GridIngracion.Rows = 2
+        Me.GridIngracion.Cols = 11
+        Me.FormateaGridIntegracion()
+    End Sub
+
+    Private Sub FormateaGrid()
+        Me.GridSemanaTrabajadores.AutoRedraw = False
+        Me.GridSemanaTrabajadores.DisplayFocusRect = False
+        Me.GridSemanaTrabajadores.DisplayDateTimeMask = True
+        Me.GridSemanaTrabajadores.AllowUserSort = True
+
+        Me.GridSemanaTrabajadores.Column(Me.igyCodigoTrabajador).Width = 45
+        Me.GridSemanaTrabajadores.Column(Me.igyNombreTrabajador).Width = 180
+        Me.GridSemanaTrabajadores.Column(Me.igyCURP).Width = 80
+        Me.GridSemanaTrabajadores.Column(Me.igyUnidadMedicaFamiliar).Width = 80
+        Me.GridSemanaTrabajadores.Column(Me.igyNumRegistroIMSS).Width = 80
+        Me.GridSemanaTrabajadores.Column(Me.igyUltimaFechaAlta).Width = 70
+        Me.GridSemanaTrabajadores.Column(Me.igyFechaAlta).Width = 90
+        Me.GridSemanaTrabajadores.Column(Me.igyFechaBaja).Width = 90
+        Me.GridSemanaTrabajadores.Column(Me.igyValidacionIMSS).Width = 60
+        Me.GridSemanaTrabajadores.Column(Me.igyClaveValidacionesIMSS).Width = 100
+        Me.GridSemanaTrabajadores.Column(Me.igyPercepciones).Width = 90
+        Me.GridSemanaTrabajadores.Column(Me.igyTrabajo).Width = 70
+        Me.GridSemanaTrabajadores.Column(Me.igyDiferenciaDias).Width = 65
+        Me.GridSemanaTrabajadores.Column(Me.igyValidacionesControl).Width = 80
+        Me.GridSemanaTrabajadores.Column(Me.igyIdMovimiento).Width = 60
+
+        Me.GridSemanaTrabajadores.Cell(0, Me.igyCodigoTrabajador).Text = "Cod."
+        Me.GridSemanaTrabajadores.Cell(0, Me.igyNombreTrabajador).Text = "Nombre trabajador"
+        Me.GridSemanaTrabajadores.Cell(0, Me.igyCURP).Text = "CURP"
+        Me.GridSemanaTrabajadores.Cell(0, Me.igyUnidadMedicaFamiliar).Text = "U.M.F."
+        Me.GridSemanaTrabajadores.Cell(0, Me.igyNumRegistroIMSS).Text = "Num. Registro IMSS"
+        Me.GridSemanaTrabajadores.Cell(0, Me.igyFechaAlta).Text = "Ultima Fecha alta"
+        Me.GridSemanaTrabajadores.Cell(0, Me.igyFechaAlta).Text = "Fecha alta"
+        Me.GridSemanaTrabajadores.Cell(0, Me.igyFechaBaja).Text = "Fecha baja"
+        Me.GridSemanaTrabajadores.Cell(0, Me.igyValidacionIMSS).Text = "Es v√°lido?"
+        Me.GridSemanaTrabajadores.Cell(0, Me.igyClaveValidacionesIMSS).Text = "Clave validaci√≥n"
+        Me.GridSemanaTrabajadores.Cell(0, Me.igyPercepciones).Text = "Percepci√≥n"
+        Me.GridSemanaTrabajadores.Cell(0, Me.igyAdicional).Text = "Adicional"
+        Me.GridSemanaTrabajadores.Cell(0, Me.igyTrabajo).Text = "Trabajo?"
+        Me.GridSemanaTrabajadores.Cell(0, Me.igyDiferenciaDias).Text = "D√≠as"
+        Me.GridSemanaTrabajadores.Cell(0, Me.igyValidacionesControl).Text = "Validaciones"
+        Me.GridSemanaTrabajadores.Cell(0, Me.igyIdMovimiento).Text = "Id Movimiento"
+
+        Me.GridSemanaTrabajadores.Column(Me.igyValidacionIMSS).CellType = FlexCell.CellTypeEnum.CheckBox
+
+        Me.GridSemanaTrabajadores.Column(Me.igyFechaAlta).CellType = FlexCell.CellTypeEnum.Calendar
+        Me.GridSemanaTrabajadores.Column(Me.igyFechaBaja).CellType = FlexCell.CellTypeEnum.Calendar
+
+        Me.GridSemanaTrabajadores.Column(Me.igyCodigoTrabajador).Locked = True
+        Me.GridSemanaTrabajadores.Column(Me.igyNombreTrabajador).Locked = True
+        Me.GridSemanaTrabajadores.Column(Me.igyCURP).Visible = False
+        Me.GridSemanaTrabajadores.Column(Me.igyUnidadMedicaFamiliar).Visible = False
+        Me.GridSemanaTrabajadores.Column(Me.igyNumRegistroIMSS).Visible = False
+        Me.GridSemanaTrabajadores.Column(Me.igyFechaAlta).Visible = True
+        Me.GridSemanaTrabajadores.Column(Me.igyUltimaFechaAlta).Visible = False
+        Me.GridSemanaTrabajadores.Column(Me.igyTrabajo).Locked = True
+        Me.GridSemanaTrabajadores.Column(Me.igyValidacionesControl).Locked = True
+        Me.GridSemanaTrabajadores.Column(Me.igyIdMovimiento).Visible = False
+        Me.GridSemanaTrabajadores.Column(Me.igyIdMovimiento).Locked = True
+
+        If Me.Estado = enumEstados.ALTA Then
+            'Me.GridSemanaTrabajadores.Column(Me.igyFechaAlta).FormatString = ("dd/MMM/yy")
+            Me.GridSemanaTrabajadores.Column(Me.igyFechaAlta).Locked = False
+            Me.GridSemanaTrabajadores.Column(Me.igyFechaBaja).Visible = False
+            Me.GridSemanaTrabajadores.Column(Me.igyDiferenciaDias).Visible = False
+        Else
+            Me.GridSemanaTrabajadores.Column(Me.igyFechaAlta).FormatString = ("dd/MMM/yy")
+            Me.GridSemanaTrabajadores.Column(Me.igyFechaBaja).FormatString = ("dd/MMM/yy")
+            Me.GridSemanaTrabajadores.Column(Me.igyFechaAlta).Locked = True
+            Me.GridSemanaTrabajadores.Column(Me.igyFechaBaja).Visible = True
+            Me.GridSemanaTrabajadores.Column(Me.igyDiferenciaDias).Visible = True
+        End If
+        Me.GridSemanaTrabajadores.Column(Me.igyValidacionIMSS).Locked = True
+        Me.GridSemanaTrabajadores.Column(Me.igyClaveValidacionesIMSS).Locked = True
+        Me.GridSemanaTrabajadores.Column(Me.igyPercepciones).Visible = False
+        Me.GridSemanaTrabajadores.Column(Me.igyAdicional).Visible = False
+
+        Me.GridSemanaTrabajadores.AutoRedraw = True
+        Me.GridSemanaTrabajadores.Refresh()
+    End Sub
+
+    Private Sub FormateaGridIntegracion()
+        Me.GridIngracion.AllowUserSort = True
+
+        Me.GridIngracion.Column(Me.igyIntegracionCodigoTrabajador).Width = 50
+        Me.GridIngracion.Column(Me.igyIntegracionNombreTrabajador).Width = 160
+        Me.GridIngracion.Column(Me.igyIntegracionFechaAlta).Width = 90
+        Me.GridIngracion.Column(Me.igyIntegracionNombreTxtAlta).Width = 100
+        Me.GridIngracion.Column(Me.igyIntegracionIntegracionSuaAlta).Width = 60
+        Me.GridIngracion.Column(Me.igyIntegracionEstatusBaja).Width = 50
+        Me.GridIngracion.Column(Me.igyIntegracionFechaBaja).Width = 70
+        Me.GridIngracion.Column(Me.igyIntegracionNombreTxtBaja).Width = 90
+        Me.GridIngracion.Column(Me.igyIntegracionIntegracionSuaBaja).Width = 60
+        Me.GridIngracion.Column(Me.igyIntegracionRechasados).Width = 70
+
+        Me.GridIngracion.Cell(0, Me.igyIntegracionCodigoTrabajador).Text = "Cod."
+        Me.GridIngracion.Cell(0, Me.igyIntegracionNombreTrabajador).Text = "Nombre trabajador"
+        Me.GridIngracion.Cell(0, Me.igyIntegracionFechaAlta).Text = "Fecha alta"
+        Me.GridIngracion.Cell(0, Me.igyIntegracionNombreTxtAlta).Text = "Nombre txt alta"
+        Me.GridIngracion.Cell(0, Me.igyIntegracionIntegracionSuaAlta).Text = "Int. alta"
+        Me.GridIngracion.Cell(0, Me.igyIntegracionEstatusBaja).Text = "Ets. baja"
+        Me.GridIngracion.Cell(0, Me.igyIntegracionFechaBaja).Text = "Fecha baja"
+        Me.GridIngracion.Cell(0, Me.igyIntegracionNombreTxtBaja).Text = "Nombre txt baja"
+        Me.GridIngracion.Cell(0, Me.igyIntegracionIntegracionSuaBaja).Text = "Int. baja"
+        Me.GridIngracion.Cell(0, Me.igyIntegracionRechasados).Text = "Rechazados"
+
+        Me.GridIngracion.Column(Me.igyIntegracionRechasados).CellType = FlexCell.CellTypeEnum.CheckBox
+        Me.GridIngracion.Column(Me.igyIntegracionIntegracionSuaAlta).CellType = FlexCell.CellTypeEnum.CheckBox
+        Me.GridIngracion.Column(Me.igyIntegracionIntegracionSuaBaja).CellType = FlexCell.CellTypeEnum.CheckBox
+
+        Me.GridIngracion.Column(Me.igyIntegracionCodigoTrabajador).Locked = True
+        Me.GridIngracion.Column(Me.igyIntegracionNombreTrabajador).Locked = True
+        Me.GridIngracion.Column(Me.igyIntegracionFechaAlta).Locked = True
+        Me.GridIngracion.Column(Me.igyIntegracionNombreTxtAlta).Locked = True
+        Me.GridIngracion.Column(Me.igyIntegracionIntegracionSuaAlta).Locked = True
+        Me.GridIngracion.Column(Me.igyIntegracionEstatusBaja).Locked = True
+        Me.GridIngracion.Column(Me.igyIntegracionFechaBaja).Locked = True
+        Me.GridIngracion.Column(Me.igyIntegracionNombreTxtBaja).Locked = True
+        Me.GridIngracion.Column(Me.igyIntegracionIntegracionSuaBaja).Locked = True
+        Me.GridIngracion.Column(Me.igyIntegracionRechasados).Locked = False
+
+        If Me.cboTxtArchivos.SelectedValue Is Nothing Then
+            Exit Sub
+        End If
+        'Me.btnIntegrar.Enabled = True
+        'Me.btnEliminar.Enabled = True
+        'Me.CkbMarcarTodo.Enabled = True
+        'Me.gbFecha.Enabled = True
+        'Me.dtFechaActualizar.Enabled = True
+
+        If Me.cboTxtArchivos.SelectedValue.ToString = "ALTA" Then
+            Me.GridIngracion.Column(Me.igyIntegracionNombreTxtAlta).Visible = False
+            Me.GridIngracion.Column(Me.igyIntegracionIntegracionSuaAlta).Visible = False
+            Me.GridIngracion.Column(Me.igyIntegracionEstatusBaja).Visible = False
+            Me.GridIngracion.Column(Me.igyIntegracionFechaBaja).Visible = False
+            Me.GridIngracion.Column(Me.igyIntegracionNombreTxtBaja).Visible = False
+            Me.GridIngracion.Column(Me.igyIntegracionIntegracionSuaBaja).Visible = False
+            Dim i As Integer
+            For i = 1 To Me.GridIngracion.Rows - 1
+                If Me.GridIngracion.Cell(i, Me.igyIntegracionIntegracionSuaAlta).Text = "1" Then
+                    Me.GridIngracion.Column(Me.igyIntegracionIntegracionSuaAlta).Visible = True
+                    Me.GridIngracion.Row(i).Locked = True
+                    'Me.btnIntegrar.Enabled = False
+                    'Me.btnEliminar.Enabled = False
+                    'Me.CkbMarcarTodo.Enabled = False
+                    'Me.gbFecha.Enabled = False
+                End If
+            Next i
+        Else
+            Me.GridIngracion.Column(Me.igyIntegracionNombreTxtAlta).Visible = False
+            Me.GridIngracion.Column(Me.igyIntegracionIntegracionSuaAlta).Visible = True
+            Me.GridIngracion.Column(Me.igyIntegracionEstatusBaja).Visible = False
+            Me.GridIngracion.Column(Me.igyIntegracionFechaBaja).Visible = True
+            Me.GridIngracion.Column(Me.igyIntegracionNombreTxtBaja).Visible = False
+            Me.GridIngracion.Column(Me.igyIntegracionIntegracionSuaBaja).Visible = False
+
+            Dim i As Integer
+            For i = 1 To Me.GridIngracion.Rows - 1
+                If Me.GridIngracion.Cell(i, Me.igyIntegracionIntegracionSuaBaja).Text = "1" Then
+                    Me.GridIngracion.Column(Me.igyIntegracionIntegracionSuaAlta).Visible = True
+                    Me.GridIngracion.Row(i).Locked = True
+                    'Me.btnIntegrar.Enabled = False
+                    'Me.btnEliminar.Enabled = False
+                    'Me.CkbMarcarTodo.Enabled = False
+                End If
+            Next i
+        End If
+    End Sub
+
+    Private Function Consultar() As Boolean
+        Dim iSemana As Integer = CInt(Me.CboSemana.SelectedValue) ', vdg As String
+        Dim dTabla As DataTable
+        bConsultando = True
+
+        Try
+            Dim oSUA As New Class_Nomina_SUA
+            oSUA = New Class_Nomina_SUA
+            If sMovimiento = "ALTA" Then
+                dTabla = oSUA.ObtenerAfliacionSemanaAlta(iSemana, Me.ckbNuevos.Checked)
+            Else
+                dTabla = oSUA.ObtenerAfliacionSemanaBaja(iSemana, Me.ckbNuevos.Checked)
+            End If
+
+            Me.InicializaGrid()
+            Me.GridSemanaTrabajadores.Rows = 1
+            'igyCodigoTrabajador,igyNombreTrabajador,igyCURP,
+            'igyUnidadMEdiacaFamiliar, igyNumRegistroIMSS, igyUltimaFechaAlta, igyFechaAlta, igyFechaBaja
+            'igyValidacionIMSS,igyClaveValidacionesIMSS,igyPercepciones,igyAdicional,igyTrabajo,igyDiferenciaDias
+            For Each dRow As DataRow In dTabla.Rows
+                Me.GridSemanaTrabajadores.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & " " & dRow(2).ToString & " " & dRow(3).ToString & Chr(9) & dRow(4).ToString & Chr(9) & _
+                                                  dRow(5).ToString & Chr(9) & dRow(6).ToString & Chr(9) & dRow(7).ToString & Chr(9) & dRow(8).ToString & Chr(9) & dRow(9).ToString & Chr(9) & _
+                                                  dRow(10).ToString & Chr(9) & dRow(11).ToString & Chr(9) & dRow(13).ToString & Chr(9) & "0".ToString & Chr(9) & dRow(14).ToString & Chr(9) & _
+                                                  dRow(15).ToString & Chr(9) & dRow(16).ToString & Chr(9) & dRow(17).ToString)
+            Next
+            dTabla.Dispose()
+            'ISNULL(Convert(varchar(10),FECHA_FACTURA_PROVEEDOR, 103),'')
+
+            Me.FormateaGrid()
+            Me.Totales()
+
+            Consultar = True
+            bConsultando = False
+
+        Catch ex As Exception
+            HandleError(Me.Name, "Consultar", ex)
+            bConsultando = False
+        End Try
+    End Function
+
+    Private Function ConsultarArchivo() As Boolean
+        Dim dTabla As DataTable
+        Dim oNominaMovimientos As New Class_NominaMovimientoSua
+        oNominaMovimientos.ID_NOMINA_SEMANA = CInt(Me.CboSemana.SelectedValue)
+        Dim sArchivo As String = Me.cboTxtArchivos.Text
+        sArchivo = sArchivo.Replace(" INTEGRADO", "")
+
+        Try
+            dTabla = oNominaMovimientos.ObtenerDetalle(sArchivo)
+            Me.InicializaGridIntegracion()
+
+            Me.GridIngracion.Rows = 1
+            For Each drow As DataRow In dTabla.Rows
+                Dim sFecha As String
+                If drow(8).ToString Is Nothing Or drow(8).ToString = "" Then
+                    sFecha = ""
+                Else
+                    sFecha = Format(CDate(drow(8).ToString), "dd-MMM-yy")
+                End If
+                Me.GridIngracion.AddItem(drow(0).ToString & Chr(9) & drow(1).ToString & " " & drow(2).ToString & " " & drow(3).ToString & Chr(9) & Format(CDate(drow(4).ToString), "dd-MMM-yy") & Chr(9) & drow(5).ToString & Chr(9) & _
+                                         drow(6).ToString & Chr(9) & drow(7).ToString & Chr(9) & sFecha.ToString & Chr(9) & drow(9).ToString & Chr(9) & drow(10).ToString & Chr(9))
+            Next
+
+            Me.FormateaGridIntegracion()
+            Me.Totales()
+        Catch ex As Exception
+            HandleError(Me.Name, "cmbTxtArchivos_SelectedValueChanged", ex)
+        End Try
+    End Function
+
+    Private Sub DesplegarValidaciones()
+        Try
+            With Me.lstbValidaciones
+                .DisplayMember = "NOMBRE_VALIDACION"
+                .ValueMember = "CODIGO_VALIDACION"
+                Dim dView As New Data.DataView(Me.oTemporada.ObtenerClavesValidaciones("IMSS"))
+                dView.Sort = "NOMBRE_VALIDACION"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = 0
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarValidaciones", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarValidacionesControl()
+        Try
+            With Me.lbstValidacionesControl
+                .DisplayMember = "NOMBRE_VALIDACION"
+                '.ValueMember = "CODIGO_VALIDACION"
+                Dim dView As New Data.DataView(Me.oTemporada.ObtenerClavesValidaciones("CONTROL"))
+                dView.Sort = "NOMBRE_VALIDACION"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = 0
+                End If
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarValidacionesControl", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarSemanas()
+        Try
+            Dim oElementos As New Class_NominaSemana
+            Dim oTemperada As New Class_NominaTemporada
+            oElementos = New Class_NominaSemana
+            oTemperada = New Class_NominaTemporada
+            oTemperada.Consultar()
+            With Me.CboSemana
+                .DisplayMember = "NUMERO_SEMANA"
+                .ValueMember = "ID_NOMINA_SEMANA"
+                Dim dView As New Data.DataView(oElementos.ObtenerElementos())
+                dView.Sort = "NUMERO_SEMANA"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .DisplayMember = Plaza.oSisPlazaNomina.NOMINA_NUMERO_SEMANA_ACTUAL.ToString
+                End If
+            End With
+
+            Me.lblTemporadaPlaza.Text = oTemperada.NOMBRE_TEMPORADA.ToString & ", " & Plaza.NOMBRE_PLAZA
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarSemanas", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarArchivos()
+        Try
+            Dim oNominaMovimientos As New Class_NominaMovimientoSua
+            oNominaMovimientos.ID_NOMINA_SEMANA = CInt(Me.CboSemana.SelectedValue)
+
+            Me.InicializaGridIntegracion()
+            Me.cboTxtArchivos.Refresh()
+            Me.cboTxtArchivos.DataSource = Nothing
+            With Me.cboTxtArchivos
+                .DisplayMember = "NOMBRE_TXT"
+                .ValueMember = "TIPO_MOVIMIENTO"
+                Dim dView As New Data.DataView(oNominaMovimientos.ObtenerElementos())
+                dView.Sort = "NOMBRE_TXT"
+                .DataSource = dView
+                If dView.Count > 0 Then
+                    .SelectedIndex = 0
+                End If
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarArchivos", ex)
+        End Try
+    End Sub
+
+    Private Sub GestionaGrid(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Dim Columna As Integer, Renglon As Integer
+        Dim StrCod As String
+
+        Columna = Me.GridSemanaTrabajadores.Selection.FirstCol
+        Renglon = Me.GridSemanaTrabajadores.Selection.FirstRow
+        StrCod = Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyCodigoTrabajador).Text
+
+        Select Case e.KeyCode
+            Case Keys.Enter
+
+                'Select Case Columna
+                '    'Case Me.igyFechaAlta
+                '    '    If Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text = "" Then
+                '    '        Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyUltimaFechaAlta).SetFocus()
+                '    '        Exit Sub
+                '    '    End If
+                '    '    If txtLEN(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyUltimaFechaAlta).Text) Then
+                '    '        If CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text) < CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyUltimaFechaAlta).Text) Then
+                '    '            MsgBox("La fecha de baja debe ser mayor o igual a la ultima fecha de alta.", MsgBoxStyle.Exclamation, "GeneraArchivoAltas")
+                '    '            Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyUltimaFechaAlta).SetFocus()
+                '    '            Exit Sub
+                '    '        End If
+                '    '    End If
+                '    '    Me.GridSemanaTrabajadores.Cell(Renglon + 1, Me.igyUltimaFechaAlta).SetFocus()
+
+                '    'Case Me.igyFechaBaja
+                '    '    If Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaBaja).Text = "" Then
+                '    '        Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).SetFocus()
+                '    '        Exit Sub
+                '    '    End If
+                '    '    If CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaBaja).Text) < CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text) Then
+                '    '        MsgBox("La fecha de baja debe ser mayor o igual a la de alta.", MsgBoxStyle.Exclamation, "GeneraArchivoAltas")
+                '    '        Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).SetFocus()
+                '    '        Exit Sub
+                '    '    End If
+                '    '    Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyDiferenciaDias).Text = DateDiff(DateInterval.Day, CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaAlta).Text), CDate(Me.GridSemanaTrabajadores.Cell(Renglon, Me.igyFechaBaja).Text), FirstDayOfWeek.Sunday, FirstWeekOfYear.Jan1).ToString
+
+                '    '    Me.GridSemanaTrabajadores.Cell(Renglon + 1, Me.igyFechaAlta).SetFocus()
+                'End Select
+
+            Case Keys.F8, Keys.Delete
+                If Me.GridSemanaTrabajadores.Rows > 1 Then
+                    Me.GridSemanaTrabajadores.Selection.DeleteByRow()
+                    e.SuppressKeyPress = True
+                End If
+                Me.Totales()
+        End Select
+    End Sub
+
+    Private Sub Totales()
+        Dim i As Integer
+        Me.txtTotalImporte.Text = "0"
+        Me.txtTotalJornales.Text = "0"
+        Me.txtAceptados.Text = "0"
+        Me.txtRechazados.Text = "0"
+        Me.txtTotalTrabajadores.Text = "0"
+
+        For i = 1 To Me.GridSemanaTrabajadores.Rows - 1
+            If txtLEN(Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text) = True Then
+                If Me.GridSemanaTrabajadores.Cell(i, Me.igyValidacionIMSS).Text = "1" Then
+                    Me.txtTotalImporte.Text = FormatImporteContable(valorNumerico(Me.txtTotalImporte.Text) + valorNumerico(Me.GridSemanaTrabajadores.Cell(i, Me.igyPercepciones).Text), True)
+                    Me.txtTotalJornales.Text = (valorNumerico(Me.txtTotalJornales.Text) + 1).ToString
+                End If
+            End If
+        Next i
+
+        For i = 1 To Me.GridIngracion.Rows - 1
+            If Me.GridIngracion.Cell(i, Me.igyIntegracionRechasados).Text = "0" Or Me.GridIngracion.Cell(i, Me.igyIntegracionRechasados).Text = "" Then
+                Me.txtAceptados.Text = (valorNumerico(Me.txtAceptados.Text) + 1).ToString
+                Me.GridIngracion.Cell(i, Me.igyIntegracionRechasados).Text = "0"
+            Else
+                Me.txtRechazados.Text = (valorNumerico(Me.txtRechazados.Text) + 1).ToString
+            End If
+        Next
+
+        Me.txtTotalTrabajadores.Text = (Me.GridIngracion.Rows - 1).ToString
+        'Me.txtTotalImporte.Text = FormatImporteContable(Redondear(FG_Grid_SumaCol(Me.GridSemanaTrabajadores, Me.igyPercepciones), Empresa_Sistema.DECIMALES_CONTABILIDAD))
+        'Me.txtTotalJornales.Text = FG_Grid_SumaCol(Me.GridSemanaTrabajadores, Me.igyCodigoTrabajador).ToString
+    End Sub
+
+    Private Function NavegadorSemanas(ByVal sTipoDeBusqueda As String) As Boolean
+        Try
+            Dim iSemana As Integer
+
+            If sTipoDeBusqueda = "Anterior" Then
+                iSemana = CInt(Me.CboSemana.Text)
+                iSemana = iSemana - 1
+
+                If iSemana > 0 Then
+                    Me.CboSemana.Text = iSemana.ToString
+                    'Me.CboSemana.SelectedValue = iSemana.ToString
+                End If
+            Else
+                If sTipoDeBusqueda = "Siguiente" Then
+                    iSemana = CInt(Me.CboSemana.Text)
+                    iSemana = iSemana + 1
+                    oTemporada = New Class_NominaTemporada()
+                    oTemporada.Consultar()
+                    If iSemana <= CInt(oTemporada.NUMERO_SEMANAS.ToString) Then
+                        Me.CboSemana.Text = iSemana.ToString
+                        'Me.CboSemana.SelectedValue = iSemana.ToString
+                    End If
+                End If
+            End If
+            Me.Cambia_Estado(enumEstados.NUEVO)
+
+            NavegadorSemanas = True
+        Catch ex As Exception
+            HandleError(Me.Name, "NavegadorSemanas", ex)
+        End Try
+    End Function
+
+    Public Function GeneraArchivoAltas() As Boolean
+        'Dim dTabla As DataTable
+        Dim sRenglon As String = Nothing
+        Dim strStreamW As Stream = Nothing
+        Dim strStreamWriter As StreamWriter = Nothing
+        ' Donde guardamos los paths de los archivos que vamos a estar utilizando ..
+        Dim PathArchivo As String
+        Dim sTotalRegingresos As String
+
+        Try
+            Me.oSUA = New Class_Nomina_SUA
+
+            If Me.TrabajadorAdicional = False Then
+                MsgBox("No se gener√≥ el trabajador adicional.", MsgBoxStyle.Exclamation, "GeneraArchivoAltas")
+                Exit Function
+            End If
+
+            If Directory.Exists(Plaza.oSisPlazaNomina.NOMINA_RUTA_IDSE & "SEM" & Me.CboSemana.Text) = False Then ' si no existe la carpeta se crea
+                Directory.CreateDirectory(Plaza.oSisPlazaNomina.NOMINA_RUTA_IDSE & "SEM" & Me.CboSemana.Text)
+            End If
+
+            '    'procedimiento para imprimnir
+            'N√∫meroArchivo = FreeFile() ' Obtiene un n√∫mero de archivo que no se ha utilizado.
+
+            Dim sql As New Class_find("SELECT ULTIMO_NUMERO_ARCHIVO_TXT_ALTAS FROM NOMINA_SEMANA WHERE ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA & " AND NUMERO_SEMANA=" & Me.CboSemana.Text)
+            Dim iFolio As Integer
+            iFolio = CInt("0" & sql.Result1.ToString)
+            iFolio = iFolio + 1
+
+            PathArchivo = Plaza.oSisPlazaNomina.NOMINA_RUTA_IDSE & "SEM" & Me.CboSemana.Text & "\REING_" & iFolio.ToString & ".txt"
+
+            If isExisteArchivo(PathArchivo) = True Then
+                MsgBox("El archivo correspondiente ya existe", MsgBoxStyle.Exclamation, "GeneraArchivoAltas")
+                Exit Function
+            Else
+                strStreamW = File.Create(PathArchivo)
+            End If
+
+            '---------------INSERTAR MOVIMIENTOS EN AGRINET----------------------------------------
+            Dim i As Integer
+            Dim oNominaMovimientos As New Class_NominaMovimientoSua
+            oNominaMovimientos.ID_NOMINA_SEMANA = CInt(Me.CboSemana.SelectedValue)
+
+            For i = 1 To Me.GridSemanaTrabajadores.Rows - 1
+                If txtLEN(Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text) = True Then
+                    If Me.GridSemanaTrabajadores.Cell(i, Me.igyValidacionIMSS).Text = "1" Then
+                        If oNominaMovimientos.InsertaMovimientosImss("ALTA", Me.GridSemanaTrabajadores.Cell(i, Me.igyFechaAlta).Text, "REING_" & iFolio.ToString & ".TXT", Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text, Me.GridSemanaTrabajadores.Cell(i, Me.igyValidacionesControl).Text) = False Then
+                            MsgBox("No se pudo integrar el archivo. ", MsgBoxStyle.Exclamation, Me.Text)
+                            Exit Function
+                        End If
+                    End If
+                End If
+            Next i
+            '--------------------------------------------------------------------------------------
+
+            'dTabla = Me.oSUA.ObtenerAfliacionSemanaAlta(CInt(Me.CboSemana.SelectedValue), True)
+            strStreamWriter = New StreamWriter(strStreamW, System.Text.Encoding.Default) ' tipo de codificacion para escritura
+
+            'Me.GridIngracion.Rows = 1
+            'For Each drow As DataRow In dTabla.Rows
+            '    Dim kt1 As String = String.Format("{0,-11}", Plaza.oSisPlazaNomina.NOMINA_NUMERO_REGISTRO_PATRONAL.ToString)
+            '    Dim kt2 As String = String.Format("{0,-11}", drow(6).ToString)
+            '    Dim kt3 As String = String.Format("{0,-27}", drow(1).ToString)
+            '    Dim Kt4 As String = String.Format("{0,-27}", drow(2).ToString)
+            '    Dim kt5 As String = String.Format("{0,-27}", drow(3).ToString)
+            '    Dim kt6 As String = String.Format("{0,6}", (Plaza.oSisPlazaNomina.NOMINA_SUELDO_DIARIO * 100))
+            '    kt6 = kt6.Replace(" ", "0")
+            '    Dim kt7 As String = String.Format("{0,6}", "")
+            '    Dim kt8 As String = String.Format("{0,1}", Plaza.oSisPlazaNomina.NOMINA_TIPO_TRABAJADOR.ToString)
+            '    Dim kt9 As String = String.Format("{0,1}", Plaza.oSisPlazaNomina.NOMINA_TIPO_SALARIO.ToString)
+            '    Dim kt10 As String = String.Format("{0,1}", Plaza.oSisPlazaNomina.NOMINA_REDUCCION_TIPO_PAGO.ToString)
+            '    Dim kt11 As String = String.Format("{0,8}", Format(CDate(drow(7).ToString), "ddMMyyyy"))
+            '    Dim kt12 As String = String.Format("{0,3}", drow(5).ToString)
+            '    kt12 = kt12.Replace(" ", "0")
+            '    Dim kt13 As String = String.Format("{0,2}", "")
+            '    Dim kt14 As String = String.Format("{0,2}", "08")
+            '    Dim kt15 As String = String.Format("{0,5}", Plaza.oSisPlazaNomina.NOMINA_GUIA.ToString)
+            '    kt15 = kt15.Replace(" ", "0")
+            '    Dim kt16 As String = String.Format("{0,10}", drow(0).ToString.Substring(2))
+            '    kt16 = kt16.Replace(" ", "0")
+            '    Dim kt17 As String = String.Format("{0,1}", "")
+            '    Dim kt18 As String = String.Format("{0,18}", drow(4).ToString)
+            '    Dim kt19 As String = String.Format("{0,1}", Plaza.oSisPlazaNomina.NOMINA_IDENTIFICADOR_FORMATO.ToString)
+
+            '    strStreamWriter.WriteLine(kt1.ToString & kt2.ToString & kt3.ToString & Kt4.ToString & kt5.ToString & _
+            '                              kt6.ToString & kt7.ToString & kt8.ToString & kt9.ToString & kt10.ToString & _
+            '                              kt11.ToString & kt12.ToString & kt13.ToString & kt14.ToString & kt15.ToString & _
+            '                              kt16.ToString & kt17.ToString & kt18.ToString & kt19.ToString)
+            '    'escribimos en el archivo
+            '    Me.GridIngracion.AddItem(drow(0).ToString & Chr(9) & drow(1).ToString & " " & drow(2).ToString & " " & drow(3).ToString & Chr(9) & Format(CDate(drow(7).ToString), "dd-MM-yy") & Chr(9) & drow(8).ToString & Chr(9) & _
+            '                             drow(9).ToString & Chr(9) & drow(10).ToString & Chr(9) & drow(11).ToString & Chr(9) & drow(12).ToString & Chr(9) & drow(13).ToString & Chr(9))
+
+            'Next
+
+
+            For i = 1 To Me.GridSemanaTrabajadores.Rows - 1
+                If txtLEN(Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text) = True Then
+                    If Me.GridSemanaTrabajadores.Cell(i, Me.igyValidacionIMSS).Text = "1" And Me.GridSemanaTrabajadores.Cell(i, Me.igyValidacionesControl).Text = "" Then
+
+                        Dim oTrabajador As New Class_CatTrabajadores
+                        oTrabajador = New Class_CatTrabajadores(Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text)
+
+                        Dim kt1 As String = String.Format("{0,-11}", Plaza.oSisPlazaNomina.NOMINA_NUMERO_REGISTRO_PATRONAL.ToString)
+                        Dim kt2 As String = String.Format("{0,-11}", Me.GridSemanaTrabajadores.Cell(i, Me.igyNumRegistroIMSS).Text)
+                        Dim kt3 As String = String.Format("{0,-27}", oTrabajador.APELLIDO_PATERNO)
+                        Dim Kt4 As String = String.Format("{0,-27}", oTrabajador.APELLIDO_MATERNO)
+                        Dim kt5 As String = String.Format("{0,-27}", oTrabajador.NOMBRE_TRABAJADOR)
+                        Dim kt6 As String = String.Format("{0,6}", (Plaza.oSisPlazaNomina.NOMINA_SUELDO_DIARIO * 100))
+                        kt6 = kt6.Replace(" ", "0")
+                        Dim kt7 As String = String.Format("{0,6}", "")
+                        Dim kt8 As String = String.Format("{0,1}", Plaza.oSisPlazaNomina.NOMINA_TIPO_TRABAJADOR.ToString)
+                        Dim kt9 As String = String.Format("{0,1}", Plaza.oSisPlazaNomina.NOMINA_TIPO_SALARIO.ToString)
+                        Dim kt10 As String = String.Format("{0,1}", Plaza.oSisPlazaNomina.NOMINA_REDUCCION_TIPO_PAGO.ToString)
+
+                        Dim kt11 As String = String.Format("{0,8}", Format(CDate(Me.GridSemanaTrabajadores.Cell(i, Me.igyFechaAlta).Text), "ddMMyyyy"))
+                        Dim kt12 As String = String.Format("{0,3}", Me.GridSemanaTrabajadores.Cell(i, Me.igyUnidadMedicaFamiliar).Text)
+                        kt12 = kt12.Replace(" ", "0")
+                        Dim kt13 As String = String.Format("{0,2}", "")
+                        Dim kt14 As String = String.Format("{0,2}", "08")
+                        Dim kt15 As String = String.Format("{0,5}", Plaza.oSisPlazaNomina.NOMINA_GUIA.ToString)
+                        kt15 = kt15.Replace(" ", "0")
+                        Dim kt16 As String = String.Format("{0,10}", Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text)
+                        kt16 = kt16.Replace(" ", "0")
+                        Dim kt17 As String = String.Format("{0,1}", "")
+                        Dim kt18 As String = String.Format("{0,18}", Me.GridSemanaTrabajadores.Cell(i, Me.igyCURP).Text)
+                        Dim kt19 As String = String.Format("{0,1}", Plaza.oSisPlazaNomina.NOMINA_IDENTIFICADOR_FORMATO.ToString)
+
+                        strStreamWriter.WriteLine(kt1.ToString & kt2.ToString & kt3.ToString & Kt4.ToString & kt5.ToString & _
+                                                  kt6.ToString & kt7.ToString & kt8.ToString & kt9.ToString & kt10.ToString & _
+                                                  kt11.ToString & kt12.ToString & kt13.ToString & kt14.ToString & kt15.ToString & _
+                                                  kt16.ToString & kt17.ToString & kt18.ToString & kt19.ToString)
+                        'escribimos en el archivo
+                        'Me.GridIngracion.AddItem(drow(0).ToString & Chr(9) & drow(1).ToString & " " & drow(2).ToString & " " & drow(3).ToString & Chr(9) & Format(CDate(drow(7).ToString), "dd-MM-yy") & Chr(9) & drow(8).ToString & Chr(9) & _
+                        '                         drow(9).ToString & Chr(9) & drow(10).ToString & Chr(9) & drow(11).ToString & Chr(9) & drow(12).ToString & Chr(9) & drow(13).ToString & Chr(9))
+
+                    End If
+                End If
+            Next i
+            '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            sTotalRegingresos = String.Format("{0,6}", Me.txtTotalJornales.Text)
+            sTotalRegingresos = sTotalRegingresos.Replace(" ", "0")
+
+            strStreamWriter.WriteLine("*************" & String.Format("{0,43}", " ") & sTotalRegingresos & _
+                          String.Format("{0,71}", " ") & _
+                          Plaza.oSisPlazaNomina.NOMINA_GUIA.ToString & _
+                          String.Format("{0,29}", " ") & _
+                          Plaza.oSisPlazaNomina.NOMINA_IDENTIFICADOR_FORMATO.ToString)
+
+
+            strStreamWriter.Close() ' cerramos
+
+            Dim oSemana As New Class_NominaSemana
+            oSemana.ID_NOMINA_SEMANA = oNominaMovimientos.ID_NOMINA_SEMANA
+            oSemana.ULTIMO_NUMERO_ARCHIVO_TXT_ALTAS = iFolio.ToString
+            oSemana.ActualizaUltimoNumeroTxtAltaSemana()
+
+            GeneraArchivoAltas = True
+
+
+            MsgBox("El archivo fue generado con √©xito en la ruta: " & PathArchivo, MsgBoxStyle.Information, "Generar Altas")
+
+            Exit Function
+        Catch ex As Exception
+            HandleError(Me.Name, "GeneraArchivoAltas", ex)
+        End Try
+    End Function
+
+    Public Function GeneraArchivoBajas() As Boolean
+        'Dim dTabla As DataTable
+        Dim sRenglon As String = Nothing
+        Dim strStreamW As Stream = Nothing
+        Dim strStreamWriter As StreamWriter = Nothing
+        ' Donde guardamos los paths de los archivos que vamos a estar utilizando ..
+        Dim PathArchivo As String
+        Dim sTotalRegingresos As String
+        Dim sNombreArchivo As String
+
+        Try
+            Me.oSUA = New Class_Nomina_SUA
+
+            If Me.TrabajadorAdicional = False Then
+                MsgBox("No se gener√≥ el trabajador adicional.", MsgBoxStyle.Exclamation, "GeneraArchivoAltas")
+                Exit Function
+            End If
+
+            'dTabla = Me.oSUA.ObtenerAfliacionSemanaBaja(CInt(Me.CboSemana.Text), True)
+
+            If Directory.Exists(Plaza.oSisPlazaNomina.NOMINA_RUTA_IDSE & "SEM" & Me.CboSemana.Text) = False Then ' si no existe la carpeta se crea
+                Directory.CreateDirectory(Plaza.oSisPlazaNomina.NOMINA_RUTA_IDSE & "SEM" & Me.CboSemana.Text)
+            End If
+
+            '    'procedimiento para imprimnir
+            'N√∫meroArchivo = FreeFile() ' Obtiene un n√∫mero de archivo que no se ha utilizado.
+
+            Dim sql As New Class_find("SELECT ULTIMO_NUMERO_ARCHIVO_TXT_BAJAS FROM NOMINA_SEMANA WHERE ID_NOMINA_TEMPORADA=" & Plaza.oSisPlazaNomina.NOMINA_ID_NOMINA_TEMPORADA_ACTIVA & " AND NUMERO_SEMANA=" & Me.CboSemana.Text)
+            'Dim iFolio As Integer
+            'iFolio = CInt(sql.Result1.ToString)
+            'iFolio = iFolio + 1
+
+            'PathArchivo = Plaza.oSisPlazaNomina.NOMINA_RUTA_IDSE & "SEM" & Me.CboSemana.Text & "\BAJA_" & iFolio.ToString & ".txt"
+            sNombreArchivo = "BAJA_" & Format(Now, "ddMMMyy").ToUpper & "_" & Format(Now, "hhmmss") & ".txt"
+            PathArchivo = Plaza.oSisPlazaNomina.NOMINA_RUTA_IDSE & "SEM" & Me.CboSemana.Text & "\" & sNombreArchivo
+
+            If isExisteArchivo(PathArchivo) = True Then
+                If MsgBox("El archivo correspondiente ya existe, desea sobreescribirlo?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "GeneraArchivoAltas") = MsgBoxResult.No Then
+                    MsgBox("No se gener√≥ el archivo.", MsgBoxStyle.Exclamation, "GeneraArchivoAltas")
+                    Exit Function
+                End If
+            Else
+                strStreamW = File.Create(PathArchivo)
+            End If
+
+            'FileOpen(N√∫meroArchivo, "REING_" & iFolio.ToString & ".txt", OpenMode.Output)
+
+            'strStreamW = File.Open(PathArchivo, FileMode.Open) 'Abrimos el archivo
+            strStreamWriter = New StreamWriter(strStreamW, System.Text.Encoding.Default) ' tipo de codificacion para escritura
+
+            '---------------INSERTAR MOVIMIENTOS EN AGRINET----------------------------------------
+            Dim i As Integer
+            Dim oNominaMovimientos As New Class_NominaMovimientoSua
+            oNominaMovimientos.ID_NOMINA_SEMANA = CInt(Me.CboSemana.SelectedValue)
+
+            For i = 1 To Me.GridSemanaTrabajadores.Rows - 1
+                If txtLEN(Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text) = True Then
+                    If Me.GridSemanaTrabajadores.Cell(i, Me.igyValidacionIMSS).Text = "1" Then
+                        If oNominaMovimientos.InsertaMovimientosImss("BAJA", Me.GridSemanaTrabajadores.Cell(i, Me.igyFechaBaja).Text, sNombreArchivo, Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text, Me.GridSemanaTrabajadores.Cell(i, Me.igyIdMovimiento).Text) = False Then
+                            MsgBox("No se pudo integrar el archivo. ", MsgBoxStyle.Exclamation, Me.Text)
+                            Exit Function
+                        End If
+                    End If
+                End If
+            Next i
+            '--------------------------------------------------------------------------------------
+            '    'escribimos en el archivo
+            '    Me.GridIngracion.AddItem(drow(0).ToString & Chr(9) & drow(1).ToString & " " & drow(2).ToString & " " & drow(3).ToString & Chr(9) & Format(CDate(drow(5).ToString), "dd-MM-yy") & Chr(9) & drow(6).ToString & Chr(9) & _
+            '                             drow(7).ToString & Chr(9) & drow(8).ToString & Chr(9) & Format(CDate(drow(9).ToString), "dd-MM-yy") & Chr(9) & drow(10).ToString & Chr(9) & drow(11).ToString & Chr(9))
+            'Next
+
+            '------------------------------------------------
+            'Dim i As Integer
+            For i = 1 To Me.GridSemanaTrabajadores.Rows - 1
+                If txtLEN(Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text) = True Then
+                    Dim oTrabajador As New Class_CatTrabajadores
+                    oTrabajador = New Class_CatTrabajadores(Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text)
+
+                    If Me.GridSemanaTrabajadores.Cell(i, Me.igyValidacionIMSS).Text = "1" And Me.GridSemanaTrabajadores.Cell(i, Me.igyValidacionesControl).Text = "" Then
+                        Dim kt1 As String = String.Format("{0,-11}", Plaza.oSisPlazaNomina.NOMINA_NUMERO_REGISTRO_PATRONAL.ToString)
+                        Dim kt2 As String = String.Format("{0,-11}", Me.GridSemanaTrabajadores.Cell(i, Me.igyNumRegistroIMSS).Text)
+                        Dim kt3 As String = String.Format("{0,-27}", oTrabajador.APELLIDO_PATERNO)
+                        Dim Kt4 As String = String.Format("{0,-27}", oTrabajador.APELLIDO_MATERNO)
+                        Dim kt5 As String = String.Format("{0,-27}", oTrabajador.NOMBRE_TRABAJADOR)
+                        Dim kt6 As String = String.Format("{0,15}", "")
+                        kt6 = kt6.Replace(" ", "0")
+                        Dim kt7 As String = String.Format("{0,8}", Format(CDate(Me.GridSemanaTrabajadores.Cell(i, Me.igyFechaBaja).Text), "ddMMyyyy"))
+                        Dim kt8 As String = String.Format("{0,5}", "")
+                        Dim kt9 As String = String.Format("{0,2}", "02")
+                        Dim kt10 As String = String.Format("{0,5}", Plaza.oSisPlazaNomina.NOMINA_GUIA.ToString)
+                        kt10 = kt10.Replace(" ", "0")
+                        Dim kt11 As String = String.Format("{0,10}", Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text)
+                        kt11 = kt11.Replace(" ", "0")
+                        Dim kt12 As String = String.Format("{0,1}", "2")
+                        Dim kt13 As String = String.Format("{0,18}", "")
+                        Dim kt14 As String = String.Format("{0,1}", Plaza.oSisPlazaNomina.NOMINA_IDENTIFICADOR_FORMATO.ToString)
+
+                        strStreamWriter.WriteLine(kt1.ToString & kt2.ToString & kt3.ToString & Kt4.ToString & kt5.ToString & _
+                                                  kt6.ToString & kt7.ToString & kt8.ToString & kt9.ToString & kt10.ToString & _
+                                                  kt11.ToString & kt12.ToString & kt13.ToString & kt14.ToString)
+
+                        'escribimos en el archivo
+                        'Me.GridIngracion.AddItem(drow(0).ToString & Chr(9) & drow(1).ToString & " " & drow(2).ToString & " " & drow(3).ToString & Chr(9) & Format(CDate(drow(5).ToString), "dd-MM-yy") & Chr(9) & drow(6).ToString & Chr(9) & _
+                        '                         drow(7).ToString & Chr(9) & drow(8).ToString & Chr(9) & Format(CDate(drow(9).ToString), "dd-MM-yy") & Chr(9) & drow(10).ToString & Chr(9) & drow(11).ToString & Chr(9))
+                    End If
+                End If
+            Next
+
+            '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            sTotalRegingresos = String.Format("{0,6}", Me.txtTotalJornales.Text)
+            sTotalRegingresos = sTotalRegingresos.Replace(" ", "0")
+            strStreamWriter.WriteLine("*************" & String.Format("{0,43}", " ") & sTotalRegingresos & _
+                                      String.Format("{0,71}", " ") & _
+                                      Plaza.oSisPlazaNomina.NOMINA_GUIA.ToString & _
+                                      String.Format("{0,29}", " ") & _
+                                      Plaza.oSisPlazaNomina.NOMINA_IDENTIFICADOR_FORMATO.ToString)
+
+            strStreamWriter.Close() ' cerramos
+            GeneraArchivoBajas = True
+
+            MsgBox("El archivo fue generado con √©xito en la ruta: " & PathArchivo, MsgBoxStyle.Information, "Generar Altas")
+
+            Exit Function
+        Catch ex As Exception
+            HandleError(Me.Name, "GeneraArchivoBajas", ex)
+        End Try
+    End Function
+
+    Public Function ModificaFechaMovimientos() As Boolean
+        Dim dTabla As DataTable
+        Dim sRenglon As String = Nothing
+        Dim strStreamW As Stream = Nothing
+        Dim strStreamWriter As StreamWriter = Nothing
+        ' Donde guardamos los paths de los archivos que vamos a estar utilizando ..
+        Dim PathArchivo As String
+        Dim sTotalRegingresos As String
+
+        Try
+            If Me.rdbFechaEspecifica.Checked = True Then
+                If Me.dtFechaActualizar.Value < Me.DtpFecha1.Value Or Me.dtFechaActualizar.Value > Me.DtpFecha2.Value Then
+                    MsgBox("La fecha a modificar est√° fuera del rango de la semana.", MsgBoxStyle.Exclamation, "ModificaFechaMovimientos")
+                    Exit Function
+                End If
+            End If
+
+            Me.oSUA = New Class_Nomina_SUA
+
+            If Me.TrabajadorAdicional = False Then
+                MsgBox("No se gener√≥ el trabajador adicional.", MsgBoxStyle.Exclamation, "GeneraArchivoAltas")
+                Exit Function
+            End If
+
+            dTabla = Me.oSUA.ModificarFechaAfliacionSemanaAlta(CInt(Me.CboSemana.SelectedValue), Me.dtFechaActualizar.Value, Me.cboTxtArchivos.SelectedValue.ToString, Me.cboTxtArchivos.Text, Me.rdbSumaDia.Checked)
+
+            If Directory.Exists(Plaza.oSisPlazaNomina.NOMINA_RUTA_IDSE & "SEM" & Me.CboSemana.Text) = False Then ' si no existe la carpeta se crea
+                Directory.CreateDirectory(Plaza.oSisPlazaNomina.NOMINA_RUTA_IDSE & "SEM" & Me.CboSemana.Text)
+            End If
+
+            PathArchivo = Plaza.oSisPlazaNomina.NOMINA_RUTA_IDSE & "SEM" & Me.CboSemana.Text & "\" & Me.cboTxtArchivos.Text
+
+            If isExisteArchivo(PathArchivo) = True Then
+                File.Delete(PathArchivo)
+                strStreamW = File.Create(PathArchivo)
+            Else
+                strStreamW = File.Create(PathArchivo)
+            End If
+
+            strStreamWriter = New StreamWriter(strStreamW, System.Text.Encoding.Default) ' tipo de codificacion para escritura
+            If Me.cboTxtArchivos.SelectedValue.ToString = "ALTA" Then
+                Me.GridIngracion.Rows = 1
+                For Each drow As DataRow In dTabla.Rows
+                    Dim kt1 As String = String.Format("{0,-11}", Plaza.oSisPlazaNomina.NOMINA_NUMERO_REGISTRO_PATRONAL.ToString)
+                    Dim kt2 As String = String.Format("{0,-11}", drow(6).ToString)
+                    Dim kt3 As String = String.Format("{0,-27}", drow(1).ToString)
+                    Dim Kt4 As String = String.Format("{0,-27}", drow(2).ToString)
+                    Dim kt5 As String = String.Format("{0,-27}", drow(3).ToString)
+                    Dim kt6 As String = String.Format("{0,6}", (Plaza.oSisPlazaNomina.NOMINA_SUELDO_DIARIO * 100))
+                    kt6 = kt6.Replace(" ", "0")
+                    Dim kt7 As String = String.Format("{0,6}", "")
+                    Dim kt8 As String = String.Format("{0,1}", Plaza.oSisPlazaNomina.NOMINA_TIPO_TRABAJADOR.ToString)
+                    Dim kt9 As String = String.Format("{0,1}", Plaza.oSisPlazaNomina.NOMINA_TIPO_SALARIO.ToString)
+                    Dim kt10 As String = String.Format("{0,1}", Plaza.oSisPlazaNomina.NOMINA_REDUCCION_TIPO_PAGO.ToString)
+                    Dim kt11 As String = String.Format("{0,8}", Format(CDate(drow(7).ToString), "ddMMyyyy"))
+                    Dim kt12 As String = String.Format("{0,3}", drow(5).ToString)
+                    kt12 = kt12.Replace(" ", "0")
+                    Dim kt13 As String = String.Format("{0,2}", "")
+                    Dim kt14 As String = String.Format("{0,2}", "08")
+                    Dim kt15 As String = String.Format("{0,5}", Plaza.oSisPlazaNomina.NOMINA_GUIA.ToString)
+                    kt15 = kt15.Replace(" ", "0")
+                    Dim kt16 As String = String.Format("{0,10}", drow(0).ToString.Substring(2))
+                    kt16 = kt16.Replace(" ", "0")
+                    Dim kt17 As String = String.Format("{0,1}", "")
+                    Dim kt18 As String = String.Format("{0,18}", drow(4).ToString)
+                    Dim kt19 As String = String.Format("{0,1}", Plaza.oSisPlazaNomina.NOMINA_IDENTIFICADOR_FORMATO.ToString)
+
+                    strStreamWriter.WriteLine(kt1.ToString & kt2.ToString & kt3.ToString & Kt4.ToString & kt5.ToString & _
+                                              kt6.ToString & kt7.ToString & kt8.ToString & kt9.ToString & kt10.ToString & _
+                                              kt11.ToString & kt12.ToString & kt13.ToString & kt14.ToString & kt15.ToString & _
+                                              kt16.ToString & kt17.ToString & kt18.ToString & kt19.ToString)
+                    'escribimos en el archivo
+                    Me.GridIngracion.AddItem(drow(0).ToString & Chr(9) & drow(1).ToString & " " & drow(2).ToString & " " & drow(3).ToString & Chr(9) & Format(CDate(drow(7).ToString), "dd-MM-yy") & Chr(9) & drow(8).ToString & Chr(9) & _
+                                             drow(9).ToString & Chr(9) & drow(10).ToString & Chr(9) & drow(11).ToString & Chr(9) & drow(12).ToString & Chr(9) & drow(13).ToString & Chr(9))
+
+                Next
+                '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                sTotalRegingresos = String.Format("{0,6}", dTabla.Rows.Count.ToString)
+                sTotalRegingresos = sTotalRegingresos.Replace(" ", "0")
+
+                strStreamWriter.WriteLine("*************" & String.Format("{0,43}", " ") & sTotalRegingresos & _
+                              String.Format("{0,71}", " ") & _
+                              Plaza.oSisPlazaNomina.NOMINA_GUIA.ToString & _
+                              String.Format("{0,29}", " ") & _
+                              Plaza.oSisPlazaNomina.NOMINA_IDENTIFICADOR_FORMATO.ToString)
+            ElseIf Me.cboTxtArchivos.SelectedValue.ToString = "BAJA" Then
+                Me.GridIngracion.Rows = 1
+                For Each drow As DataRow In dTabla.Rows
+                    Dim kt1 As String = String.Format("{0,-11}", Plaza.oSisPlazaNomina.NOMINA_NUMERO_REGISTRO_PATRONAL.ToString)
+                    Dim kt2 As String = String.Format("{0,-11}", drow(4).ToString)
+                    Dim kt3 As String = String.Format("{0,-27}", drow(1).ToString)
+                    Dim Kt4 As String = String.Format("{0,-27}", drow(2).ToString)
+                    Dim kt5 As String = String.Format("{0,-27}", drow(3).ToString)
+                    Dim kt6 As String = String.Format("{0,15}", "")
+                    kt6 = kt6.Replace(" ", "0")
+                    Dim kt7 As String = String.Format("{0,8}", Format(CDate(drow(9).ToString), "ddMMyyyy"))
+                    Dim kt8 As String = String.Format("{0,5}", "")
+                    Dim kt9 As String = String.Format("{0,2}", "02")
+                    Dim kt10 As String = String.Format("{0,5}", Plaza.oSisPlazaNomina.NOMINA_GUIA.ToString)
+                    kt10 = kt10.Replace(" ", "0")
+                    Dim kt11 As String = String.Format("{0,10}", drow(0).ToString.Substring(2))
+                    kt11 = kt11.Replace(" ", "0")
+                    Dim kt12 As String = String.Format("{0,1}", "2")
+                    Dim kt13 As String = String.Format("{0,18}", "")
+                    Dim kt14 As String = String.Format("{0,1}", Plaza.oSisPlazaNomina.NOMINA_IDENTIFICADOR_FORMATO.ToString)
+
+                    strStreamWriter.WriteLine(kt1.ToString & kt2.ToString & kt3.ToString & Kt4.ToString & kt5.ToString & _
+                                              kt6.ToString & kt7.ToString & kt8.ToString & kt9.ToString & kt10.ToString & _
+                                              kt11.ToString & kt12.ToString & kt13.ToString & kt14.ToString)
+
+                    'escribimos en el archivo
+                    Me.GridIngracion.AddItem(drow(0).ToString & Chr(9) & drow(1).ToString & " " & drow(2).ToString & " " & drow(3).ToString & Chr(9) & Format(CDate(drow(5).ToString), "dd-MM-yy") & Chr(9) & drow(6).ToString & Chr(9) & _
+                                             drow(7).ToString & Chr(9) & drow(8).ToString & Chr(9) & Format(CDate(drow(9).ToString), "dd-MM-yy") & Chr(9) & drow(10).ToString & Chr(9) & drow(11).ToString & Chr(9))
+                Next
+                '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                sTotalRegingresos = String.Format("{0,6}", dTabla.Rows.Count.ToString)
+                sTotalRegingresos = sTotalRegingresos.Replace(" ", "0")
+                strStreamWriter.WriteLine("*************" & String.Format("{0,43}", " ") & sTotalRegingresos & _
+                                          String.Format("{0,71}", " ") & _
+                                          Plaza.oSisPlazaNomina.NOMINA_GUIA.ToString & _
+                                          String.Format("{0,29}", " ") & _
+                                          Plaza.oSisPlazaNomina.NOMINA_IDENTIFICADOR_FORMATO.ToString)
+
+            End If
+
+            strStreamWriter.Close() ' cerramos
+
+            MsgBox("El archivo fue modificado con √©xito en la ruta: " & PathArchivo, MsgBoxStyle.Information, "Generar Altas")
+            Me.ConsultarArchivo()
+
+            Exit Function
+        Catch ex As Exception
+            HandleError(Me.Name, "ModificarFecha", ex)
+        End Try
+
+    End Function
+
+    Private Function Validar() As Boolean
+        Dim i As Integer, j As Integer, sCodigoTrbajador As String = ""
+
+        For i = 1 To Me.GridSemanaTrabajadores.Rows - 1
+            If txtLEN(Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text) = True Then
+                If Me.GridSemanaTrabajadores.Cell(i, Me.igyValidacionIMSS).Text = "1" Then
+                    Validar = True
+                End If
+            End If
+        Next i
+
+        If Validar = False Then
+            MsgBox("No hay trabajadores que cumplan todas las validaci√≥nes, favor de verificar.", MsgBoxStyle.Exclamation, "Confirmar")
+            Exit Function
+        End If
+
+        For i = 1 To Me.GridSemanaTrabajadores.Rows - 1
+            If txtLEN(Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text) = True Then
+                If txtLEN(Me.GridSemanaTrabajadores.Cell(i, Me.igyValidacionesControl).Text) = True Then
+                    MsgBox("Revisar validaciones de control.", MsgBoxStyle.Exclamation, "Validaci√≥n de trabajadores")
+                    Validar = False
+                    Exit Function
+                End If
+            End If
+        Next i
+
+        For i = 1 To Me.GridSemanaTrabajadores.Rows - 1
+            If txtLEN(Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text) = True Then
+                sCodigoTrbajador = Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text
+                For j = i + 1 To Me.GridSemanaTrabajadores.Rows - 1
+                    If txtLEN(Me.GridSemanaTrabajadores.Cell(j, Me.igyCodigoTrabajador).Text) = True Then
+                        If sCodigoTrbajador = Me.GridSemanaTrabajadores.Cell(j, Me.igyCodigoTrabajador).Text And Me.GridSemanaTrabajadores.Rows > 2 Then
+                            MsgBox("El trabajador que intenta introducir ya existe, favor de intentar con otro trabajador.", MsgBoxStyle.Exclamation, "Validaci√≥n de trabajadores")
+                            Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).SetFocus()
+                            Me.GridSemanaTrabajadores.Selection.DeleteByRow()
+                            Validar = False
+                            Exit Function
+                        End If
+                    End If
+                Next j
+            End If
+        Next i
+
+        Validar = True
+
+    End Function
+
+    Private Function TrabajadorAdicional() As Boolean
+        Dim i As Integer
+
+        Try
+            For i = 1 To Me.GridSemanaTrabajadores.Rows - 1
+                If Me.GridSemanaTrabajadores.Cell(i, Me.igyAdicional).Text = "1" And Me.GridSemanaTrabajadores.Cell(i, Me.igyValidacionIMSS).Text = "1" Then
+                    Me.oSUA.ObtenerTrabajadorAdicional(CInt(Me.CboSemana.Text), Me.GridSemanaTrabajadores.Cell(i, Me.igyCodigoTrabajador).Text, CDate(Me.GridSemanaTrabajadores.Cell(i, Me.igyFechaAlta).Text), sMovimiento, True)
+                End If
+            Next
+            TrabajadorAdicional = True
+        Catch ex As Exception
+            HandleError(Me.Name, "TrabajadorAdicional", ex)
+        End Try
+    End Function
+
+    Private Function EliminaArchivo() As Boolean
+        Dim PathArchivo As String
+
+        PathArchivo = Plaza.oSisPlazaNomina.NOMINA_RUTA_IDSE & "SEM" & Me.CboSemana.Text & "\" & Me.cboTxtArchivos.Text
+        Try
+
+            If isExisteArchivo(PathArchivo) = True Then
+                Dim oNominaMovimientos As New Class_NominaMovimientoSua
+                oNominaMovimientos.ID_NOMINA_SEMANA = CInt(Me.CboSemana.SelectedValue)
+
+                If oNominaMovimientos.EliminaElementos(Me.cboTxtArchivos.Text, Me.cboTxtArchivos.SelectedValue.ToString) = False Then
+                    Exit Function
+                End If
+
+                File.Delete(PathArchivo)
+                EliminaArchivo = True
+
+                MsgBox("El archivo se elimin√≥ correctamente. ", MsgBoxStyle.Information, Me.Text)
+            Else
+                MsgBox("No se encontro el archivo. ", MsgBoxStyle.Exclamation, Me.Text)
+                Exit Function
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Name, "EliminaArchivo", ex)
+        End Try
+    End Function
+
+    Private Function GestionaIntegracion() As Boolean
+        Dim i As Integer
+        Dim sArchivo As String
+
+        sArchivo = Me.cboTxtArchivos.Text
+
+        If txtLEN(Me.cboTxtArchivos.Text.ToString) = False Then
+            MsgBox("No se encontro el archivo. ", MsgBoxStyle.Exclamation, Me.Text)
+            Exit Function
+        End If
+
+        Dim oNominaMovimientos As New Class_NominaMovimientoSua
+        oNominaMovimientos.ID_NOMINA_SEMANA = CInt(Me.CboSemana.SelectedValue)
+
+        If MsgBox("Deseas grabar el integrar el archivo " & Me.cboTxtArchivos.Text & " ?", CType(vbYesNo + vbQuestion, MsgBoxStyle), "Integraci√≥n") = MsgBoxResult.No Then
+            Exit Function
+        End If
+        Try
+            'ELIMINA RECHAZADOS
+            For i = 1 To Me.GridIngracion.Rows - 1
+                If txtLEN(Me.GridIngracion.Cell(i, Me.igyIntegracionCodigoTrabajador).Text) = True Then
+                    If Me.GridIngracion.Cell(i, Me.igyIntegracionRechasados).Text = "1" Then
+                        'ELIMINA RECHAZADOS
+                        If oNominaMovimientos.EliminarMovimientoRechazado(Me.GridIngracion.Cell(i, Me.igyIntegracionCodigoTrabajador).Text, Me.cboTxtArchivos.Text, Me.cboTxtArchivos.SelectedValue.ToString) = False Then
+                            MsgBox("No se pudo integrar el archivo. ", MsgBoxStyle.Exclamation, Me.Text)
+                            Exit Function
+                        End If
+                    End If
+                End If
+            Next
+
+            'conexionMDB.Open()
+            Dim oSua As New Class_Nomina_SUA
+
+            If Me.cboTxtArchivos.SelectedValue.ToString = "ALTA" Then
+                For i = 1 To Me.GridIngracion.Rows - 1
+                    If txtLEN(Me.GridIngracion.Cell(i, Me.igyIntegracionCodigoTrabajador).Text) = True Then
+                        If Me.GridIngracion.Cell(i, Me.igyIntegracionRechasados).Text <> "1" Then
+                            If oSua.ExisteAfiliacion(Me.GridIngracion.Cell(i, Me.igyIntegracionCodigoTrabajador).Text) = False Then
+                                If oSua.IntegraAfiliacion(Me.GridIngracion.Cell(i, Me.igyIntegracionCodigoTrabajador).Text) = False Then
+                                    MsgBox("No se pudo integrar el archivo. ", MsgBoxStyle.Exclamation, Me.Text)
+                                    Exit Function
+                                End If
+                            End If
+                            If oSua.ExisteAsegura(Me.GridIngracion.Cell(i, Me.igyIntegracionCodigoTrabajador).Text) = False Then
+                                If oSua.IntegraAsegura(Me.GridIngracion.Cell(i, Me.igyIntegracionCodigoTrabajador).Text, Me.GridIngracion.Cell(i, Me.igyIntegracionFechaAlta).Text) = False Then
+                                    MsgBox("No se pudo integrar el archivo. ", MsgBoxStyle.Exclamation, Me.Text)
+                                    Exit Function
+                                End If
+                            End If
+                            If oSua.ExisteMovimiento(Me.GridIngracion.Cell(i, Me.igyIntegracionCodigoTrabajador).Text, Me.GridIngracion.Cell(i, Me.igyIntegracionFechaAlta).Text, IIf(Me.cboTxtArchivos.SelectedValue.ToString = "ALTA", "08", "02").ToString) = False Then
+                                If oSua.IntegraMovimientoAlta(Me.GridIngracion.Cell(i, Me.igyIntegracionCodigoTrabajador).Text, Me.GridIngracion.Cell(i, Me.igyIntegracionFechaAlta).Text, CInt(Me.CboSemana.Text)) = False Then
+                                    MsgBox("No se pudo integrar el archivo. ", MsgBoxStyle.Exclamation, Me.Text)
+                                    Exit Function
+                                Else
+                                    oSua.IntegraAseguraFechaBaja(Me.GridIngracion.Cell(i, Me.igyIntegracionCodigoTrabajador).Text, "")
+                                End If
+                            End If
+                        End If
+                    End If
+                Next i
+            ElseIf Me.cboTxtArchivos.SelectedValue.ToString = "BAJA" Then
+                For i = 1 To Me.GridIngracion.Rows - 1
+                    If txtLEN(Me.GridIngracion.Cell(i, Me.igyIntegracionCodigoTrabajador).Text) = True Then
+                        If Me.GridIngracion.Cell(i, Me.igyIntegracionRechasados).Text <> "1" Then
+                            If oSua.ExisteMovimiento(Me.GridIngracion.Cell(i, Me.igyIntegracionCodigoTrabajador).Text, Me.GridIngracion.Cell(i, Me.igyIntegracionFechaBaja).Text, IIf(Me.cboTxtArchivos.SelectedValue.ToString = "ALTA", "08", "02").ToString) = False Then
+                                If oSua.IntegraMovimientoBaja(Me.GridIngracion.Cell(i, Me.igyIntegracionCodigoTrabajador).Text, Me.GridIngracion.Cell(i, Me.igyIntegracionFechaBaja).Text) = False Then
+                                    MsgBox("No se pudo integrar el archivo. ", MsgBoxStyle.Exclamation, Me.Text)
+                                    Exit Function
+                                Else
+                                    oSua.IntegraAseguraFechaBaja(Me.GridIngracion.Cell(i, Me.igyIntegracionCodigoTrabajador).Text, Me.GridIngracion.Cell(i, Me.igyIntegracionFechaBaja).Text)
+                                End If
+                            Else
+                                MsgBox("EL movimiento del trabajador " & Me.GridIngracion.Cell(i, Me.igyIntegracionCodigoTrabajador).Text & " ya esta integrado. ", MsgBoxStyle.Exclamation, Me.Text)
+                                'Exit Function
+                            End If
+                        End If
+                    End If
+                Next i
+            End If
+
+            'conexionMDB.Close()
+            'conexionMDB.Dispose()
+
+            If oNominaMovimientos.IntegraMovimientos(Me.cboTxtArchivos.Text, Me.cboTxtArchivos.SelectedValue.ToString) = False Then
+                MsgBox("No se pudo integrar el archivo. ", MsgBoxStyle.Exclamation, Me.Text)
+                Exit Function
+            End If
+
+            GestionaIntegracion = True
+            MsgBox("Se integro el archivo satisfactoriamente. ", MsgBoxStyle.Information, Me.Text)
+
+            Me.cboTxtArchivos.Dispose()
+            Me.ConsultarArchivo()
+            Me.cboTxtArchivos.Text = ""
+        Catch ex As Exception
+            HandleError(Me.Name, "GestionaIntegracion", ex)
+        End Try
+    End Function
+
+    Private Sub Imprimir()
+        Dim StrFiltros As String = ""
+        Dim FormatoDeReporte As String
+        Dim Rpt As ReportDocument
+        Rpt = New ReportDocument
+        Dim oReporte As Class_Reporte
+        Try
+            FormatoDeReporte = "RPT_NOMINA_AFILIACIONES_OBTIENE_SEMANA_ALTA_TRABAJADORES_EXCLUIDOS"
+            oReporte = New Class_Reporte(FormatoDeReporte, Rpt)
+            If Not oReporte.RptCargado Then
+                Exit Sub
+            End If
+
+            Rpt.SetParameterValue("@ID_NOMINA_SEMANA", Me.CboSemana.SelectedValue)
+
+            Dim frm As New Reporte(Rpt)
+            frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
+            frm.Show()
+        Catch ex As Exception
+            HandleError(Me.Name, "Impresi√≥n de trabajadores excluidos", ex)
+        Finally
+            oReporte = Nothing
+        End Try
+    End Sub
+
+    Private Sub Cambia_Estado(ByVal pEstado As enumEstados)
+        Me.Estado = pEstado
+
+        Select Case Me.Estado
+            Case enumEstados.NUEVO
+                Me.btnConfirmar.Enabled = False
+                Me.btnRegresar.Enabled = False
+                Me.btnAltaAdicional.Enabled = False
+                Me.BtnReporte.Enabled = False
+                Me.lblModo.Text = ""
+
+            Case enumEstados.ALTA
+                Me.btnConfirmar.Enabled = True
+                Me.btnRegresar.Enabled = True
+                Me.btnAltaAdicional.Enabled = True
+                Me.BtnReporte.Enabled = True
+                Me.lblModo.Text = "ALTA"
+                Me.sMovimiento = "ALTA"
+
+            Case enumEstados.BAJA
+                Me.btnConfirmar.Enabled = True
+                Me.btnRegresar.Enabled = True
+                Me.btnAltaAdicional.Enabled = False
+                Me.BtnReporte.Enabled = False
+                Me.lblModo.Text = "BAJA"
+                Me.sMovimiento = "BAJA"
+        End Select
+
+        Application.DoEvents()
+    End Sub
+
+#End Region
+
+    Private Sub GridIngracion_CellChange(ByVal Sender As Object, ByVal e As FlexCell.Grid.CellChangeEventArgs) Handles GridIngracion.CellChange
+        If Me.GridIngracion.ActiveCell.Col = Me.igyIntegracionRechasados Then
+            Me.Totales()
+        End If
+    End Sub
+
+    Private Sub GridIngracion_Click(ByVal Sender As Object, ByVal e As System.EventArgs) Handles GridIngracion.Click
+        If Me.GridIngracion.ActiveCell.Col = Me.igyIntegracionRechasados Then
+            Me.Totales()
+        End If
+    End Sub
+
+    Private Sub btnAltaAdicional_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAltaAdicional.Click
+        Dim Child As New Frm_Nomina_TrabajadorAdicional
+        Dim oTrabajador As New Class_CatTrabajadores
+        Dim dTabla As DataTable
+
+        Child.txtCodigoTrabajador.Text = ""
+        Child.dtFecha.Value = Now
+        Child.StartPosition = FormStartPosition.CenterScreen
+        Child.NUMERO_SEMANA = CInt(Me.CboSemana.Text)
+        Child.ShowDialog()
+
+        If txtLEN(Child.CODIGO_TRABAJADOR.ToString) = False Then
+            Exit Sub
+        End If
+        dTabla = Me.oSUA.ObtenerTrabajadorAdicional(CInt(Me.CboSemana.SelectedValue), Child.CODIGO_TRABAJADOR, Child.FECHA, sMovimiento, False)
+
+        'Me.GridSemanaTrabajadores.Rows = Me.GridSemanaTrabajadores.Rows + 1
+
+        For Each dRow As DataRow In dTabla.Rows
+            'Me.GridSemanaTrabajadores.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & " " & dRow(2).ToString & " " & dRow(3).ToString & Chr(9) & _
+            '                            dRow(4).ToString & Chr(9) & dRow(5).ToString & Chr(9) & dRow(6).ToString & Chr(9) & dRow(7).ToString & Chr(9) & _
+            '                            dRow(8).ToString & Chr(9) & dRow(9).ToString & Chr(9) & dRow(10).ToString & Chr(9) & "1".ToString & Chr(9))
+            Me.GridSemanaTrabajadores.AddItem(dRow(0).ToString & Chr(9) & dRow(1).ToString & " " & dRow(2).ToString & " " & dRow(3).ToString & Chr(9) & dRow(4).ToString & Chr(9) & _
+                                  dRow(5).ToString & Chr(9) & dRow(6).ToString & Chr(9) & dRow(7).ToString & Chr(9) & dRow(8).ToString & Chr(9) & dRow(9).ToString & Chr(9) & _
+                                  dRow(10).ToString & Chr(9) & dRow(11).ToString & Chr(9) & dRow(13).ToString & Chr(9) & "0".ToString & Chr(9) & dRow(14).ToString & Chr(9) & _
+                                  dRow(15).ToString & Chr(9) & dRow(16).ToString & Chr(9) & dRow(17).ToString)
+        Next
+
+        dTabla.Dispose()
+
+        Me.Validar()
+        Me.Totales()
+        Child.Dispose()
+    End Sub
+
+    Private Sub GridIngracion_KeyPress(ByVal Sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles GridIngracion.KeyPress
+        If Me.GridIngracion.ActiveCell.Col = Me.igyIntegracionRechasados Then
+            'Me.GridIngracion.Cell(Me.GridIngracion.ActiveCell.Row, Me.igyIntegracionCodigoTrabajador).SetFocus()
+            Me.Totales()
+        End If
+    End Sub
+
+    Private Sub BtnReporte_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnReporte.Click
+        Me.Imprimir()
+    End Sub
+
+    Private Sub btnModificarFecha_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnModificarFecha.Click
+        If MsgBox("Deseas cambiar la fecha a todos los trabajadores del movimiento de " & sMovimiento & " de la semana " & Me.CboSemana.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Confirmar") = MsgBoxResult.No Then
+            Exit Sub
+        End If
+
+        If txtLEN(Me.cboTxtArchivos.Text) = False Then
+            MsgBox("No se encontro el archivo. ", MsgBoxStyle.Exclamation, Me.Text)
+            Exit Sub
+        Else
+            Me.ModificaFechaMovimientos()
+        End If
+    End Sub
+
+    Private Sub rdbFechaEspecifica_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles rdbFechaEspecifica.CheckedChanged
+        If rdbFechaEspecifica.Checked = True Then
+            Me.dtFechaActualizar.Enabled = True
+        Else
+            Me.dtFechaActualizar.Enabled = False
+        End If
+    End Sub
+
+    Private Sub rdbSumaDia_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles rdbSumaDia.CheckedChanged
+        If rdbSumaDia.Checked = True Then
+            Me.dtFechaActualizar.Enabled = False
+        Else
+            Me.dtFechaActualizar.Enabled = True
+        End If
+    End Sub
+
+    Private Sub gbSemanas_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles gbSemanas.Enter
+
+    End Sub
+End Class                                                                                                                                                                                                                                                                                                                                                                                                                                                              	∞ 1â    Ä a·     Z ˛  oV  
+ ˛  * 0    	   (6  
+(& 
+
++ *  0       (' 
+
++ *0    !  –@  (2  
+
++ *0       (O  
+
++ *j{G (  +}G {G + *j{H (  +}H {H + *j{I (  +}I {I + *j{J (  +}J {J + *j{K (	  +}K {K + *j{L (
+  +}L {L + *j{M (  +}M {M + *j{N (  +}N {N + *j{O (  +}O {O + *j{P (  +}P {P + *j{Q (  +}Q {Q + *j{R (  +}R {R + *j{S (  +}S {S + *j{T (  +}T {T + *j{U (  +}U {U + *j{V (  +}V {V + *j{W (  +}W {W + *j{X (  +}X {X + *j{Y (  +}Y {Y + *Æ{G ˛,+˛,r¥îps( 
+z|G (  +*Æ{H ˛,+˛,r¥îps( 
+z|H (  +*Æ{I ˛,+˛,r¥îps( 
+z|I (  +*Æ{J ˛,+˛,r¥îps( 
+z|J (  +*Æ{K ˛,+˛,r¥îps( 
+z|K (  +*Æ{L ˛,+˛,r¥îps( 
+z|L (  +*Æ{M ˛,+˛,r¥îps( 
+z|M (  +*Æ{N ˛,+˛,r¥îps( 
+z|N (  +*Æ{O ˛,+˛,r¥îps( 
+z|O (   +*Æ{P ˛,+˛,r¥îps( 
+z|P (!  +*Æ{Q ˛,+˛,r¥îps( 
+z|Q ("  +*Æ{R ˛,+˛,r¥îps( 
+z|R (#  +*Æ{S ˛,+˛,r¥îps( 
+z|S ($  +*Æ{T ˛,+˛,r¥îps( 
+z|T (%  +*Æ{U ˛,+˛,r¥îps( 
+z|U (&  +*Æ{V ˛,+˛,r¥îps( 
+z|V ('  +*Æ{W ˛,+˛,r¥îps( 
+z|W ((  +*Æ{X ˛,+˛,r¥îps( 
+z|X ()  +*Æ{Y ˛,+˛,r¥îps( 
+z|Y (*  +*   0    	   (6  
+(& 
+
++ *  0       (' 
+
++ *0    !  –A  (2  
+
++ *0       (O  
+
++ *0    "  å  ˛,(  +
++ 
++ *& ˛  * 0 &   #  ~) 
+å
+  ˛,
+(+  +Ä) 
+~) 
+
++ *  BSJB         v2.0.50727     l   |› #~  Ë› (Ó  #Strings    Ã ¸î #US a    #GUID   a LW  #Blob         Wø∂?	   ˙3      ;  S   á  O       )  F   –        #        6   f  [        
+   	                     +         h      3f•√ †f•√ ›d≠¬ S«   GeõÜ fõÜ áfõÜ SfõÜ lfõÜ ´eõÜ %e_√ Üd_√ ﬁeõÜ
+ ©d{≤
+ bf{
+ ef{ I`5√ =dYÅ ∆e≠¬ ée≠¬ Ì≥€¬ ^e~√ ve±L ¨„YÅ  ≥5√ ˚e±L 'dYÅ [Ô‘ Ç1‘ TàõÜ _YÅ Pd•√
+ îd#É ¿d≠¬ `Ø‘√ #ê]Ü Óß€j
+ ã`HÜ ¶”YÅ E^YÅ ˆá¡Â ¡V¡Â \Æ¡Â £àYÅ ≥¡Â „Z·F £≥¡Â ›ÇYÅ |1‘ Í·F ZºÔ‘ ¸ZYÅ ∫$π≤ Ïa≠¬ Òd≠¬ ıÁÔ‘" ÊÖ| "≥?( àaYÅ YÂYÅ ÁlYÅ& ÊV^ yÇYÅ h}?(" èÆÖ| kd~√
+ ì≤f{ æf•√ 7{1‘ áÏ1‘ Yâ1‘ n≤YÅ I≤1‘ ﬁ±1‘ èÂ1‘ £”1‘ ë”1‘ ®1‘ Pâ1‘ iÏ1‘ rÏ1‘ 0®1‘ ({1‘ `Ï1‘
+ WØf{ ¬È·F
+ Å”f{ }1‘ —Y1‘ Ï1‘ ÌÈ1‘ OÆ1‘ ÉÏ1‘ HÅ1‘ ∞wYÅ %V1‘ ;Z1‘ Û‚1‘ \1‘* Õ◊·S* =ê·S* _ê·S& Í»V^& ˆZV^ ˘j1‘ ôØ1‘ l”1‘ Dâ1‘ HÏ1‘. •VU|ªˆ∞   ¢∞1‘ª¸∞   ã}?( %Z€j ë}?( ≤≥€j ]”1‘ `ñLªc∞  ªJ”  
+ °ê≠¬ Ê∫€j ÇÆ?(G¢á   ‹á±L
+ ß≤f{ w‰·F2 #¥F‘ D®1‘ 6Å1‘ ˚Ü1‘ ~1‘ Íj1‘ E„1‘ 6”1‘ gkYÅ" uYÖ| ê?( ùÆ?(6 ¿¬@Ì ∑“@Ì ~}@Ì ƒ^YÅ ÌT ‡Ö1‘ CY5√ hY5√ }[YÅ aÌõÜ íﬂ•√
+ ñ`HÜ R}~√ Ωi d±5√ ƒ‘~√ Ô“±L W±L jYÅ ¶^·F "G~√
+ JÊf{ Vá¡Â ò^·F mYÅ ≈ﬂ~√ rÜ±L t|YÅ ï≥Êà ™Â±L Á\±L ’á·F Áﬂπ≤ ôÁYÅ ¿$π≤ ≤π≤ £Êπ≤ ¯fYÅ *á·F §É·F <YÅ ëaYÅ lSi mk?( ƒÌ?( øê?( Æ[?( 9iìË /≥?(
+ ‡≠¬ óÇYÅ à·F2 _F‘ \}1‘ Ü±L X[YÅ
+ (Êf{ 	Y?(" xÆÖ| ÎX·F ˜Ê€j Bh€j £`1‘ Ä`1‘ Á€j ’\€j Ï‰€j :"€j }1‘ ˚X1‘ }1‘œÜ   ∑\1‘ Ç\1‘ S…1‘ F}1‘ Û\1‘S™á  G™á   ◊S~√ √Ö±L
+ Ghf{ Ωﬂ1‘ Sº1‘ "i1‘ ∞ﬂ€jo?á   ÒÈ1‘ y±π≤ y∞π≤ Y≤π≤ Û±π≤ ¥∞π≤ õ±π≤ !±π≤ æ±π≤ ∞π≤ >∞π≤ B±π≤oá  {·Ü  { }   9^±L úz±L ûv±L ©±L 4YÅ ò©YÅ 8ΩYÅ má1‘& π`V^& ≠ÜV^ ˝j1‘ k1‘ 0„1‘ ª\1‘ Y1‘ ﬁ∞1‘ ‹≥€¬ ê\1‘ ÂÂ1‘ 
+Ü1‘ ¸Â€j. aÇU|. FÇU|. Y|U|. ®ÉU|. XÇŒ Ôæ   ë   lSystem.Resources.ResourceReader, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089#System.Resources.RuntimeResourceSet         hSystem.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3aPADPADL‚æ¢‹y˙ﬂ∆3Ù≠√^åFúc.l0k√       '   m   J   ¢   0  "t s b C a n c e l a r . I m a g e     t s b E d i t a r . I m a g e Ï  t s b G r a b a r . I m a g e   0t s b I m p r i m i r L i s t a d o . I m a g e   t s b N u e v o . I m a g e 
+  t s b S a l i r . I m a g e   @    ˇˇˇˇ          QSystem.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a   System.Drawing.Bitmap   Data   	      I  âPNG
+
+   IHDR         Ûˇa   gAMA  ±è¸a   	pHYs  √  √«o®d   ÎIDAT8Oc†
+x(`ˆˇ°éÔ(ót@÷Òˇ}Õˇá5›»7‰å∏%ÿêmnQ8yÓVÂb|ÜÄ5Ûô˛ÔI ¬Ô ≥VÜ<íw˛W√ã∞f rÉ]l»~≥ˇ◊l#â◊79Ù¡.9¢ÌN∫ÊWÒï`Õ◊Ÿt˛_c’&ÕÄ◊	U`ÕáÕˇ«ˇ?.d6_Ï¿\≥E–ˇîî∏‰0Å
+aò≥/…ÿ˛èèè«Pà◊òÊ€\ˇ≥¸Çˇß¶¶bµ	îRAÍ0Å∞L√ßfÿêv	îã yyyˇA •``  ◊Ñ§pƒÇÆò    IENDÆB`Ç@    ˇˇˇˇ          QSystem.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a   System.Drawing.Bitmap   Data   	      |  âPNG
+
+   IHDR           szzÙ   gAMA  ±è¸a   	pHYs  √  √«o®d  IDATXG≈íÅÉ ˝t˛‹y-’J(äº§Q
+ÙﬁÃñXs}¬∫ô•x◊÷<D˙UÄx∫öjë∫”πkmœ·uyœÄ˜Â¿SóMvÒ´rÉµ∂´pb/÷⁄~N!•îﬂ¬ÏÏ≈Z€œ¡%xπ¡æËÏ≈Z€œ¡!xyÑµû$˜D_aò<˙Âˆû“ár ÄÖ‡.{:Ê:u#zL~ÑPò£„˙»◊œ¥Çp«ã=Ï…‘NÚu%ísÆ<[#üÎ&_?®˝Úà⁄Yôzlè|˝˝≤<_Ï˙áäC@kJyûwü´eﬂkrÊ1∑ã;_Ü»ç´CÂFbä‹h}â·r£ËìQ÷√ÂFÇÁ4π·CLóB+∑˛`Y~áDbF5›É}    IENDÆB`Ç@    ˇˇˇˇ          QSystem.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a   System.Drawing.Bitmap   Data   	      a  âPNG
+
+   IHDR         Ûˇa   gAMA  ±è¸a   	pHYs  √  √«o®d  IDAT8OµíœjZA≈}I_!!/Ún]LÇŸƒ Ò.¡XÍ-ÅË-	“jbäÑRHïBàxÉÖ[¸ár5p´EQDA∞R‹.R+(∏;ùôõ–∫H‚¶ÜÅô3ø9Û}£˘oj6‚ﬂ—Ìv·r…Ö>„ﬁÚ∏d˘7vv"(ïJld2¥Z-∂f6õüá$ìwÃ,À2¬·0R©:ù[”Îıœ‚q Ino´∏∫ A‚ÿ€À,ê§;fﬁﬁ˛Ñ√√/88É„Ñ≈ƒbjEÈ‚Ú2âjUM± õÕ‚ÊÊ3ßpqÒ≥ŸåÄèË!ZÂ^Øá—hQTª@¢¯˝~>_VkãeP(00ôL0ùN1èI\5A±XÖã¢àJ•ÇH$Ø◊û˝íNßëœÁôπ›nc8"ó˚ÜD"¡R=rπ\8=}èÁv›õpΩÑﬂÔáÜn*äÇzΩŒfzcπ\F≠VcèG¿˛æ++´p8úX^^%Ìm√Ì¬n∑´)($ç¢—hêo€dixû«˘ykkÎXZz≠VK⁄È∆ıuâÄﬁ`ccì•b *
+±Ÿl§X>„8±XäÄﬁí˜~≈……lmÌ≤.–ÔÊ;Ò 
+r:ù0ôL8;˚H@Ø†”È`4…ÕVè{Î”¢FA`0Ê£ŒI£˘Êg√â∏Ó“    IENDÆB`Ç@    ˇˇˇˇ          QSystem.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a   System.Drawing.Bitmap   Data   	      P  âPNG
+
+   IHDR         Ûˇa   gAMA  ±è¸a   	pHYs  √  √«o®d  ÚIDAT8OçíÀèôa∆˝obklÑM%V"±0"J	,\b!.≥`Åh];5n’ôLd‰ìRÕ∞¯Íõ¶∫xÍ}C'_¶3„Iû|õs~Á9Á˝x›ı~‡)ÔKû◊ß"ÉÂ/<r¸√q ¢è_Ó1XÄ„¸Áopª›«AŒ∑∏e¡Ò’˜ﬂP*5GÆQÌ‚bÄŒ~ﬁwÄWØu∞Z≠/C./ØpΩk∏iÃ›t?q?b1èa±Xûá‰Ûy4ÃÁsd2ãE§R)
+îÀeÍl6˚iÓvª®◊Îà«„àF£hµZX≠VX,òÕfË˜˚®V´®T*∞Ÿl\H(¬h4BØ◊Cª›¶Iêa
+≠’jh6õËt:Ù´V´πI¥Z-b±ùB áCöÑLÉ∞€ÌPøUB"ë¿d2= »
+§!â –âDNßF£f≥·pòÆ.ÆÉT*Ö^ØÁ∂€-6õ˘|>¯˝~zPíŒÎı¬Âr—
+Ö:ùé{2yπ\bΩ^c2ô ôL¬„Ò@&ìA•R¡·p†T*a:ù"ùN”;Ï[D»dÅê…gg°›±bªÁ+ÄeY‰r9∫øH$zú‡ U.óC ÄœÁ„‰Då””7
+Öã≈–h4/ˇï§‡)ÔKˆ‚Ò˛ùñ53Œé    IENDÆB`Ç@    ˇˇˇˇ          QSystem.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a   System.Drawing.Bitmap   Data   	      `  âPNG
+
+   IHDR         Ûˇa   gAMA  ±è¸a   	pHYs  √  √«o®d  IDAT8Oïí≠É0ÑÛN}Éæ
+YYã¨ƒtâD∆"#ë±ë»(zΩMsîüP¶ôŸIÓæ›(Yïvt¶¢((ïÔ
+¶È5+≠vº/[¿∂ª]u“c»Cñ	.Íπ“‡ŸÅ¢⁄.DÌ €pçÚû∏ü‹¯ëıDù…åÚ+¡R– d^h`7Dè{:£πwßÄ1Î,20ñÚ 4À¨‚Gqfcjm8H–ÿœÖq¸ú3‘·+0 õ‡^˜‰¸¯ùõw8J4 ⁄*;Œ‹≥Ä[e" nqÊ‰é‚•ª∆9˜  ±Â“–ÖÊ§C@y”§;Gö´Æ˙•Gmˆ ,<¸GJ)ı„—iVE!:∂    IENDÆB`Ç@    ˇˇˇˇ          QSystem.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a   System.Drawing.Bitmap   Data   	      &  âPNG
+
+   IHDR         Ûˇa   gAMA  ±è¸a   	pHYs  √  √«o®d  »IDAT8Oùì[HTQÜ'I
+√§§“®§4!/¶c°yIß¥—QÛ“EùÃKhFñQ¶àññi•)ÑQ=ÑΩÑ
+^“tF*zÇJùõ„Á.¬˚,){ˆá}ÿk˝k}gù}Œ¬ıØyAﬁSSÊj
+¿Uda∂,˙í$ËOa¶03≤8h/DBõsö¥C¯Ôç©Áç+˛bztˆwù∞æ|SK%åe0‘¡P%É·v.∏õ9òΩñŒ†Ër£0ôà!ëÁ*`ÆÆ÷WM0∑W√xø∂Æv,€,T¿kŸlÄ•≥ÅöµŸ·P¶·CƒÚ¿UûÉÈÒ-∫Û|ﬂ2Fz0WœORÃˆ›î≥uµAÕö˘	F¢Ω)GÄŸ“T6E	Ïo€)i~ZçôÇDË.FCõŒû;∆˙ÚLçÂPJ˝1˙?Ä?0ÓN~€≠X`±:ôò
+xiRÑ–H|±(ÔÜCØÇ2ŸÚ®Ω‰`&ˇ∏Îôî0∑’0@2õ`†;#Ñ.Ÿ¶⁄|äß$˚!è‹M{ËŒG“c"¿∏º
+–g°OÒÜÂûå‚ÈD/(éy–û öå÷êÄe´ãá@}—I*‡≈e˚ÉK˜¡“ß~8¥ìPâ=0∂ï<®•lDv`ñ(iÈ®eQf/ó
+Céˆ÷rÚlM≈P«∏aÏ&ä	0-ﬁmfty1òÔ}M∆Øœ√∞4ó√⁄\ä•/C+πûƒõ°éÿà± g `* Íd!¥gCŸÅ∆¬‹Zß°^ùˆ'WaHp„ïh=F:ëGÄoa[3÷ß˝0!ƒ§4Ä-!{ﬂ0ù‰U¬.®‚∑AÌ
+U∏3æØCü/µÆ îœÍ–‰Ü¡#€1(⁄â∂ÜEx/⁄ÅëPw(B\°v¡h‡(ÑNËgÕ_[ÓÆ ˛˛ëkë@ ¸)ÂvÙC¨Ç    IENDÆB`Ç  ˇˇˇˇÙ◊Ω¢≥ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ’®Å^> T÷ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇæ{C      !£ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ¸ôH         xˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇó7           TÈˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇƒA            5Ãˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇv             ≥ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ˚-             ûˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇº               éˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ¢               ÄˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇΩ               sˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇﬁ               hˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ               `ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ              [ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ9              Zˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇh              ^ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ¨              dˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ˝              oˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇW-<HORTVY\`fnÅˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˆÔÚÛÒˆ¸ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ˛Íˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ·ºõ|`D)'Æˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ€ôc5      uˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ°P         C÷ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇç.           ¨ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ´-             áˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇS              iˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ 	              O˝ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇû               9Èˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ¥               '◊ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ‘               »ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇÙ               	∫ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ	               Æˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ-               §ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇS               úˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ}               óˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ≥               ïˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇÙ
+              óˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇL              ôˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇÆ              üˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇKFNXcmu}Éâéïõ£∂ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇÓ–¥ô~aãˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇœômF$    F€ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇºn+         ¢ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇò8            qˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇß)             Gˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ˝?              "Ãˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ¶               Æˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇû                ìˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ√                }ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇÊ                jˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ               Zˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ$               LˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇG               ?ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇk               4˛ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇí               +Ùˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇø               $ÏˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇÙ               ÊˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇQ              „ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇô              ‡ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ¯#             ﬂˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇí        &/“ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ£££§ßØ∑æ∆Œ÷ﬁÊÓˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇÎŒ¥ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇÈΩóuV9  ´ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇÛ£a*         nˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ∂V           8‡ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ¥4             ∞ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˆ<               Üˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇô                bˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ§                BˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇÕ                'ÌˇˇˇˇˇˇˇˇˇˇˇˇˇˇÛ                ◊ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ                ƒˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ9                ¥ˇˇˇˇˇˇˇUSE FABRICA_PASSA
+GO
+      
+ALTER PROC DBO.MP_ACTUALIZA_MOTIVO_CANCELACION(      
+@FOLIO NVARCHAR(12),      
+@CODIGO_MOTIVO SMALLINT,      
+@MOTIVO_CANCELACION NVARCHAR(100)='',    
+@MODULO NVARCHAR(20),
+@COD_USU_PREAUTORIZO_CANCELACION NVARCHAR(2)=NULL)      
+      
+AS      
+DECLARE @HORA_SISTEMA DATETIME=GETDATE()      
+SET NOCOUNT ON        
+      
+DECLARE @STORE_PROCEDURE_NAME NVARCHAR(255)='MP_ACTUALIZA_MOTIVO_CANCELACION'        
+      
+BEGIN TRANSACTION      
+      
+IF @MODULO='F'   
+BEGIN--'FACTURACION'    
+ UPDATE FACGLOB SET CODIGO_MOTIVO_CANCELACION=@CODIGO_MOTIVO,MOTIVO_CANCELACION=@MOTIVO_CANCELACION,
+ COD_USU_PREAUTORIZO_CANCELACION=@COD_USU_PREAUTORIZO_CANCELACION
+ WHERE FOLIO=@FOLIO      
+    
+ IF @@ERROR<>0    
+ BEGIN    
+  RAISERROR('ERROR AL INTENTAR ACTUALIZAR EL MOTIVO DE LA CANCELACION EN FACTURACION. %s',16,1,@STORE_PROCEDURE_NAME)    
+  GOTO ROLL    
+ END    
+END 
+
+ELSE IF @MODULO='P'  
+BEGIN--'COMPRAS'    
+ UPDATE COMPGLOB SET CODIGO_MOTIVO_CANCELACION=@CODIGO_MOTIVO,MOTIVO_CANCELACION=@MOTIVO_CANCELACION WHERE FOLIO=@FOLIO      
+     
+ IF @@ERROR<>0    
+ BEGIN    
+  RAISERROR('ERROR AL INTENTAR ACTUALIZAR EL MOTIVO DE LA CANCELACION EN COMPRAS. %s',16,1,@STORE_PROCEDURE_NAME)    
+  GOTO ROLL    
+ END    
+END  
+
+ELSE IF @MODULO='V'  
+BEGIN--'DEVOLUCIONES DE VENTA'    
+ UPDATE FACDEVG SET CODIGO_MOTIVO_CANCELACION=@CODIGO_MOTIVO,MOTIVO_CANCELACION=@MOTIVO_CANCELACION WHERE FOLIO=@FOLIO      
+     
+ IF @@ERROR<>0    
+ BEGIN    
+  RAISERROR('ERROR AL INTENTAR ACTUALIZAR EL MOTIVO DE LA CANCELACION EN DEVOLUCIONES DE VENTAS. %s',16,1,@STORE_PROCEDURE_NAME)    
+  GOTO ROLL    
+ END    
+END  
+
+ELSE IF @MODULO='I'  
+BEGIN--'MOVIMIENTOS DE INVENTARIOS'    
+ UPDATE INVORDG SET CODIGO_MOTIVO_CANCELACION=@CODIGO_MOTIVO,MOTIVO_CANCELACION=@MOTIVO_CANCELACION WHERE FOLIO=@FOLIO      
+     
+ IF @@ERROR<>0    
+ BEGIN    
+  RAISERROR('ERROR AL INTENTAR ACTUALIZAR EL MOTIVO DE LA CANCELACION EN LOS MOVIMIENTOS DE INVENTARIOS. %s',16,1,@STORE_PROCEDURE_NAME)    
+  GOTO ROLL    
+ END    
+END
+
+ELSE IF @MODULO='B'  
+BEGIN--'BANCOS'    
+ UPDATE BANGLOB SET CODIGO_MOTIVO_CANCELACION=@CODIGO_MOTIVO,MOTIVO_CANCELACION=@MOTIVO_CANCELACION WHERE FOLIO=@FOLIO      
+     
+ IF @@ERROR<>0    
+ BEGIN    
+  RAISERROR('ERROR AL INTENTAR ACTUALIZAR EL MOTIVO DE LA CANCELACION EN BANCOS. %s',16,1,@STORE_PROCEDURE_NAME)    
+  GOTO ROLL    
+ END    
+END
+
+ELSE IF @MODULO='C'  
+BEGIN--'BANCOS'    
+ UPDATE CXC_DESCUENTOS_GLOBAL SET CODIGO_MOTIVO_CANCELACION=@CODIGO_MOTIVO,MOTIVO_CANCELACION=@MOTIVO_CANCELACION WHERE FOLIO_DESCUENTO=@FOLIO      
+     
+ IF @@ERROR<>0    
+ BEGIN    
+  RAISERROR('ERROR AL INTENTAR ACTUALIZAR EL MOTIVO DE LA CANCELACION EN CXC DESCUENTOS. %s',16,1,@STORE_PROCEDURE_NAME)    
+  GOTO ROLL    
+ END    
+END  
+  
+IF @@ERROR<>0      
+BEGIN      
+ROLL:      
+ ROLLBACK TRANSACTION      
+ RETURN      
+END      
+      
+COMMIT TRANSACTION      
+
+INSERT SIS_LOG_DURACION SELECT GETDATE(),HOSTNAME,OBJECT_NAME(@@PROCID),DATEDIFF(MILLISECOND,@HORA_SISTEMA,GETDATE()) from master.dbo.sysprocesses where spid = @@SPID      
+GO
+
+GRANT EXEC ON DBO.MP_ACTUALIZA_MOTIVO_CANCELACION TO ABACO
+GO
+
+/*
+
+EXEC MP_ACTUALIZA_MOTIVO_CANCELACION
+@FOLIO='FSQ-4201',
+@CODIGO_MOTIVO=0,      
+@MOTIVO_CANCELACION='HABER',
+@MODULO='F'
+--@COD_USU_PREAUTORIZO_CANCELACION NVARCHAR(2)=NULL,
+--@COD_USU_AUTORIZO_CANCELACION NVARCHAR(2)=NULL
+
+SELECT TOP 5 * FROM FACGLOB ORDER BY IDFACTURA DESC
+
+SELECT * FROM CAT_MOTIVOS_CANCELACION
+*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
