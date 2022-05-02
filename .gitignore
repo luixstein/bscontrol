@@ -15,14 +15,14 @@
 *.userprefs
 
 # Build results
-[Dd]ebug/
+#[Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
 x64/
 x86/
 bld/
-[Bb]in/
+#[Bb]in/
 [Oo]bj/
 [Ll]og/
 
@@ -256,3 +256,6 @@ paket-files/
 *.sln.iml
 
 SIS_AGRO/Formas/Nomina/Frm_Nomina_Credenciales antes.rar
+SIS_AGRO/bin/Debug/BsControl.exe
+SIS_AGRO/bin/Debug/BsControl.rar
+*.exe
