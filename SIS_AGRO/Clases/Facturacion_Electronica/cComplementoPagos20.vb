@@ -85,7 +85,7 @@ Friend Class cComplementoPagos20
 
             With NodoPagos
                 .setAttribute("xsi:schemaLocation", xsischemaLocation)
-                '.setAttribute ("xmlns:pago10", xmlnspago10 'Da lo mismo ponerlo o no, si se omite lo pone automáticamente al hacer Set NodoPagos =
+                '.setAttribute ("xmlns:pago20", xmlnspago20) 'Da lo mismo ponerlo o no, si se omite lo pone automáticamente al hacer Set NodoPagos =
 
                 If txtLEN(Me.Version) = False Then
                     MsgBox("El valor de Version es un dato requerido.", vbExclamation, sProcedure) : Return False
@@ -98,43 +98,43 @@ Friend Class cComplementoPagos20
             NodoTotales = xmlDoc.createNode(MSXML2.tagDOMNodeType.NODE_ELEMENT, AnexoNodo & "Totales", xmlns)
 
             With NodoTotales
-                If txtLEN(Me.Totales.TotalRetencionesIVA) = True Then
+                If txtLEN(Me.Totales.TotalRetencionesIVA) = True And valorNumericoD(Me.Totales.TotalRetencionesIVA) > 0 Then
                     .setAttribute("TotalRetencionesIVA", Me.Totales.TotalRetencionesIVA) 'optional
                 End If
 
-                If txtLEN(Me.Totales.TotalRetencionesISR) = True Then
+                If txtLEN(Me.Totales.TotalRetencionesISR) = True And valorNumericoD(Me.Totales.TotalRetencionesISR) > 0 Then
                     .setAttribute("TotalRetencionesISR", Me.Totales.TotalRetencionesISR) 'optional
                 End If
 
-                If txtLEN(Me.Totales.TotalRetencionesIEPS) = True Then
+                If txtLEN(Me.Totales.TotalRetencionesIEPS) = True And valorNumericoD(Me.Totales.TotalRetencionesIEPS) > 0 Then
                     .setAttribute("TotalRetencionesIEPS", Me.Totales.TotalRetencionesIEPS) 'optional
                 End If
 
-                If txtLEN(Me.Totales.TotalTrasladosBaseIVA16) = True Then
+                If txtLEN(Me.Totales.TotalTrasladosBaseIVA16) = True And valorNumericoD(Me.Totales.TotalTrasladosBaseIVA16) > 0 Then
                     .setAttribute("TotalTrasladosBaseIVA16", Me.Totales.TotalTrasladosBaseIVA16) 'optional
                 End If
 
-                If txtLEN(Me.Totales.TotalTrasladosImpuestoIVA16) = True Then
+                If txtLEN(Me.Totales.TotalTrasladosImpuestoIVA16) = True And valorNumericoD(Me.Totales.TotalTrasladosImpuestoIVA16) > 0 Then
                     .setAttribute("TotalTrasladosImpuestoIVA16", Me.Totales.TotalTrasladosImpuestoIVA16) 'optional
                 End If
 
-                If txtLEN(Me.Totales.TotalTrasladosBaseIVA8) = True Then
+                If txtLEN(Me.Totales.TotalTrasladosBaseIVA8) = True And valorNumericoD(Me.Totales.TotalTrasladosBaseIVA8) > 0 Then
                     .setAttribute("TotalTrasladosBaseIVA8", Me.Totales.TotalTrasladosBaseIVA8) 'optional
                 End If
 
-                If txtLEN(Me.Totales.TotalTrasladosImpuestoIVA8) = True Then
+                If txtLEN(Me.Totales.TotalTrasladosImpuestoIVA8) = True And valorNumericoD(Me.Totales.TotalTrasladosImpuestoIVA8) > 0 Then
                     .setAttribute("TotalTrasladosImpuestoIVA8", Me.Totales.TotalTrasladosImpuestoIVA8) 'optional
                 End If
 
-                If txtLEN(Me.Totales.TotalTrasladosBaseIVA0) = True Then
+                If txtLEN(Me.Totales.TotalTrasladosBaseIVA0) = True And valorNumericoD(Me.Totales.TotalTrasladosBaseIVA0) > 0 Then
                     .setAttribute("TotalTrasladosBaseIVA0", Me.Totales.TotalTrasladosBaseIVA0) 'optional
                 End If
 
-                If txtLEN(Me.Totales.TotalTrasladosImpuestoIVA0) = True Then
+                If txtLEN(Me.Totales.TotalTrasladosImpuestoIVA0) = True And valorNumericoD(Me.Totales.TotalTrasladosImpuestoIVA0) > 0 Then
                     .setAttribute("TotalTrasladosImpuestoIVA0", Me.Totales.TotalTrasladosImpuestoIVA0) 'optional
                 End If
 
-                If txtLEN(Me.Totales.TotalTrasladosBaseIVAExento) = True Then
+                If txtLEN(Me.Totales.TotalTrasladosBaseIVAExento) = True And valorNumericoD(Me.Totales.TotalTrasladosBaseIVAExento) > 0 Then
                     .setAttribute("TotalTrasladosBaseIVAExento", Me.Totales.TotalTrasladosBaseIVAExento) 'optional
                 End If
 

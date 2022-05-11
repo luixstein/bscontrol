@@ -1294,9 +1294,9 @@ Module FacturacionElectronica40
                 .FormaDePagoP = oBancoDetalle.CODIGO_METODO_PAGO
                 .MonedaP = oBancoDetalle.CODIGO_MONEDA_SAT
 
-                'Ya vendrá con su dato correspondiente, desde el grabar ya se hizo el if para ya no tener que preguntar
+                'Ya vendrá con su dato correspondiente, desde el grabar(dentro del stored MP_BANCOS_DETALLE_GRABA) ya se hizo el if para ya no tener que preguntar
                 'preguntamos sólo porque si fuera 1 no queremos que le ponga el formato de los 6 decimales
-                .TipoCambioP = IIf(oBancoDetalle.TIPO_CAMBIO = CDec("1"), "1", FormatTipoCambio(oBancoDetalle.TIPO_CAMBIO)).ToString
+                .TipoCambioP = IIf(oBancoDetalle.TIPO_CAMBIO = CDec("1"), "1", FormatTipoCambio(oBancoDetalle.TIPO_CAMBIO, False, 6)).ToString
 
                 .Monto = Format(oPago.MONTO, "#0.00")
                 .NumOperacion = oBancoDetalle.FOLIO_DETALLE
@@ -1311,6 +1311,18 @@ Module FacturacionElectronica40
                 .CadPago = "" 'Omitir de momento
                 .SelloPago = "" 'Omitir de momento
 
+                .Totales.TotalRetencionesIVA = Format(oPago.TOTAL_RETENCIONES_IVA, "#0.00")
+                .Totales.TotalRetencionesISR = Format(oPago.TOTAL_RETENCIONES_ISR, "#0.00")
+                .Totales.TotalRetencionesIEPS = Format(oPago.TOTAL_RETENCIONES_IEPS, "#0.00")
+                .Totales.TotalTrasladosBaseIVA16 = Format(oPago.TOTAL_TRASLADOS_BASE_IVA_16, "#0.00")
+                .Totales.TotalTrasladosImpuestoIVA16 = Format(oPago.TOTAL_TRASLADOS_IMPUESTO_IVA_16, "#0.00")
+                .Totales.TotalTrasladosBaseIVA8 = Format(oPago.TOTAL_TRASLADOS_BASE_IVA_8, "#0.00")
+                .Totales.TotalTrasladosImpuestoIVA8 = Format(oPago.TOTAL_TRASLADOS_IMPUESTO_IVA_8, "#0.00")
+                .Totales.TotalTrasladosBaseIVA0 = Format(oPago.TOTAL_TRASLADOS_BASE_IVA_0, "#0.00")
+                .Totales.TotalTrasladosImpuestoIVA0 = Format(oPago.TOTAL_TRASLADOS_IMPUESTO_IVA_0, "#0.00")
+                .Totales.TotalTrasladosBaseIVAExento = Format(oPago.TOTAL_TRASLADOS_BASE_IVA_EXENTO, "#0.00")
+                .Totales.MontoTotalPagos = Format(oPago.MONTO_TOTAL_PAGOS, "#0.00")
+
                 Dim dTablaPagosDetalle As DataTable = oPago.ObtenerPagosDetalle
 
                 If dTablaPagosDetalle.Rows.Count = 0 Then
@@ -1318,8 +1330,9 @@ Module FacturacionElectronica40
                     Return False
                 End If
 
-                For Each dRow As DataRow In dTablaPagosDetalle.Rows
+                Dim ImpuestosTrasladosDR40 As New iImpuestosTrasladosDR40, ImpuestosRetencionesDR40 As New iImpuestosRetencionesDR40
 
+                For Each dRow As DataRow In dTablaPagosDetalle.Rows
                     Dim oPagoDetalle As New Class_CXC_Pago_CFDI_Detalle(dRow("FOLIO_CXC").ToString)
 
                     If oPagoDetalle.EXISTE = False Then
@@ -1327,11 +1340,55 @@ Module FacturacionElectronica40
                         Return False
                     End If
 
-                    .DoctoRelacionados.Add(oPagoDetalle.FACTURA_FOLIO_FISCAL_SAT, oPagoDetalle.FACTURA_SERIE, oPagoDetalle.FACTURA_FOLIO_NUMERICO,
-                                           oPagoDetalle.CODIGO_MONEDA_SAT_DR,
-                                           IIf(oPagoDetalle.CODIGO_MONEDA_SAT_DR <> complementoPagos.MonedaP, FormatTipoCambio(oPagoDetalle.TIPO_CAMBIO_DR, False, 6), "").ToString,
-                                           oPagoDetalle.CODIGO_METODO_PAGO_EVENTO_DR, oPagoDetalle.NUMERO_PARCIALIDAD,
-                                           Format(oPagoDetalle.IMPORTE_SALDO_ANTERIOR, "#0.00"), Format(oPagoDetalle.IMPORTE_PAGADO, "#0.00"), Format(oPagoDetalle.IMPORTE_SALDO_INSOLUTO, "#0.00"),)
+                    For Each dRowImpuesto As DataRow In oPagoDetalle.ObtenerDetalleImpuestosDR.Rows
+                        Select Case dRowImpuesto("TIPO_IMPUESTO").ToString
+                            Case "TRASLADO"
+                                ImpuestosTrasladosDR40.Add(
+                                    Format(valorNumericoD(dRowImpuesto("BASE_DR").ToString), "#0.000000"),
+                                    dRowImpuesto("IMPUESTO_DR").ToString,
+                                    dRowImpuesto("TIPO_FACTOR_DR").ToString,
+                                    Format(valorNumericoD(dRowImpuesto("TASA_O_CUOTA_DR").ToString), "#0.000000"),
+                                    Format(valorNumericoD(dRowImpuesto("IMPORTE_DR").ToString), "#0.000000"))
+                            Case "RETENCION"
+                                ImpuestosRetencionesDR40.Add(
+                                    Format(valorNumericoD(dRowImpuesto("BASE_DR").ToString), "#0.000000"),
+                                    dRowImpuesto("IMPUESTO_DR").ToString,
+                                    dRowImpuesto("TIPO_FACTOR_DR").ToString,
+                                    Format(valorNumericoD(dRowImpuesto("TASA_O_CUOTA_DR").ToString), "#0.000000"),
+                                    Format(valorNumericoD(dRowImpuesto("IMPORTE_DR").ToString), "#0.000000"))
+                        End Select
+                    Next
+
+                    .DoctoRelacionados.Add(
+                        oPagoDetalle.FACTURA_FOLIO_FISCAL_SAT,
+                        oPagoDetalle.FACTURA_SERIE,
+                        oPagoDetalle.FACTURA_FOLIO_NUMERICO,
+                        oPagoDetalle.CODIGO_MONEDA_SAT_DR,
+                        IIf(oPagoDetalle.CODIGO_MONEDA_SAT_DR <> complementoPagos.MonedaP, FormatTipoCambio(oPagoDetalle.TIPO_CAMBIO_DR, False, 6), "1").ToString,
+                        oPagoDetalle.CODIGO_METODO_PAGO_EVENTO_DR,
+                        oPagoDetalle.NUMERO_PARCIALIDAD,
+                        Format(oPagoDetalle.IMPORTE_SALDO_ANTERIOR, "#0.00"),
+                        Format(oPagoDetalle.IMPORTE_PAGADO, "#0.00"),
+                        Format(oPagoDetalle.IMPORTE_SALDO_INSOLUTO, "#0.00"),
+                        ImpuestosTrasladosDR40,
+                        ImpuestosRetencionesDR40)
+                Next
+
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''ImpuestosP'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                For Each dRowImpuesto As DataRow In oPago.ObtenerDetalleImpuestosP.Rows
+                    Select Case dRowImpuesto("TIPO_IMPUESTO").ToString
+                        Case "TRASLADO"
+                            .ImpuestosP.Traslados.Add(
+                                Format(valorNumericoD(dRowImpuesto("BASE_P").ToString), "#0.000000"),
+                                dRowImpuesto("IMPUESTO_P").ToString,
+                                dRowImpuesto("TIPO_FACTOR_P").ToString,
+                                Format(valorNumericoD(dRowImpuesto("TASA_O_CUOTA_P").ToString), "#0.000000"),
+                                Format(valorNumericoD(dRowImpuesto("IMPORTE_P").ToString), "#0.000000"))
+                        Case "RETENCION"
+                            .ImpuestosP.Retenciones.Add(
+                                dRowImpuesto("IMPUESTO_P").ToString,
+                                Format(valorNumericoD(dRowImpuesto("IMPORTE_P").ToString), "#0.000000"))
+                    End Select
                 Next
 
             End With

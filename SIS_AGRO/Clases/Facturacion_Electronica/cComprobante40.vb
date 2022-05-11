@@ -23,6 +23,7 @@ Friend Class cComprobante40
     Private xmlnsxsi As String
     Private xsischemaLocation As String
     Private xmlnscfdi As String
+    Private xmlnspago20 As String
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Version As String
     Public Serie As String
@@ -57,6 +58,10 @@ Friend Class cComprobante40
 #End Region
 
 #Region "Métodos y procedimientos"
+    Public Sub New()
+        MyBase.New()
+        Class_Initialize_Renamed()
+    End Sub
 
     Private Sub Class_Initialize_Renamed()
         Me.Emisor = New iEmisor40
@@ -70,15 +75,11 @@ Friend Class cComprobante40
         Me.AnexoNodo = "cfdi:"
         Me.xmlns = "http://www.sat.gob.mx/cfd/4"
         Me.xmlnsxsi = "http://www.w3.org/2001/XMLSchema-instance"
-        Me.xsischemaLocation = "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd"
+        'Me.xsischemaLocation = "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd" 'ahora se gestiona en el ConstruyeXML
         Me.xmlnscfdi = "http://www.sat.gob.mx/cfd/4"
+        Me.xmlnspago20 = "http://www.sat.gob.mx/Pagos20"
 
         Me.xmlDoc = New MSXML2.DOMDocument60
-    End Sub
-
-    Public Sub New()
-        MyBase.New()
-        Class_Initialize_Renamed()
     End Sub
 
     Public Function GeneraCFD(ByVal tipoComprobante As TipoComprobante, ByVal sRutaXML As String) As Boolean
@@ -146,6 +147,18 @@ Friend Class cComprobante40
             With NodoComprobante
                 .setAttribute("xmlns:xsi", xmlnsxsi)
                 .setAttribute("xmlns:cfdi", xmlnscfdi)
+
+                Select Case Me.tipoComprobante
+                    Case TipoComprobante.FACTURA_VENTA, TipoComprobante.NOTA_CREDITO_CXC, TipoComprobante.DEVOLUCION_CXC
+                        Me.xsischemaLocation = "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd"
+                    Case TipoComprobante.PAGO_CXC
+                        Me.xsischemaLocation = "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd " &
+                                                "http://www.sat.gob.mx/Pagos20 http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos20.xsd"
+                        .setAttribute("xmlns:pago20", xmlnspago20)
+                    Case Else
+                        MsgBox("No se indicó el tipo de documento.", vbInformation, sProcedure)
+                End Select
+
                 .setAttribute("xsi:schemaLocation", xsischemaLocation)
 
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
