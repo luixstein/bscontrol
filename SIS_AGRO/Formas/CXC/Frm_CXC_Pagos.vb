@@ -895,7 +895,7 @@ Buscar:
                 .Cell(0, Me.iGyB_CxcPagoSubtotaMXNNuevos).Text = "CXCSubTotalMXNNuevos"
                 .Cell(0, Me.iGyB_VtaRetencionIvaMXN).Text = "V.RetIVA"
                 .Cell(0, Me.iGyB_VtaRetencionISRMXN).Text = "V.RetISR"
-                .Cell(0, Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Text = "V.RetIEPS"
+                .Cell(0, Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Text = "V.IEPS"
 
                 Me.DespliegaCombosGrid()
 
