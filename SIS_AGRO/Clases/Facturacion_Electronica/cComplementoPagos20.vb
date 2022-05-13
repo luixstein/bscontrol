@@ -130,7 +130,10 @@ Friend Class cComplementoPagos20
                     .setAttribute("TotalTrasladosBaseIVA0", Me.Totales.TotalTrasladosBaseIVA0) 'optional
                 End If
 
-                If txtLEN(Me.Totales.TotalTrasladosImpuestoIVA0) = True And valorNumericoD(Me.Totales.TotalTrasladosImpuestoIVA0) > 0 Then
+                'Puede tener TotalTrasladosBaseIVA0>0 y sabemos que TotalTrasladosImpuestoIVA0 siempre será 0 pero en este caso si
+                'lo ponemos aún con 0 ó el SAT nos marcaria error.
+                If (txtLEN(Me.Totales.TotalTrasladosImpuestoIVA0) = True And valorNumericoD(Me.Totales.TotalTrasladosImpuestoIVA0) > 0) _
+                    Or valorNumericoD(Me.Totales.TotalTrasladosBaseIVA0) > 0 Then
                     .setAttribute("TotalTrasladosImpuestoIVA0", Me.Totales.TotalTrasladosImpuestoIVA0) 'optional
                 End If
 
