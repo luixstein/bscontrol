@@ -820,7 +820,7 @@ Partial Class Catalogo_Clientes
         Me.BtnGeneraCuentaContableDolares.Name = "BtnGeneraCuentaContableDolares"
         Me.BtnGeneraCuentaContableDolares.Size = New System.Drawing.Size(151, 19)
         Me.BtnGeneraCuentaContableDolares.TabIndex = 75
-        Me.BtnGeneraCuentaContableDolares.Text = "Generar cuenta en dolares"
+        Me.BtnGeneraCuentaContableDolares.Text = "Generar cuenta en dólares"
         Me.BtnGeneraCuentaContableDolares.UseVisualStyleBackColor = True
         '
         'lblDisplayCuentaConDolares
