@@ -13,6 +13,7 @@ Public Class Class_CFD_CatUsosCFDI
     Private _ES_DEFAULT As Boolean
     Private _APLICA_TIPO_FISICA As Boolean
     Private _APLICA_TIPO_MORAL As Boolean
+    Private _REGIMEN_FISCAL_RECEPTOR As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -84,6 +85,13 @@ Public Class Class_CFD_CatUsosCFDI
             Return Me._APLICA_TIPO_MORAL
         End Get
     End Property
+
+    Public ReadOnly Property REGIMEN_FISCAL_RECEPTOR As String
+        Get
+            Return Me._REGIMEN_FISCAL_RECEPTOR
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -201,6 +209,7 @@ Public Class Class_CFD_CatUsosCFDI
                     Me._ES_DEFAULT = CBool(dReader("ES_DEFAULT").ToString)
                     Me._APLICA_TIPO_FISICA = CBool(dReader("APLICA_TIPO_FISICA").ToString)
                     Me._APLICA_TIPO_MORAL = CBool(dReader("APLICA_TIPO_MORAL").ToString)
+                    Me._REGIMEN_FISCAL_RECEPTOR = dReader("REGIMEN_FISCAL_RECEPTOR").ToString
 
                     bResultado = True
                 End If
@@ -213,6 +222,30 @@ Public Class Class_CFD_CatUsosCFDI
             End Try
         End With
         Return bResultado
+    End Function
+
+    Public Function BusquedaVisual_PorDescripcion(ByVal sTipoPersona As String) As String
+        Dim f As New BusquedaVisual
+        Dim Resultado As String = ""
+
+        f.Text = "Búsqueda de usos de CFDI por nombre."
+        f.sCampo = "NOMBRE_USO_CFDI"
+        f.sOrder = "CODIGO_USO_CFDI"
+        f.sTable = "CFDI_CAT_USOS_CFDI"
+        f.sQl = "SELECT CODIGO_USO_CFDI,NOMBRE_USO_CFDI,APLICA_TIPO_FISICA,APLICA_TIPO_MORAL,REGIMEN_FISCAL_RECEPTOR " &
+            "FROM CFDI_CAT_USOS_CFDI " &
+            "WHERE ESTATUS='A' AND " & IIf(sTipoPersona = "F", "APLICA_TIPO_FISICA='1'", "APLICA_TIPO_MORAL='1'").ToString & " AND "
+        f.arrayWidthColumns = New Integer() {100, 350, 130, 130, 450}
+        f.Inicia("%")
+        f.ShowDialog()
+        Try
+            If f.iRows > 0 Then
+                Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, "BusquedaVisual_PorDescripcion", ex)
+        End Try
+        Return Resultado
     End Function
 
 #End Region

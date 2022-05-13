@@ -104,7 +104,7 @@ Public Class Catalogo_Clientes
         End Select
         sMsg = "Deseas " & sMsg & " ?"
         If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
-            Me.Grabar_Elemento()
+            Me.Grabar()
         End If
     End Sub
 
@@ -141,7 +141,7 @@ Public Class Catalogo_Clientes
 
         sMsg = "Deseas eliminar el " & Me.msgElemento & " : " & Me.txtCodigoCliente.Text & "?"
         If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
-            Me.Elimina_Elemento()
+            Me.Eliminar()
         End If
     End Sub
 
@@ -149,7 +149,6 @@ Public Class Catalogo_Clientes
 
 #Region "Eventos de objetos"
 #Region "Eventos"
-
     Private Sub txtLocalidad_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtLocalidad.Click
         If txtLEN(Me.txtLocalidad.Text) = False Then
             Me.txtLocalidad.Text = Me.txtCiudad.Text
@@ -231,8 +230,8 @@ Public Class Catalogo_Clientes
 
     Private Sub cboTipoPersona_SelectedValueChanged(sender As Object, e As EventArgs) Handles cboTipoPersona.SelectedValueChanged
         Try
-            With Me.cboUsoCFDI
-                Dim dView As New Data.DataView(CType(IIf(Me.cboTipoPersona.Text = "FISICA", dtUsosCFDIPersonasFisicas, dtUsosCFDIPersonasMorales), DataTable))
+            'With Me.cboUsoCFDI
+            Dim dView As New Data.DataView(CType(IIf(Me.cboTipoPersona.Text = "FISICA", dtUsosCFDIPersonasFisicas, dtUsosCFDIPersonasMorales), DataTable))
                 'Dim dRow() As DataRow'Modo original
                 Dim dRow As DataRow() = New DataRow(-1) {} 'De este modo no nos va marcar que el arreglo puede ser usado antes de tener algún valor(quedar null el arreglo)
                 'Dim dRow As New List(Of DataRow) 'De este otro modo no nos va marcar que el arreglo puede ser usado antes de tener algún valor(quedar null el arreglo)
@@ -247,30 +246,144 @@ Public Class Catalogo_Clientes
                         'dRow = dtUsosCFDIPersonasMorales.Select("ES_DEFAULT='1'").ToList
                 End Select
 
-                .DisplayMember = "NOMBRE_USO_CFDI"
-                .ValueMember = "CODIGO_USO_CFDI"
-                .DataSource = dView
-                .SelectedIndex = -1
+            '.DisplayMember = "NOMBRE_USO_CFDI"
+            '.ValueMember = "CODIGO_USO_CFDI"
+            '.DataSource = dView
+            '.SelectedIndex = -1
 
-                'If dRow.Length > 0 Then
-                If dRow.Count > 0 Then
-                    .SelectedValue = dRow(0)("CODIGO_USO_CFDI")
-                End If
+            'If dRow.Length > 0 Then
+            If dRow.Count > 0 Then
+                '.SelectedValue = dRow(0)("CODIGO_USO_CFDI")
+                Me.txtUsoCFDI.Text = dRow(0)("CODIGO_USO_CFDI").ToString
+            End If
 
-            End With
+            'End With
+
         Catch ex As Exception
             HandleError(Me.Name, "cboTipoPersona_SelectedValueChanged", ex)
+        End Try
+    End Sub
+
+    Private Sub txtRegimenFiscal_KeyDown(sender As Object, e As KeyEventArgs) Handles txtRegimenFiscal.KeyDown
+        Const sProcedure As String = "txtRegimenFiscal_KeyDown"
+        Try
+            Dim sText As String = "", oRegimenFiscal As Class_CFDCatTiposRegimenesFiscales
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    If txtLEN(Me.cboTipoPersona.Text) = False Then
+                        MsgBox("Seleccione primero el tipo de persona.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.cboTipoPersona.Focus()
+                        Return
+                    End If
+                    oRegimenFiscal = New Class_CFDCatTiposRegimenesFiscales
+                    sText = oRegimenFiscal.BusquedaVisual_PorDescripcion(Strings.Left(Me.cboTipoPersona.Text, 1))
+                    If txtLEN(sText) = True Then Me.txtRegimenFiscal.Text = sText
+
+                Case Keys.Enter
+                    If txtLEN(Me.txtRegimenFiscal.Text) = False Then
+                        Me.lblRegimenFiscal.Text = "" : GoTo Buscar : Exit Sub
+                    End If
+
+                    oRegimenFiscal = New Class_CFDCatTiposRegimenesFiscales(Me.txtRegimenFiscal.Text)
+
+                    Me.lblRegimenFiscal.Text = oRegimenFiscal.NOMBRE_REGIMEN_FISCAL 'Lo va consultar aunque pudiera no ser válido, mas abajo lo eliminará
+
+                    If oRegimenFiscal.EXISTE = False Then
+                        Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = ""
+                    ElseIf Me.txtRfc.Text = "XAXX010101000" Or Me.txtRfc.Text = "XEXX010101000" Then
+                        If Me.txtRegimenFiscal.Text <> "616" Then 'El SAT así lo exige.
+                            MsgBox("El régimen fiscal para clientes con RFC genérico XAXX010101000 ó XEXX010101000 debe ser 616=Sin obligaciones fiscales.", MsgBoxStyle.Exclamation, sProcedure)
+                            Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = ""
+                        End If
+                    ElseIf oRegimenFiscal.ESTATUS = "B" Then
+                        MsgBox("El régimen fiscal " & Me.lblRegimenFiscal.Text & " esta dado de baja.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = ""
+                    Else
+                        Select Case Strings.Left(Me.cboTipoPersona.Text, 1)
+                            Case "F" 'FISICA
+                                If oRegimenFiscal.APLICA_TIPO_FISICA = False Then
+                                    MsgBox("El régimen " & Me.txtRegimenFiscal.Text & "-" & Me.lblRegimenFiscal.Text & " no aplica para personas físicas.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = ""
+                                End If
+                            Case "M" 'MORAL
+                                If oRegimenFiscal.APLICA_TIPO_MORAL = False Then
+                                    MsgBox("El régimen " & Me.txtRegimenFiscal.Text & "-" & Me.lblRegimenFiscal.Text & " no aplica para personas morales.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = ""
+                                End If
+                        End Select
+                    End If
+
+                    If txtLEN(Me.lblRegimenFiscal.Text) = False Then GoTo Buscar : Return
+
+                    SendKeys.Send("{TAB}")
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
+    Private Sub txtUsoCFDI_KeyDown(sender As Object, e As KeyEventArgs) Handles txtUsoCFDI.KeyDown
+        Const sProcedure As String = "txtUsoCFDI_KeyDown"
+        Try
+            Dim sText As String = "", oUsoCFDI As Class_CFD_CatUsosCFDI
+            Select Case e.KeyCode
+                Case Keys.F6
+Buscar:
+                    If txtLEN(Me.cboTipoPersona.Text) = False Then
+                        MsgBox("Seleccione primero el tipo de persona.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.cboTipoPersona.Focus()
+                        Return
+                    End If
+                    oUsoCFDI = New Class_CFD_CatUsosCFDI
+                    sText = oUsoCFDI.BusquedaVisual_PorDescripcion(Strings.Left(Me.cboTipoPersona.Text, 1))
+                    If txtLEN(sText) = True Then Me.txtUsoCFDI.Text = sText
+
+                Case Keys.Enter
+                    If txtLEN(Me.txtUsoCFDI.Text) = False Then
+                        Me.lblUsoCFDI.Text = "" : GoTo Buscar : Exit Sub
+                    End If
+
+                    oUsoCFDI = New Class_CFD_CatUsosCFDI(Me.txtUsoCFDI.Text)
+
+                    Me.lblUsoCFDI.Text = oUsoCFDI.NOMBRE_USO_CFDI 'Lo va consultar aunque pudiera no ser válido, mas abajo lo eliminará
+
+                    If oUsoCFDI.EXISTE = False Then
+                        Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = "" : GoTo Buscar : Exit Sub
+                    ElseIf oUsoCFDI.ESTATUS = "B" Then
+                        MsgBox("El uso del CFDI " & Me.lblUsoCFDI.Text & " esta dado de baja.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = ""
+                    Else
+                        Select Case Strings.Left(Me.cboTipoPersona.Text, 1)
+                            Case "F" 'FISICA
+                                If oUsoCFDI.APLICA_TIPO_FISICA = False Then
+                                    MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas físicas.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = ""
+                                End If
+                            Case "M" 'MORAL
+                                If oUsoCFDI.APLICA_TIPO_MORAL = False Then
+                                    MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas morales.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = ""
+                                End If
+                        End Select
+                    End If
+
+                    If txtLEN(Me.lblUsoCFDI.Text) = False Then GoTo Buscar : Return
+
+                    SendKeys.Send("{TAB}")
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 #End Region
 
 #Region "Eventos Genericos"
-
     Private Sub txt_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtRfc.KeyDown, txtNumeroTelefono.KeyDown,
     txtNumeroInterior.KeyDown, txtNumeroExterior.KeyDown, txtNumeroCelular.KeyDown, TxtNombreCliente.KeyDown, txtLocalidad.KeyDown, txtLimiteCredito.KeyDown, txtDiasPlazo.KeyDown, txtCurp.KeyDown,
     txtColonia.KeyDown, txtCodigoCliente.KeyDown, txtCalle.KeyDown, DpFecha.KeyDown, chkPermitirVentaCredito.KeyDown, cboZona.KeyDown, cboVendedor.KeyDown, cboTipoPersona.KeyDown,
     cboTipoMercado.KeyDown, CboEstatus.KeyDown, cboEstado.KeyDown, cboFormaPago.KeyDown, txtNumeroCuenta.KeyDown, txtCiudad.KeyDown, cboFormaPagoUSD.KeyDown, txtNumeroCuentaDolares.KeyDown,
-    txtNumeroRegistroIdentificadorExtranjero.KeyDown, cboPais.KeyDown, cboMunicipio.KeyDown, chkEsContribuyenteIEPS.KeyDown, cboNombreXML.KeyDown, cboUsoCFDI.KeyDown, txtCorreoClientePagos.KeyDown
+    txtNumeroRegistroIdentificadorExtranjero.KeyDown, cboPais.KeyDown, cboMunicipio.KeyDown, chkEsContribuyenteIEPS.KeyDown, cboNombreXML.KeyDown, txtCorreoClientePagos.KeyDown
         txtTAB(e)
     End Sub
 
@@ -282,11 +395,14 @@ Public Class Catalogo_Clientes
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtNumeroCuentaDolares.KeyPress, TxtCodigoAlmacen.KeyPress, TxtCodigoPropietario.KeyPress
+    Private Sub txtNumerosEnterosKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtNumeroCuentaDolares.KeyPress, TxtCodigoAlmacen.KeyPress, TxtCodigoPropietario.KeyPress, txtRegimenFiscal.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
 
+    Private Sub txtNoBeepKeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtUsoCFDI.KeyPress
+        txtNoBeep(e)
+    End Sub
 #End Region
 
 #Region "Keydown específicos"
@@ -517,27 +633,33 @@ busca:
 
 #Region "Métodos y procedimientos"
     Private Sub Catalogo_Clientes_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.DesplegarPaises()
-        'Me.DesplegarEstados()
-        Me.DesplegarVendedores()
-        Me.DesplegarZonas()
-        Me.DesplegarTiposMercados()
-        Me.DesplegarElementos()
-        Me.DesplegarFormasPago()
-        Me.DesplegarFormasPagoDolares()
-        Me.DesplegarGirosClientes()
-        Me.DesplegarTiposNegociaciones()
+        Const sProcedure As String = "Catalogo_Clientes_Load"
+        Try
+            Me.DesplegarPaises()
+            'Me.DesplegarEstados()
+            Me.DesplegarVendedores()
+            Me.DesplegarZonas()
+            Me.DesplegarTiposMercados()
+            Me.DesplegarElementos()
+            Me.DesplegarFormasPago()
+            Me.DesplegarFormasPagoDolares()
+            Me.DesplegarGirosClientes()
+            Me.DesplegarTiposNegociaciones()
 
-        If Empresa_Sistema.VERSION_ESQUEMA_CFD >= "3.3" Then
-            'Me.gbMetodoPago.Visible = False
-            Me.lblDisplayNumCuenta.Visible = False
-            Me.txtNumeroCuenta.Visible = False
-            Me.lblDisplayNCuentaDlls.Visible = False
-            Me.txtNumeroCuentaDolares.Visible = False
-        End If
+            If Empresa_Sistema.VERSION_ESQUEMA_CFD >= "3.3" Then
+                'Me.gbMetodoPago.Visible = False
+                Me.lblDisplayNumCuenta.Visible = False
+                Me.txtNumeroCuenta.Visible = False
+                Me.lblDisplayNCuentaDlls.Visible = False
+                Me.txtNumeroCuentaDolares.Visible = False
+            End If
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Sub Cambia_Estado()
+        Const sProcedure As String = "Cambia_Estado"
         Try
             Select Case Me.Estado
                 Case enumEstados.NUEVO
@@ -592,9 +714,10 @@ busca:
                     Me.cboNombreXML.Enabled = True
                     Me.chkPermitirVentaCredito.Enabled = True
                     Me.TxtCodigoAlmacen.Enabled = True
-                    Me.cboUsoCFDI.Enabled = True
+                    Me.txtUsoCFDI.Enabled = True
                     Me.CboGiros.Enabled = True
                     Me.CboTipoNegociacion.Enabled = True
+                    Me.txtRegimenFiscal.Enabled = True
 
                     Me.InicializaElemento()
 
@@ -667,9 +790,10 @@ busca:
                         Me.BtnGeneraCuentaContableAnticipos.Enabled = True
                     End If
 
-                    Me.cboUsoCFDI.Enabled = True
+                    Me.txtUsoCFDI.Enabled = True
                     Me.CboGiros.Enabled = True
                     Me.CboTipoNegociacion.Enabled = True
+                    Me.txtRegimenFiscal.Enabled = True
 
                     Me.TxtNombreCliente.Focus()
 
@@ -724,18 +848,21 @@ busca:
                     Me.TxtCodigoAlmacen.Enabled = False
                     Me.txtFiltro.Focus()
                     Me.CboEstatusFiltro.SelectedIndex = 0
-                    Me.cboUsoCFDI.Enabled = False
+                    Me.txtUsoCFDI.Enabled = False
                     Me.CboGiros.Enabled = False
                     Me.CboTipoNegociacion.Enabled = False
+                    Me.txtRegimenFiscal.Enabled = False
+
             End Select
             Application.DoEvents()
 
         Catch ex As Exception
-            HandleError(Me.Name, "Cambia_Estado", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub InicializaElemento()
+        Const sProcedure As String = "InicializaElemento"
         Try
             Me.TxtCodigoPropietario.Text = ""
             Me.LblNombrePropietario.Text = ""
@@ -781,12 +908,16 @@ busca:
             Me.TxtCodigoAlmacen.Text = ""
             Me.chkEsContribuyenteIEPS.Checked = False
             Me.CboTipoNegociacion.SelectedValue = 1 'Credito
+            Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = ""
+            Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = ""
+
         Catch ex As Exception
-            HandleError(Me.Name, "InicializaElemento", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
-    Private Function Grabar_Elemento() As Boolean
+    Private Function Grabar() As Boolean
+        Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
 
         Dim oElemento As New Class_CatClientes
@@ -795,7 +926,7 @@ busca:
 
         Try
             If txtLEN(Me.TxtNombreCliente.Text) = False Then
-                MsgBox("Asígne el nombre del cliente.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Asígne el nombre del cliente.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtNombreCliente.Focus()
                 Return False
             End If
@@ -805,7 +936,7 @@ busca:
 
                 For n = 0 To UBound(tabla, 1)
                     If IsEmailSyntaxValid(tabla(n)) = False Then
-                        MsgBox("El correo del cliente es inválido, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                        MsgBox("El correo del cliente es inválido, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                         Me.txtCorreoCliente.Focus()
                         Return False
                     End If
@@ -820,21 +951,21 @@ busca:
             End If
 
             If Me.cboPais.SelectedIndex = -1 Then
-                MsgBox("Seleccione por favor el pais del cliente.", MsgBoxStyle.Exclamation, Me.Name)
+                MsgBox("Seleccione por favor el país del cliente.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.cboPais.Focus()
                 Return False
             End If
 
             If Me.cboPais.SelectedValue.ToString <> "MEX" Then
                 If Me.cboEstado.SelectedIndex = -1 Then
-                    MsgBox("Seleccione por favor el estado del cliente(es obligatorio si es pais<>mexico).", MsgBoxStyle.Exclamation, Me.Name)
+                    MsgBox("Seleccione por favor el estado del cliente(es obligatorio si es pais<>mexico).", MsgBoxStyle.Exclamation, sProcedure)
                     Me.cboEstado.Focus()
                     Return False
                 End If
             End If
 
             If Me.cboFormaPago.SelectedValue Is Nothing Then
-                MsgBox("Seleccione la forma de pago.", MsgBoxStyle.Exclamation, Me.Text)
+                MsgBox("Seleccione la forma de pago.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.cboFormaPago.Focus()
                 Return False
             End If
@@ -846,12 +977,12 @@ busca:
                 If oMetodoPago.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
                     If txtLEN(Me.txtNumeroCuenta.Text) = False Then
                         'Es opcional
-                        'MsgBox("El método de pago requiere número de cuenta, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                        'MsgBox("El método de pago requiere número de cuenta, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                         'Me.txtNumeroCuenta.Focus()
                         'Return False
                     Else
                         If Len(Me.txtNumeroCuenta.Text) <> 4 Then
-                            MsgBox("El número de cuenta debe ser de 4 caracteres, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                            MsgBox("El número de cuenta debe ser de 4 caracteres, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                             Me.txtNumeroCuenta.Focus()
                             Return False
                         End If
@@ -861,22 +992,119 @@ busca:
                 If oMetodoPagoUSD.REQUIERE_NUMERO_CUENTA_PAGO = 1 Then
                     If txtLEN(Me.txtNumeroCuentaDolares.Text) = False Then
                         'Es opcional
-                        'MsgBox("El método de pago requiere número de cuenta dólares, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                        'MsgBox("El método de pago requiere número de cuenta dólares, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                         'Me.txtNumeroCuentaDolares.Focus()
                         'Return False
                     Else
                         If Len(Me.txtNumeroCuentaDolares.Text) <> 4 Then
-                            MsgBox("El número de cuenta dólares debe ser de 4 caracteres, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                            MsgBox("El número de cuenta dólares debe ser de 4 caracteres, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                             Me.txtNumeroCuentaDolares.Focus()
                             Return False
                         End If
                     End If
                 End If
+            ElseIf Empresa_Sistema.VERSION_ESQUEMA_CFD = "3.3" Or Empresa_Sistema.VERSION_ESQUEMA_CFD >= "4.0" Then
+
+                If Empresa_Sistema.VERSION_ESQUEMA_CFD >= "4.0" Then
+                    If txtLEN(Me.txtCodigoPostal.Text) = False Then
+                        MsgBox("Asígne el código postal.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.txtCodigoPostal.Focus()
+                        Return False
+                    End If
+                End If
+
+                If txtLEN(Me.cboTipoPersona.Text) = False Then
+                    MsgBox("Seleccione el tipo de persona.", MsgBoxStyle.Exclamation, sProcedure)
+                    Me.cboTipoPersona.Focus()
+                    Return False
+                End If
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                If Empresa_Sistema.VERSION_ESQUEMA_CFD >= "4.0" Then
+                    If txtLEN(Me.txtRegimenFiscal.Text) = False Then
+                        MsgBox("Seleccione el régimen fiscal.", MsgBoxStyle.Exclamation, sProcedure)
+                        Me.lblRegimenFiscal.Text = "" : Return False
+                    End If
+                ElseIf Empresa_Sistema.VERSION_ESQUEMA_CFD = "3.3" And txtLEN(Me.txtRegimenFiscal.Text) = False Then 'En el 3.3 no existia el régimen fiscal así que no es obligatorio.
+                    GoTo SaltoUsoCFDI
+                End If
+
+                Dim oRegimenFiscalReceptor As New Class_CFDCatTiposRegimenesFiscales(Me.txtRegimenFiscal.Text), bRegimenFiscalReceptorInvalido As Boolean
+
+                'Por si no le dieron enter que cargue el nombre.
+                Me.lblRegimenFiscal.Text = oRegimenFiscalReceptor.NOMBRE_REGIMEN_FISCAL
+
+                If oRegimenFiscalReceptor.EXISTE = False Then
+                    MsgBox("El régimen fiscal no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                    bRegimenFiscalReceptorInvalido = True
+                ElseIf Me.txtRfc.Text = "XAXX010101000" Or Me.txtRfc.Text = "XEXX010101000" Then
+                    If Me.txtRegimenFiscal.Text <> "616" Then 'El SAT así lo exige.
+                        MsgBox("El régimen fiscal para clientes con RFC genérico XAXX010101000 ó XEXX010101000 debe ser 616=Sin obligaciones fiscales", MsgBoxStyle.Exclamation, sProcedure)
+                        bRegimenFiscalReceptorInvalido = True
+                    End If
+                ElseIf oRegimenFiscalReceptor.ESTATUS = "B" Then
+                    MsgBox("El régimen fiscal " & Me.lblRegimenFiscal.Text & " esta dado de baja.", MsgBoxStyle.Exclamation, sProcedure)
+                    bRegimenFiscalReceptorInvalido = True
+                Else
+                    Select Case Strings.Left(Me.cboTipoPersona.Text, 1)
+                        Case "F" 'FISICA
+                            If oRegimenFiscalReceptor.APLICA_TIPO_FISICA = False Then
+                                MsgBox("El régimen " & Me.txtRegimenFiscal.Text & "-" & Me.lblRegimenFiscal.Text & " no aplica para personas físicas.", MsgBoxStyle.Exclamation, sProcedure)
+                                bRegimenFiscalReceptorInvalido = True
+                            End If
+                        Case "M" 'MORAL
+                            If oRegimenFiscalReceptor.APLICA_TIPO_MORAL = False Then
+                                MsgBox("El régimen " & Me.txtRegimenFiscal.Text & "-" & Me.lblRegimenFiscal.Text & " no aplica para personas morales.", MsgBoxStyle.Exclamation, sProcedure)
+                                bRegimenFiscalReceptorInvalido = True
+                            End If
+                    End Select
+                End If
+
+                If bRegimenFiscalReceptorInvalido = True Then
+                    Me.txtRegimenFiscal.Text = "" : Me.lblRegimenFiscal.Text = "" : Return False
+                End If
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+SaltoUsoCFDI:
+                If txtLEN(Me.txtUsoCFDI.Text) = False Then
+                    MsgBox("Seleccione el uso del CFDI.", MsgBoxStyle.Exclamation, sProcedure)
+                    Me.lblUsoCFDI.Text = "" : Return False
+                End If
+
+                Dim oUsoCFDI As New Class_CFD_CatUsosCFDI(Me.txtUsoCFDI.Text), bUsoCFDIInvalido As Boolean
+
+                'Por si no le dieron enter que cargue el nombre.
+                Me.lblUsoCFDI.Text = oUsoCFDI.NOMBRE_USO_CFDI
+
+                If oUsoCFDI.EXISTE = False Then
+                    MsgBox("El uso del CFDI no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                    bUsoCFDIInvalido = True
+                ElseIf oUsoCFDI.ESTATUS = "B" Then
+                    MsgBox("El uso del CFDI " & Me.lblUsoCFDI.Text & " esta dado de baja.", MsgBoxStyle.Exclamation, sProcedure)
+                    bUsoCFDIInvalido = True
+                Else
+                    Select Case Strings.Left(Me.cboTipoPersona.Text, 1)
+                        Case "F" 'FISICA
+                            If oUsoCFDI.APLICA_TIPO_FISICA = False Then
+                                MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas físicas.", MsgBoxStyle.Exclamation, sProcedure)
+                                bUsoCFDIInvalido = True
+                            End If
+                        Case "M" 'MORAL
+                            If oUsoCFDI.APLICA_TIPO_MORAL = False Then
+                                MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas morales.", MsgBoxStyle.Exclamation, sProcedure)
+                                bUsoCFDIInvalido = True
+                            End If
+                    End Select
+                End If
+
+                If bUsoCFDIInvalido = True Then
+                    Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = "" : Return False
+                End If
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             End If
 
             If (Me.cboPais.SelectedValue.ToString = "USA" Or Me.cboPais.SelectedValue.ToString = "CAN") AndAlso txtLEN(Me.txtNumeroRegistroIdentificadorExtranjero.Text) = True Then
                 If Me.txtNumeroRegistroIdentificadorExtranjero.Text.Replace(" ", "").Length <> 9 Then
-                    MsgBox("El valor de Num registro id extranjero (TAX ID) debe ser de 9 dígitos, favor de verificar.", MsgBoxStyle.Exclamation, Me.Text)
+                    MsgBox("El valor de Num registro id extranjero (TAX ID) debe ser de 9 dígitos, favor de verificar.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
             End If
@@ -952,25 +1180,25 @@ busca:
                             End If
                         End If
 
-                        .CODIGO_USO_CFDI = Me.cboUsoCFDI.SelectedValue.ToString
+                        .CODIGO_USO_CFDI = Me.txtUsoCFDI.Text ' Me.cboUsoCFDI.SelectedValue.ToString
                         .CODIGO_GIRO = Me.CboGiros.SelectedValue.ToString
                         .CODIGO_TIPO_NEGOCIACION = Me.CboTipoNegociacion.SelectedValue.ToString
+                        .CODIGO_REGIMEN_FISCAL = Me.txtRegimenFiscal.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
                                 .AGREGAR = "1"
-                                If .Grabar() = False Then
-                                    Return False
-                                End If
                             Case enumEstados.EDICION
                                 .AGREGAR = "0"
-                                If .Grabar() = False Then
-                                    Return False
-                                End If
                         End Select
 
+                        bResultado = .Grabar
 
-                        MsgBox(Me.msgElemento & " Grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
+                        If bResultado = False Then
+                            Return False
+                        End If
+
+                        MsgBox(Me.msgElemento & " grabado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
                         Me.Estado = enumEstados.CONSULTA
                         Me.Cambia_Estado()
                         Me.DesplegarElementos()
@@ -980,7 +1208,7 @@ busca:
             End Select
 
         Catch ex As Exception
-            HandleError(Me.Name, "Grabar", ex)
+            HandleError(Me.Name, sProcedure, ex)
             Me.Estado = enumEstados.CONSULTA
             Me.Cambia_Estado()
         Finally
@@ -990,6 +1218,7 @@ busca:
     End Function
 
     Private Sub GeneraCuentaContableDolares()
+        Const sProcedure As String = "GeneraCuentaContableDolares"
         Dim generado As Boolean = False
         Try
             With oClientes
@@ -1000,8 +1229,8 @@ busca:
                     generado = True
                 End If
 
-                If generado Then
-                    MsgBox("Cuenta contable en dolares creada satisfactoriamente.", MsgBoxStyle.Information)
+                If generado = True Then
+                    MsgBox("Cuenta contable en dólares creada satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
                     Me.Estado = enumEstados.CONSULTA
                     Me.Cambia_Estado()
                     DesplegarElementos()
@@ -1009,7 +1238,7 @@ busca:
             End With
 
         Catch ex As Exception
-            HandleError(Me.Name, "GeneraCuentaContableDolares", ex)
+            HandleError(Me.Name, sProcedure, ex)
             Me.Estado = enumEstados.CONSULTA
             Me.Cambia_Estado()
         Finally
@@ -1018,6 +1247,7 @@ busca:
     End Sub
 
     Private Sub GeneraCuentaContableAnticipos()
+        Const sProcedure As String = "GeneraCuentaContableAnticipos"
         Dim generado As Boolean = False
         Try
             With oClientes
@@ -1028,8 +1258,8 @@ busca:
                     generado = True
                 End If
 
-                If generado Then
-                    MsgBox("Cuenta contable de anticipos creada satisfactoriamente.", MsgBoxStyle.Information)
+                If generado = True Then
+                    MsgBox("Cuenta contable de anticipos creada satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
                     Me.Estado = enumEstados.CONSULTA
                     Me.Cambia_Estado()
                     DesplegarElementos()
@@ -1037,7 +1267,7 @@ busca:
             End With
 
         Catch ex As Exception
-            HandleError(Me.Name, "GeneraCuentaContableAnticipos", ex)
+            HandleError(Me.Name, sProcedure, ex)
             Me.Estado = enumEstados.CONSULTA
             Me.Cambia_Estado()
         Finally
@@ -1045,9 +1275,10 @@ busca:
         End Try
     End Sub
 
-    Private Sub Elimina_Elemento()
+    Private Function Eliminar() As Boolean
+        Const sProcedure As String = "Eliminar"
         Dim oElemento As New Class_CatClientes
-        Dim Eliminado As Boolean = False
+        Dim bResultado As Boolean = False
         Try
             With oElemento
                 .CODIGO_CLIENTE = Me.txtCodigoCliente.Text
@@ -1056,87 +1287,94 @@ busca:
                 .CUENTA_CONTABLE_ANTICIPOS = Me.TxtCuentaContableAnticipos.Text
 
                 If Me.ValidaMovimientosCliente = False Then
-                    Exit Sub
+                    Return False
                 End If
 
                 .Consultar()
 
                 If txtLEN(.CODIGO_PROPIETARIO) = True Then
                     Dim sMsg As String
-                    sMsg = "El cliente " & Me.txtCodigoCliente.Text & " está ligado a un propietario, desea eliminar esta ligación?"
-                    If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle)) = MsgBoxResult.Yes Then
+                    sMsg = "El cliente " & Me.txtCodigoCliente.Text & " está ligado a un propietario, desea eliminar esta relación ?"
+                    If MsgBox(sMsg, CType(CInt(MsgBoxStyle.Question) + CInt(MsgBoxStyle.YesNo), MsgBoxStyle), sProcedure) = MsgBoxResult.Yes Then
                         .EliminaRelacionPropietario()
                     Else
-                        Exit Sub
+                        Return False
                     End If
-
                 End If
 
                 If .EliminarCliente() Then
-                    Eliminado = True
+                    bResultado = True
                 End If
             End With
 
-            If Eliminado = True Then
-                MsgBox(Me.msgElemento & " Eliminado satisfactoriamente.", MsgBoxStyle.Information, Me.Name)
+            If bResultado = True Then
+                MsgBox(Me.msgElemento & " eliminado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
                 Me.Estado = enumEstados.NUEVO
                 Me.Cambia_Estado()
                 DesplegarElementos()
             End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "Eliminar", ex)
+            HandleError(Me.Name, sProcedure, ex)
             Me.Estado = enumEstados.CONSULTA
             Me.Cambia_Estado()
         Finally
             oElemento = Nothing
         End Try
-    End Sub
+
+        Return bResultado
+    End Function
 
     Private Function ValidaMovimientosCliente() As Boolean
+        Const sProcedure As String = "ValidaMovimientosCliente"
         Dim sql As Class_find
 
-        'Cuenta contable
-        sql = New Class_find("SELECT 1 FROM CON_POLIZAS_DETALLE WHERE CUENTA_CONTABLE='" & Me.txtCuentaContable.Text & "'")
-
-        If txtLEN(sql.Result1) = True Then
-            MsgBox("No es posible eliminar cliente porque su cuenta contable tiene movimientos de pólizas.", MsgBoxStyle.Exclamation, Me.Name)
-            sql = Nothing
-            Return False
-        End If
-
-        'Cuenta contable dolares
-        If txtLEN(Me.txtCuentaContableDolares.Text) = True Then
-            sql = New Class_find("SELECT 1 FROM CON_POLIZAS_DETALLE WHERE CUENTA_CONTABLE='" & Me.txtCuentaContableDolares.Text & "'")
+        Try
+            'Cuenta contable
+            sql = New Class_find("SELECT 1 FROM CON_POLIZAS_DETALLE WHERE CUENTA_CONTABLE='" & sReplace(Me.txtCuentaContable.Text) & "'")
 
             If txtLEN(sql.Result1) = True Then
-                MsgBox("No es posible eliminar cliente porque su cuenta contable en dólares tiene movimientos de pólizas.", MsgBoxStyle.Exclamation, Me.Name)
+                MsgBox("No es posible eliminar cliente porque su cuenta contable tiene movimientos de pólizas.", MsgBoxStyle.Exclamation, sProcedure)
                 sql = Nothing
                 Return False
             End If
 
-        End If
+            'Cuenta contable dolares
+            If txtLEN(Me.txtCuentaContableDolares.Text) = True Then
+                sql = New Class_find("SELECT 1 FROM CON_POLIZAS_DETALLE WHERE CUENTA_CONTABLE='" & sReplace(Me.txtCuentaContableDolares.Text) & "'")
 
-        'Ventas
-        sql = New Class_find("SELECT 1 FROM VENTA_GLOBAL WHERE CODIGO_CLIENTE='" & Me.txtCodigoCliente.Text & "'")
+                If txtLEN(sql.Result1) = True Then
+                    MsgBox("No es posible eliminar cliente porque su cuenta contable en dólares tiene movimientos de pólizas.", MsgBoxStyle.Exclamation, sProcedure)
+                    sql = Nothing
+                    Return False
+                End If
+            End If
 
-        If txtLEN(sql.Result1) = True Then
-            MsgBox("No es posible eliminar cliente porque tiene movimientos de ventas.", MsgBoxStyle.Exclamation, Me.Name)
+            'Ventas
+            sql = New Class_find("SELECT 1 FROM VENTA_GLOBAL WHERE CODIGO_CLIENTE='" & sReplace(Me.txtCodigoCliente.Text) & "'")
+
+            If txtLEN(sql.Result1) = True Then
+                MsgBox("No es posible eliminar cliente porque tiene movimientos de ventas.", MsgBoxStyle.Exclamation, sProcedure)
+                sql = Nothing
+                Return False
+            End If
+
+            'CXC
+            sql = New Class_find("SELECT 1 FROM CXC_GLOBAL WHERE CODIGO_CLIENTE='" & sReplace(Me.txtCodigoCliente.Text) & "'")
+
+            If txtLEN(sql.Result1) = True Then
+                MsgBox("No es posible eliminar cliente porque tiene movimientos de cxc.", MsgBoxStyle.Exclamation, sProcedure)
+                sql = Nothing
+                Return False
+            End If
+
             sql = Nothing
-            Return False
-        End If
 
-        'CXC
-        sql = New Class_find("SELECT 1 FROM CXC_GLOBAL WHERE CODIGO_CLIENTE='" & Me.txtCodigoCliente.Text & "'")
+            Return True
 
-        If txtLEN(sql.Result1) = True Then
-            MsgBox("No es posible eliminar cliente porque tiene movimientos de cxc.", MsgBoxStyle.Exclamation, Me.Name)
-            sql = Nothing
-            Return False
-        End If
-
-        sql = Nothing
-        Return True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Function
 
     Private Function IsEmailSyntaxValid(ByVal emailToValidate As String) As Boolean
@@ -1155,6 +1393,7 @@ busca:
     End Function
 
     Private Sub DesplegarZonas()
+        Const sProcedure As String = "DesplegarZonas"
         Try
             Dim oElementos As New Class_CatZonas
             With Me.cboZona
@@ -1168,11 +1407,12 @@ busca:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarZonas", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub DesplegarTiposMercados()
+        Const sProcedure As String = "DesplegarTiposMercados"
         Try
             Dim oElementos As New Class_TiposMercados
             With Me.cboTipoMercado
@@ -1186,11 +1426,12 @@ busca:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarTiposMercados", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub DesplegarVendedores()
+        Const sProcedure As String = "DesplegarVendedores"
         Try
             Dim oElementos As New Class_CatVendedores
             With Me.cboVendedor
@@ -1204,29 +1445,31 @@ busca:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarVendedores", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub DesplegarGirosClientes()
+        Const sProcedure As String = "DesplegarGirosClientes"
         Try
             Dim oElementos As New Class_CatGirosClientes
             With Me.CboGiros
-                .DisplayMember = "Nombre_giro"
-                .ValueMember = "CODIGO_giro"
+                .DisplayMember = "NOMBRE_GIRO"
+                .ValueMember = "CODIGO_GIRO"
                 Dim dView As New Data.DataView(oElementos.ObtenerElementos)
-                dView.Sort = "Nombre_giro"
+                dView.Sort = "NOMBRE_GIRO"
                 .DataSource = dView
                 If dView.Count > 0 Then
                     .SelectedValue = 0
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarGirosClientes", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
 
         Try
@@ -1238,7 +1481,7 @@ busca:
             If Me.oClientes.Consultar = False Then
                 Me.Estado = enumEstados.NUEVO
                 Me.Cambia_Estado()
-                Exit Function
+                Return False
             Else
                 With Me.oClientes
                     Me.txtCodigoCliente.Text = .CODIGO_CLIENTE
@@ -1307,13 +1550,28 @@ busca:
                     Me.txtNumeroRegistroIdentificadorExtranjero.Text = .NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO
                     Me.TxtCodigoAlmacen.Text = .CODIGO_ALMACEN
                     Me.chkEsContribuyenteIEPS.Checked = CBool(.ES_CONTRIBUYENTE_IEPS)
-                    Me.cboUsoCFDI.SelectedValue = .CODIGO_USO_CFDI
+                    'Me.cboUsoCFDI.SelectedValue = .CODIGO_USO_CFDI
                     Me.CboGiros.SelectedValue = .CODIGO_GIRO
                     Me.CboTipoNegociacion.SelectedValue = .CODIGO_TIPO_NEGOCIACION
+
+                    Me.txtRegimenFiscal.Text = .CODIGO_REGIMEN_FISCAL
+                    If txtLEN(.CODIGO_REGIMEN_FISCAL) = True Then
+                        Dim oRegimenFiscal As New Class_CFDCatTiposRegimenesFiscales(.CODIGO_REGIMEN_FISCAL)
+                        Me.lblRegimenFiscal.Text = oRegimenFiscal.NOMBRE_REGIMEN_FISCAL
+                        oRegimenFiscal = Nothing
+                    End If
+
+                    Me.txtUsoCFDI.Text = .CODIGO_USO_CFDI
+                    If txtLEN(.CODIGO_USO_CFDI) = True Then
+                        Dim oUsoCFDI As New Class_CFD_CatUsosCFDI(.CODIGO_USO_CFDI)
+                        Me.lblUsoCFDI.Text = oUsoCFDI.NOMBRE_USO_CFDI
+                        oUsoCFDI = Nothing
+                    End If
+
                 End With
 
                 Dim sql As New Class_find("SELECT R.ID,R.CODIGO_PROPIETARIO,P.NOMBRE_PROPIETARIO FROM CAT_PROPIETARIOS_RELACION_CLIENTES R INNER JOIN CAT_PROPIETARIOS P ON(R.CODIGO_PROPIETARIO=P.CODIGO_PROPIETARIO) " _
-                                          & "WHERE R.CODIGO_CLIENTE='" & Me.txtCodigoCliente.Text & "'")
+                                          & "WHERE R.CODIGO_CLIENTE='" & sReplace(Me.txtCodigoCliente.Text) & "'")
 
                 If sql.Result1 = "" Then
                     Me.TxtCodigoPropietario.Text = ""
@@ -1331,32 +1589,32 @@ busca:
             'Me.Estado = enumEstados.EDICION
             'Me.Cambia_Estado()
         Catch ex As Exception
-            HandleError(Me.Name, "Consultar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
     End Function
 
     Private Sub DesplegarElementos()
+        Const sProcedure As String = "DesplegarElementos"
         Try
             With Me.Grid
                 .DataSource = oClientes.ObtenerElementosFiltro(Me.txtFiltro.Text, Me.CboEstatusFiltro.Text)
                 .Columns("CODIGO_CLIENTE").Width = 50
                 .Columns("NOMBRE_CLIENTE").Width = 350
             End With
-
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarElementos", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub DesplegarFormasPago()
+        Const sProcedure As String = "DesplegarFormasPago"
         Try
             Dim oElementos As New Class_CFD_CatFormasPago
             With Me.cboFormaPago
                 .DisplayMember = "NOMBRE_METODO_PAGO"
                 .ValueMember = "CODIGO_METODO_PAGO"
-
                 Dim dView As New Data.DataView(oElementos.ObtenerElementos)
                 dView.Sort = "NOMBRE_METODO_PAGO"
                 .DataSource = dView
@@ -1365,17 +1623,17 @@ busca:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarFormasPago", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub DesplegarFormasPagoDolares()
+        Const sProcedure As String = "DesplegarFormasPagoDolares"
         Try
             Dim oElementos As New Class_CFD_CatFormasPago
             With Me.cboFormaPagoUSD
                 .DisplayMember = "NOMBRE_METODO_PAGO"
                 .ValueMember = "CODIGO_METODO_PAGO"
-
                 Dim dView As New Data.DataView(oElementos.ObtenerElementos)
                 dView.Sort = "NOMBRE_METODO_PAGO"
                 .DataSource = dView
@@ -1384,11 +1642,12 @@ busca:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarFormasPagoDolares", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub DesplegarPaises()
+        Const sProcedure As String = "DesplegarPaises"
         Try
             Me.cboEstado.DataSource = Nothing
             Me.cboMunicipio.DataSource = Nothing
@@ -1402,11 +1661,12 @@ busca:
                 .SelectedIndex = -1
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarPaises", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub DesplegarEstados()
+        Const sProcedure As String = "DesplegarEstados"
         Try
             Me.cboEstado.DataSource = Nothing
             Me.cboMunicipio.DataSource = Nothing
@@ -1423,11 +1683,12 @@ busca:
                 .SelectedIndex = -1
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarEstados", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub DesplegarMunicipios()
+        Const sProcedure As String = "DesplegarMunicipios"
         Try
             Me.cboMunicipio.DataSource = Nothing
             If Me.cboEstado.SelectedIndex = -1 Then
@@ -1448,14 +1709,15 @@ busca:
                 Me.txtCiudad.ReadOnly = True
             End If
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarMunicipios", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub DesplegarTiposNegociaciones()
+        Const sProcedure As String = "DesplegarTiposNegociaciones"
         Try
             Dim oElementos As New Class_CatTiposNegociaciones
-            With Me.cboTipoNegociacion
+            With Me.CboTipoNegociacion
                 .DisplayMember = "NOMBRE_TIPO_NEGOCIACION"
                 .ValueMember = "CODIGO_TIPO_NEGOCIACION"
                 Dim dView As New Data.DataView(oElementos.ObtenerElementos)
@@ -1466,7 +1728,7 @@ busca:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarTiposNegociaciones", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 

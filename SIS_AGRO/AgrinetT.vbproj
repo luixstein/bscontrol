@@ -250,7 +250,7 @@
     <Compile Include="Clases\Catalogos\Class_CfdiCatTiposFiguraTransporte.vb" />
     <Compile Include="Clases\Catalogos\Class_SisCatImpuestosFlete.vb" />
     <Compile Include="Clases\Catalogos\Class_SisCatImpuestos.vb" />
-    <Compile Include="Clases\Catalogos\Class_CFDCatTiposRegimenesFiscales.vb" />
+    <Compile Include="Clases\Catalogos\SAT\Class_CFDCatTiposRegimenesFiscales.vb" />
     <Compile Include="Clases\Catalogos\Class_SisCatTasaOCuotaSAT.vb" />
     <Compile Include="Clases\Catalogos\Class_CfdiCatConfigAutotransporte.vb" />
     <Compile Include="Clases\Catalogos\Class_sisEmpresas.vb" />

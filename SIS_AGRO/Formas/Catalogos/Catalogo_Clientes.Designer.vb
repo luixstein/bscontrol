@@ -33,11 +33,15 @@ Partial Class Catalogo_Clientes
         Me.tsbImprimirListado = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.lblUsoCFDI = New System.Windows.Forms.Label()
+        Me.lblRegimenFiscal = New System.Windows.Forms.Label()
+        Me.txtUsoCFDI = New System.Windows.Forms.TextBox()
+        Me.txtRegimenFiscal = New System.Windows.Forms.TextBox()
+        Me.lblDisplayRegimenFiscal = New System.Windows.Forms.Label()
         Me.LblGiro = New System.Windows.Forms.Label()
         Me.CboGiros = New System.Windows.Forms.ComboBox()
         Me.txtNumeroRegistroIdentificadorExtranjero = New System.Windows.Forms.MaskedTextBox()
         Me.lblDisplayUsoCFDI = New System.Windows.Forms.Label()
-        Me.cboUsoCFDI = New System.Windows.Forms.ComboBox()
         Me.TxtIdRelacion = New System.Windows.Forms.TextBox()
         Me.LblDisplayCodigoPropietario = New System.Windows.Forms.Label()
         Me.LblNombrePropietario = New System.Windows.Forms.Label()
@@ -86,6 +90,9 @@ Partial Class Catalogo_Clientes
         Me.lblDisplayVendedor = New System.Windows.Forms.Label()
         Me.lblDisplayZona = New System.Windows.Forms.Label()
         Me.gbCuentasContables = New System.Windows.Forms.GroupBox()
+        Me.LblDisplayCuentaContableAnticipos = New System.Windows.Forms.Label()
+        Me.BtnGeneraCuentaContableAnticipos = New System.Windows.Forms.Button()
+        Me.TxtCuentaContableAnticipos = New System.Windows.Forms.TextBox()
         Me.BtnGeneraCuentaContableDolares = New System.Windows.Forms.Button()
         Me.lblDisplayCuentaConDolares = New System.Windows.Forms.Label()
         Me.txtCuentaContableDolares = New System.Windows.Forms.TextBox()
@@ -110,7 +117,7 @@ Partial Class Catalogo_Clientes
         Me.lblDisplayFechaAlta = New System.Windows.Forms.Label()
         Me.gBoxBusquedaRapida = New System.Windows.Forms.GroupBox()
         Me.CboEstatusFiltro = New System.Windows.Forms.ComboBox()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.lblDisplayEstatusFiltro = New System.Windows.Forms.Label()
         Me.rbtCodigoCliente = New System.Windows.Forms.RadioButton()
         Me.rbtNombreCliente = New System.Windows.Forms.RadioButton()
         Me.Grid = New System.Windows.Forms.DataGridView()
@@ -133,9 +140,6 @@ Partial Class Catalogo_Clientes
         Me.lblDisplayNumCuenta = New System.Windows.Forms.Label()
         Me.txtNumeroCuenta = New System.Windows.Forms.TextBox()
         Me.lblDisplayFormaPago = New System.Windows.Forms.Label()
-        Me.TxtCuentaContableAnticipos = New System.Windows.Forms.TextBox()
-        Me.BtnGeneraCuentaContableAnticipos = New System.Windows.Forms.Button()
-        Me.LblDisplayCuentaContableAnticipos = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gBoxInformacion.SuspendLayout()
         Me.gbDatosVentas.SuspendLayout()
@@ -157,7 +161,7 @@ Partial Class Catalogo_Clientes
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbEditar, Me.tsbGrabar, Me.tsbEliminar, Me.tsbCancelar, Me.tsbImprimirListado, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1153, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1162, 27)
         Me.tsMenu.TabIndex = 8
         Me.tsMenu.Text = "tsMenu"
         '
@@ -219,11 +223,15 @@ Partial Class Catalogo_Clientes
         '
         'gBoxInformacion
         '
+        Me.gBoxInformacion.Controls.Add(Me.lblUsoCFDI)
+        Me.gBoxInformacion.Controls.Add(Me.lblRegimenFiscal)
+        Me.gBoxInformacion.Controls.Add(Me.txtUsoCFDI)
+        Me.gBoxInformacion.Controls.Add(Me.txtRegimenFiscal)
+        Me.gBoxInformacion.Controls.Add(Me.lblDisplayRegimenFiscal)
         Me.gBoxInformacion.Controls.Add(Me.LblGiro)
         Me.gBoxInformacion.Controls.Add(Me.CboGiros)
         Me.gBoxInformacion.Controls.Add(Me.txtNumeroRegistroIdentificadorExtranjero)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayUsoCFDI)
-        Me.gBoxInformacion.Controls.Add(Me.cboUsoCFDI)
         Me.gBoxInformacion.Controls.Add(Me.TxtIdRelacion)
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayCodigoPropietario)
         Me.gBoxInformacion.Controls.Add(Me.LblNombrePropietario)
@@ -255,6 +263,49 @@ Partial Class Catalogo_Clientes
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Datos generales"
         '
+        'lblUsoCFDI
+        '
+        Me.lblUsoCFDI.AutoSize = True
+        Me.lblUsoCFDI.Location = New System.Drawing.Point(135, 264)
+        Me.lblUsoCFDI.Name = "lblUsoCFDI"
+        Me.lblUsoCFDI.Size = New System.Drawing.Size(13, 13)
+        Me.lblUsoCFDI.TabIndex = 139
+        Me.lblUsoCFDI.Text = "_"
+        '
+        'lblRegimenFiscal
+        '
+        Me.lblRegimenFiscal.AutoSize = True
+        Me.lblRegimenFiscal.Location = New System.Drawing.Point(135, 243)
+        Me.lblRegimenFiscal.Name = "lblRegimenFiscal"
+        Me.lblRegimenFiscal.Size = New System.Drawing.Size(13, 13)
+        Me.lblRegimenFiscal.TabIndex = 138
+        Me.lblRegimenFiscal.Text = "_"
+        '
+        'txtUsoCFDI
+        '
+        Me.txtUsoCFDI.Location = New System.Drawing.Point(88, 264)
+        Me.txtUsoCFDI.MaxLength = 3
+        Me.txtUsoCFDI.Name = "txtUsoCFDI"
+        Me.txtUsoCFDI.Size = New System.Drawing.Size(41, 20)
+        Me.txtUsoCFDI.TabIndex = 11
+        '
+        'txtRegimenFiscal
+        '
+        Me.txtRegimenFiscal.Location = New System.Drawing.Point(88, 240)
+        Me.txtRegimenFiscal.MaxLength = 3
+        Me.txtRegimenFiscal.Name = "txtRegimenFiscal"
+        Me.txtRegimenFiscal.Size = New System.Drawing.Size(41, 20)
+        Me.txtRegimenFiscal.TabIndex = 10
+        '
+        'lblDisplayRegimenFiscal
+        '
+        Me.lblDisplayRegimenFiscal.AutoSize = True
+        Me.lblDisplayRegimenFiscal.Location = New System.Drawing.Point(6, 243)
+        Me.lblDisplayRegimenFiscal.Name = "lblDisplayRegimenFiscal"
+        Me.lblDisplayRegimenFiscal.Size = New System.Drawing.Size(82, 13)
+        Me.lblDisplayRegimenFiscal.TabIndex = 135
+        Me.lblDisplayRegimenFiscal.Text = "Régimen fiscal :"
+        '
         'LblGiro
         '
         Me.LblGiro.AutoSize = True
@@ -273,35 +324,24 @@ Partial Class Catalogo_Clientes
         Me.CboGiros.MaxLength = 1
         Me.CboGiros.Name = "CboGiros"
         Me.CboGiros.Size = New System.Drawing.Size(238, 21)
-        Me.CboGiros.TabIndex = 133
+        Me.CboGiros.TabIndex = 13
         '
         'txtNumeroRegistroIdentificadorExtranjero
         '
-        Me.txtNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(106, 270)
+        Me.txtNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(106, 288)
         Me.txtNumeroRegistroIdentificadorExtranjero.Mask = "000000000"
         Me.txtNumeroRegistroIdentificadorExtranjero.Name = "txtNumeroRegistroIdentificadorExtranjero"
         Me.txtNumeroRegistroIdentificadorExtranjero.Size = New System.Drawing.Size(100, 20)
-        Me.txtNumeroRegistroIdentificadorExtranjero.TabIndex = 11
+        Me.txtNumeroRegistroIdentificadorExtranjero.TabIndex = 12
         '
         'lblDisplayUsoCFDI
         '
         Me.lblDisplayUsoCFDI.AutoSize = True
-        Me.lblDisplayUsoCFDI.Location = New System.Drawing.Point(6, 243)
+        Me.lblDisplayUsoCFDI.Location = New System.Drawing.Point(6, 264)
         Me.lblDisplayUsoCFDI.Name = "lblDisplayUsoCFDI"
         Me.lblDisplayUsoCFDI.Size = New System.Drawing.Size(76, 13)
         Me.lblDisplayUsoCFDI.TabIndex = 132
         Me.lblDisplayUsoCFDI.Text = "Uso del CFDI :"
-        '
-        'cboUsoCFDI
-        '
-        Me.cboUsoCFDI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboUsoCFDI.FormattingEnabled = True
-        Me.cboUsoCFDI.Items.AddRange(New Object() {"MORAL", "FISICA"})
-        Me.cboUsoCFDI.Location = New System.Drawing.Point(87, 240)
-        Me.cboUsoCFDI.MaxLength = 1
-        Me.cboUsoCFDI.Name = "cboUsoCFDI"
-        Me.cboUsoCFDI.Size = New System.Drawing.Size(301, 21)
-        Me.cboUsoCFDI.TabIndex = 10
         '
         'TxtIdRelacion
         '
@@ -339,16 +379,16 @@ Partial Class Catalogo_Clientes
         '
         'chkEsContribuyenteIEPS
         '
-        Me.chkEsContribuyenteIEPS.Location = New System.Drawing.Point(117, 298)
+        Me.chkEsContribuyenteIEPS.Location = New System.Drawing.Point(11, 314)
         Me.chkEsContribuyenteIEPS.Name = "chkEsContribuyenteIEPS"
-        Me.chkEsContribuyenteIEPS.Size = New System.Drawing.Size(258, 31)
+        Me.chkEsContribuyenteIEPS.Size = New System.Drawing.Size(331, 16)
         Me.chkEsContribuyenteIEPS.TabIndex = 12
         Me.chkEsContribuyenteIEPS.Text = "Es contribuyente del IEPS ? ( Si se le desglosará por separado)"
         Me.chkEsContribuyenteIEPS.UseVisualStyleBackColor = True
         '
         'lblDisplayNumeroRegistroIdentificadorExtranjero
         '
-        Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(6, 267)
+        Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Location = New System.Drawing.Point(6, 285)
         Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Name = "lblDisplayNumeroRegistroIdentificadorExtranjero"
         Me.lblDisplayNumeroRegistroIdentificadorExtranjero.Size = New System.Drawing.Size(105, 27)
         Me.lblDisplayNumeroRegistroIdentificadorExtranjero.TabIndex = 125
@@ -746,14 +786,41 @@ Partial Class Catalogo_Clientes
         Me.gbCuentasContables.TabStop = False
         Me.gbCuentasContables.Text = "Datos contables :"
         '
+        'LblDisplayCuentaContableAnticipos
+        '
+        Me.LblDisplayCuentaContableAnticipos.AutoSize = True
+        Me.LblDisplayCuentaContableAnticipos.Location = New System.Drawing.Point(6, 96)
+        Me.LblDisplayCuentaContableAnticipos.Name = "LblDisplayCuentaContableAnticipos"
+        Me.LblDisplayCuentaContableAnticipos.Size = New System.Drawing.Size(107, 13)
+        Me.LblDisplayCuentaContableAnticipos.TabIndex = 78
+        Me.LblDisplayCuentaContableAnticipos.Text = "Cuenta de anticipos :"
+        '
+        'BtnGeneraCuentaContableAnticipos
+        '
+        Me.BtnGeneraCuentaContableAnticipos.Location = New System.Drawing.Point(115, 118)
+        Me.BtnGeneraCuentaContableAnticipos.Margin = New System.Windows.Forms.Padding(2)
+        Me.BtnGeneraCuentaContableAnticipos.Name = "BtnGeneraCuentaContableAnticipos"
+        Me.BtnGeneraCuentaContableAnticipos.Size = New System.Drawing.Size(151, 19)
+        Me.BtnGeneraCuentaContableAnticipos.TabIndex = 77
+        Me.BtnGeneraCuentaContableAnticipos.Text = "Generar cuenta anticipos"
+        Me.BtnGeneraCuentaContableAnticipos.UseVisualStyleBackColor = True
+        '
+        'TxtCuentaContableAnticipos
+        '
+        Me.TxtCuentaContableAnticipos.Location = New System.Drawing.Point(115, 93)
+        Me.TxtCuentaContableAnticipos.MaxLength = 20
+        Me.TxtCuentaContableAnticipos.Name = "TxtCuentaContableAnticipos"
+        Me.TxtCuentaContableAnticipos.Size = New System.Drawing.Size(201, 20)
+        Me.TxtCuentaContableAnticipos.TabIndex = 76
+        '
         'BtnGeneraCuentaContableDolares
         '
         Me.BtnGeneraCuentaContableDolares.Location = New System.Drawing.Point(115, 65)
-        Me.BtnGeneraCuentaContableDolares.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.BtnGeneraCuentaContableDolares.Margin = New System.Windows.Forms.Padding(2)
         Me.BtnGeneraCuentaContableDolares.Name = "BtnGeneraCuentaContableDolares"
         Me.BtnGeneraCuentaContableDolares.Size = New System.Drawing.Size(151, 19)
         Me.BtnGeneraCuentaContableDolares.TabIndex = 75
-        Me.BtnGeneraCuentaContableDolares.Text = "Generar cuenta en dolares"
+        Me.BtnGeneraCuentaContableDolares.Text = "Generar cuenta en dólares"
         Me.BtnGeneraCuentaContableDolares.UseVisualStyleBackColor = True
         '
         'lblDisplayCuentaConDolares
@@ -912,9 +979,9 @@ Partial Class Catalogo_Clientes
         '
         Me.StatusStripEstado.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tssLabel, Me.tssLabelEstado})
-        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 699)
+        Me.StatusStripEstado.Location = New System.Drawing.Point(0, 715)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1153, 22)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1162, 22)
         Me.StatusStripEstado.TabIndex = 15
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -965,7 +1032,7 @@ Partial Class Catalogo_Clientes
         'gBoxBusquedaRapida
         '
         Me.gBoxBusquedaRapida.Controls.Add(Me.CboEstatusFiltro)
-        Me.gBoxBusquedaRapida.Controls.Add(Me.Label2)
+        Me.gBoxBusquedaRapida.Controls.Add(Me.lblDisplayEstatusFiltro)
         Me.gBoxBusquedaRapida.Controls.Add(Me.rbtCodigoCliente)
         Me.gBoxBusquedaRapida.Controls.Add(Me.rbtNombreCliente)
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
@@ -988,20 +1055,20 @@ Partial Class Catalogo_Clientes
         Me.CboEstatusFiltro.Size = New System.Drawing.Size(38, 21)
         Me.CboEstatusFiltro.TabIndex = 126
         '
-        'Label2
+        'lblDisplayEstatusFiltro
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(287, 41)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(48, 13)
-        Me.Label2.TabIndex = 126
-        Me.Label2.Text = "Estatus :"
+        Me.lblDisplayEstatusFiltro.AutoSize = True
+        Me.lblDisplayEstatusFiltro.Location = New System.Drawing.Point(287, 41)
+        Me.lblDisplayEstatusFiltro.Name = "lblDisplayEstatusFiltro"
+        Me.lblDisplayEstatusFiltro.Size = New System.Drawing.Size(48, 13)
+        Me.lblDisplayEstatusFiltro.TabIndex = 126
+        Me.lblDisplayEstatusFiltro.Text = "Estatus :"
         '
         'rbtCodigoCliente
         '
         Me.rbtCodigoCliente.AutoSize = True
         Me.rbtCodigoCliente.Location = New System.Drawing.Point(100, 15)
-        Me.rbtCodigoCliente.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.rbtCodigoCliente.Margin = New System.Windows.Forms.Padding(2)
         Me.rbtCodigoCliente.Name = "rbtCodigoCliente"
         Me.rbtCodigoCliente.Size = New System.Drawing.Size(92, 17)
         Me.rbtCodigoCliente.TabIndex = 116
@@ -1013,7 +1080,7 @@ Partial Class Catalogo_Clientes
         Me.rbtNombreCliente.AutoSize = True
         Me.rbtNombreCliente.Checked = True
         Me.rbtNombreCliente.Location = New System.Drawing.Point(6, 15)
-        Me.rbtNombreCliente.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.rbtNombreCliente.Margin = New System.Windows.Forms.Padding(2)
         Me.rbtNombreCliente.Name = "rbtNombreCliente"
         Me.rbtNombreCliente.Size = New System.Drawing.Size(62, 17)
         Me.rbtNombreCliente.TabIndex = 115
@@ -1231,39 +1298,12 @@ Partial Class Catalogo_Clientes
         Me.lblDisplayFormaPago.TabIndex = 8
         Me.lblDisplayFormaPago.Text = "Forma de pago MXN :"
         '
-        'TxtCuentaContableAnticipos
-        '
-        Me.TxtCuentaContableAnticipos.Location = New System.Drawing.Point(115, 93)
-        Me.TxtCuentaContableAnticipos.MaxLength = 20
-        Me.TxtCuentaContableAnticipos.Name = "TxtCuentaContableAnticipos"
-        Me.TxtCuentaContableAnticipos.Size = New System.Drawing.Size(201, 20)
-        Me.TxtCuentaContableAnticipos.TabIndex = 76
-        '
-        'BtnGeneraCuentaContableAnticipos
-        '
-        Me.BtnGeneraCuentaContableAnticipos.Location = New System.Drawing.Point(115, 118)
-        Me.BtnGeneraCuentaContableAnticipos.Margin = New System.Windows.Forms.Padding(2)
-        Me.BtnGeneraCuentaContableAnticipos.Name = "BtnGeneraCuentaContableAnticipos"
-        Me.BtnGeneraCuentaContableAnticipos.Size = New System.Drawing.Size(151, 19)
-        Me.BtnGeneraCuentaContableAnticipos.TabIndex = 77
-        Me.BtnGeneraCuentaContableAnticipos.Text = "Generar cuenta anticipos"
-        Me.BtnGeneraCuentaContableAnticipos.UseVisualStyleBackColor = True
-        '
-        'LblDisplayCuentaContableAnticipos
-        '
-        Me.LblDisplayCuentaContableAnticipos.AutoSize = True
-        Me.LblDisplayCuentaContableAnticipos.Location = New System.Drawing.Point(6, 96)
-        Me.LblDisplayCuentaContableAnticipos.Name = "LblDisplayCuentaContableAnticipos"
-        Me.LblDisplayCuentaContableAnticipos.Size = New System.Drawing.Size(107, 13)
-        Me.LblDisplayCuentaContableAnticipos.TabIndex = 78
-        Me.LblDisplayCuentaContableAnticipos.Text = "Cuenta de anticipos :"
-        '
         'Catalogo_Clientes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.ClientSize = New System.Drawing.Size(1028, 737)
+        Me.ClientSize = New System.Drawing.Size(1162, 737)
         Me.Controls.Add(Me.gbMetodoPago)
         Me.Controls.Add(Me.gbCorreo)
         Me.Controls.Add(Me.gBoxBusquedaRapida)
@@ -1395,7 +1435,7 @@ Partial Class Catalogo_Clientes
     Friend WithEvents rbtNombreCliente As System.Windows.Forms.RadioButton
     Friend WithEvents rbtCodigoCliente As System.Windows.Forms.RadioButton
     Friend WithEvents CboEstatusFiltro As System.Windows.Forms.ComboBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents lblDisplayEstatusFiltro As System.Windows.Forms.Label
     Friend WithEvents TxtCodigoAlmacen As System.Windows.Forms.TextBox
     Friend WithEvents LblAlmacenCliente As System.Windows.Forms.Label
     Friend WithEvents tsbEliminar As System.Windows.Forms.ToolStripButton
@@ -1410,7 +1450,6 @@ Partial Class Catalogo_Clientes
     Friend WithEvents TxtCodigoPropietario As System.Windows.Forms.TextBox
     Friend WithEvents TxtIdRelacion As System.Windows.Forms.TextBox
     Friend WithEvents lblDisplayUsoCFDI As Label
-    Friend WithEvents cboUsoCFDI As ComboBox
     Friend WithEvents txtNumeroRegistroIdentificadorExtranjero As MaskedTextBox
     Friend WithEvents lblCorreoClientePagos As System.Windows.Forms.Label
     Friend WithEvents txtCorreoClientePagos As System.Windows.Forms.TextBox
@@ -1421,4 +1460,9 @@ Partial Class Catalogo_Clientes
     Friend WithEvents LblDisplayCuentaContableAnticipos As System.Windows.Forms.Label
     Friend WithEvents BtnGeneraCuentaContableAnticipos As System.Windows.Forms.Button
     Friend WithEvents TxtCuentaContableAnticipos As System.Windows.Forms.TextBox
+    Friend WithEvents lblUsoCFDI As Label
+    Friend WithEvents lblRegimenFiscal As Label
+    Friend WithEvents txtUsoCFDI As TextBox
+    Friend WithEvents txtRegimenFiscal As TextBox
+    Friend WithEvents lblDisplayRegimenFiscal As Label
 End Class

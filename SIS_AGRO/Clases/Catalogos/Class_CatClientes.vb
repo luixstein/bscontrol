@@ -54,6 +54,7 @@ Public Class Class_CatClientes
     Private _CODIGO_GIRO As String
     Private _CODIGO_TIPO_NEGOCIACION As String
     Private _CUENTA_CONTABLE_ANTICIPOS As String
+    Private _CODIGO_REGIMEN_FISCAL As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -483,6 +484,14 @@ Public Class Class_CatClientes
         End Set
     End Property
 
+    Public Property CODIGO_REGIMEN_FISCAL() As String
+        Get
+            Return Me._CODIGO_REGIMEN_FISCAL
+        End Get
+        Set(ByVal Value As String)
+            Me._CODIGO_REGIMEN_FISCAL = Value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -584,8 +593,8 @@ Public Class Class_CatClientes
         "C.CALLE,C.NUMERO_EXTERIOR,C.NUMERO_INTERIOR,C.COLONIA,C.CIUDAD,C.LOCALIDAD,C.ESTADO,C.CODIGO_POSTAL,C.CODIGO_ZONA, " &
         "C.CODIGO_VENDEDOR,C.CUENTA_CONTABLE,C.CUENTA_CONTABLE_DOLARES,C.CUENTA_CONTABLE_ANTICIPOS,C.LIMITE_CREDITO,C.DIAS_PLAZO,C.SALDO,C.PERMITIR_VENTA_CREDITO, " &
         "C.FECHA_ALTA,C.PLAZA,C.CORREO_CLIENTE,C.CODIGO_METODO_PAGO,C.NUMERO_CUENTA_PAGO,C.CODIGO_METODO_PAGO_DOLARES,C.NUMERO_CUENTA_PAGO_DOLARES,C.CODIGO_TIPO_MERCADO,C.FORMATO_NOMBRE_XML," &
-        "C.CODIGO_ALMACEN, " &
-        "C.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO,C.CODIGO_MUNICIPIO,C.CODIGO_ESTADO,E.CODIGO_ESTADO_SAT,C.CODIGO_PAIS_SAT,M.NOMBRE_MUNICIPIO,E.NOMBRE_ESTADO,P.NOMBRE_PAIS,C.ES_CONTRIBUYENTE_IEPS,C.CODIGO_USO_CFDI,C.CODIGO_PROPIETARIO,C.CORREO_CLIENTE_PAGOS,C.CODIGO_GIRO,C.CODIGO_TIPO_NEGOCIACION " &
+        "C.CODIGO_ALMACEN,C.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO,C.CODIGO_MUNICIPIO,C.CODIGO_ESTADO,E.CODIGO_ESTADO_SAT,C.CODIGO_PAIS_SAT,M.NOMBRE_MUNICIPIO,E.NOMBRE_ESTADO,P.NOMBRE_PAIS,C.ES_CONTRIBUYENTE_IEPS," &
+        "C.CODIGO_USO_CFDI,C.CODIGO_PROPIETARIO,C.CORREO_CLIENTE_PAGOS,C.CODIGO_GIRO,C.CODIGO_TIPO_NEGOCIACION,C.CODIGO_REGIMEN_FISCAL " &
         "FROM CAT_CLIENTES C " &
         "LEFT JOIN CAT_MUNICIPIOS M ON(C.CODIGO_MUNICIPIO=M.CODIGO_MUNICIPIO) " &
         "LEFT JOIN SIS_ESTADOS E ON(C.CODIGO_ESTADO=E.CODIGO_ESTADO) " &
@@ -626,7 +635,7 @@ Public Class Class_CatClientes
             .CommandText = "MP_CAT_CLIENTES_GRABAR"
 
             sqlParametro = .Parameters.Add("@CODIGO_CLIENTE", SqlDbType.NVarChar, 16) : sqlParametro.Value = Me._CODIGO_CLIENTE.ToUpper : sqlParametro.Direction = ParameterDirection.InputOutput
-            sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.NVarChar, 120) : sqlParametro.Value = Me._NOMBRE_CLIENTE.ToUpper
+            sqlParametro = .Parameters.Add("@NOMBRE_CLIENTE", SqlDbType.NVarChar, 254) : sqlParametro.Value = Me._NOMBRE_CLIENTE.ToUpper
             sqlParametro = .Parameters.Add("@ESTATUS", SqlDbType.Char, 1) : sqlParametro.Value = Me._ESTATUS.ToUpper
             sqlParametro = .Parameters.Add("@RFC", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._RFC.ToString.ToUpper
             sqlParametro = .Parameters.Add("@TIPO_PERSONA", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._TIPO_PERSONA.ToString.ToUpper
@@ -667,6 +676,7 @@ Public Class Class_CatClientes
             sqlParametro = .Parameters.Add("@CORREO_CLIENTE_PAGOS", SqlDbType.NVarChar, 500) : sqlParametro.Value = Me._CORREO_CLIENTE_PAGOS.ToString
             sqlParametro = .Parameters.Add("@CODIGO_GIRO", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_GIRO)
             sqlParametro = .Parameters.Add("@CODIGO_TIPO_NEGOCIACION", SqlDbType.SmallInt) : sqlParametro.Value = CInt(Me._CODIGO_TIPO_NEGOCIACION)
+            sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = Me._AGREGAR.ToString
             Try
                 Me._Conexion.Open()
@@ -740,19 +750,16 @@ Public Class Class_CatClientes
                     Me._CODIGO_ESTADO_SAT = Trim("" & dReader("CODIGO_ESTADO_SAT").ToString)
                     Me._CODIGO_PAIS_SAT = Trim("" & dReader("CODIGO_PAIS_SAT").ToString)
                     Me._ES_CONTRIBUYENTE_IEPS = Trim("" & dReader("ES_CONTRIBUYENTE_IEPS").ToString)
-
                     Me._NOMBRE_MUNICIPIO = Trim("" & dReader("NOMBRE_MUNICIPIO").ToString)
                     Me._NOMBRE_ESTADO = Trim("" & dReader("NOMBRE_ESTADO").ToString)
                     Me._NOMBRE_PAIS = Trim("" & dReader("NOMBRE_PAIS").ToString)
-
                     Me._CODIGO_USO_CFDI = Trim("" & dReader("CODIGO_USO_CFDI").ToString)
-
                     Me._CODIGO_PROPIETARIO = "" & dReader("CODIGO_PROPIETARIO").ToString
-
                     Me._CORREO_CLIENTE_PAGOS = Trim("" & dReader("CORREO_CLIENTE_PAGOS").ToString)
                     Me._CODIGO_GIRO = "" & dReader("CODIGO_GIRO").ToString
                     Me._CODIGO_TIPO_NEGOCIACION = "" & dReader("CODIGO_TIPO_NEGOCIACION").ToString
                     Me._CUENTA_CONTABLE_ANTICIPOS = "" & dReader("CUENTA_CONTABLE_ANTICIPOS").ToString
+                    Me._CODIGO_REGIMEN_FISCAL = "" & dReader("CODIGO_REGIMEN_FISCAL").ToString
 
                     bResultado = True
                 End If
@@ -1010,7 +1017,6 @@ Public Class Class_CatClientes
             f.sQl = f.sQl & " PLAZA='" & Usuario.Codigo_Plaza.ToString & "' AND "
         End If
 
-        f.arrayWidthColumns = New Integer() {100, 500}
         f.Inicia("")
         f.ShowDialog()
         Try
