@@ -348,24 +348,38 @@ Buscar:
 
                     Me.lblUsoCFDI.Text = oUsoCFDI.NOMBRE_USO_CFDI 'Lo va consultar aunque pudiera no ser válido, mas abajo lo eliminará
 
+                    Dim bUsoCFDIInvalido As Boolean
+
                     If oUsoCFDI.EXISTE = False Then
                         Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = "" : GoTo Buscar : Exit Sub
                     ElseIf oUsoCFDI.ESTATUS = "B" Then
                         MsgBox("El uso del CFDI " & Me.lblUsoCFDI.Text & " esta dado de baja.", MsgBoxStyle.Exclamation, sProcedure)
-                        Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = ""
+                        bUsoCFDIInvalido = True
                     Else
                         Select Case Strings.Left(Me.cboTipoPersona.Text, 1)
                             Case "F" 'FISICA
                                 If oUsoCFDI.APLICA_TIPO_FISICA = False Then
                                     MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas físicas.", MsgBoxStyle.Exclamation, sProcedure)
-                                    Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = ""
+                                    bUsoCFDIInvalido = True
+                                ElseIf InStr(oUsoCFDI.REGIMEN_FISCAL_RECEPTOR, Me.txtRegimenFiscal.Text) = 0 And Empresa_Sistema.VERSION_ESQUEMA_CFD >= "4.0" Then 'Busca si en la cadena de regímenes aparece el seleccionado.
+                                    MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para el régimen fiscal " & Me.txtRegimenFiscal.Text & "-" & Me.lblRegimenFiscal.Text, MsgBoxStyle.Exclamation, sProcedure)
+                                    bUsoCFDIInvalido = True
                                 End If
                             Case "M" 'MORAL
                                 If oUsoCFDI.APLICA_TIPO_MORAL = False Then
                                     MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas morales.", MsgBoxStyle.Exclamation, sProcedure)
                                     Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = ""
+                                ElseIf InStr(oUsoCFDI.REGIMEN_FISCAL_RECEPTOR, Me.txtRegimenFiscal.Text) = 0 And Empresa_Sistema.VERSION_ESQUEMA_CFD >= "4.0" Then 'Busca si en la cadena de regímenes aparece el seleccionado.
+                                    MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para el régimen fiscal " & Me.txtRegimenFiscal.Text & "-" & Me.lblRegimenFiscal.Text, MsgBoxStyle.Exclamation, sProcedure)
+                                    bUsoCFDIInvalido = True
                                 End If
                         End Select
+                    End If
+
+                    If bUsoCFDIInvalido = True Then
+                        Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = ""
+                        Me.txtUsoCFDI.Focus()
+                        Exit Sub
                     End If
 
                     If txtLEN(Me.lblUsoCFDI.Text) = False Then GoTo Buscar : Return
@@ -1087,10 +1101,16 @@ SaltoUsoCFDI:
                             If oUsoCFDI.APLICA_TIPO_FISICA = False Then
                                 MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas físicas.", MsgBoxStyle.Exclamation, sProcedure)
                                 bUsoCFDIInvalido = True
+                            ElseIf InStr(oUsoCFDI.REGIMEN_FISCAL_RECEPTOR, Me.txtRegimenFiscal.Text) = 0 And Empresa_Sistema.VERSION_ESQUEMA_CFD >= "4.0" Then 'Busca si en la cadena de regímenes aparece el seleccionado.
+                                MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para el régimen fiscal " & Me.txtRegimenFiscal.Text & "-" & Me.lblRegimenFiscal.Text, MsgBoxStyle.Exclamation, sProcedure)
+                                bUsoCFDIInvalido = True
                             End If
                         Case "M" 'MORAL
                             If oUsoCFDI.APLICA_TIPO_MORAL = False Then
                                 MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para personas morales.", MsgBoxStyle.Exclamation, sProcedure)
+                                bUsoCFDIInvalido = True
+                            ElseIf InStr(oUsoCFDI.REGIMEN_FISCAL_RECEPTOR, Me.txtRegimenFiscal.Text) = 0 And Empresa_Sistema.VERSION_ESQUEMA_CFD >= "4.0" Then 'Busca si en la cadena de regímenes aparece el seleccionado.
+                                MsgBox("El uso del CFDI " & Me.txtUsoCFDI.Text & "-" & Me.lblUsoCFDI.Text & " no aplica para el régimen fiscal " & Me.txtRegimenFiscal.Text & "-" & Me.lblRegimenFiscal.Text, MsgBoxStyle.Exclamation, sProcedure)
                                 bUsoCFDIInvalido = True
                             End If
                     End Select
