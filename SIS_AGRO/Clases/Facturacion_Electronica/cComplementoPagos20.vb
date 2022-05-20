@@ -43,13 +43,13 @@ Friend Class cComplementoPagos20
     End Property
 
     Private Sub Class_Initialize_Renamed()
-        Const sProcedure As String = "New"
+        Const sProcedure As String = "Class_Initialize_Renamed"
         Try
             AnexoNodo = "pago20:"
 
-            xmlns = "http://www.sat.gob.mx/Pagos"
-            xmlnspago20 = "http://www.sat.gob.mx/Pagos"
-            xsischemaLocation = "http://www.sat.gob.mx/Pagos http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos20.xsd"
+            xmlns = "http://www.sat.gob.mx/Pagos20"
+            xmlnspago20 = "http://www.sat.gob.mx/Pagos20"
+            xsischemaLocation = "http://www.sat.gob.mx/Pagos20 http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos20.xsd"
 
             DoctoRelacionados = New cPagosDoctoRelacionados20
             ImpuestosP = New iImpuestos40
@@ -491,8 +491,8 @@ Friend Class cComplementoPagos20
         Const sProcedure As String = "ValidaComplementoPagos"
         Dim bResultado As Boolean = False
 
-        MsgBox("falta revisar si hay mas validaciones de proveedor hacer")
-        MsgBox("y falta comparar con las de abacosql ya que aqui se pusieron una copia de la del 33")
+        'MsgBox("falta revisar si hay mas validaciones de proveedor hacer")
+        'MsgBox("y falta comparar con las de abacosql ya que aqui se pusieron una copia de la del 33")
 
         Try
             Dim i As Integer, dSumaPagado As Double
