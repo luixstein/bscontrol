@@ -629,7 +629,16 @@ Public Class Class_CXC_Pago_CFDI_Global
             sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me._FOLIO_PAGO & ".xml"
 
             If Me._TIMBRADO_CFDI = "0" Then
-                bResultado = FacturacionElectronica33.GeneraPagoElectronico33(Me, bMensajes, sRutaXML)
+                Select Case Empresa_Sistema.VERSION_ESQUEMA_CFD
+                    Case "3.3"
+                        bResultado = FacturacionElectronica33.GeneraPagoElectronico33(Me, bMensajes, sRutaXML)
+                    Case "4.0"
+                        bResultado = FacturacionElectronica40.GeneraPagoElectronico40(Me, bMensajes, sRutaXML)
+                    Case Else
+                        MsgBox("La versión del cfdi " & Empresa_Sistema.VERSION_ESQUEMA_CFD & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                End Select
+
 
                 If bResultado = False Then
                     MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, sProcedure)

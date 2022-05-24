@@ -346,7 +346,7 @@ Module FacturacionElectronica40
 
                     'Nota, no es necesario preguntar si es en USD y dividir por el tipo de cambio porque este valor se llena con el desglose x concepto el cual ya esta en USD
 
-                    Cfd.Impuestos.Traslados.Add(Format(dBaseIEPS, "##0.000000"), arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIEPSImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                    Cfd.Impuestos.Traslados.Add(Format(dBaseIEPS, "##0.00"), arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIEPSImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
                 Next
             End If
 
@@ -359,7 +359,7 @@ Module FacturacionElectronica40
                     dImpuestoIVAImporte = CDec(arr(i).Importe)
                     dBaseIVA = CDec(arr(i).Base)
 
-                    Cfd.Impuestos.Traslados.Add(Format(dBaseIVA, "##0.000000"), arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIVAImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                    Cfd.Impuestos.Traslados.Add(Format(dBaseIVA, "##0.00"), arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIVAImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
                 Next
             End If
 
@@ -793,7 +793,7 @@ Module FacturacionElectronica40
 
                     'Nota, no es necesario preguntar si es en USD y dividir por el tipo de cambio porque este valor se llena con el desglose x concepto el cual ya esta en USD
 
-                    Cfd.Impuestos.Traslados.Add(Format(dBaseIEPS, "##0.000000"), arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIEPSImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                    Cfd.Impuestos.Traslados.Add(Format(dBaseIEPS, "##0.00"), arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIEPSImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
                 Next
             End If
 
@@ -806,7 +806,7 @@ Module FacturacionElectronica40
                     dImpuestoIVAImporte = CDec(arr(i).Importe)
                     dBaseIVA = CDec(arr(i).Base)
 
-                    Cfd.Impuestos.Traslados.Add(Format(dBaseIVA, "##0.000000"), arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIVAImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                    Cfd.Impuestos.Traslados.Add(Format(dBaseIVA, "##0.00"), arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIVAImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
                 Next
             End If
 

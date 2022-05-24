@@ -167,7 +167,8 @@ Public Class Class_CFDCatTiposRegimenesFiscales
 
     Public Function ObtenerElementosSeleccionables() As System.Data.DataTable
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter("SELECT * FROM CDF_CAT_TIPOS_REGIMENES_FISCALES WHERE PERMITE_SELECCION='1' ORDER BY CODIGO_REGIMEN_FISCAL", Me._Conexion)
+        'Dim da As New SqlDataAdapter("SELECT * FROM CDF_CAT_TIPOS_REGIMENES_FISCALES WHERE PERMITE_SELECCION='1' ORDER BY CODIGO_REGIMEN_FISCAL", Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT * FROM CDF_CAT_TIPOS_REGIMENES_FISCALES WHERE ESTATUS='A' ORDER BY CODIGO_REGIMEN_FISCAL", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
