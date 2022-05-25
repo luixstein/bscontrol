@@ -1199,7 +1199,6 @@ Public Class Class_Bancos_CXC
             sqlParametro = .Parameters.Add("@FOLIO_BANCO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_BANCO
             sqlParametro = .Parameters.Add("@MODO", SqlDbType.NVarChar, 30) : sqlParametro.Value = Modo
 
-
             Try
                 Me._Conexion.Open()
                 .ExecuteNonQuery()

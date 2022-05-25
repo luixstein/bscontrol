@@ -28,7 +28,7 @@ Friend Class cComplementoPagos20
     Public CadPago As String
     Public SelloPago As String
 
-    Public Totales As cPagosTotales20
+    Public Totales As New cPagosTotales20
     Public DoctoRelacionados As cPagosDoctoRelacionados20
     Public ImpuestosP As iImpuestos40
 

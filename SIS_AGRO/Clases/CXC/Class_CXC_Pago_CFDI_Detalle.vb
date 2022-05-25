@@ -18,6 +18,7 @@ Public Class Class_CXC_Pago_CFDI_Detalle
     Private _IMPORTE_SALDO_ANTERIOR As Decimal
     Private _IMPORTE_PAGADO As Decimal
     Private _IMPORTE_SALDO_INSOLUTO As Decimal
+    Private _OBJETO_IMP_DR As String
 #End Region
 
 #Region "Campos de sistema"
@@ -96,6 +97,11 @@ Public Class Class_CXC_Pago_CFDI_Detalle
         End Get
     End Property
 
+    Public ReadOnly Property OBJETO_IMP_DR() As String
+        Get
+            Return Me._OBJETO_IMP_DR
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -194,6 +200,7 @@ Public Class Class_CXC_Pago_CFDI_Detalle
                     Me._IMPORTE_SALDO_ANTERIOR = CDec(dReader("IMPORTE_SALDO_ANTERIOR").ToString)
                     Me._IMPORTE_PAGADO = CDec(dReader("IMPORTE_PAGADO").ToString)
                     Me._IMPORTE_SALDO_INSOLUTO = CDec(dReader("IMPORTE_SALDO_INSOLUTO").ToString)
+                    Me._OBJETO_IMP_DR = dReader("OBJETO_IMP_DR").ToString
 
                     Me._FACTURA_FOLIO_FISCAL_SAT = dReader("FACTURA_FOLIO_FISCAL_SAT").ToString
                     Me._FACTURA_SERIE = dReader("FACTURA_SERIE").ToString

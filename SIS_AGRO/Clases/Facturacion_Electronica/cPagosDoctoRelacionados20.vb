@@ -31,6 +31,22 @@ Friend Class cPagosDoctoRelacionados20
                 .ObjetoImpDR = ObjetoImpDR
             End With
 
+            If Not (ImpuestosTrasladosDR40 Is Nothing) Then
+                With ImpuestosTrasladosDR40
+                    For i = 1 To ImpuestosTrasladosDR40.Count
+                        objObjeto.TrasladosDR.Add(.Item(i).BaseDR, .Item(i).ImpuestoDR, .Item(i).TipoFactorDR, .Item(i).TasaOCuotaDR, .Item(i).ImporteDR)
+                    Next
+                End With
+            End If
+
+            If Not (ImpuestosRetencionesDR40 Is Nothing) Then
+                With ImpuestosRetencionesDR40
+                    For i = 1 To ImpuestosRetencionesDR40.Count
+                        objObjeto.RetencionesDR.Add(.Item(i).BaseDR, .Item(i).ImpuestoDR, .Item(i).TipoFactorDR, .Item(i).TasaOCuotaDR, .Item(i).ImporteDR)
+                    Next
+                End With
+            End If
+
             Partidas.Add(objObjeto, "N" & Partidas.Count + 1 & CStr(IdDocumento))
 
         Catch ex As Exception
