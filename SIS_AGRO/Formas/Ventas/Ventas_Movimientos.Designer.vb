@@ -219,7 +219,7 @@ Partial Class Ventas_Movimientos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbCancelar, Me.tsbCotizacionRemision, Me.tsbCotizacionFactura, Me.tsbRemisionVenta, Me.tsbFacturaACartaPorte, Me.tsbCancelarTimbre, Me.tsbTimbrar, Me.tsbRecuperarXMLPDF, Me.tsbEnviarCorreo, Me.tsbSubirXML, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1290, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1680, 27)
         Me.tsMenu.TabIndex = 4
         Me.tsMenu.Text = "tsMenu"
         '
@@ -925,7 +925,7 @@ Partial Class Ventas_Movimientos
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslEstado, Me.tsslElaboro, Me.tsslCancelo})
         Me.StatusStripEstado.Location = New System.Drawing.Point(0, 654)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1290, 24)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1680, 24)
         Me.StatusStripEstado.TabIndex = 315
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -1435,7 +1435,7 @@ Partial Class Ventas_Movimientos
         Me.TabControl1.Location = New System.Drawing.Point(8, 275)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1279, 238)
+        Me.TabControl1.Size = New System.Drawing.Size(1670, 238)
         Me.TabControl1.TabIndex = 2
         '
         'tpArticulos
@@ -1444,7 +1444,7 @@ Partial Class Ventas_Movimientos
         Me.tpArticulos.Location = New System.Drawing.Point(4, 22)
         Me.tpArticulos.Name = "tpArticulos"
         Me.tpArticulos.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpArticulos.Size = New System.Drawing.Size(1271, 212)
+        Me.tpArticulos.Size = New System.Drawing.Size(1662, 212)
         Me.tpArticulos.TabIndex = 0
         Me.tpArticulos.Text = "Artículos"
         Me.tpArticulos.UseVisualStyleBackColor = True
@@ -1464,7 +1464,7 @@ Partial Class Ventas_Movimientos
         Me.Grid.LockButton = True
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 8
-        Me.Grid.Size = New System.Drawing.Size(1266, 204)
+        Me.Grid.Size = New System.Drawing.Size(1653, 204)
         Me.Grid.TabIndex = 2
         Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -1569,7 +1569,7 @@ Partial Class Ventas_Movimientos
         Me.btnAceptar.Name = "btnAceptar"
         Me.btnAceptar.Size = New System.Drawing.Size(123, 32)
         Me.btnAceptar.TabIndex = 5
-        Me.btnAceptar.Text = "Aceptar"
+        Me.btnAceptar.Text = "Aceptar(Cargarlas)"
         Me.btnAceptar.UseVisualStyleBackColor = True
         '
         'btnCargarRemisiones
@@ -1579,7 +1579,7 @@ Partial Class Ventas_Movimientos
         Me.btnCargarRemisiones.Name = "btnCargarRemisiones"
         Me.btnCargarRemisiones.Size = New System.Drawing.Size(123, 32)
         Me.btnCargarRemisiones.TabIndex = 4
-        Me.btnCargarRemisiones.Text = "Cargar remisiones"
+        Me.btnCargarRemisiones.Text = "Listar remisiones"
         Me.btnCargarRemisiones.UseVisualStyleBackColor = True
         '
         'GridFacturasVariasRemisiones
@@ -1597,7 +1597,7 @@ Partial Class Ventas_Movimientos
         Me.GridFacturasVariasRemisiones.LockButton = True
         Me.GridFacturasVariasRemisiones.Name = "GridFacturasVariasRemisiones"
         Me.GridFacturasVariasRemisiones.Rows = 6
-        Me.GridFacturasVariasRemisiones.Size = New System.Drawing.Size(1062, 211)
+        Me.GridFacturasVariasRemisiones.Size = New System.Drawing.Size(1101, 211)
         Me.GridFacturasVariasRemisiones.TabIndex = 3
         Me.GridFacturasVariasRemisiones.UncheckedImage = CType(resources.GetObject("GridFacturasVariasRemisiones.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -1656,7 +1656,7 @@ Partial Class Ventas_Movimientos
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.ClientSize = New System.Drawing.Size(1290, 678)
+        Me.ClientSize = New System.Drawing.Size(1680, 678)
         Me.Controls.Add(Me.chkTieneCartaPorte)
         Me.Controls.Add(Me.btnCartaPorte)
         Me.Controls.Add(Me.btnTimbradoTrasladoPrueba)

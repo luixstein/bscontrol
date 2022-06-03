@@ -97,6 +97,7 @@ Public Class Ventas_Movimientos
     Private iGyRETENCION_ISR_BASE_USD As Short = 53
     Private iGyRETENCION_ISR_IMPORTE As Short = 54
     Private iGyRETENCION_ISR_IMPORTE_USD As Short = 55
+    Private iGyIDVentaDetalle As Short = 56
 #End Region
 
 #Region "Columnas grid series"
@@ -105,6 +106,7 @@ Public Class Ventas_Movimientos
     Private igySerieDescripcion As Short = 3
     Private igySerieIdInventarioLotesCostos As Short = 4
     Private igySerieNumeroSerie As Short = 5
+    Private igySerieIDVentaDetalle As Short = 6
 #End Region
 
 #Region "Columnas grid CFDIs relacionados"
@@ -120,6 +122,7 @@ Public Class Ventas_Movimientos
     Private iGyFecha As Short = 2
     Private iGyTotal As Short = 3
     Private iGyMoneda As Short = 4
+    Private iGyConcepto As Short = 5
 #End Region
 
 #Region "Campos/propiedades para facturas embarques extrajeros que se inician desde otra pantalla"
@@ -974,6 +977,7 @@ Buscar:
             Me.Grid.DataSource = Nothing
             FG_Grid_Limpiar(Me.Grid)
             Me.Grid.Rows = 2
+            Me.Grid.Cols = 57
             Me.FormateaGrid()
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -984,7 +988,6 @@ Buscar:
         Const sProcedure As String = "FormateaGrid"
         Try
             Me.Grid.AutoRedraw = False
-            Me.Grid.Cols = 56
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyCodigo).Width = 75
             Me.Grid.Column(Me.igyTipoControlInventariable).Width = 25
@@ -1045,6 +1048,7 @@ Buscar:
             Me.Grid.Column(Me.iGyRETENCION_ISR_BASE_USD).Visible = False
             Me.Grid.Column(Me.iGyRETENCION_ISR_IMPORTE).Visible = False
             Me.Grid.Column(Me.iGyRETENCION_ISR_IMPORTE_USD).Visible = False
+            Me.Grid.Column(Me.iGyIDVentaDetalle).Visible = True ' False
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
             Me.Grid.Cell(0, Me.igyTipoControlInventariable).Text = "Inv"
@@ -1105,7 +1109,7 @@ Buscar:
             Me.Grid.Cell(0, Me.iGyRETENCION_ISR_BASE_USD).Text = "ISRRetBaseUSD"
             Me.Grid.Cell(0, Me.iGyRETENCION_ISR_IMPORTE).Text = "ISRRetImp"
             Me.Grid.Cell(0, Me.iGyRETENCION_ISR_IMPORTE_USD).Text = "ISRRetImpUSD"
-
+            Me.Grid.Cell(0, Me.iGyIDVentaDetalle).Text = "IDVentaDetalle"
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyNombreCentroCosto).Alignment = FlexCell.AlignmentEnum.LeftCenter
 
@@ -1279,6 +1283,7 @@ Buscar:
             Me.Grid.Column(Me.iGyRETENCION_ISR_PORCENTAJE).Locked = True
             Me.Grid.Column(Me.iGyRETENCION_ISR_BASE).Locked = True
             Me.Grid.Column(Me.iGyRETENCION_ISR_IMPORTE).Locked = True
+            Me.Grid.Column(Me.iGyIDVentaDetalle).Locked = True
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             If Me.oDocumento.AFECTA_CXC = True Then
@@ -4858,11 +4863,10 @@ buscaCentrosCostos:
     End Function
 
     Private Sub PrepararSeries()
+        Const sProcedure As String = "PrepararSeries"
         Try
-            'Dim iUnidades As Integer
-
             If IsNothing(Me.dtSeries) = False AndAlso Me.dtSeries.Rows.Count > 0 Then
-                If MsgBox("Hay series ya especificadas, si continua tendrá que recapturar todas." & vbCrLf & "Esta seguro de continuar ?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
+                If MsgBox("Hay series ya especificadas, si continua tendrá que recapturar todas." & vbCrLf & "Esta seguro de continuar ?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
                     Return
                 End If
             End If
@@ -4875,11 +4879,11 @@ buscaCentrosCostos:
                 .Columns.Add("DESCRIPCION", GetType(String))
                 .Columns.Add("ID_INVENTARIO_LOTES_COSTOS", GetType(String))
                 .Columns.Add("NUMERO_SERIE", GetType(String))
+                .Columns.Add("ID_VENTA_DETALLE", GetType(String))
             End With
             Me.dtSeries.AcceptChanges()
 
             Dim dRow As DataRow
-
             For i = 1 To Me.Grid.Rows - 1
                 If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True AndAlso Me.Grid.Cell(i, Me.igyCodigo).Text <> "-" AndAlso CInt(Me.Grid.Cell(i, Me.igyCantidad).Text) > 0 Then
                     Dim oArticulo As New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
@@ -4892,6 +4896,7 @@ buscaCentrosCostos:
                             dRow("DESCRIPCION") = Me.Grid.Cell(i, Me.igyDescripcion).Text
                             dRow("ID_INVENTARIO_LOTES_COSTOS") = ""
                             dRow("NUMERO_SERIE") = ""
+                            dRow("ID_VENTA_DETALLE") = ""
 
                             Me.dtSeries.Rows.Add(dRow)
                         Next
@@ -4900,32 +4905,31 @@ buscaCentrosCostos:
             Next
 
             Me.dtSeries.AcceptChanges()
-
             Me.GridSeries.DataSource = Me.dtSeries
-
             Me.FormateaGridSeries()
-
             Me.TabControl1.SelectedIndex = 1
 
         Catch ex As Exception
-            HandleError(Me.Name, "PrepararSeries", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub InicializaGridSeries()
+        Const sProcedure As String = "InicializaGridSeries"
         Try
             Me.GridSeries.DataSource = Nothing
             FG_Grid_Limpiar(Me.GridSeries)
             Me.GridSeries.Rows = 2
-            Me.GridSeries.Cols = 6
+            Me.GridSeries.Cols = 7
             Me.FormateaGridSeries()
             'Me.Grid.Cell(1, Me.iGyIDAdicional).Text = "1"
         Catch ex As Exception
-            HandleError(Me.Name, "InicializaGridSeries", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub FormateaGridSeries()
+        Const sProcedure As String = "FormateaGridSeries"
         Try
             With Me.GridSeries
                 .AutoRedraw = False
@@ -4943,26 +4947,29 @@ buscaCentrosCostos:
                 .Column(Me.igySerieDescripcion).Width = 450
                 .Column(Me.igySerieIdInventarioLotesCostos).Visible = False
                 .Column(Me.igySerieNumeroSerie).Width = 250
+                .Column(Me.igySerieIDVentaDetalle).Width = 100
 
                 .Cell(0, Me.igySeriePosicion).Text = "Posición"
                 .Cell(0, Me.igySerieCodigo).Text = "Código"
                 .Cell(0, Me.igySerieDescripcion).Text = "Descripción"
                 .Cell(0, Me.igySerieIdInventarioLotesCostos).Text = "Id lote"
                 .Cell(0, Me.igySerieNumeroSerie).Text = "Número de serie"
+                .Cell(0, Me.igySerieIDVentaDetalle).Text = "IDVentaDetalle"
 
                 .Column(Me.igySeriePosicion).Locked = True
                 .Column(Me.igySerieCodigo).Locked = True
                 .Column(Me.igySerieDescripcion).Locked = True
                 .Column(Me.igySerieIdInventarioLotesCostos).Locked = True
                 .Column(Me.igySerieNumeroSerie).Locked = True
-
-                .AutoRedraw = True
-                .Refresh()
+                .Column(Me.igySerieIDVentaDetalle).Locked = True
 
                 .Row(.Rows - 1).Locked = True 'Para bloquear la edición del último renglón
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "FormateaGridSeries", ex)
+            HandleError(Me.Name, sProcedure, ex)
+        Finally
+            Me.GridSeries.AutoRedraw = True
+            Me.GridSeries.Refresh()
         End Try
     End Sub
 
@@ -5619,7 +5626,7 @@ BuscaVentas:
             Me.GridFacturasVariasRemisiones.DataSource = Nothing
             FG_Grid_Limpiar(Me.GridFacturasVariasRemisiones)
             Me.GridFacturasVariasRemisiones.Rows = 2
-            Me.GridFacturasVariasRemisiones.Cols = 5
+            Me.GridFacturasVariasRemisiones.Cols = 6
             Me.FormateaGridFacturasVariasRemisiones()
         Catch ex As Exception
             HandleError(Me.Name, "InicializaGridFacturasVariasRemisiones", ex)
@@ -5627,22 +5634,26 @@ BuscaVentas:
     End Sub
 
     Private Sub FormateaGridFacturasVariasRemisiones()
+        Const sProcedure As String = "FormateaGridFacturasVariasRemisiones"
         Try
             With Me.GridFacturasVariasRemisiones
                 .Column(Me.iGyFolio).Width = 120
-                .Column(Me.iGyFecha).Width = 100
-                .Column(Me.iGyTotal).Width = 300
-                .Column(Me.iGyMoneda).Width = 100
+                .Column(Me.iGyFecha).Width = 70
+                .Column(Me.iGyTotal).Width = 100
+                .Column(Me.iGyMoneda).Width = 70
+                .Column(Me.iGyConcepto).Width = 660
 
                 .Cell(0, Me.iGyFolio).Text = "Folio"
                 .Cell(0, Me.iGyFecha).Text = "Fecha"
                 .Cell(0, Me.iGyTotal).Text = "Total"
                 .Cell(0, Me.iGyMoneda).Text = "Moneda"
+                .Cell(0, Me.iGyConcepto).Text = "Concepto"
 
                 .Column(Me.iGyFolio).Locked = True
                 .Column(Me.iGyFecha).Locked = True
                 .Column(Me.iGyTotal).Locked = True
                 .Column(Me.iGyMoneda).Locked = True
+                .Column(Me.iGyConcepto).Locked = True
 
                 .Column(Me.iGyFecha).CellType = FlexCell.CellTypeEnum.DateTime
                 .Column(Me.iGyFecha).FormatString = "dd-MMM-yy"
@@ -5653,12 +5664,12 @@ BuscaVentas:
                 .Column(Me.iGyTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Locked = False
-
-                .AutoRedraw = True
-                .Refresh()
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "FormateaGridSeries", ex)
+            HandleError(Me.Name, sProcedure, ex)
+        Finally
+            Me.GridFacturasVariasRemisiones.AutoRedraw = True
+            Me.GridFacturasVariasRemisiones.Refresh()
         End Try
     End Sub
 
@@ -5682,17 +5693,33 @@ BuscaVentas:
     End Sub
 
     Private Sub CargaRemisionesCliente()
+        Const sProcedure As String = "CargaRemisionesCliente"
         Try
             If txtLEN(Me.TxtCliente.Text) = False Then
-                MsgBox("Capture un código de cliente.", MsgBoxStyle.Exclamation, Me.Name)
+                MsgBox("Capture un código de cliente.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtCliente.Focus()
-                Exit Sub
+                Return
             End If
 
-            Me.GridFacturasVariasRemisiones.DataSource = oVenta.ObtenerRemisionesCliente(Me.TxtCliente.Text)
+            'No usamos este método porque recordemos que el datasource no deja borrar renglones con código directamente al grid, sino a los datatable
+            'Me.GridFacturasVariasRemisiones.DataSource = oVenta.ObtenerRemisionesCliente(Me.TxtCliente.Text)
+
+            Dim dt As DataTable = oVenta.ObtenerRemisionesCliente(Me.TxtCliente.Text)
+            Me.InicializaGridFacturasVariasRemisiones()
+
+            Me.GridFacturasVariasRemisiones.AutoRedraw = False
+            Me.GridFacturasVariasRemisiones.Rows = 1
+            For Each dRow As DataRow In dt.Rows
+                Me.GridFacturasVariasRemisiones.AddItem(dRow("FOLIO_VENTA").ToString & Chr(9) & dRow("FECHA").ToString & Chr(9) & dRow("TOTAL").ToString & Chr(9) & dRow("CODIGO_MONEDA_SAT").ToString & Chr(9) &
+                                                          dRow("CONCEPTO").ToString & Chr(9))
+            Next
+
             Me.FormateaGridFacturasVariasRemisiones()
         Catch ex As Exception
-            HandleError(Me.Name, "CargaRemisionesCliente", ex)
+            HandleError(Me.Name, sProcedure, ex)
+        Finally
+            Me.GridFacturasVariasRemisiones.AutoRedraw = True
+            Me.GridFacturasVariasRemisiones.Refresh()
         End Try
     End Sub
 

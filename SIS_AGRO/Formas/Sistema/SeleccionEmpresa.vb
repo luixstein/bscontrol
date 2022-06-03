@@ -12,7 +12,7 @@ Public Class SeleccionEmpresa
 
     Private Sub SeleccionEmpresa_Activated(sender As Object, e As EventArgs) Handles Me.Activated
         If bSistemaDirecto = True Then
-            Me.cboEmpresa.SelectedValue = "AGRINET_LAND"
+            Me.cboEmpresa.SelectedValue = "AGRINET_LAND_S"
             'Me.AbrirLogin()
             btnAceptar_Click(sender, e)
         End If

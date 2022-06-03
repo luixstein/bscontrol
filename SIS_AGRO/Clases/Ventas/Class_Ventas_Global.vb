@@ -1858,8 +1858,11 @@ Public Class Class_Ventas_Global
         Dim dTabla As New DataTable("remisiones"), da As SqlDataAdapter
         Dim sSQL As String
 
-        sSQL = "SELECT V.FOLIO_VENTA,DBO.FN_FECHA_SIN_HORA(V.FECHA),V.TOTAL,V.CODIGO_MONEDA_SAT FROM VENTA_GLOBAL V INNER JOIN SIS_CAT_DOCUMENTOS D ON(V.CODIGO_DOCUMENTO=D.CODIGO_DOCUMENTO) " & _
-               "WHERE D.CODIGO_TIPO_DOCUMENTO = 'REM' AND V.ESTATUS_VENTA = 'A' AND V.CODIGO_CLIENTE = '" & sCodigoCliente & "' ORDER BY V.FECHA "
+        sSQL = "SELECT V.FOLIO_VENTA,DBO.FN_FECHA_SIN_HORA(V.FECHA) FECHA,V.TOTAL,V.CODIGO_MONEDA_SAT,V.CONCEPTO " &
+                "FROM VENTA_GLOBAL V " &
+                "INNER JOIN SIS_CAT_DOCUMENTOS D ON(V.CODIGO_DOCUMENTO=D.CODIGO_DOCUMENTO) " &
+                "WHERE D.CODIGO_TIPO_DOCUMENTO = 'REM' AND V.ESTATUS_VENTA = 'A' AND V.CODIGO_CLIENTE = '" & sCodigoCliente & "' " &
+                "ORDER BY V.FECHA"
 
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
@@ -1876,7 +1879,6 @@ Public Class Class_Ventas_Global
         Dim sSQL As String
 
         Try
-
             sSQL = "SELECT R.CODIGO_ARTICULO, " &
                    "CASE WHEN MAX(A.ES_SERIALIZABLE) = '1' THEN 'SER' WHEN MAX(A.INVENTARIABLE)= '1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO," &
                    "MAX(R.DESCRIPCION) DESCRIPCION," &

@@ -4,11 +4,11 @@ Public Class Servidor
 
     Private Sub Servidor_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "AREACREDITO" Then
+            If My.Computer.Name = "PCSISTEMASJGC" Then 'Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "AREACREDITO" Then
                 Me.btnSistemaDirecto.Visible = True
                 Me.btnSistemaDirectoSol.Visible = True
                 Me.btnSistemaDirectoComer1.Visible = True
-                'bSistemaDirecto = True
+                bSistemaDirecto = True
             End If
 
             'If My.Settings.Servidor1.Length > 0 Then
@@ -130,9 +130,9 @@ Public Class Servidor
 
     Private Sub btnSistemaDirecto_Click(sender As Object, e As EventArgs) Handles btnSistemaDirecto.Click
         bSistemaDirecto = True
-        Select My.Computer.Name
-            Case "PCSISTEMASJORGE"
-                Me.cboServerName.SelectedValue = "PCSISTEMASJORGE\SQL14"
+        Select Case My.Computer.Name
+            Case "PCSISTEMASJGC"
+                Me.cboServerName.SelectedValue = "PCSISTEMASJGC\SQL14"
                 My.Settings.Servidor1 = "PCSISTEMASJORGE\SQL14"
                 My.Settings.BaseDatos1 = "AGRINET_LAND_TEST"
             Case "ERNESTOA"
@@ -144,8 +144,8 @@ Public Class Servidor
     Private Sub btnSistemaDirectoSol_Click(sender As Object, e As EventArgs) Handles btnSistemaDirectoSol.Click
         bSistemaDirecto = True
         Select Case My.Computer.Name
-            Case "PCSISTEMASJORGE"
-                Me.cboServerName.SelectedValue = "PCSISTEMASJORGE\SQL14"
+            Case "PCSISTEMASJGC"
+                Me.cboServerName.SelectedValue = "PCSISTEMASJGC\SQL14"
                 My.Settings.BaseDatos1 = "AGRINET_LAND_S"
             Case "ERNESTOA"
                 Me.cboServerName.SelectedValue = "ERNESTOA"
@@ -156,9 +156,9 @@ Public Class Servidor
     Private Sub btnSistemaDirectoComer1_Click(sender As Object, e As EventArgs) Handles btnSistemaDirectoComer1.Click
         bSistemaDirecto = True
         Select Case My.Computer.Name
-            Case "PCSISTEMASJORGE"
-                Me.cboServerName.SelectedValue = "PCSISTEMASJORGE\SQL14"
-                My.Settings.Servidor1 = "PCSISTEMASJORGE\SQL14"
+            Case "PCSISTEMASJGC"
+                Me.cboServerName.SelectedValue = "PCSISTEMASJGC\SQL14"
+                My.Settings.Servidor1 = "PCSISTEMASJGC\SQL14"
                 My.Settings.BaseDatos1 = "COMER2"
             Case "ERNESTOA"
                 Me.cboServerName.SelectedValue = "ERNESTOA"
