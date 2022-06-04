@@ -1768,9 +1768,10 @@ Public Class Class_Ventas_Global
         'Private igySerieDescripcion As Short = 3
         'Private igySerieIdInventarioLotesCostos As Short = 4
         'Private igySerieNumeroSerie As Short = 5
+        'Private igySerieIDVentaDetalleOrigen As Short = 6
+        'Private igySerieFolioRemision As Short = 7
 
-
-        sSQL = "SELECT 1 POSICION,I.CODIGO_ARTICULO,A.DESCRIPCION,S.ID_INVENTARIO_LOTES_COSTOS,C.NUMERO_SERIE " &
+        sSQL = "SELECT 1 POSICION,I.CODIGO_ARTICULO,A.DESCRIPCION,S.ID_INVENTARIO_LOTES_COSTOS,C.NUMERO_SERIE,'','' " &
         "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " &
         "INNER JOIN INVENTARIO_LOTES_SALIDAS S ON(I.ID_INVENTARIO_MOVIMIENTOS_DETALLE=S.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " &
         "INNER JOIN INVENTARIO_LOTES_COSTOS C ON(S.ID_INVENTARIO_LOTES_COSTOS=C.ID_INVENTARIO_LOTES_COSTOS) " &
@@ -1858,11 +1859,12 @@ Public Class Class_Ventas_Global
         Dim dTabla As New DataTable("remisiones"), da As SqlDataAdapter
         Dim sSQL As String
 
-        sSQL = "SELECT V.FOLIO_VENTA,DBO.FN_FECHA_SIN_HORA(V.FECHA) FECHA,V.TOTAL,V.CODIGO_MONEDA_SAT,V.CONCEPTO " &
+        sSQL = "SELECT V.FOLIO_VENTA,DBO.FN_FECHA_SIN_HORA(V.FECHA) FECHA,V.TOTAL,V.CODIGO_MONEDA_SAT, " &
+                "LTRIM(ISNULL((SELECT TOP 1'(*SERIES)' FROM VENTA_DETALLE R WHERE R.FOLIO_VENTA=V.FOLIO_VENTA AND LEN(R.LISTA_SERIES)>0),'')+' '+V.CONCEPTO) CONCEPTO " &
                 "FROM VENTA_GLOBAL V " &
                 "INNER JOIN SIS_CAT_DOCUMENTOS D ON(V.CODIGO_DOCUMENTO=D.CODIGO_DOCUMENTO) " &
-                "WHERE D.CODIGO_TIPO_DOCUMENTO = 'REM' AND V.ESTATUS_VENTA = 'A' AND V.CODIGO_CLIENTE = '" & sCodigoCliente & "' " &
-                "ORDER BY V.FECHA"
+                "WHERE D.CODIGO_TIPO_DOCUMENTO='REM' AND V.ESTATUS_VENTA='A' AND V.CODIGO_CLIENTE = '" & sCodigoCliente & "' " &
+                "ORDER BY V.FECHA,V.FOLIO_VENTA"
 
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
@@ -1933,7 +1935,8 @@ Public Class Class_Ventas_Global
                    "SUM(R.RETENCION_ISR_BASE) RETENCION_ISR_BASE," &
                    "SUM(R.RETENCION_ISR_BASE_USD) RETENCION_ISR_BASE_USD," &
                    "SUM(R.RETENCION_ISR_IMPORTE) RETENCION_ISR_IMPORTE," &
-                   "SUM(R.RETENCION_ISR_IMPORTE_USD) RETENCION_ISR_IMPORTE_USD " &
+                   "SUM(R.RETENCION_ISR_IMPORTE_USD) RETENCION_ISR_IMPORTE_USD, " &
+                   "'' ID_FAKE " &
                    "FROM VENTA_DETALLE R " &
                    "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
                    "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO) " &
@@ -1961,14 +1964,12 @@ Public Class Class_Ventas_Global
         Dim sSQL As String
 
         Try
-
-            sSQL = "SELECT G.FOLIO_VENTA,DBO.FN_FECHA_SIN_HORA(G.FECHA) FECHA,G.TOTAL,G.CODIGO_MONEDA_SAT " & _
+            sSQL = "SELECT G.FOLIO_VENTA,DBO.FN_FECHA_SIN_HORA(G.FECHA) FECHA,G.TOTAL,G.CODIGO_MONEDA_SAT,G.CONCEPTO " &
                    "FROM VENTAS_RELACION_FACTURAS_REMISIONES R INNER JOIN VENTA_GLOBAL G ON(R.FOLIO_REMISION=G.FOLIO_VENTA) WHERE R.FOLIO_FACTURA='" & sFolioFactura & "' ORDER BY FECHA"
 
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
             da.Dispose()
-
         Catch ex As Exception
             HandleError(Me.Nombre_Catalogo, "ObtenerRelacionFacturasRemisiones", ex)
         End Try
@@ -3752,6 +3753,116 @@ Public Class Class_Ventas_Global
             HandleError(Me.Nombre_Catalogo, "ObtenerDetalleParaCartaPorte", ex)
         End Try
 
+        Return dTabla
+    End Function
+
+    Public Function ObtenerDetalleVariasRemisionesSeries(ByVal sFoliosRemisiones As String) As DataTable
+        Const sProcedure As String = "ObtenerDetalleVariasRemisionesSeries"
+        Dim dTabla As New DataTable("detalleRemisiones"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        Try
+            sSQL = "SELECT " &
+                    "ROW_NUMBER()OVER(ORDER BY G.FECHA,R.FOLIO_VENTA,R.ID_VENTA_DETALLE) POSICION," &
+                    "R.CODIGO_ARTICULO, " &
+                    "CASE WHEN A.ES_SERIALIZABLE='1' THEN 'SER' WHEN A.INVENTARIABLE='1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " &
+                    "R.DESCRIPCION, " &
+                    "R.CANTIDAD, " &
+                    "R.PRECIO_SIN_DESCUENTO, " &
+                    "R.PRECIO_SIN_DESCUENTO_USD, " &
+                    "R.PRECIO_TOTAL, " &
+                    "R.PRECIO_TOTAL_USD, " &
+                    "R.UNIDAD_VENTA, " &
+                    "ISNULL(R.CANTIDAD_KILOS,0) CANTIDAD_KILOS, " &
+                    "ISNULL(R.PRECIO_KILOS,0) PRECIO_KILOS, " &
+                    "R.IMPUESTO_PORCENTAJE, " &
+                    "R.IMPORTE, " &
+                    "R.IMPORTE_USD, " &
+                    "ISNULL(R.IMPORTE_KILOS,0) IMPORTE_KILOS, " &
+                    "(SELECT CUENTA_CONTABLE_VENTAS FROM SIS_PLAZAS WHERE CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & ") CUENTA_CONTABLE," &
+                    "R.IMPUESTO_IMPORTE, " &
+                    "R.IMPUESTO_IMPORTE_USD, " &
+                    "R.ID_VENTA_DETALLE ID_ORIGEN, " &
+                    "R.ES_PRODUCTO_KILOS, " &
+                    "R.CODIGO_CENTRO_COSTO, " &
+                    "CC.NOMBRE_CENTRO_COSTO, " &
+                    "R.IEPS_PORCENTAJE, " &
+                    "R.IEPS_UNITARIO, " &
+                    "R.IEPS_UNITARIO_USD, " &
+                    "R.IEPS_IMPORTE, " &
+                    "R.IEPS_IMPORTE_USD, " &
+                    "R.BASE_IEPS, " &
+                    "R.BASE_IEPS_USD, " &
+                    "R.BASE_IVA, " &
+                    "R.BASE_IVA_USD, " &
+                    "R.COSTO, " &
+                    "(R.PRECIO - R.COSTO) UTILIDAD_UNITARIA, " &
+                    "((R.PRECIO-R.COSTO)*R.CANTIDAD) UTILIDAD_TOTAL, " &
+                    "CASE WHEN R.PRECIO > 0 THEN (((R.PRECIO-R.COSTO)/R.PRECIO)*100) ELSE 0 END UTILIDAD_PORCENTAJE, " &
+                    "R.ID_SIS_CAT_IMPUESTOS, " &
+                    "R.GRADO_TOXICIDAD, " &
+                    "R.DESCUENTO_UNITARIO, " &
+                    "R.DESCUENTO_UNITARIO_USD, " &
+                    "R.DESCUENTO_IMPORTE, " &
+                    "R.DESCUENTO_IMPORTE_USD, " &
+                    "R.PRECIO_SIN_DESCUENTO, " &
+                    "R.PRECIO_SIN_DESCUENTO_USD, " &
+                    "CASE WHEN R.RETENCION_IVA_PORCENTAJE>0 THEN '1' ELSE 0 END RETENCION_IVA_TIENE/*ESTE NO ES UN CAMPO DE VENTA_DETALLE POR ESO SE DETERMINA*/, " &
+                    "R.RETENCION_IVA_PORCENTAJE, " &
+                    "R.RETENCION_IVA_BASE, " &
+                    "R.RETENCION_IVA_BASE_USD, " &
+                    "R.RETENCION_IVA_IMPORTE, " &
+                    "R.RETENCION_IVA_IMPORTE_USD, " &
+                    "CASE WHEN R.RETENCION_ISR_PORCENTAJE>0 THEN '1' ELSE 0 END RETENCION_ISR_TIENE/*ESTE NO ES UN CAMPO DE VENTA_DETALLE POR ESO SE DETERMINA*/, " &
+                    "R.RETENCION_ISR_PORCENTAJE, " &
+                    "R.RETENCION_ISR_BASE, " &
+                    "R.RETENCION_ISR_BASE_USD, " &
+                    "R.RETENCION_ISR_IMPORTE, " &
+                    "R.RETENCION_ISR_IMPORTE_USD " &
+                    "FROM VENTA_DETALLE R " &
+                    "INNER JOIN VENTA_GLOBAL G ON(R.FOLIO_VENTA=G.FOLIO_VENTA) " &
+                    "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO)  " &
+                    "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO)  " &
+                    "WHERE R.FOLIO_VENTA IN(" & sFoliosRemisiones & ") " &
+                    "ORDER BY G.FECHA,R.FOLIO_VENTA,R.ID_VENTA_DETALLE "
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return dTabla
+    End Function
+
+    Public Function ObtenerSeriesVariasRemisionesSeries(ByVal sFoliosRemisiones As String) As DataTable
+        Const sProcedure As String = "ObtenerSeriesVariasRemisionesSeries"
+        Dim dTabla As New DataTable, da As SqlDataAdapter
+        Dim sSQL As String
+
+        Try
+            sSQL = "SELECT R.POSICION,R.CODIGO_ARTICULO,A.DESCRIPCION,LS.ID_INVENTARIO_LOTES_COSTOS,LC.NUMERO_SERIE,R.ID_VENTA_DETALLE,R.FOLIO_VENTA " &
+                    "FROM " &
+                    "(SELECT ROW_NUMBER()OVER(ORDER BY G.FECHA,R.FOLIO_VENTA,R.ID_VENTA_DETALLE) POSICION,R.ID_VENTA_DETALLE,R.CODIGO_ARTICULO,R.FOLIO_VENTA,R.DISPONIBLE " &
+                    "FROM VENTA_DETALLE R " &
+                    "INNER JOIN VENTA_GLOBAL G ON(R.FOLIO_VENTA=G.FOLIO_VENTA) " &
+                    "WHERE R.FOLIO_VENTA IN(" & sFoliosRemisiones & ")) R " &
+                    "INNER JOIN VENTA_GLOBAL G ON(R.FOLIO_VENTA=G.FOLIO_VENTA) " &
+                    "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+                    "INNER JOIN INVENTARIO_MOVIMIENTOS_DETALLE IR ON(R.ID_VENTA_DETALLE=IR.ID_ORIGEN And IR.FOLIO_MOVIMIENTO_INVENTARIO=R.FOLIO_VENTA) " &
+                    "INNER JOIN INVENTARIO_LOTES_SALIDAS LS ON(IR.ID_INVENTARIO_MOVIMIENTOS_DETALLE=LS.ID_INVENTARIO_MOVIMIENTOS_DETALLE AND R.FOLIO_VENTA=LS.FOLIO_ORIGINO) " &
+                    "INNER JOIN INVENTARIO_LOTES_COSTOS LC ON(LS.ID_INVENTARIO_LOTES_COSTOS=LC.ID_INVENTARIO_LOTES_COSTOS) " &
+                    "WHERE R.DISPONIBLE>0 AND LEN(LC.NUMERO_SERIE)>0 " &
+                    "ORDER BY R.POSICION,G.FECHA,G.FOLIO_VENTA,R.ID_VENTA_DETALLE"
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
         Return dTabla
     End Function
 #End Region

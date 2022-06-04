@@ -163,6 +163,7 @@ Partial Class Ventas_Movimientos
         Me.btnTimbradoTrasladoPrueba = New System.Windows.Forms.Button()
         Me.btnCartaPorte = New System.Windows.Forms.Button()
         Me.chkTieneCartaPorte = New System.Windows.Forms.CheckBox()
+        Me.btnAceptarRemisionesSeries = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -1474,7 +1475,7 @@ Partial Class Ventas_Movimientos
         Me.tpSeries.Location = New System.Drawing.Point(4, 22)
         Me.tpSeries.Name = "tpSeries"
         Me.tpSeries.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpSeries.Size = New System.Drawing.Size(1271, 212)
+        Me.tpSeries.Size = New System.Drawing.Size(1662, 212)
         Me.tpSeries.TabIndex = 1
         Me.tpSeries.Text = "Series"
         Me.tpSeries.UseVisualStyleBackColor = True
@@ -1505,7 +1506,7 @@ Partial Class Ventas_Movimientos
         Me.tpCFDIsRelacionados.Controls.Add(Me.cboTipoRelacionCFDI)
         Me.tpCFDIsRelacionados.Location = New System.Drawing.Point(4, 22)
         Me.tpCFDIsRelacionados.Name = "tpCFDIsRelacionados"
-        Me.tpCFDIsRelacionados.Size = New System.Drawing.Size(1271, 212)
+        Me.tpCFDIsRelacionados.Size = New System.Drawing.Size(1662, 212)
         Me.tpCFDIsRelacionados.TabIndex = 2
         Me.tpCFDIsRelacionados.Text = "Relacionar CFDIs"
         Me.tpCFDIsRelacionados.UseVisualStyleBackColor = True
@@ -1551,20 +1552,21 @@ Partial Class Ventas_Movimientos
         '
         'tpFacturasRemisiones
         '
+        Me.tpFacturasRemisiones.Controls.Add(Me.btnAceptarRemisionesSeries)
         Me.tpFacturasRemisiones.Controls.Add(Me.btnAceptar)
         Me.tpFacturasRemisiones.Controls.Add(Me.btnCargarRemisiones)
         Me.tpFacturasRemisiones.Controls.Add(Me.GridFacturasVariasRemisiones)
         Me.tpFacturasRemisiones.Location = New System.Drawing.Point(4, 22)
         Me.tpFacturasRemisiones.Margin = New System.Windows.Forms.Padding(2)
         Me.tpFacturasRemisiones.Name = "tpFacturasRemisiones"
-        Me.tpFacturasRemisiones.Size = New System.Drawing.Size(1271, 212)
+        Me.tpFacturasRemisiones.Size = New System.Drawing.Size(1662, 212)
         Me.tpFacturasRemisiones.TabIndex = 3
         Me.tpFacturasRemisiones.Text = "Facturar varias remisiones"
         Me.tpFacturasRemisiones.UseVisualStyleBackColor = True
         '
         'btnAceptar
         '
-        Me.btnAceptar.Location = New System.Drawing.Point(1109, 114)
+        Me.btnAceptar.Location = New System.Drawing.Point(1109, 100)
         Me.btnAceptar.Margin = New System.Windows.Forms.Padding(2)
         Me.btnAceptar.Name = "btnAceptar"
         Me.btnAceptar.Size = New System.Drawing.Size(123, 32)
@@ -1650,6 +1652,16 @@ Partial Class Ventas_Movimientos
         Me.chkTieneCartaPorte.Text = "Tiene carta porte ?"
         Me.chkTieneCartaPorte.UseVisualStyleBackColor = True
         Me.chkTieneCartaPorte.Visible = False
+        '
+        'btnAceptarRemisionesSeries
+        '
+        Me.btnAceptarRemisionesSeries.Location = New System.Drawing.Point(1109, 167)
+        Me.btnAceptarRemisionesSeries.Margin = New System.Windows.Forms.Padding(2)
+        Me.btnAceptarRemisionesSeries.Name = "btnAceptarRemisionesSeries"
+        Me.btnAceptarRemisionesSeries.Size = New System.Drawing.Size(123, 32)
+        Me.btnAceptarRemisionesSeries.TabIndex = 6
+        Me.btnAceptarRemisionesSeries.Text = "Aceptar(Cargarlas)"
+        Me.btnAceptarRemisionesSeries.UseVisualStyleBackColor = True
         '
         'Ventas_Movimientos
         '
@@ -1837,4 +1849,5 @@ Partial Class Ventas_Movimientos
     Friend WithEvents btnCartaPorte As Button
     Friend WithEvents tsbFacturaACartaPorte As ToolStripButton
     Friend WithEvents chkTieneCartaPorte As CheckBox
+    Friend WithEvents btnAceptarRemisionesSeries As Button
 End Class

@@ -97,7 +97,6 @@ Public Class Ventas_Movimientos
     Private iGyRETENCION_ISR_BASE_USD As Short = 53
     Private iGyRETENCION_ISR_IMPORTE As Short = 54
     Private iGyRETENCION_ISR_IMPORTE_USD As Short = 55
-    Private iGyIDVentaDetalle As Short = 56
 #End Region
 
 #Region "Columnas grid series"
@@ -106,7 +105,8 @@ Public Class Ventas_Movimientos
     Private igySerieDescripcion As Short = 3
     Private igySerieIdInventarioLotesCostos As Short = 4
     Private igySerieNumeroSerie As Short = 5
-    Private igySerieIDVentaDetalle As Short = 6
+    Private igySerieIDVentaDetalleOrigen As Short = 6
+    Private igySerieFolioRemision As Short = 7
 #End Region
 
 #Region "Columnas grid CFDIs relacionados"
@@ -357,7 +357,7 @@ Public Class Ventas_Movimientos
     End Sub
 
     Private Sub btnCartaPorte_Click(sender As Object, e As EventArgs) Handles btnCartaPorte.Click
-        Me.GestionaCartaPorte
+        Me.GestionaCartaPorte()
     End Sub
 #End Region
 
@@ -869,6 +869,10 @@ Buscar:
         Me.CargaDetalleRemisiones()
     End Sub
 
+    Private Sub btnAceptarRemisionesSeries_Click(sender As Object, e As EventArgs) Handles btnAceptarRemisionesSeries.Click
+        Me.CargaDetalleRemisionesSeries()
+    End Sub
+
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -977,7 +981,7 @@ Buscar:
             Me.Grid.DataSource = Nothing
             FG_Grid_Limpiar(Me.Grid)
             Me.Grid.Rows = 2
-            Me.Grid.Cols = 57
+            Me.Grid.Cols = 56
             Me.FormateaGrid()
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -1048,7 +1052,6 @@ Buscar:
             Me.Grid.Column(Me.iGyRETENCION_ISR_BASE_USD).Visible = False
             Me.Grid.Column(Me.iGyRETENCION_ISR_IMPORTE).Visible = False
             Me.Grid.Column(Me.iGyRETENCION_ISR_IMPORTE_USD).Visible = False
-            Me.Grid.Column(Me.iGyIDVentaDetalle).Visible = True ' False
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Cell(0, Me.igyCodigo).Text = "Código"
             Me.Grid.Cell(0, Me.igyTipoControlInventariable).Text = "Inv"
@@ -1109,7 +1112,6 @@ Buscar:
             Me.Grid.Cell(0, Me.iGyRETENCION_ISR_BASE_USD).Text = "ISRRetBaseUSD"
             Me.Grid.Cell(0, Me.iGyRETENCION_ISR_IMPORTE).Text = "ISRRetImp"
             Me.Grid.Cell(0, Me.iGyRETENCION_ISR_IMPORTE_USD).Text = "ISRRetImpUSD"
-            Me.Grid.Cell(0, Me.iGyIDVentaDetalle).Text = "IDVentaDetalle"
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyNombreCentroCosto).Alignment = FlexCell.AlignmentEnum.LeftCenter
 
@@ -1283,7 +1285,6 @@ Buscar:
             Me.Grid.Column(Me.iGyRETENCION_ISR_PORCENTAJE).Locked = True
             Me.Grid.Column(Me.iGyRETENCION_ISR_BASE).Locked = True
             Me.Grid.Column(Me.iGyRETENCION_ISR_IMPORTE).Locked = True
-            Me.Grid.Column(Me.iGyIDVentaDetalle).Locked = True
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             If Me.oDocumento.AFECTA_CXC = True Then
@@ -4880,6 +4881,7 @@ buscaCentrosCostos:
                 .Columns.Add("ID_INVENTARIO_LOTES_COSTOS", GetType(String))
                 .Columns.Add("NUMERO_SERIE", GetType(String))
                 .Columns.Add("ID_VENTA_DETALLE", GetType(String))
+                .Columns.Add("FOLIO_REMISION", GetType(String))
             End With
             Me.dtSeries.AcceptChanges()
 
@@ -4897,6 +4899,7 @@ buscaCentrosCostos:
                             dRow("ID_INVENTARIO_LOTES_COSTOS") = ""
                             dRow("NUMERO_SERIE") = ""
                             dRow("ID_VENTA_DETALLE") = ""
+                            dRow("FOLIO_REMISION") = ""
 
                             Me.dtSeries.Rows.Add(dRow)
                         Next
@@ -4920,7 +4923,7 @@ buscaCentrosCostos:
             Me.GridSeries.DataSource = Nothing
             FG_Grid_Limpiar(Me.GridSeries)
             Me.GridSeries.Rows = 2
-            Me.GridSeries.Cols = 7
+            Me.GridSeries.Cols = 8
             Me.FormateaGridSeries()
             'Me.Grid.Cell(1, Me.iGyIDAdicional).Text = "1"
         Catch ex As Exception
@@ -4943,25 +4946,28 @@ buscaCentrosCostos:
                 .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
 
                 .Column(Me.igySeriePosicion).Visible = False
-                .Column(Me.igySerieCodigo).Width = 130
+                .Column(Me.igySerieCodigo).Width = 75
                 .Column(Me.igySerieDescripcion).Width = 450
                 .Column(Me.igySerieIdInventarioLotesCostos).Visible = False
                 .Column(Me.igySerieNumeroSerie).Width = 250
-                .Column(Me.igySerieIDVentaDetalle).Width = 100
+                .Column(Me.igySerieIDVentaDetalleOrigen).Width = 75
+                .Column(Me.igySerieFolioRemision).Width = 75
 
                 .Cell(0, Me.igySeriePosicion).Text = "Posición"
                 .Cell(0, Me.igySerieCodigo).Text = "Código"
                 .Cell(0, Me.igySerieDescripcion).Text = "Descripción"
                 .Cell(0, Me.igySerieIdInventarioLotesCostos).Text = "Id lote"
                 .Cell(0, Me.igySerieNumeroSerie).Text = "Número de serie"
-                .Cell(0, Me.igySerieIDVentaDetalle).Text = "IDVentaDetalle"
+                .Cell(0, Me.igySerieIDVentaDetalleOrigen).Text = "IDVentaDetalle"
+                .Cell(0, Me.igySerieFolioRemision).Text = "FolioRemision"
 
                 .Column(Me.igySeriePosicion).Locked = True
                 .Column(Me.igySerieCodigo).Locked = True
                 .Column(Me.igySerieDescripcion).Locked = True
                 .Column(Me.igySerieIdInventarioLotesCostos).Locked = True
                 .Column(Me.igySerieNumeroSerie).Locked = True
-                .Column(Me.igySerieIDVentaDetalle).Locked = True
+                .Column(Me.igySerieIDVentaDetalleOrigen).Locked = True
+                .Column(Me.igySerieFolioRemision).Locked = True
 
                 .Row(.Rows - 1).Locked = True 'Para bloquear la edición del último renglón
             End With
@@ -6034,7 +6040,6 @@ BuscaVentas:
 
         Return sResultado
     End Function
-#End Region
 
     Private Sub btnTimbradoTrasladoPrueba_Click(sender As Object, e As EventArgs) Handles btnTimbradoTrasladoPrueba.Click
         'If Me.oVenta.GeneraFacturaElectronica(True, True) = True Then
@@ -6060,5 +6065,59 @@ BuscaVentas:
         End Try
         Return bResultado
     End Function
+
+    Private Function CargaDetalleRemisionesSeries() As Boolean
+        Const sProcedure As String = "CargaDetalleRemisionesSeries"
+        Dim i As Integer, bResultado As Boolean
+        Dim FoliosRemisiones As String = ""
+
+        Try
+            Me.GridFacturasVariasRemisiones.Locked = True
+
+            For i = 1 To Me.GridFacturasVariasRemisiones.Rows - 1
+                If txtLEN(Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text) = True Then
+                    FoliosRemisiones = FoliosRemisiones & "'" & Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text & "',"
+                End If
+            Next
+
+            If txtLEN(FoliosRemisiones) = False Then
+                MsgBox("Debe listar primero las remisiones", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            FoliosRemisiones = Strings.Left(FoliosRemisiones, FoliosRemisiones.Length - 1) 'Quita la ultima coma
+
+            Me.InicializaGrid()
+            Me.Grid.DataSource = oVenta.ObtenerDetalleVariasRemisionesSeries(FoliosRemisiones)
+            'Me.FormateaGrid()
+            Me.Totales()
+            Me.CalculaUtilidad()
+
+            With Me.Grid
+                .Column(igyCodigo).Locked = True
+                .Column(igyCantidad).Locked = True
+                .Column(igyCantidadKilos).Locked = True
+                .Column(igyCodigoCentroCosto).Locked = True
+            End With
+
+            Dim dtSeries As DataTable = oVenta.ObtenerSeriesVariasRemisionesSeries(FoliosRemisiones)
+            Me.InicializaGridSeries()
+            Me.GridSeries.Rows = 1
+            For Each dRow As DataRow In dtSeries.Rows
+                Me.GridSeries.AddItem(dRow("POSICION").ToString & Chr(9) & dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) &
+                                      dRow("ID_INVENTARIO_LOTES_COSTOS").ToString & Chr(9) & dRow("NUMERO_SERIE").ToString & Chr(9) &
+                                      dRow("ID_VENTA_DETALLE").ToString & Chr(9) & dRow("FOLIO_VENTA").ToString & Chr(9))
+            Next
+
+            Me.TabControl1.SelectTab(0) 'Muestra el tab de articulos
+
+            Me.EsFacturaVariasRemisiones = True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+#End Region
 
 End Class
