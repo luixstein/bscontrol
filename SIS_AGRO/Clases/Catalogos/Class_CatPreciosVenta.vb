@@ -286,6 +286,10 @@ Public Class Class_CatPreciosVenta
             filtroAlmacen = " AND P.CODIGO_ALMACEN IS NULL"
         End If
 
+        If Empresa_Sistema.PRECIOS_VENTA_POR_PLAZA = False Then
+            Me._CODIGO_PLAZA = Empresa_Sistema.CODIGO_PLAZA_PRINCIPAL
+        End If
+
         Dim cmd As New SqlCommand("SELECT P.CODIGO_ARTICULO,A.DESCRIPCION,P.PRECIO1,P.PRECIO2,P.PRECIO3,P.PRECIO4,P.PRECIO5,T.IEPS_PORCENTAJE, " &
                                     "ROUND(P.PRECIO1*(1+(T.IEPS_PORCENTAJE/100.00)),3) PRECIO1_IEPS, " &
                                     "ROUND(P.PRECIO2*(1+(T.IEPS_PORCENTAJE/100.00)),3) PRECIO2_IEPS, " &

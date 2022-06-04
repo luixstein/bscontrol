@@ -100,6 +100,8 @@ Public NotInheritable Class Class_sisEmpresa
     Private _PORCENTAJE_UTLIDAD_VENTA_MINIMO As Double
     Private _CODIGO_ALMACEN_POR_CLIENTE As Boolean
     Private _PRECIOS_VENTA_POR_ALMACEN As Boolean
+    Private _PRECIOS_VENTA_POR_PLAZA As Boolean
+    Private _CODIGO_PLAZA_PRINCIPAL As Integer
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -757,6 +759,18 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
+    Public ReadOnly Property PRECIOS_VENTA_POR_PLAZA As Boolean
+        Get
+            Return Me._PRECIOS_VENTA_POR_PLAZA
+        End Get
+    End Property
+
+    Public ReadOnly Property CODIGO_PLAZA_PRINCIPAL As Integer
+        Get
+            Return Me._CODIGO_PLAZA_PRINCIPAL
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1122,6 +1136,8 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._PORCENTAJE_UTLIDAD_VENTA_MINIMO = CDbl(dReader("PORCENTAJE_UTLIDAD_VENTA_MINIMO"))
                     Me._CODIGO_ALMACEN_POR_CLIENTE = CBool(dReader("CODIGO_ALMACEN_POR_CLIENTE"))
                     Me._PRECIOS_VENTA_POR_ALMACEN = CBool(dReader("PRECIOS_VENTA_POR_ALMACEN"))
+                    Me._PRECIOS_VENTA_POR_PLAZA = CBool(dReader("PRECIOS_VENTA_POR_PLAZA"))
+                    Me._CODIGO_PLAZA_PRINCIPAL = CInt(dReader("CODIGO_PLAZA_PRINCIPAL"))
 
                     dReader.Close()
                     bResultado = True
