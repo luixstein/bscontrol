@@ -5298,9 +5298,9 @@ busca_serie:
                             'Nota aunque el campo se llame IDOrigen como renglón de factura, como renglón de remisión es IDVentaDetalle por eso se llama así el parámetro de la función.
                             dDisponibleLoteSerieEnRemision = oInventarios.DisponibleLoteSerieEnRemision(sIDOrigen, sIDInventarioLoteCosto)
 
-                            If dDisponibleLoteSerieEnRemision <= CDec("1") Then
+                            If dDisponibleLoteSerieEnRemision < CDec("1") Then
                                 MsgBox("El lote con la serie " & dRow("NUMERO_SERIE").ToString & " sustituida del artículo " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " del renglón #" & i.ToString &
-                                       " no tiene disponible(" & dDisponibleLoteSerieEnRemision.ToString & "), es decir no puede volver a facturarse porque ya se facturó dicha serie sustituida en otra factura.", MsgBoxStyle.Exclamation, sProcedure)
+                                       " no tiene disponible(" & dDisponibleLoteSerieEnRemision.ToString & "), es decir no puede volver a facturarse porque ya se facturó.", MsgBoxStyle.Exclamation, sProcedure)
                                 Return False
                             End If
                         Next
