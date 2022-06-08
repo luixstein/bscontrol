@@ -155,6 +155,7 @@ Partial Class Ventas_Movimientos
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
         Me.tpFacturasRemisiones = New System.Windows.Forms.TabPage()
+        Me.btnAceptarRemisionesSeries = New System.Windows.Forms.Button()
         Me.btnAceptar = New System.Windows.Forms.Button()
         Me.btnCargarRemisiones = New System.Windows.Forms.Button()
         Me.GridFacturasVariasRemisiones = New FlexCell.Grid()
@@ -163,7 +164,7 @@ Partial Class Ventas_Movimientos
         Me.btnTimbradoTrasladoPrueba = New System.Windows.Forms.Button()
         Me.btnCartaPorte = New System.Windows.Forms.Button()
         Me.chkTieneCartaPorte = New System.Windows.Forms.CheckBox()
-        Me.btnAceptarRemisionesSeries = New System.Windows.Forms.Button()
+        Me.btnAgregarRenglon = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -1495,7 +1496,7 @@ Partial Class Ventas_Movimientos
         Me.GridSeries.LockButton = True
         Me.GridSeries.Name = "GridSeries"
         Me.GridSeries.Rows = 6
-        Me.GridSeries.Size = New System.Drawing.Size(966, 198)
+        Me.GridSeries.Size = New System.Drawing.Size(1406, 198)
         Me.GridSeries.TabIndex = 2
         Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -1563,6 +1564,16 @@ Partial Class Ventas_Movimientos
         Me.tpFacturasRemisiones.TabIndex = 3
         Me.tpFacturasRemisiones.Text = "Facturar varias remisiones"
         Me.tpFacturasRemisiones.UseVisualStyleBackColor = True
+        '
+        'btnAceptarRemisionesSeries
+        '
+        Me.btnAceptarRemisionesSeries.Location = New System.Drawing.Point(1109, 167)
+        Me.btnAceptarRemisionesSeries.Margin = New System.Windows.Forms.Padding(2)
+        Me.btnAceptarRemisionesSeries.Name = "btnAceptarRemisionesSeries"
+        Me.btnAceptarRemisionesSeries.Size = New System.Drawing.Size(123, 32)
+        Me.btnAceptarRemisionesSeries.TabIndex = 6
+        Me.btnAceptarRemisionesSeries.Text = "Aceptar(Cargarlas)"
+        Me.btnAceptarRemisionesSeries.UseVisualStyleBackColor = True
         '
         'btnAceptar
         '
@@ -1653,15 +1664,14 @@ Partial Class Ventas_Movimientos
         Me.chkTieneCartaPorte.UseVisualStyleBackColor = True
         Me.chkTieneCartaPorte.Visible = False
         '
-        'btnAceptarRemisionesSeries
+        'btnAgregarRenglon
         '
-        Me.btnAceptarRemisionesSeries.Location = New System.Drawing.Point(1109, 167)
-        Me.btnAceptarRemisionesSeries.Margin = New System.Windows.Forms.Padding(2)
-        Me.btnAceptarRemisionesSeries.Name = "btnAceptarRemisionesSeries"
-        Me.btnAceptarRemisionesSeries.Size = New System.Drawing.Size(123, 32)
-        Me.btnAceptarRemisionesSeries.TabIndex = 6
-        Me.btnAceptarRemisionesSeries.Text = "Aceptar(Cargarlas)"
-        Me.btnAceptarRemisionesSeries.UseVisualStyleBackColor = True
+        Me.btnAgregarRenglon.Location = New System.Drawing.Point(65, 503)
+        Me.btnAgregarRenglon.Name = "btnAgregarRenglon"
+        Me.btnAgregarRenglon.Size = New System.Drawing.Size(29, 21)
+        Me.btnAgregarRenglon.TabIndex = 373
+        Me.btnAgregarRenglon.Text = "+"
+        Me.btnAgregarRenglon.UseVisualStyleBackColor = True
         '
         'Ventas_Movimientos
         '
@@ -1669,6 +1679,7 @@ Partial Class Ventas_Movimientos
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(1680, 678)
+        Me.Controls.Add(Me.btnAgregarRenglon)
         Me.Controls.Add(Me.chkTieneCartaPorte)
         Me.Controls.Add(Me.btnCartaPorte)
         Me.Controls.Add(Me.btnTimbradoTrasladoPrueba)
@@ -1850,4 +1861,5 @@ Partial Class Ventas_Movimientos
     Friend WithEvents tsbFacturaACartaPorte As ToolStripButton
     Friend WithEvents chkTieneCartaPorte As CheckBox
     Friend WithEvents btnAceptarRemisionesSeries As Button
+    Friend WithEvents btnAgregarRenglon As Button
 End Class

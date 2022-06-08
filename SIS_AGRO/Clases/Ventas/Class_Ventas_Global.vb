@@ -1771,13 +1771,25 @@ Public Class Class_Ventas_Global
         'Private igySerieIDVentaDetalleOrigen As Short = 6
         'Private igySerieFolioRemision As Short = 7
 
-        sSQL = "SELECT 1 POSICION,I.CODIGO_ARTICULO,A.DESCRIPCION,S.ID_INVENTARIO_LOTES_COSTOS,C.NUMERO_SERIE,'','' " &
-        "FROM INVENTARIO_MOVIMIENTOS_DETALLE I " &
+        'sSQL = "SELECT 1 POSICION,I.CODIGO_ARTICULO,A.DESCRIPCION,S.ID_INVENTARIO_LOTES_COSTOS,C.NUMERO_SERIE,'','' " &
+        '"FROM INVENTARIO_MOVIMIENTOS_DETALLE I " &
+        '"INNER JOIN INVENTARIO_LOTES_SALIDAS S ON(I.ID_INVENTARIO_MOVIMIENTOS_DETALLE=S.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " &
+        '"INNER JOIN INVENTARIO_LOTES_COSTOS C ON(S.ID_INVENTARIO_LOTES_COSTOS=C.ID_INVENTARIO_LOTES_COSTOS) " &
+        '"INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+        '"WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_VENTA & "' AND LEN(C.NUMERO_SERIE)>0 " &
+        '"ORDER BY S.ID_INVENTARIO_LOTES_SALIDAS "
+
+        sSQL = "SELECT R.POSICION,I.CODIGO_ARTICULO,A.DESCRIPCION,S.ID_INVENTARIO_LOTES_COSTOS,C.NUMERO_SERIE,R.ID_ORIGEN,R.FOLIO_REMISION " &
+        "FROM " &
+        "(SELECT ROW_NUMBER()OVER(ORDER BY R.ID_VENTA_DETALLE) POSICION,R.ID_VENTA_DETALLE,R.ID_ORIGEN,R.FOLIO_VENTA,RR.FOLIO_VENTA FOLIO_REMISION " &
+        "FROM VENTA_DETALLE R LEFT JOIN VENTA_DETALLE RR ON(R.ID_ORIGEN=RR.ID_VENTA_DETALLE) " &
+        "WHERE R.FOLIO_VENTA='" & Me._FOLIO_VENTA & "')R " &
+        "INNER JOIN INVENTARIO_MOVIMIENTOS_DETALLE I ON(R.ID_VENTA_DETALLE=I.ID_ORIGEN AND R.FOLIO_VENTA=I.FOLIO_MOVIMIENTO_INVENTARIO) " &
         "INNER JOIN INVENTARIO_LOTES_SALIDAS S ON(I.ID_INVENTARIO_MOVIMIENTOS_DETALLE=S.ID_INVENTARIO_MOVIMIENTOS_DETALLE) " &
         "INNER JOIN INVENTARIO_LOTES_COSTOS C ON(S.ID_INVENTARIO_LOTES_COSTOS=C.ID_INVENTARIO_LOTES_COSTOS) " &
         "INNER JOIN CAT_ARTICULOS A ON(I.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
         "WHERE I.FOLIO_MOVIMIENTO_INVENTARIO='" & Me._FOLIO_VENTA & "' AND LEN(C.NUMERO_SERIE)>0 " &
-        "ORDER BY S.ID_INVENTARIO_LOTES_SALIDAS "
+        "ORDER BY S.ID_INVENTARIO_LOTES_SALIDAS"
 
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
@@ -2123,6 +2135,7 @@ Public Class Class_Ventas_Global
     End Function
 
     Public Function AfectaSustitucionRemision() As Boolean
+        Const sProcedure As String = "AfectaSustitucionRemision"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -2132,7 +2145,7 @@ Public Class Class_Ventas_Global
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_VENTA_AFECTA_SUSTITUCION_REMISION"
 
-            sqlParametro = .Parameters.Add("@FOLIO_REMISION", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_REFERENCIA
+            'sqlParametro = .Parameters.Add("@FOLIO_REMISION", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_REFERENCIA
             sqlParametro = .Parameters.Add("@FOLIO_FACTURA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_VENTA
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
 
@@ -2141,7 +2154,7 @@ Public Class Class_Ventas_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "AfectaSustitucionRemision", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -3762,8 +3775,8 @@ Public Class Class_Ventas_Global
         Dim sSQL As String
 
         Try
+            '                    "ROW_NUMBER()OVER(ORDER BY G.FECHA,R.FOLIO_VENTA,R.ID_VENTA_DETALLE) POSICION," &
             sSQL = "SELECT " &
-                    "ROW_NUMBER()OVER(ORDER BY G.FECHA,R.FOLIO_VENTA,R.ID_VENTA_DETALLE) POSICION," &
                     "R.CODIGO_ARTICULO, " &
                     "CASE WHEN A.ES_SERIALIZABLE='1' THEN 'SER' WHEN A.INVENTARIABLE='1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " &
                     "R.DESCRIPCION, " &
@@ -3842,7 +3855,7 @@ Public Class Class_Ventas_Global
         Dim sSQL As String
 
         Try
-            sSQL = "SELECT R.POSICION,R.CODIGO_ARTICULO,A.DESCRIPCION,LS.ID_INVENTARIO_LOTES_COSTOS,LC.NUMERO_SERIE,R.ID_VENTA_DETALLE,R.FOLIO_VENTA " &
+            sSQL = "SELECT R.POSICION,R.CODIGO_ARTICULO,A.DESCRIPCION,CAST(LS.ID_INVENTARIO_LOTES_COSTOS AS NVARCHAR)ID_INVENTARIO_LOTES_COSTOS,LC.NUMERO_SERIE,CAST(R.ID_VENTA_DETALLE AS NVARCHAR) ID_ORIGEN,R.FOLIO_VENTA FOLIO_REMISION " &
                     "FROM " &
                     "(SELECT ROW_NUMBER()OVER(ORDER BY G.FECHA,R.FOLIO_VENTA,R.ID_VENTA_DETALLE) POSICION,R.ID_VENTA_DETALLE,R.CODIGO_ARTICULO,R.FOLIO_VENTA,R.DISPONIBLE " &
                     "FROM VENTA_DETALLE R " &
@@ -3850,7 +3863,7 @@ Public Class Class_Ventas_Global
                     "WHERE R.FOLIO_VENTA IN(" & sFoliosRemisiones & ")) R " &
                     "INNER JOIN VENTA_GLOBAL G ON(R.FOLIO_VENTA=G.FOLIO_VENTA) " &
                     "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
-                    "INNER JOIN INVENTARIO_MOVIMIENTOS_DETALLE IR ON(R.ID_VENTA_DETALLE=IR.ID_ORIGEN And IR.FOLIO_MOVIMIENTO_INVENTARIO=R.FOLIO_VENTA) " &
+                    "INNER JOIN INVENTARIO_MOVIMIENTOS_DETALLE IR ON(R.ID_VENTA_DETALLE=IR.ID_ORIGEN AND IR.FOLIO_MOVIMIENTO_INVENTARIO=R.FOLIO_VENTA) " &
                     "INNER JOIN INVENTARIO_LOTES_SALIDAS LS ON(IR.ID_INVENTARIO_MOVIMIENTOS_DETALLE=LS.ID_INVENTARIO_MOVIMIENTOS_DETALLE AND R.FOLIO_VENTA=LS.FOLIO_ORIGINO) " &
                     "INNER JOIN INVENTARIO_LOTES_COSTOS LC ON(LS.ID_INVENTARIO_LOTES_COSTOS=LC.ID_INVENTARIO_LOTES_COSTOS) " &
                     "WHERE R.DISPONIBLE>0 AND LEN(LC.NUMERO_SERIE)>0 " &
