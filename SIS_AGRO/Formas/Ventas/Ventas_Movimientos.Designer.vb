@@ -1584,6 +1584,7 @@ Partial Class Ventas_Movimientos
         Me.btnAceptar.TabIndex = 5
         Me.btnAceptar.Text = "Aceptar(Cargarlas)"
         Me.btnAceptar.UseVisualStyleBackColor = True
+        Me.btnAceptar.Visible = False
         '
         'btnCargarRemisiones
         '

@@ -864,7 +864,6 @@ Public Class Class_Inventarios_Global
     Public Function ObtenerDetalleSeries(ByVal sFolio As String) As DataTable
         Dim dTabla As New DataTable, da As SqlDataAdapter
         Try
-
             da = New SqlDataAdapter("EXEC MP_INVENTARIOS_CONSULTA_TABLA_SERIES @FOLIO_MOVIMIENTO_INVENTARIO='" & sFolio & "'", Me._Conexion)
             da.Fill(dTabla)
             da.Dispose()
@@ -987,8 +986,8 @@ Public Class Class_Inventarios_Global
         f.sCampo = "C.DESCRIPCION"
         f.sOrder = "C.DESCRIPCION,C.CODIGO_ARTICULO,C.FECHA"
         f.sTable = "VW_INVENTARIO_LOTES_COSTOS_EXTENDIDO"
-        f.sQl = "SELECT C.CODIGO_ARTICULO,C.DESCRIPCION,C.FECHA,C.CANTIDAD_DISPONIBLE DISPONIBLE,C.COSTO,C.ID_INVENTARIO_LOTES_COSTOS ID_LOTE " & _
-                 "FROM VW_INVENTARIO_LOTES_COSTOS_EXTENDIDO C " & _
+        f.sQl = "SELECT C.CODIGO_ARTICULO,C.DESCRIPCION,C.FECHA,C.CANTIDAD_DISPONIBLE DISPONIBLE,C.COSTO,C.ID_INVENTARIO_LOTES_COSTOS ID_LOTE " &
+                 "FROM VW_INVENTARIO_LOTES_COSTOS_EXTENDIDO C " &
                  "WHERE C.CODIGO_ALMACEN1='" & sReplace(sCodigoAlmacen) & "' AND C.CANTIDAD_DISPONIBLE>0 AND "
         f.arrayWidthColumns = New Integer() {100, 300, 100, 100, 100, 0}
         f.Inicia("")
@@ -1004,6 +1003,25 @@ Public Class Class_Inventarios_Global
         End Try
 
         Return b
+    End Function
+
+    Public Function DisponibleLoteSerieEnRemision(ByVal sIDVentaDetalle As String, ByVal sIDInventarioLoteCosto As String) As Decimal
+        Const sProcedure As String = "DisponibleLoteSerieEnRemision"
+        Dim Resultado As Decimal = 0
+        Try
+            Dim sql As New Class_find("SELECT S.DISPONIBLE " &
+                "FROM VENTA_DETALLE R " &
+                "INNER JOIN INVENTARIO_MOVIMIENTOS_DETALLE IR ON(R.ID_VENTA_DETALLE=IR.ID_ORIGEN AND R.FOLIO_VENTA=IR.FOLIO_MOVIMIENTO_INVENTARIO) " &
+                "INNER JOIN INVENTARIO_LOTES_SALIDAS S ON(IR.ID_INVENTARIO_MOVIMIENTOS_DETALLE=S.ID_INVENTARIO_MOVIMIENTOS_DETALLE AND R.ID_VENTA_DETALLE=IR.ID_ORIGEN AND R.FOLIO_VENTA=S.FOLIO_ORIGINO) " &
+                "WHERE S.ID_INVENTARIO_LOTES_COSTOS=" & sReplace(sIDInventarioLoteCosto) & " AND R.ID_VENTA_DETALLE=" & sReplace(sIDVentaDetalle))
+            If sql.Result1 <> "" Then
+                Resultado = valorNumericoD(sql.Result1)
+            End If
+            sql = Nothing
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return Resultado
     End Function
 #End Region
 

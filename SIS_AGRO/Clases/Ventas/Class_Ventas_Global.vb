@@ -3780,7 +3780,7 @@ Public Class Class_Ventas_Global
                     "R.CODIGO_ARTICULO, " &
                     "CASE WHEN A.ES_SERIALIZABLE='1' THEN 'SER' WHEN A.INVENTARIABLE='1' THEN 'INV' ELSE 'NIV' END TIPO_CONTROL_INVENTARIO, " &
                     "R.DESCRIPCION, " &
-                    "R.CANTIDAD, " &
+                    "R.DISPONIBLE,/*R.CANTIDAD*/ " &
                     "R.PRECIO_SIN_DESCUENTO, " &
                     "R.PRECIO_SIN_DESCUENTO_USD, " &
                     "R.PRECIO_TOTAL, " &
@@ -3837,6 +3837,7 @@ Public Class Class_Ventas_Global
                     "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO)  " &
                     "INNER JOIN NOMINA_CAT_CENTROS_COSTOS CC ON(R.CODIGO_CENTRO_COSTO=CC.CODIGO_CENTRO_COSTO)  " &
                     "WHERE R.FOLIO_VENTA IN(" & sFoliosRemisiones & ") " &
+                    "AND R.DISPONIBLE>0" &
                     "ORDER BY G.FECHA,R.FOLIO_VENTA,R.ID_VENTA_DETALLE "
 
             da = New SqlDataAdapter(sSQL, Me._Conexion)
@@ -3866,7 +3867,7 @@ Public Class Class_Ventas_Global
                     "INNER JOIN INVENTARIO_MOVIMIENTOS_DETALLE IR ON(R.ID_VENTA_DETALLE=IR.ID_ORIGEN AND IR.FOLIO_MOVIMIENTO_INVENTARIO=R.FOLIO_VENTA) " &
                     "INNER JOIN INVENTARIO_LOTES_SALIDAS LS ON(IR.ID_INVENTARIO_MOVIMIENTOS_DETALLE=LS.ID_INVENTARIO_MOVIMIENTOS_DETALLE AND R.FOLIO_VENTA=LS.FOLIO_ORIGINO) " &
                     "INNER JOIN INVENTARIO_LOTES_COSTOS LC ON(LS.ID_INVENTARIO_LOTES_COSTOS=LC.ID_INVENTARIO_LOTES_COSTOS) " &
-                    "WHERE R.DISPONIBLE>0 AND LEN(LC.NUMERO_SERIE)>0 " &
+                    "WHERE R.DISPONIBLE>0 AND LEN(LC.NUMERO_SERIE)>0 AND LS.DISPONIBLE>0/*RECUERDE QUE CON ESE CAMPO EN LC SE LLEVA EL CONTROL DEL DISPONIBLE SUSTITUIDO*/ " &
                     "ORDER BY R.POSICION,G.FECHA,G.FOLIO_VENTA,R.ID_VENTA_DETALLE"
 
             da = New SqlDataAdapter(sSQL, Me._Conexion)
@@ -3878,6 +3879,7 @@ Public Class Class_Ventas_Global
         End Try
         Return dTabla
     End Function
+
 #End Region
 
 End Class
