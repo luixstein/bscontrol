@@ -248,13 +248,13 @@ Public Class Ventas_Movimientos
                 End If
             End If
 
-            'No no puse porque entonces no se podrian poner comentarios en uns sustitución
+            'No lo puse porque entonces no se podrian poner comentarios en una sustitución
             'Me.Grid.Row(Me.Grid.Rows - 1).Locked = True  'Para bloquear la edición del último renglón
 
             'f6 que haria en una sust?, Queryable mejor no haya f6 , si borran de mas y quieren poner, Que le den nuevo y empiezen otra vez
 
             'Me.Grid.Locked = True
-            Me.Grid.Column(Me.igyCodigo).Locked = True 'No podrán cambiar códigos ni ponerlos con f6
+            'Me.Grid.Column(Me.igyCodigo).Locked = True 'No podrán cambiar códigos ni ponerlos con f6'ya no se ejecuta aqui porque ahora se cargan las remisiones con el método de varias remisiones y haya se bloquean celdas de códigos.
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -965,7 +965,7 @@ Buscar:
             Me.InicializaGridCFDIsRelacionados()
 
             Me.InicializaGridFacturasVariasRemisiones()
-            EsFacturaVariasRemisiones = False
+            Me.EsFacturaVariasRemisiones = False
 
             Me.lblUtilidad.Text = "0.00"
             Me.lblPorcentajeUtilidad.Text = "0.00"
@@ -2402,7 +2402,7 @@ CANCELAR:
                 oEmbarques.FOLIO_EMBARQUE = Me.txtFolioEmbarque.Text
 
                 If oEmbarques.GeneraMarcaFactura(Me.txtFolio.Text, False) = False Then
-                    MsgBox("Error al tratar de marcar el embarque como facturado.", MsgBoxStyle.Information, sProcedure)
+                    MsgBox("Error al tratar de marcar el embarque como facturado.", MsgBoxStyle.Exclamation, sProcedure)
                 End If
             End If
 
@@ -3916,6 +3916,7 @@ CANCELAR:
 
             Me.oCliente = New Class_CatClientes(Me.TxtCliente.Text)
             Me.lblCliente.Text = Me.oCliente.NOMBRE_CLIENTE
+            Me.bClienteEsContribuyenteIEPS = CBool(Me.oCliente.ES_CONTRIBUYENTE_IEPS)
 
             If bEsReferencia = False Then
                 Me.LblPoliza.Text = Me.oVenta.FOLIO_POLIZA
@@ -3931,8 +3932,6 @@ CANCELAR:
             Me.lblIEPSIncluido.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_YA_INCLUIDO)
             Me.lblTotalRetencionIVA.Text = FormatImporteContable(Me.oVenta.RETENCION_IVA)
             Me.lblTotalRetencionISR.Text = FormatImporteContable(Me.oVenta.RETENCION_ISR)
-
-            Me.bClienteEsContribuyenteIEPS = CBool(Me.oCliente.ES_CONTRIBUYENTE_IEPS)
 
             Me.cboMoneda.Text = Me.oVenta.CODIGO_MONEDA_SAT 'Nota debe llenarse primero la moneda porque tiene evento change que llena la forma de pago segun el cte, y asi se consulta correcto.
             Me.txtTipoCambio.Text = Format(Me.oVenta.TIPO_DE_CAMBIO, "##0.0000")
@@ -4019,6 +4018,18 @@ CANCELAR:
                 'Ante se hacia de este modo pero al ser con datasource no es posible agregar mas comentarios o tener control con algunas cosas
                 'Me.Grid.DataSource = Me.oVenta.ObtenerDetalleSoloDisponibles
 
+                If sTipoVenta = "SR" Then
+                    Me.InicializaGridFacturasVariasRemisiones()
+                    Me.GridFacturasVariasRemisiones.Rows = 1
+
+                    Me.GridFacturasVariasRemisiones.AddItem(oVenta.FOLIO_VENTA & Chr(9) & oVenta.FECHA & Chr(9) & oVenta.TOTAL.ToString & Chr(9) & oVenta.CODIGO_MONEDA_SAT & Chr(9) &
+                                           oVenta.CONCEPTO & Chr(9))
+
+                    Me.CargaDetalleRemisionesSeries()
+
+                    GoTo salto
+                End If
+
                 Dim dTabla As DataTable = Me.oVenta.ObtenerDetalleSoloDisponibles ', dCostoUnitario As Double = 0
 
                 Me.InicializaGrid()
@@ -4093,6 +4104,7 @@ CANCELAR:
                     'dRow("RETENCION_IVA_IMPORTE_USD").ToString & Chr(9) &
                 Next
 
+salto:
                 Me.Grid.Rows = Me.Grid.Rows + 1
 
                 Me.dpFecha.Value = Date.Now
@@ -4142,6 +4154,12 @@ CANCELAR:
             Me.GestionaMoneda()
 
             Me.txtFolio.Enabled = False
+
+            If Me.sTipoVenta = "SR" Then
+                'Ya no ejecutamos el código siguiente porque este documento es nuevo
+                Me.TxtReferencia.Enabled = False
+                Return bResultado
+            End If
 
             'Si es cotizacion si permitira editar
             If Me.oVenta.CODIGO_DOCUMENTO = "CTZ" & Plaza.CODIGO_PLAZA.ToString And Me.oVenta.ESTATUS_VENTA = "G" Then
@@ -4649,7 +4667,7 @@ buscaCentrosCostos:
 
                     End Select
 
-                Case Keys.F8, Keys.Delete  'Borrar renglón
+                Case Keys.F8  'Borrar renglón
                     If (Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.GRABADO Or Me.Estado = enumEstados.SUSTITUYENDO) Then
                         Me.GestionaSeriesPosicion(Renglon, True) 'Elimina todas las series en caso de ser un artículo seriado
                         Me.Grid.Selection.DeleteByRow()
@@ -5827,6 +5845,11 @@ BuscaVentas:
             Next
 
             Me.FormateaGridFacturasVariasRemisiones()
+
+            If dt.Rows.Count = 0 Then
+                MsgBox("No hay remisiones que se puedan facturar.", MsgBoxStyle.Exclamation, sProcedure)
+            End If
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         Finally

@@ -2225,6 +2225,7 @@ Public Class Class_Ventas_Global
     End Function
 
     Public Function DesafectaSustitucionRemision() As Boolean
+        Const sProcedure As String = "DesafectaSustitucionRemision"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -2234,7 +2235,9 @@ Public Class Class_Ventas_Global
             .CommandType = CommandType.StoredProcedure
             .CommandText = "MP_VENTA_DESAFECTA_SUSTITUCION_REMISION"
 
-            sqlParametro = .Parameters.Add("@FOLIO_REMISION", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_REFERENCIA
+            'Ya no tiene este parametro porque ahora una factura puede sustituir a varias remisiones.
+            'sqlParametro = .Parameters.Add("@FOLIO_REMISION", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_REFERENCIA
+
             sqlParametro = .Parameters.Add("@FOLIO_FACTURA", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_VENTA
             sqlParametro = .Parameters.Add("@CODIGO_USUARIO", SqlDbType.SmallInt) : sqlParametro.Value = Usuario.Codigo_Usuario
             sqlParametro = .Parameters.Add("@FECHA_CANCELACION", SqlDbType.DateTime) : sqlParametro.Value = Me._FECHA_CANCELACION
@@ -2244,7 +2247,7 @@ Public Class Class_Ventas_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "DesafectaSustitucionRemision", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
