@@ -5022,12 +5022,12 @@ buscaCentrosCostos:
                 .BorderStyle = FlexCell.BorderStyleEnum.FixedSingle
                 .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
 
-                .Column(Me.igySeriePosicion).Visible = True ' False
-                .Column(Me.igySerieCodigo).Width = 75
-                .Column(Me.igySerieDescripcion).Width = 450
+                .Column(Me.igySeriePosicion).Width = 50 ' False
+                .Column(Me.igySerieCodigo).Width = 100
+                .Column(Me.igySerieDescripcion).Width = 350
                 .Column(Me.igySerieIdInventarioLotesCostos).Visible = True ' False
                 .Column(Me.igySerieNumeroSerie).Width = 250
-                .Column(Me.igySerieIDOrigen).Width = 75
+                .Column(Me.igySerieIDOrigen).Width = 50
                 .Column(Me.igySerieFolioRemision).Width = 75
 
                 .Cell(0, Me.igySeriePosicion).Text = "Posición"
