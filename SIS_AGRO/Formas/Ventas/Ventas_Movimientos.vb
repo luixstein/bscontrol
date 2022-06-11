@@ -1612,7 +1612,8 @@ Buscar:
                     Me.btnAgregaAddenda.Visible = False
                     Me.frmDatos.Enabled = True
                     'Me.Grid.Locked = True 'De momento no se permiten editar cantidades, o precios
-                    Me.GridSeries.Locked = True 'De momento no permitimos manejo de series en sustituciones.
+                    'Me.GridSeries.Locked = True 'De momento no permitimos manejo de series en sustituciones.
+                    Me.GridSeries.Locked = False  'Ya permitimos manejo de series en sustituciones.
                     Me.GridFacturasVariasRemisiones.Locked = True
 
                     Me.tsbTimbrar.Visible = False
@@ -2658,9 +2659,40 @@ CANCELAR:
             End If
 
             If Me.sTipoVenta = "SR" Then
-                If oVenta.SiRemisionTieneMovimientosAbonoParaEvitarSustitucion(Me.TxtReferencia.Text) = True Then 'Aqui ya se quiere convertir a remisión, entonces el folio sale del txtReferencia
-                    Return False
-                End If
+                'Antes sólo se permitia sustituir una remisión, ahora varias y los folios estarán en el grid de remisiones.
+                'If oVenta.SiRemisionTieneMovimientosAbonoParaEvitarSustitucion(Me.TxtReferencia.Text) = True Then 'Aqui ya se quiere convertir a remisión, entonces el folio sale del txtReferencia
+                '    Return False
+                'End If
+
+                Dim bEstaRemisionSiSeUso As Boolean = False
+                For i As Integer = 1 To Me.GridFacturasVariasRemisiones.Rows - 1
+                    Dim sFolioRemision As String = Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text
+                    bEstaRemisionSiSeUso = False 'La inicializamos en cada vuelta
+
+                    If txtLEN(sFolioRemision) = True Then
+                        'Si la remisión no tiene al menos un renglón utilizado en el grid principal avisar que deben de borrarla del listado
+                        For j As Integer = 1 To Me.Grid.Rows - 1
+                            Dim iIDOrigen As Integer = CInt(0 & Me.Grid.Cell(j, Me.igyIdOrigen).Text)
+                            If iIDOrigen > 0 Then
+                                Dim oSQL As New Class_find("SELECT 1 FROM VENTA_DETALLE WHERE FOLIO_VENTA='" & sReplace(sFolioRemision) & "' AND ID_VENTA_DETALLE=" & iIDOrigen.ToString)
+                                If oSQL.Result1 = "1" Then
+                                    bEstaRemisionSiSeUso = True
+                                    Exit For
+                                End If
+                            End If
+                        Next
+
+                        If bEstaRemisionSiSeUso = False Then
+                            MsgBox("La remisión " & sFolioRemision & " no fue utilizada así que debe de empezar todo el proceso desde el principio y eliminar las remisiones que no se necesiten desde antes de Aceptar(cargarlas).", MsgBoxStyle.Exclamation, sProcedure)
+                            Return False
+                        End If
+
+                        If oVenta.SiRemisionTieneMovimientosAbonoParaEvitarSustitucion(sFolioRemision) = True Then
+                            Return False
+                        End If
+                    End If
+                Next
+
             End If
 
             If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
@@ -3893,7 +3925,9 @@ CANCELAR:
             Me.DesplegarFormasPago(True) 'Para forzar a que muestre todos incluso los que están dados de baja porque al consultarlos fallaria si no estuvieran.
 
             If sTipoVenta = "NM" Then
-                Me.CboDocumento.SelectedValue = Me.oVenta.CODIGO_DOCUMENTO
+                If bEsRefrenciaSoloRenglones = False Then 'Para que no nos cambie el código
+                    Me.CboDocumento.SelectedValue = Me.oVenta.CODIGO_DOCUMENTO
+                End If
                 Me.oVenta = oVentaLocal 'Se hace de este modo porque si estan en un documento diferente al tecleado al cambiar el combo se inicializa y se pierde la venta cargada
             ElseIf sTipoVenta = "SCR" Then
                 Me.CboDocumento.SelectedValue = "REM" & Plaza.CODIGO_PLAZA.ToString
@@ -4018,7 +4052,7 @@ CANCELAR:
                 'Ante se hacia de este modo pero al ser con datasource no es posible agregar mas comentarios o tener control con algunas cosas
                 'Me.Grid.DataSource = Me.oVenta.ObtenerDetalleSoloDisponibles
 
-                If sTipoVenta = "SR" Then
+                If Me.sTipoVenta = "SR" Then
                     Me.InicializaGridFacturasVariasRemisiones()
                     Me.GridFacturasVariasRemisiones.Rows = 1
 
@@ -4027,15 +4061,33 @@ CANCELAR:
 
                     Me.CargaDetalleRemisionesSeries()
 
-                    GoTo salto
+                    GoTo salto 'Esto es porque ahora usamos el mismo mecanismo para cargar series si es una o varias remisiones. Y el código siguiente seria cuando se conviertan cotizaciones a venta(f/r)
                 End If
 
-                Dim dTabla As DataTable = Me.oVenta.ObtenerDetalleSoloDisponibles ', dCostoUnitario As Double = 0
+                Dim dTabla As DataTable
+
+                If bEsRefrenciaSoloRenglones = True Then
+                    dTabla = Me.oVenta.ObtenerDetalle(False)
+                Else
+                    dTabla = Me.oVenta.ObtenerDetalleSoloDisponibles
+                End If
 
                 Me.InicializaGrid()
                 Me.Grid.AutoRedraw = False
                 Me.Grid.Rows = 1
                 For Each dRow As DataRow In dTabla.Rows
+                    Dim sCantidad As String = "", sPRECIO_CON_DESCUENTO As String = "", sPRECIO_CON_DESCUENTO_USD As String = "", sIDOrigen As String = ""
+                    If bEsRefrenciaSoloRenglones = True Then
+                        sCantidad = dRow("CANTIDAD").ToString
+                        sPRECIO_CON_DESCUENTO = dRow("PRECIO_SIN_DESCUENTO").ToString
+                        sPRECIO_CON_DESCUENTO_USD = dRow("PRECIO_SIN_DESCUENTO_USD").ToString
+                        sIDOrigen = "" 'Al jalar simples renglones nada tiene que ya que ver el IDOrigen así que no se consulta porque además si se trae afecta al crear series porque no crearia series de este renglón
+                    Else
+                        sCantidad = dRow("DISPONIBLE").ToString
+                        sPRECIO_CON_DESCUENTO = dRow("PRECIO").ToString
+                        sPRECIO_CON_DESCUENTO_USD = dRow("PRECIO_USD").ToString
+                        sIDOrigen = dRow("ID_VENTA_DETALLE").ToString 'Aquí si importa consultar el IDOrigen y se pone ID_VENTA_DETALLE porque ese es el origen que generó este renglón.
+                    End If
 
                     'dCostoUnitario = CDbl(dRow("COSTO").ToString)
                     'If dCostoUnitario <= 0 AndAlso Empresa_Sistema.VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES > 0 Then
@@ -4045,7 +4097,7 @@ CANCELAR:
                     Me.Grid.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) &
                                     dRow("TIPO_CONTROL_INVENTARIO").ToString & Chr(9) &
                                     dRow("DESCRIPCION").ToString & Chr(9) &
-                                    dRow("DISPONIBLE").ToString & Chr(9) &
+                                    sCantidad & Chr(9) &
                                     dRow("PRECIO_SIN_DESCUENTO").ToString & Chr(9) &
                                     dRow("PRECIO_SIN_DESCUENTO_USD").ToString & Chr(9) &
                                     dRow("PRECIO_TOTAL").ToString & Chr(9) &
@@ -4060,7 +4112,7 @@ CANCELAR:
                                     dRow("CUENTA_CONTABLE").ToString & Chr(9) &
                                     dRow("IMPUESTO_IMPORTE").ToString & Chr(9) &
                                     dRow("IMPUESTO_IMPORTE_USD").ToString & Chr(9) &
-                                    dRow("ID_VENTA_DETALLE").ToString & Chr(9) &
+                                    sIDOrigen & Chr(9) &
                                     dRow("ES_PRODUCTO_KILOS").ToString & Chr(9) &
                                     dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) &
                                     dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9) &
@@ -4083,8 +4135,8 @@ CANCELAR:
                                     dRow("DESCUENTO_UNITARIO_USD").ToString & Chr(9) &
                                     dRow("DESCUENTO_IMPORTE").ToString & Chr(9) &
                                     dRow("DESCUENTO_IMPORTE_USD").ToString & Chr(9) &
-                                    dRow("PRECIO").ToString & Chr(9) &
-                                    dRow("PRECIO_USD").ToString & Chr(9) &
+                                    sPRECIO_CON_DESCUENTO & Chr(9) &
+                                    sPRECIO_CON_DESCUENTO_USD & Chr(9) &
                                     IIf(valorNumericoD(dRow("RETENCION_IVA_PORCENTAJE").ToString) > 0, "1", "0").ToString & Chr(9) &
                                     dRow("RETENCION_IVA_PORCENTAJE").ToString & Chr(9) &
                                     dRow("RETENCION_IVA_BASE").ToString & Chr(9) &
@@ -4104,8 +4156,9 @@ CANCELAR:
                     'dRow("RETENCION_IVA_IMPORTE_USD").ToString & Chr(9) &
                 Next
 
-salto:
                 Me.Grid.Rows = Me.Grid.Rows + 1
+
+salto:
 
                 Me.dpFecha.Value = Date.Now
 
@@ -4115,6 +4168,10 @@ salto:
                     Me.LblEstatus.Text = "SUSTITUYENDO"
                 End If
 
+            End If
+
+            If bEsRefrenciaSoloRenglones = True Then
+                Me.EstableceCuentasContables()
             End If
 
             Me.FormateaGrid()
@@ -4424,8 +4481,8 @@ LlenaLinea:
                                 'If txtLEN(oArticulos.CODIGO_CULTIVO) = True Then
                                 'Dim Sql As New Class_find("SELECT CUENTA_CONTABLE_BASE FROM CAT_CULTIVOS Where CODIGO_CULTIVO='" & oArticulos.CODIGO_CULTIVO.ToString & "' AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza)
 
-                                'Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + Sql.Result1 'En agr esta así, pero aquí la cuenta es general
-                                Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
+                        'Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + Sql.Result1 'En agr esta así, pero aquí la cuenta es general
+                        Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
                                 'Else
                                 ' Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = ""
                                 'End If
@@ -5143,7 +5200,7 @@ busca_serie:
 
                     Case Keys.F8
                         Me.GridSeries.Selection.DeleteByRow()
-                        'Me.Regenera_dtSeries ?
+                        Me.Regenerar_dtSeries()
 
                     Case Keys.Delete
                         e.SuppressKeyPress = True
@@ -6201,7 +6258,7 @@ BuscaVentas:
         Dim FoliosRemisiones As String = ""
 
         Try
-            Me.GridFacturasVariasRemisiones.Locked = True
+            Me.GridFacturasVariasRemisiones.Locked = True 'Ya que se cargaron se bloquea la edición, si quieren pueden listar nuevamente.
 
             For i = 1 To Me.GridFacturasVariasRemisiones.Rows - 1
                 If txtLEN(Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text) = True Then
@@ -6264,6 +6321,8 @@ BuscaVentas:
 
             Me.EsFacturaVariasRemisiones = True
             Me.sTipoVenta = "SR"
+
+            bResultado = True
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         Finally
@@ -6316,6 +6375,7 @@ BuscaVentas:
 
     Private Function GestionaSeriesPosicion(ByVal iPosicion As Integer, bEliminarPosicion As Boolean) As Boolean
         Const sProcedure As String = "GestionaSeriesPosicion"
+        Dim bResultado As Boolean = False
         Try
             Dim oArticulo As New Class_CatArticulos(Me.Grid.Cell(iPosicion, Me.igyCodigo).Text)
             If oArticulo.Existe = True AndAlso oArticulo.ES_SERIALIZABLE = True AndAlso oArticulo.INVENTARIABLE = "1" Then ' AndAlso valorNumericoD(Me.Grid.Cell(iPosicion, Me.igyIdOrigen).Text) = 0 Then
@@ -6330,6 +6390,12 @@ BuscaVentas:
                     For Each dRow As DataRow In Me.dtSeries.Select("POSICION=" & iPosicion.ToString)
                         dRow.Delete()
                     Next
+
+                    'Si se eliminó un renglón, todas las series hacia arriba de ese número hay que restarles al campo posición 1 es decir recorrerlas hacia abajo para que exista corresponencia.
+                    For Each dRow As DataRow In Me.dtSeries.Select("POSICION>" & iPosicion.ToString)
+                        dRow("POSICION") = CInt(dRow("POSICION")) - 1
+                    Next
+
                     Me.dtSeries.AcceptChanges()
                     Me.RecargarGridSeries()
                     Return True 'Salimos del proceso por que lo siguiente ya no tiene que ver con eliminar la posición.
@@ -6369,9 +6435,13 @@ BuscaVentas:
                 End If
             End If
 
+            bResultado = True
+
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
+
+        Return bResultado
     End Function
 
 #End Region
