@@ -2024,7 +2024,7 @@ Buscar:
                         .oVentasDetalle.CODIGO_CENTRO_COSTO = Me.Grid.Cell(i, Me.igyCodigoCentroCosto).Text
 
                         If Me.dtSeries.Rows.Count > 0 Then
-                            For Each dRow In Me.dtSeries.Select("POSICION='" & i.ToString & "'")
+                            For Each dRow In Me.dtSeries.Select("POSICION='" & i.ToString & "'") 'Este campo es string si no se le ponen las comillas no funciona bien.
                                 sListaSeries = sListaSeries & dRow("POSICION").ToString & "," & dRow("CODIGO_ARTICULO").ToString & "," & dRow("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & dRow("NUMERO_SERIE").ToString & "," &
                                                              dRow("ID_ORIGEN").ToString & "," & dRow("FOLIO_REMISION").ToString & "|"
                             Next
@@ -5367,7 +5367,7 @@ busca_serie:
                     Dim sArticulo As String = Me.Grid.Cell(i, Me.igyCodigo).Text
                     Dim sIDOrigen As String = Me.Grid.Cell(i, Me.igyIdOrigen).Text, sIDInventarioLoteCosto As String = "", dDisponibleLoteSerieEnRemision As Decimal = 0
                     If txtLEN(sArticulo) = True AndAlso valorNumericoD(sIDOrigen) > 0 Then
-                        For Each dRow In Me.dtSeries.Select("POSICION=" & i.ToString)
+                        For Each dRow In Me.dtSeries.Select("POSICION='" & i.ToString & "'") 'Este campo es string si no se le ponen las comillas no funciona bien.
                             sIDInventarioLoteCosto = dRow("ID_INVENTARIO_LOTES_COSTOS").ToString
 
                             'Nota aunque el campo se llame IDOrigen como renglón de factura, como renglón de remisión es IDVentaDetalle por eso se llama así el parámetro de la función.
@@ -6387,12 +6387,13 @@ BuscaVentas:
                 iNumeroSeriesEncontradas = CInt(Me.dtSeries.Compute("COUNT(POSICION)", "POSICION=" & iPosicion.ToString))
 
                 If bEliminarPosicion = True AndAlso iNumeroSeriesEncontradas > 0 Then
-                    For Each dRow As DataRow In Me.dtSeries.Select("POSICION=" & iPosicion.ToString)
+                    MsgBox("Aviso, de este renglón hay series y se eliminarán automáticamente del listado de series.", MsgBoxStyle.Information, sProcedure)
+                    For Each dRow As DataRow In Me.dtSeries.Select("POSICION='" & iPosicion.ToString & "'") 'Este campo es string si no se le ponen las comillas no funciona bien.
                         dRow.Delete()
                     Next
 
-                    'Si se eliminó un renglón, todas las series hacia arriba de ese número hay que restarles al campo posición 1 es decir recorrerlas hacia abajo para que exista corresponencia.
-                    For Each dRow As DataRow In Me.dtSeries.Select("POSICION>" & iPosicion.ToString)
+                    'Si se eliminó un renglón, todas las series hacia arriba de ese número hay que restarles al campo posición 1 es decir recorrerlas hacia abajo para que exista correspondencia.
+                    For Each dRow As DataRow In Me.dtSeries.Select("POSICION>'" & iPosicion.ToString & "'") 'Este campo es string si no se le ponen las comillas no funciona bien.
                         dRow("POSICION") = CInt(dRow("POSICION")) - 1
                     Next
 
