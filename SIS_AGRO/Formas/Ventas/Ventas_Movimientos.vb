@@ -364,6 +364,11 @@ Public Class Ventas_Movimientos
     Private Sub btnAgregarRenglon_Click(sender As Object, e As EventArgs) Handles btnAgregarRenglon.Click
         Me.Grid.Rows += 1
     End Sub
+
+    Private Sub btnMostrarMasColumnasGridSeries_Click(sender As Object, e As EventArgs) Handles btnMostrarMasColumnasGridSeries.Click
+        Me.GridSeries.Column(Me.igySerieIdInventarioLotesCostos).Visible = Not (Me.GridSeries.Column(Me.igySerieIdInventarioLotesCostos).Visible)
+        Me.GridSeries.Column(Me.igySerieIDOrigen).Visible = Not (Me.GridSeries.Column(Me.igySerieIDOrigen).Visible)
+    End Sub
 #End Region
 
 #Region "Eventos de objetos"
@@ -1426,6 +1431,7 @@ Buscar:
 
                     EsFacturaVariasRemisiones = False
                     Me.btnAceptar.Enabled = True
+                    Me.btnAceptarRemisionesSeries.Enabled = True
                     Me.btnCargarRemisiones.Enabled = True
 
                     If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
@@ -1473,6 +1479,7 @@ Buscar:
                     Me.TxtConceptoCancelacion.Visible = False
 
                     Me.btnAceptar.Enabled = False
+                    Me.btnAceptarRemisionesSeries.Enabled = False
                     Me.btnCargarRemisiones.Enabled = False
 
                     Me.TxtConcepto.Focus()
@@ -1504,6 +1511,7 @@ Buscar:
                     Me.TxtConceptoCancelacion.Visible = False
 
                     Me.btnAceptar.Enabled = False
+                    Me.btnAceptarRemisionesSeries.Enabled = False
                     Me.btnCargarRemisiones.Enabled = False
 
                     Me.tsbImprimir.Select()
@@ -1594,6 +1602,7 @@ Buscar:
                     Me.TxtConceptoCancelacion.Visible = False
 
                     Me.btnAceptar.Enabled = False
+                    Me.btnAceptarRemisionesSeries.Enabled = False
                     Me.btnCargarRemisiones.Enabled = False
 
                     Me.tsbImprimir.Select()
@@ -1633,6 +1642,7 @@ Buscar:
                     Me.TxtConceptoCancelacion.Visible = False
 
                     Me.btnAceptar.Enabled = False
+                    Me.btnAceptarRemisionesSeries.Enabled = False
                     Me.btnCargarRemisiones.Enabled = False
 
                     Me.tsbImprimir.Select()
@@ -1695,6 +1705,7 @@ Buscar:
                     Me.TxtConceptoCancelacion.ReadOnly = True
 
                     Me.btnAceptar.Enabled = False
+                    Me.btnAceptarRemisionesSeries.Enabled = False
                     Me.btnCargarRemisiones.Enabled = False
             End Select
 
@@ -5044,7 +5055,12 @@ buscaCentrosCostos:
             Next
 
             Me.FormateaGridSeries()
-            Me.TabControl1.SelectedIndex = 1
+
+            If Me.dtSeries.Rows.Count > 0 Then
+                Me.TabControl1.SelectedIndex = 1
+            Else
+                MsgBox("No hay artículos con series.", MsgBoxStyle.Exclamation, sProcedure)
+            End If
 
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -5080,9 +5096,9 @@ buscaCentrosCostos:
                 .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
 
                 .Column(Me.igySeriePosicion).Width = 50 ' False
-                .Column(Me.igySerieCodigo).Width = 100
-                .Column(Me.igySerieDescripcion).Width = 350
-                .Column(Me.igySerieIdInventarioLotesCostos).Visible = True ' False
+                .Column(Me.igySerieCodigo).Width = 150
+                .Column(Me.igySerieDescripcion).Width = 500
+                .Column(Me.igySerieIdInventarioLotesCostos).Width = 50
                 .Column(Me.igySerieNumeroSerie).Width = 250
                 .Column(Me.igySerieIDOrigen).Width = 50
                 .Column(Me.igySerieFolioRemision).Width = 75
@@ -5102,6 +5118,10 @@ buscaCentrosCostos:
                 .Column(Me.igySerieNumeroSerie).Locked = True
                 .Column(Me.igySerieIDOrigen).Locked = True
                 .Column(Me.igySerieFolioRemision).Locked = True
+
+                'Aunque por default están ocultas pueden hacerse visibles con un botón
+                .Column(Me.igySerieIdInventarioLotesCostos).Visible = False
+                .Column(Me.igySerieIDOrigen).Visible = False
 
                 .Row(.Rows - 1).Locked = True 'Para bloquear la edición del último renglón
             End With
