@@ -155,6 +155,7 @@ Partial Class Ventas_Movimientos
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
         Me.tpFacturasRemisiones = New System.Windows.Forms.TabPage()
+        Me.btnAceptarRemisionesSeries = New System.Windows.Forms.Button()
         Me.btnAceptar = New System.Windows.Forms.Button()
         Me.btnCargarRemisiones = New System.Windows.Forms.Button()
         Me.GridFacturasVariasRemisiones = New FlexCell.Grid()
@@ -163,6 +164,8 @@ Partial Class Ventas_Movimientos
         Me.btnTimbradoTrasladoPrueba = New System.Windows.Forms.Button()
         Me.btnCartaPorte = New System.Windows.Forms.Button()
         Me.chkTieneCartaPorte = New System.Windows.Forms.CheckBox()
+        Me.btnAgregarRenglon = New System.Windows.Forms.Button()
+        Me.btnMostrarMasColumnasGridSeries = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -219,7 +222,7 @@ Partial Class Ventas_Movimientos
         Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbCancelar, Me.tsbCotizacionRemision, Me.tsbCotizacionFactura, Me.tsbRemisionVenta, Me.tsbFacturaACartaPorte, Me.tsbCancelarTimbre, Me.tsbTimbrar, Me.tsbRecuperarXMLPDF, Me.tsbEnviarCorreo, Me.tsbSubirXML, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
-        Me.tsMenu.Size = New System.Drawing.Size(1290, 27)
+        Me.tsMenu.Size = New System.Drawing.Size(1287, 27)
         Me.tsMenu.TabIndex = 4
         Me.tsMenu.Text = "tsMenu"
         '
@@ -925,7 +928,7 @@ Partial Class Ventas_Movimientos
         Me.StatusStripEstado.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsslEstado, Me.tsslElaboro, Me.tsslCancelo})
         Me.StatusStripEstado.Location = New System.Drawing.Point(0, 654)
         Me.StatusStripEstado.Name = "StatusStripEstado"
-        Me.StatusStripEstado.Size = New System.Drawing.Size(1290, 24)
+        Me.StatusStripEstado.Size = New System.Drawing.Size(1287, 24)
         Me.StatusStripEstado.TabIndex = 315
         Me.StatusStripEstado.Text = "StatusStrip1"
         '
@@ -1435,16 +1438,17 @@ Partial Class Ventas_Movimientos
         Me.TabControl1.Location = New System.Drawing.Point(8, 275)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1279, 238)
+        Me.TabControl1.Size = New System.Drawing.Size(1273, 238)
         Me.TabControl1.TabIndex = 2
         '
         'tpArticulos
         '
+        Me.tpArticulos.Controls.Add(Me.btnAgregarRenglon)
         Me.tpArticulos.Controls.Add(Me.Grid)
         Me.tpArticulos.Location = New System.Drawing.Point(4, 22)
         Me.tpArticulos.Name = "tpArticulos"
         Me.tpArticulos.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpArticulos.Size = New System.Drawing.Size(1271, 212)
+        Me.tpArticulos.Size = New System.Drawing.Size(1265, 212)
         Me.tpArticulos.TabIndex = 0
         Me.tpArticulos.Text = "Artículos"
         Me.tpArticulos.UseVisualStyleBackColor = True
@@ -1464,17 +1468,18 @@ Partial Class Ventas_Movimientos
         Me.Grid.LockButton = True
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 8
-        Me.Grid.Size = New System.Drawing.Size(1266, 204)
+        Me.Grid.Size = New System.Drawing.Size(1256, 204)
         Me.Grid.TabIndex = 2
         Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
         '
         'tpSeries
         '
+        Me.tpSeries.Controls.Add(Me.btnMostrarMasColumnasGridSeries)
         Me.tpSeries.Controls.Add(Me.GridSeries)
         Me.tpSeries.Location = New System.Drawing.Point(4, 22)
         Me.tpSeries.Name = "tpSeries"
         Me.tpSeries.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpSeries.Size = New System.Drawing.Size(1271, 212)
+        Me.tpSeries.Size = New System.Drawing.Size(1265, 212)
         Me.tpSeries.TabIndex = 1
         Me.tpSeries.Text = "Series"
         Me.tpSeries.UseVisualStyleBackColor = True
@@ -1494,7 +1499,7 @@ Partial Class Ventas_Movimientos
         Me.GridSeries.LockButton = True
         Me.GridSeries.Name = "GridSeries"
         Me.GridSeries.Rows = 6
-        Me.GridSeries.Size = New System.Drawing.Size(966, 198)
+        Me.GridSeries.Size = New System.Drawing.Size(1222, 198)
         Me.GridSeries.TabIndex = 2
         Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -1505,7 +1510,7 @@ Partial Class Ventas_Movimientos
         Me.tpCFDIsRelacionados.Controls.Add(Me.cboTipoRelacionCFDI)
         Me.tpCFDIsRelacionados.Location = New System.Drawing.Point(4, 22)
         Me.tpCFDIsRelacionados.Name = "tpCFDIsRelacionados"
-        Me.tpCFDIsRelacionados.Size = New System.Drawing.Size(1271, 212)
+        Me.tpCFDIsRelacionados.Size = New System.Drawing.Size(1265, 212)
         Me.tpCFDIsRelacionados.TabIndex = 2
         Me.tpCFDIsRelacionados.Text = "Relacionar CFDIs"
         Me.tpCFDIsRelacionados.UseVisualStyleBackColor = True
@@ -1551,26 +1556,38 @@ Partial Class Ventas_Movimientos
         '
         'tpFacturasRemisiones
         '
+        Me.tpFacturasRemisiones.Controls.Add(Me.btnAceptarRemisionesSeries)
         Me.tpFacturasRemisiones.Controls.Add(Me.btnAceptar)
         Me.tpFacturasRemisiones.Controls.Add(Me.btnCargarRemisiones)
         Me.tpFacturasRemisiones.Controls.Add(Me.GridFacturasVariasRemisiones)
         Me.tpFacturasRemisiones.Location = New System.Drawing.Point(4, 22)
         Me.tpFacturasRemisiones.Margin = New System.Windows.Forms.Padding(2)
         Me.tpFacturasRemisiones.Name = "tpFacturasRemisiones"
-        Me.tpFacturasRemisiones.Size = New System.Drawing.Size(1271, 212)
+        Me.tpFacturasRemisiones.Size = New System.Drawing.Size(1265, 212)
         Me.tpFacturasRemisiones.TabIndex = 3
         Me.tpFacturasRemisiones.Text = "Facturar varias remisiones"
         Me.tpFacturasRemisiones.UseVisualStyleBackColor = True
         '
+        'btnAceptarRemisionesSeries
+        '
+        Me.btnAceptarRemisionesSeries.Location = New System.Drawing.Point(1109, 167)
+        Me.btnAceptarRemisionesSeries.Margin = New System.Windows.Forms.Padding(2)
+        Me.btnAceptarRemisionesSeries.Name = "btnAceptarRemisionesSeries"
+        Me.btnAceptarRemisionesSeries.Size = New System.Drawing.Size(123, 32)
+        Me.btnAceptarRemisionesSeries.TabIndex = 6
+        Me.btnAceptarRemisionesSeries.Text = "Aceptar(Cargarlas)"
+        Me.btnAceptarRemisionesSeries.UseVisualStyleBackColor = True
+        '
         'btnAceptar
         '
-        Me.btnAceptar.Location = New System.Drawing.Point(1109, 114)
+        Me.btnAceptar.Location = New System.Drawing.Point(1109, 100)
         Me.btnAceptar.Margin = New System.Windows.Forms.Padding(2)
         Me.btnAceptar.Name = "btnAceptar"
         Me.btnAceptar.Size = New System.Drawing.Size(123, 32)
         Me.btnAceptar.TabIndex = 5
-        Me.btnAceptar.Text = "Aceptar"
+        Me.btnAceptar.Text = "Aceptar(Cargarlas)"
         Me.btnAceptar.UseVisualStyleBackColor = True
+        Me.btnAceptar.Visible = False
         '
         'btnCargarRemisiones
         '
@@ -1579,7 +1596,7 @@ Partial Class Ventas_Movimientos
         Me.btnCargarRemisiones.Name = "btnCargarRemisiones"
         Me.btnCargarRemisiones.Size = New System.Drawing.Size(123, 32)
         Me.btnCargarRemisiones.TabIndex = 4
-        Me.btnCargarRemisiones.Text = "Cargar remisiones"
+        Me.btnCargarRemisiones.Text = "Listar remisiones"
         Me.btnCargarRemisiones.UseVisualStyleBackColor = True
         '
         'GridFacturasVariasRemisiones
@@ -1597,7 +1614,7 @@ Partial Class Ventas_Movimientos
         Me.GridFacturasVariasRemisiones.LockButton = True
         Me.GridFacturasVariasRemisiones.Name = "GridFacturasVariasRemisiones"
         Me.GridFacturasVariasRemisiones.Rows = 6
-        Me.GridFacturasVariasRemisiones.Size = New System.Drawing.Size(1062, 211)
+        Me.GridFacturasVariasRemisiones.Size = New System.Drawing.Size(1101, 211)
         Me.GridFacturasVariasRemisiones.TabIndex = 3
         Me.GridFacturasVariasRemisiones.UncheckedImage = CType(resources.GetObject("GridFacturasVariasRemisiones.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -1651,12 +1668,31 @@ Partial Class Ventas_Movimientos
         Me.chkTieneCartaPorte.UseVisualStyleBackColor = True
         Me.chkTieneCartaPorte.Visible = False
         '
+        'btnAgregarRenglon
+        '
+        Me.btnAgregarRenglon.Location = New System.Drawing.Point(3, 189)
+        Me.btnAgregarRenglon.Name = "btnAgregarRenglon"
+        Me.btnAgregarRenglon.Size = New System.Drawing.Size(17, 20)
+        Me.btnAgregarRenglon.TabIndex = 373
+        Me.btnAgregarRenglon.Text = "+"
+        Me.btnAgregarRenglon.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnAgregarRenglon.UseVisualStyleBackColor = True
+        '
+        'btnMostrarMasColumnasGridSeries
+        '
+        Me.btnMostrarMasColumnasGridSeries.Location = New System.Drawing.Point(1233, 183)
+        Me.btnMostrarMasColumnasGridSeries.Name = "btnMostrarMasColumnasGridSeries"
+        Me.btnMostrarMasColumnasGridSeries.Size = New System.Drawing.Size(29, 21)
+        Me.btnMostrarMasColumnasGridSeries.TabIndex = 374
+        Me.btnMostrarMasColumnasGridSeries.Text = "+"
+        Me.btnMostrarMasColumnasGridSeries.UseVisualStyleBackColor = True
+        '
         'Ventas_Movimientos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.ClientSize = New System.Drawing.Size(1290, 678)
+        Me.ClientSize = New System.Drawing.Size(1287, 678)
         Me.Controls.Add(Me.chkTieneCartaPorte)
         Me.Controls.Add(Me.btnCartaPorte)
         Me.Controls.Add(Me.btnTimbradoTrasladoPrueba)
@@ -1837,4 +1873,7 @@ Partial Class Ventas_Movimientos
     Friend WithEvents btnCartaPorte As Button
     Friend WithEvents tsbFacturaACartaPorte As ToolStripButton
     Friend WithEvents chkTieneCartaPorte As CheckBox
+    Friend WithEvents btnAceptarRemisionesSeries As Button
+    Friend WithEvents btnAgregarRenglon As Button
+    Friend WithEvents btnMostrarMasColumnasGridSeries As Button
 End Class

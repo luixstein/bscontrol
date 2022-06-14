@@ -1,4 +1,5 @@
 ﻿Option Strict On
+Imports System.ComponentModel
 
 Public Class Ventas_Movimientos
 
@@ -105,6 +106,8 @@ Public Class Ventas_Movimientos
     Private igySerieDescripcion As Short = 3
     Private igySerieIdInventarioLotesCostos As Short = 4
     Private igySerieNumeroSerie As Short = 5
+    Private igySerieIDOrigen As Short = 6
+    Private igySerieFolioRemision As Short = 7
 #End Region
 
 #Region "Columnas grid CFDIs relacionados"
@@ -120,6 +123,7 @@ Public Class Ventas_Movimientos
     Private iGyFecha As Short = 2
     Private iGyTotal As Short = 3
     Private iGyMoneda As Short = 4
+    Private iGyConcepto As Short = 5
 #End Region
 
 #Region "Campos/propiedades para facturas embarques extrajeros que se inician desde otra pantalla"
@@ -244,13 +248,13 @@ Public Class Ventas_Movimientos
                 End If
             End If
 
-            'No no puse porque entonces no se podrian poner comentarios en uns sustitución
+            'No lo puse porque entonces no se podrian poner comentarios en una sustitución
             'Me.Grid.Row(Me.Grid.Rows - 1).Locked = True  'Para bloquear la edición del último renglón
 
             'f6 que haria en una sust?, Queryable mejor no haya f6 , si borran de mas y quieren poner, Que le den nuevo y empiezen otra vez
 
             'Me.Grid.Locked = True
-            Me.Grid.Column(Me.igyCodigo).Locked = True 'No podrán cambiar códigos ni ponerlos con f6
+            'Me.Grid.Column(Me.igyCodigo).Locked = True 'No podrán cambiar códigos ni ponerlos con f6'ya no se ejecuta aqui porque ahora se cargan las remisiones con el método de varias remisiones y haya se bloquean celdas de códigos.
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
@@ -354,7 +358,16 @@ Public Class Ventas_Movimientos
     End Sub
 
     Private Sub btnCartaPorte_Click(sender As Object, e As EventArgs) Handles btnCartaPorte.Click
-        Me.GestionaCartaPorte
+        Me.GestionaCartaPorte()
+    End Sub
+
+    Private Sub btnAgregarRenglon_Click(sender As Object, e As EventArgs) Handles btnAgregarRenglon.Click
+        Me.Grid.Rows += 1
+    End Sub
+
+    Private Sub btnMostrarMasColumnasGridSeries_Click(sender As Object, e As EventArgs) Handles btnMostrarMasColumnasGridSeries.Click
+        Me.GridSeries.Column(Me.igySerieIdInventarioLotesCostos).Visible = Not (Me.GridSeries.Column(Me.igySerieIdInventarioLotesCostos).Visible)
+        Me.GridSeries.Column(Me.igySerieIDOrigen).Visible = Not (Me.GridSeries.Column(Me.igySerieIDOrigen).Visible)
     End Sub
 #End Region
 
@@ -863,7 +876,12 @@ Buscar:
     End Sub
 
     Private Sub btnAceptar_Click(sender As Object, e As EventArgs) Handles btnAceptar.Click
-        Me.CargaDetalleRemisiones()
+        MsgBox("Ya no se usa este botón que era mas bien para facturar varias remisiones cancelandolas primero.")
+        'Me.CargaDetalleRemisiones()
+    End Sub
+
+    Private Sub btnAceptarRemisionesSeries_Click(sender As Object, e As EventArgs) Handles btnAceptarRemisionesSeries.Click
+        Me.CargaDetalleRemisionesSeries()
     End Sub
 
 #End Region
@@ -952,7 +970,7 @@ Buscar:
             Me.InicializaGridCFDIsRelacionados()
 
             Me.InicializaGridFacturasVariasRemisiones()
-            EsFacturaVariasRemisiones = False
+            Me.EsFacturaVariasRemisiones = False
 
             Me.lblUtilidad.Text = "0.00"
             Me.lblPorcentajeUtilidad.Text = "0.00"
@@ -974,6 +992,7 @@ Buscar:
             Me.Grid.DataSource = Nothing
             FG_Grid_Limpiar(Me.Grid)
             Me.Grid.Rows = 2
+            Me.Grid.Cols = 56
             Me.FormateaGrid()
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -984,7 +1003,6 @@ Buscar:
         Const sProcedure As String = "FormateaGrid"
         Try
             Me.Grid.AutoRedraw = False
-            Me.Grid.Cols = 56
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyCodigo).Width = 75
             Me.Grid.Column(Me.igyTipoControlInventariable).Width = 25
@@ -1105,7 +1123,6 @@ Buscar:
             Me.Grid.Cell(0, Me.iGyRETENCION_ISR_BASE_USD).Text = "ISRRetBaseUSD"
             Me.Grid.Cell(0, Me.iGyRETENCION_ISR_IMPORTE).Text = "ISRRetImp"
             Me.Grid.Cell(0, Me.iGyRETENCION_ISR_IMPORTE_USD).Text = "ISRRetImpUSD"
-
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Me.Grid.Column(Me.igyNombreCentroCosto).Alignment = FlexCell.AlignmentEnum.LeftCenter
 
@@ -1414,6 +1431,7 @@ Buscar:
 
                     EsFacturaVariasRemisiones = False
                     Me.btnAceptar.Enabled = True
+                    Me.btnAceptarRemisionesSeries.Enabled = True
                     Me.btnCargarRemisiones.Enabled = True
 
                     If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
@@ -1461,6 +1479,7 @@ Buscar:
                     Me.TxtConceptoCancelacion.Visible = False
 
                     Me.btnAceptar.Enabled = False
+                    Me.btnAceptarRemisionesSeries.Enabled = False
                     Me.btnCargarRemisiones.Enabled = False
 
                     Me.TxtConcepto.Focus()
@@ -1492,6 +1511,7 @@ Buscar:
                     Me.TxtConceptoCancelacion.Visible = False
 
                     Me.btnAceptar.Enabled = False
+                    Me.btnAceptarRemisionesSeries.Enabled = False
                     Me.btnCargarRemisiones.Enabled = False
 
                     Me.tsbImprimir.Select()
@@ -1582,6 +1602,7 @@ Buscar:
                     Me.TxtConceptoCancelacion.Visible = False
 
                     Me.btnAceptar.Enabled = False
+                    Me.btnAceptarRemisionesSeries.Enabled = False
                     Me.btnCargarRemisiones.Enabled = False
 
                     Me.tsbImprimir.Select()
@@ -1600,7 +1621,8 @@ Buscar:
                     Me.btnAgregaAddenda.Visible = False
                     Me.frmDatos.Enabled = True
                     'Me.Grid.Locked = True 'De momento no se permiten editar cantidades, o precios
-                    Me.GridSeries.Locked = True 'De momento no permitimos manejo de series en sustituciones.
+                    'Me.GridSeries.Locked = True 'De momento no permitimos manejo de series en sustituciones.
+                    Me.GridSeries.Locked = False  'Ya permitimos manejo de series en sustituciones.
                     Me.GridFacturasVariasRemisiones.Locked = True
 
                     Me.tsbTimbrar.Visible = False
@@ -1620,6 +1642,7 @@ Buscar:
                     Me.TxtConceptoCancelacion.Visible = False
 
                     Me.btnAceptar.Enabled = False
+                    Me.btnAceptarRemisionesSeries.Enabled = False
                     Me.btnCargarRemisiones.Enabled = False
 
                     Me.tsbImprimir.Select()
@@ -1682,6 +1705,7 @@ Buscar:
                     Me.TxtConceptoCancelacion.ReadOnly = True
 
                     Me.btnAceptar.Enabled = False
+                    Me.btnAceptarRemisionesSeries.Enabled = False
                     Me.btnCargarRemisiones.Enabled = False
             End Select
 
@@ -1843,25 +1867,26 @@ Buscar:
                 End If
             End If
 
-            If EsFacturaVariasRemisiones = True Then 'Primero se deben cancelar las remisiones que se quieren facturar
-                Dim FoliosRemisiones As String = ""
+            'If Me.EsFacturaVariasRemisiones = True Then 'Primero se deben cancelar las remisiones que se quieren facturar
+            'MsgBox("FALTA se quitó de momento esta sección que cancela remisiones revisar luego")
+            'Dim FoliosRemisiones As String = ""
 
-                For i = 1 To Me.GridFacturasVariasRemisiones.Rows - 1
-                    FoliosRemisiones = FoliosRemisiones & Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text & "|"
-                Next
+            'For i = 1 To Me.GridFacturasVariasRemisiones.Rows - 1
+            '    FoliosRemisiones = FoliosRemisiones & Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text & "|"
+            'Next
 
-                FoliosRemisiones = FoliosRemisiones.Substring(0, FoliosRemisiones.Length - 1) 'Para quitarle el último pipe que sale sobrando
+            'FoliosRemisiones = FoliosRemisiones.Substring(0, FoliosRemisiones.Length - 1) 'Para quitarle el último pipe que sale sobrando
 
-                oVenta.CODIGO_PLAZA = Plaza.CODIGO_PLAZA
-                oVenta.CODIGO_USUARIO_CANCELO = Usuario.Codigo_Usuario
-                oVenta.FECHA_CANCELACION = Date.Now
-                oVenta.CONCEPTO_CANCELACION = "CANCELACION POR FACTURACION DE VARIAS REMISIONES"
+            'oVenta.CODIGO_PLAZA = Plaza.CODIGO_PLAZA
+            'oVenta.CODIGO_USUARIO_CANCELO = Usuario.Codigo_Usuario
+            'oVenta.FECHA_CANCELACION = Date.Now
+            'oVenta.CONCEPTO_CANCELACION = "CANCELACION POR FACTURACION DE VARIAS REMISIONES"
 
-                If oVenta.CancelaMultiplesRemisiones(FoliosRemisiones) = False Then
-                    MsgBox("Error al cancelar las remisiones que se quieren facturar.", MsgBoxStyle.Exclamation, Me.Name)
-                    Return False
-                End If
-            End If
+            'If oVenta.CancelaMultiplesRemisiones(FoliosRemisiones) = False Then
+            '    MsgBox("Error al cancelar las remisiones que se quieren facturar.", MsgBoxStyle.Exclamation, Me.Name)
+            '    Return False
+            'End If
+            'End If
 
             With Me.oVenta
                 .FOLIO_VENTA = Me.txtFolio.Text.ToUpper
@@ -1977,6 +2002,8 @@ Buscar:
                     End If
                 End If
 
+                Me.Regenerar_dtSeries()  'Nota recuerde que dtSeries ya no esta ligado con datasource al grid asi que para usarlo antes hay que regenerarlo o bien trabajar directo con el gridSeries y no con dtSeries
+
                 'se graba el detalle
                 For i = 1 To Me.Grid.Rows - 1
                     If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
@@ -1992,7 +2019,7 @@ Buscar:
                         If Me.sTipoVenta = "NM" Then
                             .oVentasDetalle.ID_ORIGEN = 0
                         Else
-                            .oVentasDetalle.ID_ORIGEN = CInt(Me.Grid.Cell(i, Me.igyIdOrigen).Text)
+                            .oVentasDetalle.ID_ORIGEN = CInt(0 & Me.Grid.Cell(i, Me.igyIdOrigen).Text)
                         End If
 
                         .oVentasDetalle.CUENTA_CONTABLE = Me.Grid.Cell(i, Me.igyCuentaContable).Text
@@ -2008,8 +2035,9 @@ Buscar:
                         .oVentasDetalle.CODIGO_CENTRO_COSTO = Me.Grid.Cell(i, Me.igyCodigoCentroCosto).Text
 
                         If Me.dtSeries.Rows.Count > 0 Then
-                            For Each dRow In Me.dtSeries.Select("POSICION='" & i.ToString & "'")
-                                sListaSeries = sListaSeries & dRow("POSICION").ToString & "," & dRow("CODIGO_ARTICULO").ToString & "," & dRow("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & dRow("NUMERO_SERIE").ToString & "|"
+                            For Each dRow In Me.dtSeries.Select("POSICION='" & i.ToString & "'") 'Este campo es string si no se le ponen las comillas no funciona bien.
+                                sListaSeries = sListaSeries & dRow("POSICION").ToString & "," & dRow("CODIGO_ARTICULO").ToString & "," & dRow("ID_INVENTARIO_LOTES_COSTOS").ToString & "," & dRow("NUMERO_SERIE").ToString & "," &
+                                                             dRow("ID_ORIGEN").ToString & "," & dRow("FOLIO_REMISION").ToString & "|"
                             Next
                             If txtLEN(sListaSeries) = True Then
                                 sListaSeries = sListaSeries.Substring(0, sListaSeries.Length - 1) 'Para quitarle el último pipe que sale sobrando.
@@ -2149,10 +2177,10 @@ SaltarTimbrado:
                     End If
                 End If
 
-                If EsFacturaVariasRemisiones = True Then
+                If Me.EsFacturaVariasRemisiones = True Then
                     For i = 1 To Me.GridFacturasVariasRemisiones.Rows - 1
                         If oVenta.GrabaRelacionRemisionFactura(Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text) = False Then
-                            MsgBox("Error al grabar la relación de la remisión " & Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text, MsgBoxStyle.Exclamation, Me.Name)
+                            MsgBox("Error al grabar la relación de la remisión " & Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text, MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
                     Next
@@ -2165,8 +2193,6 @@ SaltarTimbrado:
                     Me._GrabadaFacturaEmbarqueExtranjero = True
                     Me.Hide()
                 End If
-
-                EsFacturaVariasRemisiones = False
 
                 'Todo este código tiene que ver con la generación de la nota de crédito por aplicación de anticipo.
                 'En el ValidarVenta nos aseguramos que en caso de ser tipo de relación 07 , sólo permita una factura de tipo anticipo de modo que al llegar aquí eso ya es un hecho.
@@ -2216,6 +2242,10 @@ SaltarTimbrado:
                         End If
                     End If
                 End If
+
+                'Deben reestablercese estos valores para que no se confunda la consulta
+                Me.EsFacturaVariasRemisiones = False
+                Me.sTipoVenta = "NM"
 
             End With
 
@@ -2384,7 +2414,7 @@ CANCELAR:
                 oEmbarques.FOLIO_EMBARQUE = Me.txtFolioEmbarque.Text
 
                 If oEmbarques.GeneraMarcaFactura(Me.txtFolio.Text, False) = False Then
-                    MsgBox("Error al tratar de marcar el embarque como facturado.", MsgBoxStyle.Information, sProcedure)
+                    MsgBox("Error al tratar de marcar el embarque como facturado.", MsgBoxStyle.Exclamation, sProcedure)
                 End If
             End If
 
@@ -2545,7 +2575,6 @@ CANCELAR:
             '    End If
             'Next i
 
-
             If Me.oDocumento.CODIGO_TIPO_DOCUMENTO <> "FT" Then 'Factura de traslado
 
                 Dim oFormaPago As New Class_CFD_CatFormasPago(Me.cboFormaPago.SelectedValue.ToString)
@@ -2633,16 +2662,48 @@ CANCELAR:
                 Return False
             End If
 
-            If Me.sTipoVenta <> "SR" AndAlso Me.oDocumento.AFECTA_INVENTARIOS = True AndAlso EsFacturaVariasRemisiones = False Then
+            'If Me.sTipoVenta <> "SR" AndAlso Me.oDocumento.AFECTA_INVENTARIOS = True AndAlso Me.EsFacturaVariasRemisiones = False Then
+            If Me.oDocumento.AFECTA_INVENTARIOS = True Then 'Dentro revisa porque puede ser sustitución con artículos agregados directos(adicionales que no vienen de sustituir remisiones) y tampoco importa ya EsFacturaVariasRemisiones
                 If Me.ValidarExistencias() = False Then
                     Return False
                 End If
             End If
 
             If Me.sTipoVenta = "SR" Then
-                If oVenta.SiRemisionTieneMovimientosAbonoParaEvitarSustitucion(Me.TxtReferencia.Text) = True Then 'Aqui ya se quiere convertir a remisión, entonces el folio sale del txtReferencia
-                    Return False
-                End If
+                'Antes sólo se permitia sustituir una remisión, ahora varias y los folios estarán en el grid de remisiones.
+                'If oVenta.SiRemisionTieneMovimientosAbonoParaEvitarSustitucion(Me.TxtReferencia.Text) = True Then 'Aqui ya se quiere convertir a remisión, entonces el folio sale del txtReferencia
+                '    Return False
+                'End If
+
+                Dim bEstaRemisionSiSeUso As Boolean = False
+                For i As Integer = 1 To Me.GridFacturasVariasRemisiones.Rows - 1
+                    Dim sFolioRemision As String = Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text
+                    bEstaRemisionSiSeUso = False 'La inicializamos en cada vuelta
+
+                    If txtLEN(sFolioRemision) = True Then
+                        'Si la remisión no tiene al menos un renglón utilizado en el grid principal avisar que deben de borrarla del listado
+                        For j As Integer = 1 To Me.Grid.Rows - 1
+                            Dim iIDOrigen As Integer = CInt(0 & Me.Grid.Cell(j, Me.igyIdOrigen).Text)
+                            If iIDOrigen > 0 Then
+                                Dim oSQL As New Class_find("SELECT 1 FROM VENTA_DETALLE WHERE FOLIO_VENTA='" & sReplace(sFolioRemision) & "' AND ID_VENTA_DETALLE=" & iIDOrigen.ToString)
+                                If oSQL.Result1 = "1" Then
+                                    bEstaRemisionSiSeUso = True
+                                    Exit For
+                                End If
+                            End If
+                        Next
+
+                        If bEstaRemisionSiSeUso = False Then
+                            MsgBox("La remisión " & sFolioRemision & " no fue utilizada así que debe de empezar todo el proceso desde el principio y eliminar las remisiones que no se necesiten desde antes de Aceptar(cargarlas).", MsgBoxStyle.Exclamation, sProcedure)
+                            Return False
+                        End If
+
+                        If oVenta.SiRemisionTieneMovimientosAbonoParaEvitarSustitucion(sFolioRemision) = True Then
+                            Return False
+                        End If
+                    End If
+                Next
+
             End If
 
             If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
@@ -2985,19 +3046,26 @@ CANCELAR:
 
             For i = 1 To Me.Grid.Rows - 1
                 If Len(Me.Grid.Cell(i, Me.igyCodigo).Text) > 0 Then
+
+                    '"Si no" es una venta normal o es sustitución y es un artículo directo(adicional agregado manualmente que no proviene de la remisión)
+                    If Not ((Me.sTipoVenta <> "SR") Or (Me.sTipoVenta = "SR" AndAlso valorNumericoD(Me.Grid.Cell(i, Me.igyIdOrigen).Text) = 0)) Then
+                        Continue For 'Se salta este artículo.
+                    End If
+
                     dExistencia = oInventarios.Existencia(Me.Grid.Cell(i, Me.igyCodigo).Text, Me.CboAlmacen.SelectedValue.ToString)
                     oArticulos = New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
                     If oArticulos.INVENTARIABLE = "1" Then
                         If txtLEN(oArticulos.CODIGO_CULTIVO) = False Then
                             If dExistencia <= 0 Then
-                                MsgBox("El artículo " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " no tiene existencia. ", MsgBoxStyle.Exclamation, sProcedure)
-                                Exit Function
+                                MsgBox("El artículo " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " no tiene existencia.", MsgBoxStyle.Exclamation, sProcedure)
+                                Return False
                             Else
                                 dCantidadSumadaPorArticulos = valorNumerico(dt.Compute("sum(CANTIDAD)", "CODIGO_ARTICULO='" & Me.Grid.Cell(i, Me.igyCodigo).Text & "'").ToString)
 
                                 If valorNumerico(dCantidadSumadaPorArticulos.ToString) > valorNumerico(dExistencia.ToString) Then
-                                    MsgBox("El Artículo " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
-                                    Exit Function
+                                    MsgBox("El artículo " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " no tiene suficiente existencia." & vbCrLf &
+                                           "Hay " & dExistencia.ToString & " de existencia en el almacén " & Me.CboAlmacen.Text, MsgBoxStyle.Exclamation, sProcedure)
+                                    Return False
                                 End If
                             End If
                         End If
@@ -3005,19 +3073,21 @@ CANCELAR:
                 End If
             Next i
 
-            With Me.GridSeries
-                For i = 1 To .Rows - 1
-                    If Len(.Cell(i, Me.igySeriePosicion).Text) > 0 Then
-                        If Len(.Cell(i, Me.igySerieIdInventarioLotesCostos).Text) > 0 Then
-                            dExistencia = oInventarios.ExistenciaLoteSerie(.Cell(i, Me.igySerieIdInventarioLotesCostos).Text)
-                            If dExistencia < 1 Then
-                                MsgBox("El Artículo " & .Cell(i, Me.igySerieDescripcion).Text & " con la serie " & .Cell(i, Me.igySerieNumeroSerie).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
-                                Return False
+            If Me.sTipoVenta <> "SR" Then 'Sólo si es una venta normal va revisar que haya series disponibles, si fuera sustitución se deben validar disponibes vs remisión(otro proceso que no es este)
+                With Me.GridSeries
+                    For i = 1 To .Rows - 1
+                        If Len(.Cell(i, Me.igySeriePosicion).Text) > 0 Then
+                            If Len(.Cell(i, Me.igySerieIdInventarioLotesCostos).Text) > 0 Then
+                                dExistencia = oInventarios.ExistenciaLoteSerie(.Cell(i, Me.igySerieIdInventarioLotesCostos).Text)
+                                If dExistencia < 1 Then
+                                    MsgBox("El artículo " & .Cell(i, Me.igySerieDescripcion).Text & " con la serie " & .Cell(i, Me.igySerieNumeroSerie).Text & " no tiene suficiente existencia.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Return False
+                                End If
                             End If
                         End If
-                    End If
-                Next
-            End With
+                    Next
+                End With
+            End If
 
             Return True
         Catch ex As Exception
@@ -3026,23 +3096,26 @@ CANCELAR:
     End Function
 
     Private Function ValidarDisponible() As Boolean
-        Dim i As Integer, dDisponible As Double
+        Const sProcedure As String = "ValidarDisponible"
+        Dim i As Integer, dDisponible As Decimal = 0
         Try
-            i = 1
-            If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
-                dDisponible = Me.oVenta.ObtenerDisponibleRenglon(CInt(Me.Grid.Cell(i, Me.igyIdOrigen).Text))
-                If valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text) > dDisponible Then
-                    MsgBox("La cantidad del renglón #" & i & " es mayor al disponible.", MsgBoxStyle.Exclamation, "ValidarDisponibles")
-                    Me.Grid.Cell(i, Me.igyCantidad).Text = "0"
-                    Me.Totales()
-                    Me.Grid.Refresh()
-                    Me.Grid.Cell(i, Me.igyDescripcion).SetFocus()
-                    Return False
+            For i = 1 To Me.Grid.Rows - 1
+                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True AndAlso valorNumericoD(Me.Grid.Cell(i, Me.igyIdOrigen).Text) > 0 Then
+                    dDisponible = Me.oVenta.ObtenerDisponibleRenglon(CInt(Me.Grid.Cell(i, Me.igyIdOrigen).Text))
+                    If valorNumericoD(Me.Grid.Cell(i, Me.igyCantidad).Text) > dDisponible Then
+                        MsgBox("La cantidad del renglón #" & i.ToString & " es mayor al disponible que es de " & dDisponible.ToString, MsgBoxStyle.Exclamation, sProcedure)
+                        Me.Grid.Cell(i, Me.igyCantidad).Text = "0"
+                        Me.Totales()
+                        Me.Grid.Refresh()
+                        Me.Grid.Cell(i, Me.igyDescripcion).SetFocus()
+                        Return False
+                    End If
                 End If
-            End If
+            Next
+
             Return True
         Catch ex As Exception
-            HandleError(Me.Name, "ValidarDisponibles", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
 
@@ -3863,7 +3936,9 @@ CANCELAR:
             Me.DesplegarFormasPago(True) 'Para forzar a que muestre todos incluso los que están dados de baja porque al consultarlos fallaria si no estuvieran.
 
             If sTipoVenta = "NM" Then
-                Me.CboDocumento.SelectedValue = Me.oVenta.CODIGO_DOCUMENTO
+                If bEsRefrenciaSoloRenglones = False Then 'Para que no nos cambie el código
+                    Me.CboDocumento.SelectedValue = Me.oVenta.CODIGO_DOCUMENTO
+                End If
                 Me.oVenta = oVentaLocal 'Se hace de este modo porque si estan en un documento diferente al tecleado al cambiar el combo se inicializa y se pierde la venta cargada
             ElseIf sTipoVenta = "SCR" Then
                 Me.CboDocumento.SelectedValue = "REM" & Plaza.CODIGO_PLAZA.ToString
@@ -3886,6 +3961,7 @@ CANCELAR:
 
             Me.oCliente = New Class_CatClientes(Me.TxtCliente.Text)
             Me.lblCliente.Text = Me.oCliente.NOMBRE_CLIENTE
+            Me.bClienteEsContribuyenteIEPS = CBool(Me.oCliente.ES_CONTRIBUYENTE_IEPS)
 
             If bEsReferencia = False Then
                 Me.LblPoliza.Text = Me.oVenta.FOLIO_POLIZA
@@ -3901,8 +3977,6 @@ CANCELAR:
             Me.lblIEPSIncluido.Text = FormatImporteContable(Me.oVenta.IEPS_TOTAL_YA_INCLUIDO)
             Me.lblTotalRetencionIVA.Text = FormatImporteContable(Me.oVenta.RETENCION_IVA)
             Me.lblTotalRetencionISR.Text = FormatImporteContable(Me.oVenta.RETENCION_ISR)
-
-            Me.bClienteEsContribuyenteIEPS = CBool(Me.oCliente.ES_CONTRIBUYENTE_IEPS)
 
             Me.cboMoneda.Text = Me.oVenta.CODIGO_MONEDA_SAT 'Nota debe llenarse primero la moneda porque tiene evento change que llena la forma de pago segun el cte, y asi se consulta correcto.
             Me.txtTipoCambio.Text = Format(Me.oVenta.TIPO_DE_CAMBIO, "##0.0000")
@@ -3989,12 +4063,42 @@ CANCELAR:
                 'Ante se hacia de este modo pero al ser con datasource no es posible agregar mas comentarios o tener control con algunas cosas
                 'Me.Grid.DataSource = Me.oVenta.ObtenerDetalleSoloDisponibles
 
-                Dim dTabla As DataTable = Me.oVenta.ObtenerDetalleSoloDisponibles ', dCostoUnitario As Double = 0
+                If Me.sTipoVenta = "SR" Then
+                    Me.InicializaGridFacturasVariasRemisiones()
+                    Me.GridFacturasVariasRemisiones.Rows = 1
+
+                    Me.GridFacturasVariasRemisiones.AddItem(oVenta.FOLIO_VENTA & Chr(9) & oVenta.FECHA & Chr(9) & oVenta.TOTAL.ToString & Chr(9) & oVenta.CODIGO_MONEDA_SAT & Chr(9) &
+                                           oVenta.CONCEPTO & Chr(9))
+
+                    Me.CargaDetalleRemisionesSeries()
+
+                    GoTo salto 'Esto es porque ahora usamos el mismo mecanismo para cargar series si es una o varias remisiones. Y el código siguiente seria cuando se conviertan cotizaciones a venta(f/r)
+                End If
+
+                Dim dTabla As DataTable
+
+                If bEsRefrenciaSoloRenglones = True Then
+                    dTabla = Me.oVenta.ObtenerDetalle(False)
+                Else
+                    dTabla = Me.oVenta.ObtenerDetalleSoloDisponibles
+                End If
 
                 Me.InicializaGrid()
                 Me.Grid.AutoRedraw = False
                 Me.Grid.Rows = 1
                 For Each dRow As DataRow In dTabla.Rows
+                    Dim sCantidad As String = "", sPRECIO_CON_DESCUENTO As String = "", sPRECIO_CON_DESCUENTO_USD As String = "", sIDOrigen As String = ""
+                    If bEsRefrenciaSoloRenglones = True Then
+                        sCantidad = dRow("CANTIDAD").ToString
+                        sPRECIO_CON_DESCUENTO = dRow("PRECIO_SIN_DESCUENTO").ToString
+                        sPRECIO_CON_DESCUENTO_USD = dRow("PRECIO_SIN_DESCUENTO_USD").ToString
+                        sIDOrigen = "" 'Al jalar simples renglones nada tiene que ya que ver el IDOrigen así que no se consulta porque además si se trae afecta al crear series porque no crearia series de este renglón
+                    Else
+                        sCantidad = dRow("DISPONIBLE").ToString
+                        sPRECIO_CON_DESCUENTO = dRow("PRECIO").ToString
+                        sPRECIO_CON_DESCUENTO_USD = dRow("PRECIO_USD").ToString
+                        sIDOrigen = dRow("ID_VENTA_DETALLE").ToString 'Aquí si importa consultar el IDOrigen y se pone ID_VENTA_DETALLE porque ese es el origen que generó este renglón.
+                    End If
 
                     'dCostoUnitario = CDbl(dRow("COSTO").ToString)
                     'If dCostoUnitario <= 0 AndAlso Empresa_Sistema.VENTAS_COSTO_DEFAULT_NO_INVENTARIABLES > 0 Then
@@ -4004,7 +4108,7 @@ CANCELAR:
                     Me.Grid.AddItem(dRow("CODIGO_ARTICULO").ToString & Chr(9) &
                                     dRow("TIPO_CONTROL_INVENTARIO").ToString & Chr(9) &
                                     dRow("DESCRIPCION").ToString & Chr(9) &
-                                    dRow("DISPONIBLE").ToString & Chr(9) &
+                                    sCantidad & Chr(9) &
                                     dRow("PRECIO_SIN_DESCUENTO").ToString & Chr(9) &
                                     dRow("PRECIO_SIN_DESCUENTO_USD").ToString & Chr(9) &
                                     dRow("PRECIO_TOTAL").ToString & Chr(9) &
@@ -4019,7 +4123,7 @@ CANCELAR:
                                     dRow("CUENTA_CONTABLE").ToString & Chr(9) &
                                     dRow("IMPUESTO_IMPORTE").ToString & Chr(9) &
                                     dRow("IMPUESTO_IMPORTE_USD").ToString & Chr(9) &
-                                    dRow("ID_VENTA_DETALLE").ToString & Chr(9) &
+                                    sIDOrigen & Chr(9) &
                                     dRow("ES_PRODUCTO_KILOS").ToString & Chr(9) &
                                     dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) &
                                     dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9) &
@@ -4042,8 +4146,8 @@ CANCELAR:
                                     dRow("DESCUENTO_UNITARIO_USD").ToString & Chr(9) &
                                     dRow("DESCUENTO_IMPORTE").ToString & Chr(9) &
                                     dRow("DESCUENTO_IMPORTE_USD").ToString & Chr(9) &
-                                    dRow("PRECIO").ToString & Chr(9) &
-                                    dRow("PRECIO_USD").ToString & Chr(9) &
+                                    sPRECIO_CON_DESCUENTO & Chr(9) &
+                                    sPRECIO_CON_DESCUENTO_USD & Chr(9) &
                                     IIf(valorNumericoD(dRow("RETENCION_IVA_PORCENTAJE").ToString) > 0, "1", "0").ToString & Chr(9) &
                                     dRow("RETENCION_IVA_PORCENTAJE").ToString & Chr(9) &
                                     dRow("RETENCION_IVA_BASE").ToString & Chr(9) &
@@ -4065,6 +4169,8 @@ CANCELAR:
 
                 Me.Grid.Rows = Me.Grid.Rows + 1
 
+salto:
+
                 Me.dpFecha.Value = Date.Now
 
                 If bEsRefrenciaSoloRenglones = True Then
@@ -4073,6 +4179,10 @@ CANCELAR:
                     Me.LblEstatus.Text = "SUSTITUYENDO"
                 End If
 
+            End If
+
+            If bEsRefrenciaSoloRenglones = True Then
+                Me.EstableceCuentasContables()
             End If
 
             Me.FormateaGrid()
@@ -4112,6 +4222,12 @@ CANCELAR:
             Me.GestionaMoneda()
 
             Me.txtFolio.Enabled = False
+
+            If Me.sTipoVenta = "SR" Then
+                'Ya no ejecutamos el código siguiente porque este documento es nuevo
+                Me.TxtReferencia.Enabled = False
+                Return bResultado
+            End If
 
             'Si es cotizacion si permitira editar
             If Me.oVenta.CODIGO_DOCUMENTO = "CTZ" & Plaza.CODIGO_PLAZA.ToString And Me.oVenta.ESTATUS_VENTA = "G" Then
@@ -4376,8 +4492,8 @@ LlenaLinea:
                                 'If txtLEN(oArticulos.CODIGO_CULTIVO) = True Then
                                 'Dim Sql As New Class_find("SELECT CUENTA_CONTABLE_BASE FROM CAT_CULTIVOS Where CODIGO_CULTIVO='" & oArticulos.CODIGO_CULTIVO.ToString & "' AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza)
 
-                                'Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + Sql.Result1 'En agr esta así, pero aquí la cuenta es general
-                                Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
+                        'Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + Sql.Result1 'En agr esta así, pero aquí la cuenta es general
+                        Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
                                 'Else
                                 ' Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = ""
                                 'End If
@@ -4398,23 +4514,27 @@ LlenaLinea:
 
                         Case Me.igyCantidad
                             If dCantidad <= 0 Then
-                                MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, Me.Text)
+                                MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
                                 Me.Grid.Cell(Renglon, Me.igyDescripcion).SetFocus()
                                 Return
                             End If
 
                             oArticulo = New Class_CatArticulos(StrCod)
 
-                            If sTipoVenta <> "NM" Then
+                            If Me.sTipoVenta <> "NM" Then
                                 If Me.ValidarDisponible() = False Then
                                     Return
                                 End If
                             End If
 
-                            If Me.oDocumento.AFECTA_INVENTARIOS = True And sTipoVenta <> "SR" Then
+                            If Me.oDocumento.AFECTA_INVENTARIOS = True Then 'And sTipoVenta <> "SR" Then
                                 If Me.ValidarExistencias() = False Then
                                     Return
                                 End If
+                            End If
+
+                            If Me.sTipoVenta = "SR" Then
+                                Me.GestionaSeriesPosicion(Renglon, False)
                             End If
 
                             If Me.oDocumento.AFECTA_CXC = True Then
@@ -4547,6 +4667,13 @@ BuscaArticulos:
                                 Return
                             End If
 
+                            If Me.sTipoVenta = "SR" Then
+                                If valorNumericoD(Me.Grid.Cell(Renglon, Me.igyIdOrigen).Text) > 0 Then
+                                    MsgBox("No es valido usar F6 en un renglón que proviene de una remisión.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Return
+                                End If
+                            End If
+
                             oArticulo = New Class_CatArticulos
 
                             If Me.oDocumento.AFECTA_INVENTARIOS = True Then
@@ -4608,8 +4735,9 @@ buscaCentrosCostos:
 
                     End Select
 
-                Case Keys.F8, Keys.Delete  'Borrar renglón
+                Case Keys.F8  'Borrar renglón
                     If (Me.Estado = enumEstados.NUEVO Or Me.Estado = enumEstados.GRABADO Or Me.Estado = enumEstados.SUSTITUYENDO) Then
+                        Me.GestionaSeriesPosicion(Renglon, True) 'Elimina todas las series en caso de ser un artículo seriado
                         Me.Grid.Selection.DeleteByRow()
                         Me.Totales()
                     End If
@@ -4857,16 +4985,9 @@ buscaCentrosCostos:
         Return bResultado
     End Function
 
-    Private Sub PrepararSeries()
+    Private Sub Inicializa_dtSeries()
+        Const sProcedure As String = "Inicializa_dtSeries"
         Try
-            'Dim iUnidades As Integer
-
-            If IsNothing(Me.dtSeries) = False AndAlso Me.dtSeries.Rows.Count > 0 Then
-                If MsgBox("Hay series ya especificadas, si continua tendrá que recapturar todas." & vbCrLf & "Esta seguro de continuar ?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
-                    Return
-                End If
-            End If
-
             Me.dtSeries.Clear()
             Me.dtSeries = New DataTable("Series")
             With Me.dtSeries
@@ -4875,15 +4996,36 @@ buscaCentrosCostos:
                 .Columns.Add("DESCRIPCION", GetType(String))
                 .Columns.Add("ID_INVENTARIO_LOTES_COSTOS", GetType(String))
                 .Columns.Add("NUMERO_SERIE", GetType(String))
+                .Columns.Add("ID_ORIGEN", GetType(String))
+                .Columns.Add("FOLIO_REMISION", GetType(String))
             End With
             Me.dtSeries.AcceptChanges()
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
+    Private Sub PrepararSeries()
+        Const sProcedure As String = "PrepararSeries"
+        Try
+            If Me.sTipoVenta = "SR" Then
+                MsgBox("Al estar facturando varias remisiones no es válido usar este botón porque las series se crean en automático desde la opción de facturar varias remisiones, puede usar esta opción y empezar el proceso desde cero.", MsgBoxStyle.Information, sProcedure)
+                Return
+            End If
+
+            If IsNothing(Me.dtSeries) = False AndAlso Me.dtSeries.Rows.Count > 0 Then
+                If MsgBox("Hay series ya especificadas, si continua tendrá que recapturar todas." & vbCrLf & "Esta seguro de continuar ?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
+                    Return
+                End If
+            End If
+
+            Me.Inicializa_dtSeries()
 
             Dim dRow As DataRow
-
             For i = 1 To Me.Grid.Rows - 1
                 If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True AndAlso Me.Grid.Cell(i, Me.igyCodigo).Text <> "-" AndAlso CInt(Me.Grid.Cell(i, Me.igyCantidad).Text) > 0 Then
                     Dim oArticulo As New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
-                    If oArticulo.Existe = True AndAlso oArticulo.ES_SERIALIZABLE = True AndAlso oArticulo.INVENTARIABLE = "1" Then
+                    If oArticulo.Existe = True AndAlso oArticulo.ES_SERIALIZABLE = True AndAlso oArticulo.INVENTARIABLE = "1" AndAlso valorNumericoD(Me.Grid.Cell(i, Me.igyIdOrigen).Text) = 0 Then
                         For j = 1 To CInt(Me.Grid.Cell(i, Me.igyCantidad).Text)
                             dRow = Me.dtSeries.NewRow
 
@@ -4892,6 +5034,8 @@ buscaCentrosCostos:
                             dRow("DESCRIPCION") = Me.Grid.Cell(i, Me.igyDescripcion).Text
                             dRow("ID_INVENTARIO_LOTES_COSTOS") = ""
                             dRow("NUMERO_SERIE") = ""
+                            dRow("ID_ORIGEN") = ""
+                            dRow("FOLIO_REMISION") = ""
 
                             Me.dtSeries.Rows.Add(dRow)
                         Next
@@ -4901,31 +5045,44 @@ buscaCentrosCostos:
 
             Me.dtSeries.AcceptChanges()
 
-            Me.GridSeries.DataSource = Me.dtSeries
+            'Me.GridSeries.DataSource = Me.dtSeries
+            Me.InicializaGridSeries()
+            Me.GridSeries.Rows = 1
+            For Each dRow In Me.dtSeries.Rows
+                Me.GridSeries.AddItem(dRow("POSICION").ToString & Chr(9) & dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) &
+                                      dRow("ID_INVENTARIO_LOTES_COSTOS").ToString & Chr(9) & dRow("NUMERO_SERIE").ToString & Chr(9) &
+                                      dRow("ID_ORIGEN").ToString & Chr(9) & dRow("FOLIO_REMISION").ToString & Chr(9))
+            Next
 
             Me.FormateaGridSeries()
 
-            Me.TabControl1.SelectedIndex = 1
+            If Me.dtSeries.Rows.Count > 0 Then
+                Me.TabControl1.SelectedIndex = 1
+            Else
+                MsgBox("No hay artículos con series.", MsgBoxStyle.Exclamation, sProcedure)
+            End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "PrepararSeries", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub InicializaGridSeries()
+        Const sProcedure As String = "InicializaGridSeries"
         Try
             Me.GridSeries.DataSource = Nothing
             FG_Grid_Limpiar(Me.GridSeries)
             Me.GridSeries.Rows = 2
-            Me.GridSeries.Cols = 6
+            Me.GridSeries.Cols = 8
             Me.FormateaGridSeries()
             'Me.Grid.Cell(1, Me.iGyIDAdicional).Text = "1"
         Catch ex As Exception
-            HandleError(Me.Name, "InicializaGridSeries", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub FormateaGridSeries()
+        Const sProcedure As String = "FormateaGridSeries"
         Try
             With Me.GridSeries
                 .AutoRedraw = False
@@ -4938,35 +5095,46 @@ buscaCentrosCostos:
                 .BorderStyle = FlexCell.BorderStyleEnum.FixedSingle
                 .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
 
-                .Column(Me.igySeriePosicion).Visible = False
-                .Column(Me.igySerieCodigo).Width = 130
-                .Column(Me.igySerieDescripcion).Width = 450
-                .Column(Me.igySerieIdInventarioLotesCostos).Visible = False
+                .Column(Me.igySeriePosicion).Width = 50 ' False
+                .Column(Me.igySerieCodigo).Width = 150
+                .Column(Me.igySerieDescripcion).Width = 500
+                .Column(Me.igySerieIdInventarioLotesCostos).Width = 50
                 .Column(Me.igySerieNumeroSerie).Width = 250
+                .Column(Me.igySerieIDOrigen).Width = 50
+                .Column(Me.igySerieFolioRemision).Width = 75
 
                 .Cell(0, Me.igySeriePosicion).Text = "Posición"
                 .Cell(0, Me.igySerieCodigo).Text = "Código"
                 .Cell(0, Me.igySerieDescripcion).Text = "Descripción"
                 .Cell(0, Me.igySerieIdInventarioLotesCostos).Text = "Id lote"
                 .Cell(0, Me.igySerieNumeroSerie).Text = "Número de serie"
+                .Cell(0, Me.igySerieIDOrigen).Text = "IDOrigen"
+                .Cell(0, Me.igySerieFolioRemision).Text = "FolioRemision"
 
                 .Column(Me.igySeriePosicion).Locked = True
                 .Column(Me.igySerieCodigo).Locked = True
                 .Column(Me.igySerieDescripcion).Locked = True
                 .Column(Me.igySerieIdInventarioLotesCostos).Locked = True
                 .Column(Me.igySerieNumeroSerie).Locked = True
+                .Column(Me.igySerieIDOrigen).Locked = True
+                .Column(Me.igySerieFolioRemision).Locked = True
 
-                .AutoRedraw = True
-                .Refresh()
+                'Aunque por default están ocultas pueden hacerse visibles con un botón
+                .Column(Me.igySerieIdInventarioLotesCostos).Visible = False
+                .Column(Me.igySerieIDOrigen).Visible = False
 
                 .Row(.Rows - 1).Locked = True 'Para bloquear la edición del último renglón
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "FormateaGridSeries", ex)
+            HandleError(Me.Name, sProcedure, ex)
+        Finally
+            Me.GridSeries.AutoRedraw = True
+            Me.GridSeries.Refresh()
         End Try
     End Sub
 
     Private Sub GestionaGridSeries(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Const sProcedure As String = "GestionaGridSeries"
         Dim sLote As String = "", sCodigoArticulo As String = ""
         Dim oSerie As Class_Inventarios_Lotes_Series
         Try
@@ -4993,12 +5161,17 @@ buscaCentrosCostos:
 
                     Case Keys.F6
                         If Columna = Me.igySerieNumeroSerie AndAlso txtLEN(.Cell(Renglon, Me.igySeriePosicion).Text) = True Then
+
+                            If txtLEN(Me.GridSeries.Cell(Renglon, Me.igySerieFolioRemision).Text) = True Then
+                                MsgBox("Esta serie al provenir de una remisión no puede modificarla, puede solamente quitarla con F8.", MsgBoxStyle.Exclamation, sProcedure)
+                                Return
+                            End If
 busca_serie:
                             oSerie = New Class_Inventarios_Lotes_Series
                             sCodigoArticulo = .Cell(Renglon, Me.igySerieCodigo).Text
                             sLote = oSerie.BusquedaVisual(sCodigoArticulo, Me.CboAlmacen.SelectedValue.ToString)
                             If txtLEN(sLote) = True Then
-                                If RepiteSerie(Renglon, sLote) = False Then
+                                If Me.RepiteSerie(Renglon, sLote) = False Then
                                     Me.EstableceSerie(Renglon, sLote)
                                 End If
                             End If
@@ -5006,6 +5179,12 @@ busca_serie:
 
                     Case Keys.F7
                         If Columna = Me.igySerieNumeroSerie AndAlso txtLEN(.Cell(Renglon, Me.igySeriePosicion).Text) = True Then
+
+                            If txtLEN(Me.GridSeries.Cell(Renglon, Me.igySerieFolioRemision).Text) = True Then
+                                MsgBox("Esta serie al provenir de una remisión no puede modificarla, puede solamente quitarla.", MsgBoxStyle.Exclamation, sProcedure)
+                                Return
+                            End If
+
                             oSerie = New Class_Inventarios_Lotes_Series
                             sCodigoArticulo = .Cell(Renglon, Me.igySerieCodigo).Text
                             If txtLEN(sCodigoArticulo) = False Then
@@ -5016,10 +5195,9 @@ busca_serie:
                             lote = oSerie.BusquedaVisualSeriesMultiplesFolio(sCodigoArticulo, Me.CboAlmacen.SelectedValue.ToString)
 
                             If txtLEN(lote.FolioMovimiento) = True Then
-
-                                Dim dtSeries As DataTable = oSerie.ObtieneRenglonesSeriesFolio(lote.FolioMovimiento, sCodigoArticulo)
-                                If dtSeries.Rows.Count = 0 Then
-                                    MsgBox("No se encontraron series disponibles del artículo " & sCodigoArticulo & " del folio " & lote.FolioMovimiento, MsgBoxStyle.Exclamation, Me.Text)
+                                Dim dtSeriesLocal As DataTable = oSerie.ObtieneRenglonesSeriesFolio(lote.FolioMovimiento, sCodigoArticulo)
+                                If dtSeriesLocal.Rows.Count = 0 Then
+                                    MsgBox("No se encontraron series disponibles del artículo " & sCodigoArticulo & " del folio " & lote.FolioMovimiento, MsgBoxStyle.Exclamation, sProcedure)
                                     Return
                                 End If
 
@@ -5032,15 +5210,17 @@ busca_serie:
                                     If Me.GridSeries.Cell(i, Me.igySerieCodigo).Text = sCodigoArticulo AndAlso txtLEN(Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text) = False Then
                                         iArticulosPendientes -= 1
                                         iSeriesUsadas -= 1
-                                        Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text = dtSeries.Rows(iRowEncontrado)("ID_INVENTARIO_LOTES_COSTOS").ToString
-                                        Me.GridSeries.Cell(i, Me.igySerieNumeroSerie).Text = dtSeries.Rows(iRowEncontrado)("NUMERO_SERIE").ToString
+                                        Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text = dtSeriesLocal.Rows(iRowEncontrado)("ID_INVENTARIO_LOTES_COSTOS").ToString
+                                        Me.GridSeries.Cell(i, Me.igySerieNumeroSerie).Text = dtSeriesLocal.Rows(iRowEncontrado)("NUMERO_SERIE").ToString
                                         iRowEncontrado += 1 'empieza desde el 0
                                     End If
                                 Next
-
-
                             End If
                         End If
+
+                    Case Keys.F8
+                        Me.GridSeries.Selection.DeleteByRow()
+                        Me.Regenerar_dtSeries()
 
                     Case Keys.Delete
                         e.SuppressKeyPress = True
@@ -5048,7 +5228,7 @@ busca_serie:
             End With
 
         Catch ex As Exception
-            HandleError(Me.Name, "GestionaGridSeries", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
@@ -5096,12 +5276,9 @@ busca_serie:
                             Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
 
                             Return True
-
                         End If
-
                     End If
                 End If
-
             Next
         Catch ex As Exception
             HandleError(Me.Name, "RepiteSerie", ex)
@@ -5126,7 +5303,6 @@ busca_serie:
                             Me.GridSeries.Cell(RenglonRepetido, Me.igySerieNumeroSerie).SetFocus()
 
                             Return True
-
                         End If
                     Next
                 End If
@@ -5139,6 +5315,7 @@ busca_serie:
     End Function
 
     Private Function ValidaNumerosSerie() As Boolean
+        Const sProcedure As String = "ValidaNumerosSerie"
         Try
             Dim dtSeriesTemp As New DataTable("Series")
             With dtSeriesTemp
@@ -5169,23 +5346,25 @@ busca_serie:
 
             dtSeriesTemp.AcceptChanges()
 
-            If Me.sTipoVenta = "SR" AndAlso dtSeriesTemp.Rows.Count > 0 Then
-                MsgBox("Las sustituciones no soportan el manejo de series actualmente.", MsgBoxStyle.Exclamation, Me.Text)
-                Return False
-            End If
+            'If Me.sTipoVenta = "SR" AndAlso dtSeriesTemp.Rows.Count > 0 Then
+            '    MsgBox("Las sustituciones no soportan el manejo de series actualmente.", MsgBoxStyle.Exclamation, Me.Text)
+            '    Return False
+            'End If
+
+            Me.Regenerar_dtSeries() 'Nota recuerde que dtSeries ya no esta ligado con datasource al grid asi que para usarlo antes hay que regenerarlo o bien trabajar directo con el gridSeries y no con dtSeries
 
             If Me.dtSeries.Rows.Count <> dtSeriesTemp.Rows.Count Then
-                MsgBox("Tiene que volver a detallar todas las series porque no corresponden los artículos.", MsgBoxStyle.Exclamation)
+                MsgBox("Tiene que volver a detallar todas las series porque no corresponden los artículos.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
             i = 0
             For Each d As DataRow In dtSeriesTemp.Rows
                 If d("POSICION").ToString <> Me.dtSeries.Rows(i)("POSICION").ToString Then
-                    MsgBox("Tiene que volver a detallar todas las series porque no corresponden los artículos.", MsgBoxStyle.Exclamation)
+                    MsgBox("Tiene que volver a detallar todas las series porque no corresponden los artículos.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 ElseIf d("CODIGO_ARTICULO").ToString <> Me.dtSeries.Rows(i)("CODIGO_ARTICULO").ToString Then
-                    MsgBox("Tiene que volver a detallar todas las series porque no corresponden los artículos.", MsgBoxStyle.Exclamation)
+                    MsgBox("Tiene que volver a detallar todas las series porque no corresponden los artículos.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
                 i += 1
@@ -5193,14 +5372,43 @@ busca_serie:
 
             For Each d As DataRow In Me.dtSeries.Rows
                 If txtLEN(d("NUMERO_SERIE").ToString) = False Then
-                    MsgBox("Faltan de capturar series, favor de revisar.", MsgBoxStyle.Exclamation)
+                    MsgBox("Faltan de capturar series, favor de revisar.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
             Next
 
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            'Validamos la disponibilidad de las series sustituidas en INVENTARIO_LOTES_SALIDAS
+            'dRow campos: POSICION,CODIGO_ARTICULO,DESCRIPCION,ID_INVENTARIO_LOTES_COSTOS,NUMERO_SERIE,ID_ORIGEN,FOLIO_REMISION
+            Dim oInventarios As New Class_Inventarios_Global
+
+            If Me.sTipoVenta = "SR" Then
+                For i = 1 To Me.Grid.Rows - 1
+                    Dim sArticulo As String = Me.Grid.Cell(i, Me.igyCodigo).Text
+                    Dim sIDOrigen As String = Me.Grid.Cell(i, Me.igyIdOrigen).Text, sIDInventarioLoteCosto As String = "", dDisponibleLoteSerieEnRemision As Decimal = 0
+                    If txtLEN(sArticulo) = True AndAlso valorNumericoD(sIDOrigen) > 0 Then
+                        For Each dRow In Me.dtSeries.Select("POSICION='" & i.ToString & "'") 'Este campo es string si no se le ponen las comillas no funciona bien.
+                            sIDInventarioLoteCosto = dRow("ID_INVENTARIO_LOTES_COSTOS").ToString
+
+                            'Nota aunque el campo se llame IDOrigen como renglón de factura, como renglón de remisión es IDVentaDetalle por eso se llama así el parámetro de la función.
+                            dDisponibleLoteSerieEnRemision = oInventarios.DisponibleLoteSerieEnRemision(sIDOrigen, sIDInventarioLoteCosto)
+
+                            If dDisponibleLoteSerieEnRemision < CDec("1") Then
+                                MsgBox("El lote con la serie " & dRow("NUMERO_SERIE").ToString & " sustituida del artículo " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " del renglón #" & i.ToString &
+                                       " no tiene disponible(" & dDisponibleLoteSerieEnRemision.ToString & "), es decir no puede volver a facturarse porque ya se facturó.", MsgBoxStyle.Exclamation, sProcedure)
+                                Return False
+                            End If
+                        Next
+                    End If
+                Next
+            End If
+
+            oInventarios = Nothing
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
             Return True
         Catch ex As Exception
-            HandleError(Me.Name, "ValidaNumerosSerie", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
 
@@ -5619,7 +5827,7 @@ BuscaVentas:
             Me.GridFacturasVariasRemisiones.DataSource = Nothing
             FG_Grid_Limpiar(Me.GridFacturasVariasRemisiones)
             Me.GridFacturasVariasRemisiones.Rows = 2
-            Me.GridFacturasVariasRemisiones.Cols = 5
+            Me.GridFacturasVariasRemisiones.Cols = 6
             Me.FormateaGridFacturasVariasRemisiones()
         Catch ex As Exception
             HandleError(Me.Name, "InicializaGridFacturasVariasRemisiones", ex)
@@ -5627,22 +5835,26 @@ BuscaVentas:
     End Sub
 
     Private Sub FormateaGridFacturasVariasRemisiones()
+        Const sProcedure As String = "FormateaGridFacturasVariasRemisiones"
         Try
             With Me.GridFacturasVariasRemisiones
                 .Column(Me.iGyFolio).Width = 120
-                .Column(Me.iGyFecha).Width = 100
-                .Column(Me.iGyTotal).Width = 300
-                .Column(Me.iGyMoneda).Width = 100
+                .Column(Me.iGyFecha).Width = 70
+                .Column(Me.iGyTotal).Width = 100
+                .Column(Me.iGyMoneda).Width = 70
+                .Column(Me.iGyConcepto).Width = 660
 
                 .Cell(0, Me.iGyFolio).Text = "Folio"
                 .Cell(0, Me.iGyFecha).Text = "Fecha"
                 .Cell(0, Me.iGyTotal).Text = "Total"
                 .Cell(0, Me.iGyMoneda).Text = "Moneda"
+                .Cell(0, Me.iGyConcepto).Text = "Concepto"
 
                 .Column(Me.iGyFolio).Locked = True
                 .Column(Me.iGyFecha).Locked = True
                 .Column(Me.iGyTotal).Locked = True
                 .Column(Me.iGyMoneda).Locked = True
+                .Column(Me.iGyConcepto).Locked = True
 
                 .Column(Me.iGyFecha).CellType = FlexCell.CellTypeEnum.DateTime
                 .Column(Me.iGyFecha).FormatString = "dd-MMM-yy"
@@ -5653,12 +5865,12 @@ BuscaVentas:
                 .Column(Me.iGyTotal).Alignment = FlexCell.AlignmentEnum.RightCenter
 
                 .Locked = False
-
-                .AutoRedraw = True
-                .Refresh()
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "FormateaGridSeries", ex)
+            HandleError(Me.Name, sProcedure, ex)
+        Finally
+            Me.GridFacturasVariasRemisiones.AutoRedraw = True
+            Me.GridFacturasVariasRemisiones.Refresh()
         End Try
     End Sub
 
@@ -5682,17 +5894,44 @@ BuscaVentas:
     End Sub
 
     Private Sub CargaRemisionesCliente()
+        Const sProcedure As String = "CargaRemisionesCliente"
         Try
             If txtLEN(Me.TxtCliente.Text) = False Then
-                MsgBox("Capture un código de cliente.", MsgBoxStyle.Exclamation, Me.Name)
+                MsgBox("Capture un código de cliente.", MsgBoxStyle.Exclamation, sProcedure)
                 Me.TxtCliente.Focus()
-                Exit Sub
+                Return
             End If
 
-            Me.GridFacturasVariasRemisiones.DataSource = oVenta.ObtenerRemisionesCliente(Me.TxtCliente.Text)
+            'No usamos este método porque recordemos que el datasource no deja borrar renglones con código directamente al grid, sino a los datatable
+            'Me.GridFacturasVariasRemisiones.DataSource = oVenta.ObtenerRemisionesCliente(Me.TxtCliente.Text)
+
+            'Para evitar hacks mejor se elimina toda la información de ambos grids
+            Me.InicializaGrid()
+            Me.InicializaGridSeries()
+            Me.Totales()
+            Me.CalculaUtilidad()
+
+            Dim dt As DataTable = oVenta.ObtenerRemisionesCliente(Me.TxtCliente.Text)
+            Me.InicializaGridFacturasVariasRemisiones()
+
+            Me.GridFacturasVariasRemisiones.AutoRedraw = False
+            Me.GridFacturasVariasRemisiones.Rows = 1
+            For Each dRow As DataRow In dt.Rows
+                Me.GridFacturasVariasRemisiones.AddItem(dRow("FOLIO_VENTA").ToString & Chr(9) & dRow("FECHA").ToString & Chr(9) & dRow("TOTAL").ToString & Chr(9) & dRow("CODIGO_MONEDA_SAT").ToString & Chr(9) &
+                                                          dRow("CONCEPTO").ToString & Chr(9))
+            Next
+
             Me.FormateaGridFacturasVariasRemisiones()
+
+            If dt.Rows.Count = 0 Then
+                MsgBox("No hay remisiones que se puedan facturar.", MsgBoxStyle.Exclamation, sProcedure)
+            End If
+
         Catch ex As Exception
-            HandleError(Me.Name, "CargaRemisionesCliente", ex)
+            HandleError(Me.Name, sProcedure, ex)
+        Finally
+            Me.GridFacturasVariasRemisiones.AutoRedraw = True
+            Me.GridFacturasVariasRemisiones.Refresh()
         End Try
     End Sub
 
@@ -5861,7 +6100,7 @@ BuscaVentas:
 
                             If dPrecio < dCosto Then
                                 Dim validaPass As New Frm_Contraseña_Cambio_Periodo
-                                validaPass.Mensaje = "El precio del artículo " & .Cell(i, Me.igyDescripcion).Text & " es menor que el costo."
+                                validaPass.Mensaje = "El precio del artículo " & .Cell(i, Me.igyDescripcion).Text & " es menor que el costo(renglón #)" & i.ToString
                                 validaPass.TipoContraseña = Frm_Contraseña_Cambio_Periodo.eTipoContraseña.PrecioMenorCosto
                                 validaPass.ShowDialog()
 
@@ -6007,7 +6246,6 @@ BuscaVentas:
 
         Return sResultado
     End Function
-#End Region
 
     Private Sub btnTimbradoTrasladoPrueba_Click(sender As Object, e As EventArgs) Handles btnTimbradoTrasladoPrueba.Click
         'If Me.oVenta.GeneraFacturaElectronica(True, True) = True Then
@@ -6033,5 +6271,200 @@ BuscaVentas:
         End Try
         Return bResultado
     End Function
+
+    Private Function CargaDetalleRemisionesSeries() As Boolean
+        Const sProcedure As String = "CargaDetalleRemisionesSeries"
+        Dim i As Integer, bResultado As Boolean
+        Dim FoliosRemisiones As String = ""
+
+        Try
+            Me.GridFacturasVariasRemisiones.Locked = True 'Ya que se cargaron se bloquea la edición, si quieren pueden listar nuevamente.
+
+            For i = 1 To Me.GridFacturasVariasRemisiones.Rows - 1
+                If txtLEN(Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text) = True Then
+                    FoliosRemisiones = FoliosRemisiones & "'" & Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text & "',"
+                End If
+            Next
+
+            If txtLEN(FoliosRemisiones) = False Then
+                MsgBox("Debe listar primero las remisiones", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            FoliosRemisiones = Strings.Left(FoliosRemisiones, FoliosRemisiones.Length - 1) 'Quita la ultima coma
+
+            Me.InicializaGrid()
+            Me.Grid.AutoRedraw = False
+            Me.Grid.Rows = 1
+            i = 1
+
+            'Me.Grid.DataSource = oVenta.ObtenerDetalleVariasRemisionesSeries(FoliosRemisiones)
+            'Es mejor hacerlo de esta forma para que pueda funcionar el F8
+            Dim dtRenglones As DataTable = oVenta.ObtenerDetalleVariasRemisionesSeries(FoliosRemisiones)
+            For Each dRow As DataRow In dtRenglones.Rows
+                Me.Grid.AddItem(
+                dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("TIPO_CONTROL_INVENTARIO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("DISPONIBLE").ToString & Chr(9) & dRow("PRECIO_SIN_DESCUENTO").ToString & Chr(9) &
+                dRow("PRECIO_SIN_DESCUENTO_USD").ToString & Chr(9) & dRow("PRECIO_TOTAL").ToString & Chr(9) & dRow("PRECIO_TOTAL_USD").ToString & Chr(9) & dRow("UNIDAD_VENTA").ToString & Chr(9) & dRow("CANTIDAD_KILOS").ToString & Chr(9) &
+                dRow("PRECIO_KILOS").ToString & Chr(9) & dRow("IMPUESTO_PORCENTAJE").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9) & dRow("IMPORTE_USD").ToString & Chr(9) & dRow("IMPORTE_KILOS").ToString & Chr(9) &
+                dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("IMPUESTO_IMPORTE").ToString & Chr(9) & dRow("IMPUESTO_IMPORTE_USD").ToString & Chr(9) & dRow("ID_ORIGEN").ToString & Chr(9) & dRow("ES_PRODUCTO_KILOS").ToString & Chr(9) &
+                dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) & dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9) & dRow("IEPS_PORCENTAJE").ToString & Chr(9) & dRow("IEPS_UNITARIO").ToString & Chr(9) & dRow("IEPS_UNITARIO_USD").ToString & Chr(9) &
+                dRow("IEPS_IMPORTE").ToString & Chr(9) & dRow("IEPS_IMPORTE_USD").ToString & Chr(9) & dRow("BASE_IEPS").ToString & Chr(9) & dRow("BASE_IEPS_USD").ToString & Chr(9) & dRow("BASE_IVA").ToString & Chr(9) &
+                dRow("BASE_IVA_USD").ToString & Chr(9) & dRow("COSTO").ToString & Chr(9) & dRow("UTILIDAD_UNITARIA").ToString & Chr(9) & dRow("UTILIDAD_TOTAL").ToString & Chr(9) & dRow("UTILIDAD_PORCENTAJE").ToString & Chr(9) &
+                dRow("ID_SIS_CAT_IMPUESTOS").ToString & Chr(9) & dRow("GRADO_TOXICIDAD").ToString & Chr(9) & dRow("DESCUENTO_UNITARIO").ToString & Chr(9) & dRow("DESCUENTO_UNITARIO_USD").ToString & Chr(9) & dRow("DESCUENTO_IMPORTE").ToString & Chr(9) &
+                dRow("DESCUENTO_IMPORTE_USD").ToString & Chr(9) & dRow("PRECIO_SIN_DESCUENTO").ToString & Chr(9) & dRow("PRECIO_SIN_DESCUENTO_USD").ToString & Chr(9) & dRow("RETENCION_IVA_TIENE").ToString & Chr(9) & dRow("RETENCION_IVA_PORCENTAJE").ToString & Chr(9) &
+                dRow("RETENCION_IVA_BASE").ToString & Chr(9) & dRow("RETENCION_IVA_BASE_USD").ToString & Chr(9) & dRow("RETENCION_IVA_IMPORTE").ToString & Chr(9) & dRow("RETENCION_IVA_IMPORTE_USD").ToString & Chr(9) & dRow("RETENCION_ISR_TIENE").ToString & Chr(9) &
+                dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE_USD").ToString & Chr(9) & dRow("RETENCION_ISR_IMPORTE").ToString & Chr(9) & dRow("RETENCION_ISR_IMPORTE_USD").ToString & Chr(9)
+                )
+
+                Me.Grid.Cell(i, Me.igyCodigo).Locked = True 'Bloqueamos la celda del código porque no es válido editar, si se ocupa quitar quelo hagan con f8, no es válido cambiar por otro código en este modo.
+                i += 1
+            Next
+
+            Me.Grid.Rows += 1
+
+            Me.FormateaGrid()
+            Me.Totales()
+            Me.CalculaUtilidad()
+
+            'With Me.Grid
+            '    .Column(igyCodigo).Locked = True
+            '    .Column(igyCantidad).Locked = True
+            '    .Column(igyCantidadKilos).Locked = True
+            '    .Column(igyCodigoCentroCosto).Locked = True
+            'End With
+
+            Me.dtSeries = oVenta.ObtenerSeriesVariasRemisionesSeries(FoliosRemisiones)
+
+            Me.RecargarGridSeries()
+
+            Me.TabControl1.SelectTab(0) 'Muestra el tab de articulos
+
+            Me.EsFacturaVariasRemisiones = True
+            Me.sTipoVenta = "SR"
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        Finally
+            Me.Grid.AutoRedraw = True
+            Me.Grid.Refresh()
+        End Try
+
+        Return bResultado
+    End Function
+
+    Private Sub RecargarGridSeries()
+        Const sProcedure As String = "RecargarSeries"
+        Try
+            Me.InicializaGridSeries()
+            Me.GridSeries.Rows = 1
+            For Each dRow As DataRow In Me.dtSeries.Rows
+                Me.GridSeries.AddItem(dRow("POSICION").ToString & Chr(9) & dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) &
+                                                  dRow("ID_INVENTARIO_LOTES_COSTOS").ToString & Chr(9) & dRow("NUMERO_SERIE").ToString & Chr(9) &
+                                                  dRow("ID_ORIGEN").ToString & Chr(9) & dRow("FOLIO_REMISION").ToString & Chr(9))
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
+    Private Sub Regenerar_dtSeries()
+        Const sProcedure As String = "Regenerar_dtSeries"
+        Try
+            Me.Inicializa_dtSeries()
+            For i As Integer = 1 To Me.GridSeries.Rows - 1
+                If txtLEN(Me.GridSeries.Cell(i, Me.igySerieCodigo).Text) = True Then
+                    Dim dRow As DataRow = Me.dtSeries.NewRow
+
+                    dRow("POSICION") = Me.GridSeries.Cell(i, Me.igySeriePosicion).Text
+                    dRow("CODIGO_ARTICULO") = Me.GridSeries.Cell(i, Me.igySerieCodigo).Text
+                    dRow("DESCRIPCION") = Me.GridSeries.Cell(i, Me.igySerieDescripcion).Text
+                    dRow("ID_INVENTARIO_LOTES_COSTOS") = Me.GridSeries.Cell(i, Me.igySerieIdInventarioLotesCostos).Text
+                    dRow("NUMERO_SERIE") = Me.GridSeries.Cell(i, Me.igySerieNumeroSerie).Text
+                    dRow("ID_ORIGEN") = Me.GridSeries.Cell(i, Me.igySerieIDOrigen).Text
+                    dRow("FOLIO_REMISION") = Me.GridSeries.Cell(i, Me.igySerieFolioRemision).Text
+
+                    Me.dtSeries.Rows.Add(dRow)
+                End If
+            Next
+            Me.dtSeries.AcceptChanges()
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
+    Private Function GestionaSeriesPosicion(ByVal iPosicion As Integer, bEliminarPosicion As Boolean) As Boolean
+        Const sProcedure As String = "GestionaSeriesPosicion"
+        Dim bResultado As Boolean = False
+        Try
+            Dim oArticulo As New Class_CatArticulos(Me.Grid.Cell(iPosicion, Me.igyCodigo).Text)
+            If oArticulo.Existe = True AndAlso oArticulo.ES_SERIALIZABLE = True AndAlso oArticulo.INVENTARIABLE = "1" Then ' AndAlso valorNumericoD(Me.Grid.Cell(iPosicion, Me.igyIdOrigen).Text) = 0 Then
+                Dim iCantidad As Integer = CInt(valorNumericoD(Me.Grid.Cell(iPosicion, Me.igyCantidad).Text))
+                Dim iNumeroSeriesEncontradas As Integer = 0, iCantidadSeriesFaltantes As Integer = 0
+
+                Me.Regenerar_dtSeries() 'Nota recuerde que dtSeries ya no esta ligado con datasource al grid asi que para usarlo antes hay que regenerarlo o bien trabajar directo con el gridSeries y no con dtSeries
+
+                iNumeroSeriesEncontradas = CInt(Me.dtSeries.Compute("COUNT(POSICION)", "POSICION=" & iPosicion.ToString))
+
+                If bEliminarPosicion = True AndAlso iNumeroSeriesEncontradas > 0 Then
+                    MsgBox("Aviso, de este renglón hay series y se eliminarán automáticamente del listado de series.", MsgBoxStyle.Information, sProcedure)
+                    For Each dRow As DataRow In Me.dtSeries.Select("POSICION='" & iPosicion.ToString & "'") 'Este campo es string si no se le ponen las comillas no funciona bien.
+                        dRow.Delete()
+                    Next
+
+                    'Si se eliminó un renglón, todas las series hacia arriba de ese número hay que restarles al campo posición 1 es decir recorrerlas hacia abajo para que exista correspondencia.
+                    For Each dRow As DataRow In Me.dtSeries.Select("POSICION>'" & iPosicion.ToString & "'") 'Este campo es string si no se le ponen las comillas no funciona bien.
+                        dRow("POSICION") = CInt(dRow("POSICION")) - 1
+                    Next
+
+                    Me.dtSeries.AcceptChanges()
+                    Me.RecargarGridSeries()
+                    Return True 'Salimos del proceso por que lo siguiente ya no tiene que ver con eliminar la posición.
+                End If
+
+                If iCantidad < iNumeroSeriesEncontradas Then
+                    MsgBox("Usted debe de borrar " & (iNumeroSeriesEncontradas - iCantidad).ToString & " series sobrantes con F8 de este artículo.", MsgBoxStyle.Information, sProcedure)
+
+                ElseIf iCantidad > iNumeroSeriesEncontradas Then
+                    If valorNumericoD(Me.Grid.Cell(iPosicion, Me.igyIdOrigen).Text) > 0 Then
+                        'Esto sucede si por ejemplo facturan una remisión donde un artículo seriado tiene cantidad 2 , luego editan la cantidad a 1, borran con F8 una serie, y leugo ponen 2 en cantidad
+                        'No tenemos forma fácil de regenerar esa serie asi que marcamos que deben reiniciar todo el proceso.
+                        MsgBox("Este renglón proviene de una remisión y primero le bajó a la cantidad y ahora le subió, debe empezar desde cero todo el proceso de facturar varias remisiones.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                    iCantidadSeriesFaltantes = iCantidad - iNumeroSeriesEncontradas
+                    MsgBox("Se van a crear en automático los espacios para las " & iCantidadSeriesFaltantes.ToString & " series faltantes, por favor indique el número de serie en cada espacio.", MsgBoxStyle.Information, sProcedure)
+
+                    Dim dRow As DataRow
+                    For i As Integer = 1 To iCantidadSeriesFaltantes
+                        dRow = Me.dtSeries.NewRow
+
+                        dRow("POSICION") = iPosicion
+                        dRow("CODIGO_ARTICULO") = Me.Grid.Cell(iPosicion, Me.igyCodigo).Text
+                        dRow("DESCRIPCION") = Me.Grid.Cell(iPosicion, Me.igyDescripcion).Text
+                        dRow("ID_INVENTARIO_LOTES_COSTOS") = ""
+                        dRow("NUMERO_SERIE") = ""
+                        dRow("ID_ORIGEN") = ""
+                        dRow("FOLIO_REMISION") = ""
+
+                        Me.dtSeries.Rows.Add(dRow)
+                    Next
+                    Me.dtSeries.AcceptChanges()
+
+                    Me.RecargarGridSeries()
+                End If
+            End If
+
+            bResultado = True
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+#End Region
 
 End Class
