@@ -305,7 +305,7 @@ Public Class LoginForm
             '    End If
             'End If
 
-            If My.Settings.PrecargarLogins = "1" And (My.Computer.Name = "PCSISTEMASJGC" Or My.Computer.Name = "ERNESTOA") Then
+            If My.Settings.PrecargarLogins = "1" And (My.Computer.Name = "PCSISTEMASJGC22" Or My.Computer.Name = "ERNESTOA") Then
                 Me.DespliegaUsuarios()
                 Me.CboUsuarios.Visible = True
                 Me.CboUsuarios.Text = "dba"

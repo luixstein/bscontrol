@@ -976,7 +976,7 @@ Public NotInheritable Class Class_sisEmpresa
         'End If
 #End If
 
-        If Not Crea_DSN() Then
+        If Not Crea_DSN() = True Then
             MsgBox("El sistema no pudo crear el DSN , por lo tanto no podra imprimir reportes. Avise al departamento de sistemas", vbExclamation, "DSN")
         End If
 
@@ -993,6 +993,7 @@ Public NotInheritable Class Class_sisEmpresa
 
 #Region "Métodos y procedimientos"
     Public Function Grabar() As Boolean
+        Const sProcedure As String = "Grabar"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -1012,19 +1013,19 @@ Public NotInheritable Class Class_sisEmpresa
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me._Nombre_Catalogo, "Grabar", ex)
+                HandleError(Me._Nombre_Catalogo, sProcedure, ex)
             Finally
                 cn.Close()
                 cn.Dispose()
                 cmd.Dispose()
                 sqlParametro = Nothing
             End Try
-
         End With
         Return bResultado
     End Function
 
     Public Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
         Dim cn As New SqlConnection(_Conexion)
         Dim cmd As New SqlCommand("SELECT S.*,E.CODIGO_ESTADO_SAT,M.CODIGO_MUNICIPIO_SAT " &
@@ -1039,7 +1040,7 @@ Public NotInheritable Class Class_sisEmpresa
                 cn.Open()
                 dReader = .ExecuteReader()
 
-                If dReader.Read Then
+                If dReader.Read = True Then
                     Me._CODIGO_EMPRESA = CInt(dReader("CODIGO_EMPRESA"))
                     Me._Nombre_Empresa = "" & dReader("NOMBRE_EMPRESA").ToString
                     Me._Domicilio = "" & dReader("DOMICILIO").ToString
@@ -1144,7 +1145,7 @@ Public NotInheritable Class Class_sisEmpresa
                 End If
 
             Catch ex As Exception
-                HandleError(Me.Nombre_Catalogo, "Consultar", ex)
+                HandleError(Me.Nombre_Catalogo, sProcedure, ex, Me._Servidor, Me._BaseDatos)
             Finally
                 cmd.Dispose()
                 cn.Close()
@@ -1156,12 +1157,13 @@ Public NotInheritable Class Class_sisEmpresa
     End Function
 
     Public Function ObtenerElementos() As DataTable
+        Const sProcedure As String = "ObtenerElementos"
         Dim dTable As New DataTable
         Dim da As New SqlDataAdapter(Me._QuerySelect, Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception
-            HandleError(Me._Nombre_Catalogo, "ObtenerElementos", ex)
+            HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         Finally
             da.Dispose()
         End Try

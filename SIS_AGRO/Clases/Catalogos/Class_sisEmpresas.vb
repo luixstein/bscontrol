@@ -103,13 +103,12 @@ Public Class Class_sisEmpresas
             Me._Conexion = "Data Source=" & sServidor & ";Initial Catalog=" & sBaseDatos & ";" & "User ID=" & sCongif1 & ";Password=" & sCongif2
             Me._RFC = RFC
             If Me.Consultar = False Then
-                MsgBox("No es posible conectarse al servidor. Contácte a su administrador de sistemas.", MsgBoxStyle.Critical, Me.Nombre_Clase)
                 Finaliza(False)
             Else
                 Me._Existe = True
             End If
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "New", ex)
+            HandleError(Me.Nombre_Clase, "New", ex, sServidor, sBaseDatos)
             Finaliza(False)
         End Try
     End Sub

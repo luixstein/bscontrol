@@ -36,7 +36,7 @@
       <Value Profile="(Default)">AGRINET_LAND_TEST</Value>
     </Setting>
     <Setting Name="Servidor2" Type="System.String" Scope="User">
-      <Value Profile="(Default)">PCSISTEMASJORGE\SQL14</Value>
+      <Value Profile="(Default)">PCSISTEMASJGC22\SQL14</Value>
     </Setting>
     <Setting Name="Servidor3" Type="System.String" Scope="User">
       <Value Profile="(Default)">DANIEL-PC\SQL14</Value>
@@ -57,10 +57,10 @@
       <Value Profile="(Default)">AGRINET_BSQP</Value>
     </Setting>
     <Setting Name="Servidor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">PCSISTEMASJGC\SQL14</Value>
+      <Value Profile="(Default)">PCSISTEMASJGC22\SQL14</Value>
     </Setting>
     <Setting Name="Servidor4" Type="System.String" Scope="User">
-      <Value Profile="(Default)">PCSISTEMASJORGE\SQL14</Value>
+      <Value Profile="(Default)">PCSISTEMASJGC22\SQL14</Value>
     </Setting>
     <Setting Name="AliasServidor4" Type="System.String" Scope="User">
       <Value Profile="(Default)">C2</Value>
@@ -69,7 +69,7 @@
       <Value Profile="(Default)">COMER2</Value>
     </Setting>
     <Setting Name="Servidor1" Type="System.String" Scope="User">
-      <Value Profile="(Default)">PCSISTEMASJGC\SQL14</Value>
+      <Value Profile="(Default)">PCSISTEMASJGC22\SQL14</Value>
     </Setting>
     <Setting Name="ModoExeCarpetaUsuario" Type="System.String" Scope="User">
       <Value Profile="(Default)">0</Value>

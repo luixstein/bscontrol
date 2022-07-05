@@ -660,7 +660,7 @@ Module Mod_Uti
         Return Format(dFecha, "dd-MMM-yy hh:mm:ss").ToUpper
     End Function
 
-    Public Sub HandleError(ByVal CurrentModule As String, ByVal CurrentProcedure As String, ByVal ex As Exception)
+    Public Sub HandleError(ByVal CurrentModule As String, ByVal CurrentProcedure As String, ByVal ex As Exception, Optional ByVal sServidor As String = "", Optional ByVal sBaseDatos As String = "")
         'If ex.Source = ".Net SqlClient Data Provider" Then
         '    MsgBox("Error : " & My.Settings.Servidor & " " & ex.Message.ToString, MsgBoxStyle.Critical, _
         '    "Error en : " & CurrentModule & " " & CurrentProcedure)
@@ -668,8 +668,9 @@ Module Mod_Uti
         '    MsgBox("Error : " & ex.Message.ToString, MsgBoxStyle.Critical, _
         '    "Error en : " & CurrentModule & " " & CurrentProcedure)
         'End If
-        MsgBox("Error : " & ex.Message.ToString, MsgBoxStyle.Critical,
-        "Error en : " & CurrentModule & " " & CurrentProcedure)
+        MsgBox(IIf(txtLEN(sServidor) = True, "Servidor=" & sServidor & " BaseDatos=" & sBaseDatos & vbCrLf, "").ToString &
+            "Error : " & ex.Message.ToString, MsgBoxStyle.Critical,
+            "Error en : " & CurrentModule & " " & CurrentProcedure)
     End Sub
 
     Public Sub txtTAB(ByVal e As System.Windows.Forms.KeyEventArgs)

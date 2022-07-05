@@ -40,6 +40,7 @@ Public Class SeleccionEmpresa
     End Sub
 
     Private Sub CargaEmpresas()
+        Const sProcedure As String = "CargaEmpresas"
         Dim Conexion As String = "Data Source=" & My.Settings.Servidor & ";Initial Catalog=BS_EMPRESAS;" & "User ID=" & sCongif1 & ";Password=" & sCongif2
 
         'MsgBox("SERVER = " & My.Settings.Servidor & vbCrLf & "USER = " & sCongif1 & vbCrLf & "PASS = " & sCongif2)
@@ -59,7 +60,7 @@ Public Class SeleccionEmpresa
             'End If
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "CargaEmpresas", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex, My.Settings.Servidor, "BS_EMPRESAS")
         Finally
             da.Dispose()
         End Try
