@@ -149,7 +149,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("AGRINET_LAND_TEST")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("AGRINET_LAND_S")>  _
         Public Property BaseDatos1() As String
             Get
                 Return CType(Me("BaseDatos1"),String)

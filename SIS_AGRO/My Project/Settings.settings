@@ -27,7 +27,7 @@
       <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="BaseDatos1" Type="System.String" Scope="User">
-      <Value Profile="(Default)">AGRINET_LAND_TEST</Value>
+      <Value Profile="(Default)">AGRINET_LAND_S</Value>
     </Setting>
     <Setting Name="BaseDatos2" Type="System.String" Scope="User">
       <Value Profile="(Default)">AGRINET_LAND_S</Value>
