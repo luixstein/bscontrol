@@ -176,6 +176,9 @@ Friend Class Class_CFDI_cce_ComercioExterior11
 
                     If txtLEN(Me.Emisor.Domicilio.CodigoPostal) = True Then
                         .setAttribute("CodigoPostal", Me.Emisor.Domicilio.CodigoPostal)
+                    Else
+                        MsgBox("El valor de Emisor.Domicilio.CodigoPostal es un dato requerido.", MsgBoxStyle.Exclamation, Me.NombreClase)
+                        Return ""
                     End If
                 End With
 
@@ -270,6 +273,9 @@ Friend Class Class_CFDI_cce_ComercioExterior11
 
                     If txtLEN(Me.Receptor.Domicilio.CodigoPostal) = True Then
                         .setAttribute("CodigoPostal", Me.Receptor.Domicilio.CodigoPostal)
+                    Else
+                        MsgBox("El valor de Receptor.Domicilio.CodigoPostal es un dato requerido.", MsgBoxStyle.Exclamation, Me.NombreClase)
+                        Return ""
                     End If
                 End With
 

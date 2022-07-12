@@ -13,6 +13,11 @@ Public Class tPrecioVenta
     Public Costo As Decimal = 0
 End Class
 
+Public Enum TipoCCE
+    Agricola
+    Acuicola
+End Enum
+
 Public Class Class_Ventas_Global
 
 #Region "Campos"
@@ -2818,7 +2823,7 @@ Public Class Class_Ventas_Global
         Return sXmlComercioExterior
     End Function
 
-    Public Function GeneraXmlComercioExterior11() As String
+    Public Function GeneraXmlComercioExterior11(ByVal e As TipoCCE) As String
         Const sProcedure As String = "GeneraXmlComercioExterior11"
         Dim sXmlComercioExterior As String = ""
         Try
@@ -2852,16 +2857,16 @@ Public Class Class_Ventas_Global
                 'MsgBox("bTieneEmisor=true este no lo podiamos en 32, pongo solo los obligatorios")
                 .bTieneEmisor = True
                 '.Emisor.Curp = ""
-                .Emisor.Domicilio.Calle = Empresa_Sistema.CALLE
+                .Emisor.Domicilio.Calle = Empresa_Sistema.CALLE 'Requerido
                 .Emisor.Domicilio.NumeroExterior = Empresa_Sistema.NUMERO_EXTERIOR
-                '.Emisor.Domicilio.NumeroInterior = ""
+                .Emisor.Domicilio.NumeroInterior = Empresa_Sistema.NUMERO_INTERIOR
                 '.Emisor.Domicilio.Colonia = ""
                 '.Emisor.Domicilio.Localidad = ""
                 '.Emisor.Domicilio.Referencia = ""
                 .Emisor.Domicilio.Municipio = Empresa_Sistema.CODIGO_MUNICIPIO_SAT
-                .Emisor.Domicilio.Estado = Empresa_Sistema.CODIGO_ESTADO_SAT
-                .Emisor.Domicilio.Pais = Empresa_Sistema.CODIGO_PAIS_SAT
-                .Emisor.Domicilio.CodigoPostal = Empresa_Sistema.CODIGO_POSTAL
+                .Emisor.Domicilio.Estado = Empresa_Sistema.CODIGO_ESTADO_SAT 'Requerido
+                .Emisor.Domicilio.Pais = Empresa_Sistema.CODIGO_PAIS_SAT 'Requerido
+                .Emisor.Domicilio.CodigoPostal = Empresa_Sistema.CODIGO_POSTAL 'Requerido
                 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
                 .bTienePropietario = False
@@ -2875,40 +2880,48 @@ Public Class Class_Ventas_Global
                 '"752491201"  farsmestbest,"205582956" 'nidia
                 '.Receptor.NumRegIdTrib = oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO'El atributo cce11:ComercioExterior:Receptor:NumRegIdTrib no debe registrarse si la versión de CFDI es 3.3. 
 
-                .Receptor.Domicilio.Calle = fElectronicaValidaCampo(oCliente.CALLE)
+                .Receptor.Domicilio.Calle = fElectronicaValidaCampo(oCliente.CALLE) 'Requerido
                 .Receptor.Domicilio.NumeroExterior = fElectronicaValidaCampo(oCliente.NUMERO_EXTERIOR)
                 .Receptor.Domicilio.NumeroInterior = fElectronicaValidaCampo(oCliente.NUMERO_INTERIOR)
                 .Receptor.Domicilio.Colonia = fElectronicaValidaCampo(oCliente.COLONIA)
                 .Receptor.Domicilio.Localidad = fElectronicaValidaCampo(oCliente.LOCALIDAD)
                 '.Receptor.Domicilio.Referencia = ""
                 .Receptor.Domicilio.Municipio = fElectronicaValidaCampo(oCliente.CIUDAD)
-                .Receptor.Domicilio.Estado = fElectronicaValidaCampo(oCliente.CODIGO_ESTADO_SAT)
-                .Receptor.Domicilio.Pais = fElectronicaValidaCampo(oCliente.CODIGO_PAIS_SAT)
-                .Receptor.Domicilio.CodigoPostal = fElectronicaValidaCampo(oCliente.CODIGO_POSTAL.ToString)
+                .Receptor.Domicilio.Estado = fElectronicaValidaCampo(oCliente.CODIGO_ESTADO_SAT) 'Requerido
+                .Receptor.Domicilio.Pais = fElectronicaValidaCampo(oCliente.CODIGO_PAIS_SAT) 'Requerido
+                .Receptor.Domicilio.CodigoPostal = fElectronicaValidaCampo(oCliente.CODIGO_POSTAL.ToString) 'Requerido
                 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
                 .bTieneDestinatario = False
                 'Estos se habilitarian si se llevara destinatario
                 '.Destinatario.NumRegIdTrib = oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO
                 '.Destinatario.Nombre =oCliente.NOMBRE_CLIENTE 
-                '.Destinatario.Domicilio.Calle = oCliente.CALLE
+                '.Destinatario.Domicilio.Calle = oCliente.CALLE'Requerido
                 '.Destinatario.Domicilio.NumeroExterior = oCliente.NUMERO_EXTERIOR
                 '.Destinatario.Domicilio.NumeroInterior = oCliente.NUMERO_INTERIOR
                 '.Destinatario.Domicilio.Colonia = "?"
                 '.Destinatario.Domicilio.Localidad = "?"
                 '.Destinatario.Domicilio.Referencia = "?"
                 '.Destinatario.Domicilio.Municipio = "?"
-                '.Destinatario.Domicilio.Estado = oCliente.CODIGO_ESTADO_SAT
-                '.Destinatario.Domicilio.Pais = oCliente.PAIS
-                '.Destinatario.Domicilio.CodigoPostal = oCliente.CODIGO_POSTAL
+                '.Destinatario.Domicilio.Estado = oCliente.CODIGO_ESTADO_SAT'Requerido
+                '.Destinatario.Domicilio.Pais = oCliente.PAIS'Requerido
+                '.Destinatario.Domicilio.CodigoPostal = oCliente.CODIGO_POSTAL'Requerido
 
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
                 'Ciclo a los artículos
 
                 Dim dCantidadAduana As Decimal, dValorUnitarioAduana As Decimal, dValorDolares As Decimal, dPesoxCaja As Decimal, dValorDolaresNuevo As Decimal
+                Dim dtDetalle As New DataTable
 
-                For Each dRow As DataRow In Me.ObtenerDetalleParaComercioExterior.Rows
+                Select Case e
+                    Case TipoCCE.Agricola
+                        dtDetalle = Me.ObtenerDetalleParaComercioExterior
+                    Case TipoCCE.Acuicola
+                        dtDetalle = Me.ObtenerDetalleParaComercioExteriorAcuicola
+                End Select
+
+                For Each dRow As DataRow In dtDetalle.Rows
                     .Mercancia.NoIdentificacion = dRow("CODIGO_ARTICULO").ToString
                     .Mercancia.FraccionArancelaria = dRow("FRACCION_ARANCELARIA").ToString
 
@@ -3887,6 +3900,31 @@ Public Class Class_Ventas_Global
         Return dTabla
     End Function
 
+    Public Function ObtenerDetalleParaComercioExteriorAcuicola() As DataTable
+        Const sProcedure As String = "ObtenerDetalleParaComercioExteriorAcuicola"
+        Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        Try
+            'sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,ISNULL(V.FRACCION_ARANCELARIA,'')FRACCION_ARANCELARIA,R.CANTIDAD,ROUND(R.PRECIO/G.TIPO_DE_CAMBIO,2) PRECIO_USD,(R.CANTIDAD*R.PRECIO)/G.TIPO_DE_CAMBIO IMPORTE_USD, " & _
+            sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,A.FRACCION_ARANCELARIA,R.CANTIDAD,PRECIO_USD,IMPORTE_USD, " &
+                "'' NOMBRE_CULTIVO,CASE WHEN A.CODIGO_UNIDAD='KGM' THEN 1.00 ELSE A.PESO END PESO" &
+                "FROM VENTA_DETALLE R " &
+                "INNER JOIN VENTA_GLOBAL G ON(R.FOLIO_VENTA=G.FOLIO_VENTA) " &
+                "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
+                "WHERE G.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' " &
+                "ORDER BY R.DESCRIPCION"
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+
+        Return dTabla
+    End Function
 #End Region
 
 End Class

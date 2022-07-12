@@ -469,7 +469,7 @@ Module FacturacionElectronica33
             Dim sXmlComercioExterior As String = ""
 
             If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
-                sXmlComercioExterior = oVenta.GeneraXmlComercioExterior11
+                sXmlComercioExterior = oVenta.GeneraXmlComercioExterior11(TipoCCE.Agricola)
 
                 If txtLEN(sXmlComercioExterior) = False Then
                     Return False 'Abortamos
@@ -2014,7 +2014,15 @@ ImpuestosConceptos:
             Dim sXmlComercioExterior As String = ""
 
             If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
-                sXmlComercioExterior = oVenta.GeneraXmlComercioExterior11
+                sXmlComercioExterior = oVenta.GeneraXmlComercioExterior11(TipoCCE.Agricola)
+
+                If txtLEN(sXmlComercioExterior) = False Then
+                    Return False 'Abortamos
+                End If
+
+                Cfd.XmlComplementoComercioExterior = sXmlComercioExterior
+            ElseIf oVenta.CODIGO_TIPO_DOCUMENTO = "FT" And oVenta.TIENE_COMPLEMENTO_COMERCIO_EXTERIOR = True Then
+                sXmlComercioExterior = oVenta.GeneraXmlComercioExterior11(TipoCCE.Acuicola)
 
                 If txtLEN(sXmlComercioExterior) = False Then
                     Return False 'Abortamos

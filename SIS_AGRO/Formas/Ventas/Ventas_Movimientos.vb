@@ -976,7 +976,8 @@ Buscar:
             Me.lblPorcentajeUtilidad.Text = "0.00"
 
             If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
-                Me.cboMoneda.Text = "XXX"
+                'Me.cboMoneda.Text = "XXX"
+                Me.cboMoneda.SelectedIndex = -1 'Por no saber que moneda quiera el usuario grabar.
                 Me.cboUsoCFDI.SelectedValue = "P01"
             End If
 
@@ -1429,7 +1430,7 @@ Buscar:
                         Me.cboVendedor.SelectedValue = Usuario.CODIGO_VENDEDOR
                     End If
 
-                    EsFacturaVariasRemisiones = False
+                    Me.EsFacturaVariasRemisiones = False
                     Me.btnAceptar.Enabled = True
                     Me.btnAceptarRemisionesSeries.Enabled = True
                     Me.btnCargarRemisiones.Enabled = True
@@ -1437,8 +1438,15 @@ Buscar:
                     If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
                         Me.cboUsoCFDI.SelectedValue = "P01"
                         Me.cboUsoCFDI.Enabled = False
-                        Me.cboMoneda.Text = "XXX"
-                        Me.cboMoneda.Enabled = False
+
+                        If Me.chkTieneCartaPorte.Checked = True Then
+                            Me.cboMoneda.Text = "XXX"
+                            Me.cboMoneda.Enabled = False
+                        Else
+                            Me.cboMoneda.SelectedIndex = -1
+                            Me.cboMoneda.Enabled = True
+                        End If
+
                         Me.cboFormaPago.SelectedIndex = -1 'No se permitirá seleccionar ninguna forma de pago
                         Me.cboFormaPago.Enabled = False
                         Me.cboMetodoPago.SelectedIndex = -1 'No se permitirá seleccionar ningún método de pago
@@ -1783,7 +1791,7 @@ Buscar:
             '    End If
             'End If
 
-            If Me._EsPorEmbarqueExtranjero = True Or Me.sTipoVenta = "SR" Then 'SR=SUSTITUCION DE REMISION
+            If Me._EsPorEmbarqueExtranjero = True Or Me.sTipoVenta = "SR" Or valorNumericoD(Me.lblTotal.Text) = 0 Then 'SR=SUSTITUCION DE REMISION
                 'Continúa si es embarque extranjero porque no afecta saldos, o si es sust de remisión porque la venta ya se realizó de todas formas.
             ElseIf Me.oDocumento.AFECTA_CXC = False Then 'Si el documento no afecta como pudiera ser una cotización
                 Me.ValidarReglasCreditoplazo(True) 'Sólo entra en modo de advertencia pero dejará continuar grabar.
@@ -2465,6 +2473,30 @@ CANCELAR:
                 Return False
             End If
 
+            If Me.cboMoneda.SelectedIndex = -1 Then
+                MsgBox("Seleccione la moneda de la venta por favor.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If Me.oDocumento.CODIGO_TIPO_DOCUMENTO <> "FT" Then 'FT=Factura de traslado
+                If Me.cboMoneda.Text = "XXX" Then
+                    MsgBox("La moneda de la venta debe ser diferente de XXX.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+            Else 'Es factura de traslado
+                If Me.chkTieneCartaPorte.Checked = True Then
+                    If Me.cboMoneda.Text <> "XXX" Then
+                        MsgBox("La moneda de la venta debe ser XXX cuando es una factura de traslado con complemento carta porte.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+                Else
+                    If Me.cboMoneda.Text = "XXX" Then
+                        MsgBox("La moneda de la venta debe ser diferente de XXX cuando es una factura de traslado sin complemento carta porte.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+                End If
+            End If
+
             If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
                 If txtLEN(Me.oCliente.CUENTA_CONTABLE) = False Then
                     MsgBox("El cliente no tiene una cuenta contable en pesos asignada.", MsgBoxStyle.Exclamation, sProcedure)
@@ -2639,7 +2671,6 @@ CANCELAR:
                         End If
                     End If
                 End If
-
             End If
 
             If sTipoVenta <> "NM" Then
@@ -4492,8 +4523,8 @@ LlenaLinea:
                                 'If txtLEN(oArticulos.CODIGO_CULTIVO) = True Then
                                 'Dim Sql As New Class_find("SELECT CUENTA_CONTABLE_BASE FROM CAT_CULTIVOS Where CODIGO_CULTIVO='" & oArticulos.CODIGO_CULTIVO.ToString & "' AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza)
 
-                        'Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + Sql.Result1 'En agr esta así, pero aquí la cuenta es general
-                        Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
+                                'Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + Sql.Result1 'En agr esta así, pero aquí la cuenta es general
+                                Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
                                 'Else
                                 ' Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = ""
                                 'End If
@@ -4879,6 +4910,19 @@ buscaCentrosCostos:
 
             Me.bClienteEsContribuyenteIEPS = CBool(Me.oCliente.ES_CONTRIBUYENTE_IEPS)
 
+            Select Case Me.oCliente.TIPO_PERSONA
+                Case "F"
+                    Me.DesplegarUsoCFDIPersonasFisicas()
+                Case "M"
+                    Me.DesplegarUsoCFDIPersonasMorales()
+            End Select
+
+            If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
+                Me.cboUsoCFDI.SelectedValue = "P01"
+            Else
+                Me.cboUsoCFDI.SelectedValue = Me.oCliente.CODIGO_USO_CFDI
+            End If
+
             If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
                 Return True 'Nos salimos ya que la forma de pago y método de pago son fijas y ya están establecidas.
             End If
@@ -4897,14 +4941,6 @@ buscaCentrosCostos:
                         End If
                 End Select
             End If
-
-            Select Case Me.oCliente.TIPO_PERSONA
-                Case "F"
-                    Me.DesplegarUsoCFDIPersonasFisicas()
-                Case "M"
-                    Me.DesplegarUsoCFDIPersonasMorales()
-            End Select
-            Me.cboUsoCFDI.SelectedValue = Me.oCliente.CODIGO_USO_CFDI
 
             If Me.oDocumento.ES_FACTURA_ANTICIPO = True Then
                 Me.cboTipoNegociacion.SelectedValue = "2" '1=Credito, 2=Contado , forzamos a contado porque al ser anticipo es contado-PUE según el SAT.
@@ -6464,6 +6500,16 @@ BuscaVentas:
 
         Return bResultado
     End Function
+
+    Private Sub chkTieneCartaPorte_CheckedChanged(sender As Object, e As EventArgs) Handles chkTieneCartaPorte.CheckedChanged
+        If Me.chkTieneCartaPorte.Checked = True Then
+            Me.cboMoneda.Text = "XXX"
+            Me.cboMoneda.Enabled = False
+        Else
+            Me.cboMoneda.SelectedIndex = -1
+            Me.cboMoneda.Enabled = True
+        End If
+    End Sub
 
 #End Region
 
