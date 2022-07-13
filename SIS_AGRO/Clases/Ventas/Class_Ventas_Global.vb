@@ -2896,8 +2896,13 @@ Public Class Class_Ventas_Global
                 .Receptor.Domicilio.Colonia = fElectronicaValidaCampo(oCliente.COLONIA)
                 .Receptor.Domicilio.Localidad = fElectronicaValidaCampo(oCliente.LOCALIDAD)
                 '.Receptor.Domicilio.Referencia = ""
-                .Receptor.Domicilio.Municipio = fElectronicaValidaCampo(oCliente.CIUDAD)
-                .Receptor.Domicilio.Estado = fElectronicaValidaCampo(oCliente.CODIGO_ESTADO_SAT) 'Requerido
+                If oCliente.CODIGO_PAIS_SAT <> "MEX" Then
+                    .Receptor.Domicilio.Municipio = fElectronicaValidaCampo(oCliente.CIUDAD)
+                    .Receptor.Domicilio.Estado = fElectronicaValidaCampo(oCliente.NOMBRE_ESTADO) 'Requerido
+                Else
+                    .Receptor.Domicilio.Municipio = fElectronicaValidaCampo(oCliente.CODIGO_MUNICIPIO)
+                    .Receptor.Domicilio.Estado = fElectronicaValidaCampo(oCliente.CODIGO_ESTADO_SAT) 'Requerido
+                End If
                 .Receptor.Domicilio.Pais = fElectronicaValidaCampo(oCliente.CODIGO_PAIS_SAT) 'Requerido
                 .Receptor.Domicilio.CodigoPostal = fElectronicaValidaCampo(oCliente.CODIGO_POSTAL.ToString) 'Requerido
                 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -3917,8 +3922,7 @@ Public Class Class_Ventas_Global
 
         Try
             'sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,ISNULL(V.FRACCION_ARANCELARIA,'')FRACCION_ARANCELARIA,R.CANTIDAD,ROUND(R.PRECIO/G.TIPO_DE_CAMBIO,2) PRECIO_USD,(R.CANTIDAD*R.PRECIO)/G.TIPO_DE_CAMBIO IMPORTE_USD, " & _
-            sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,A.FRACCION_ARANCELARIA,R.CANTIDAD,PRECIO_USD,IMPORTE_USD, " &
-                "'' NOMBRE_CULTIVO,CASE WHEN A.CODIGO_UNIDAD='KGM' THEN 1.00 ELSE A.PESO END PESO" &
+            sSQL = "SELECT R.CODIGO_ARTICULO,R.DESCRIPCION,A.FRACCION_ARANCELARIA,R.CANTIDAD,PRECIO_USD,IMPORTE_USD,CASE WHEN A.CODIGO_UNIDAD='KGM' THEN 1.00 ELSE A.PESO END PESO " &
                 "FROM VENTA_DETALLE R " &
                 "INNER JOIN VENTA_GLOBAL G ON(R.FOLIO_VENTA=G.FOLIO_VENTA) " &
                 "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
