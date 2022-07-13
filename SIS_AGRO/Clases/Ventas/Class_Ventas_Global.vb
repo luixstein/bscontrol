@@ -2677,7 +2677,7 @@ Public Class Class_Ventas_Global
         End Try
     End Function
 
-    Public Function ValidarComercioExterior() As Boolean
+    Public Function ValidarComercioExterior(ByVal e As TipoCCE) As Boolean
         Dim bResultado As Boolean = False
         Const sProcedure As String = "ValidarComercioExterior"
         Try
@@ -2708,22 +2708,32 @@ Public Class Class_Ventas_Global
                 Return False
             End If
 
-            Dim dRows() As DataRow = Me.ObtenerDetalleParaComercioExterior.Select("LEN(FRACCION_ARANCELARIA)=0")
+            Select Case e
+                Case TipoCCE.Agricola
+                    Dim dRows() As DataRow = Me.ObtenerDetalleParaComercioExterior.Select("LEN(FRACCION_ARANCELARIA)=0")
 
-            If dRows.Length > 0 Then
+                    If dRows.Length > 0 Then
+                        For i As Integer = 0 To dRows.Length - 1
+                            If txtLEN(dRows(i)("NOMBRE_CULTIVO").ToString) = False Then
+                                MsgBox("El artículo " & dRows(i)("DESCRIPCION").ToString & " no tiene cultivo y por tanto tampoco fracción arancelaria.", MsgBoxStyle.Exclamation, sProcedure)
+                            ElseIf txtLEN(dRows(i)("FRACCION_ARANCELARIA").ToString) = False Then
+                                MsgBox("El artículo " & dRows(i)("DESCRIPCION").ToString & " tiene el cultivo " & dRows(i)("NOMBRE_CULTIVO").ToString & " que no tiene fracción arancelaria.", MsgBoxStyle.Exclamation, sProcedure)
+                            End If
+                        Next
 
-                For i As Integer = 0 To dRows.Length - 1
-
-                    If txtLEN(dRows(i)("NOMBRE_CULTIVO").ToString) = False Then
-                        MsgBox("El artículo " & dRows(i)("DESCRIPCION").ToString & " no tiene cultivo y por tanto tampoco fracción arancelaria.", MsgBoxStyle.Exclamation, sProcedure)
-                    ElseIf txtLEN(dRows(i)("FRACCION_ARANCELARIA").ToString) = False Then
-                        MsgBox("El artículo " & dRows(i)("DESCRIPCION").ToString & " tiene el cultivo " & dRows(i)("NOMBRE_CULTIVO").ToString & " que no tiene fracción arancelaria.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
                     End If
+                Case TipoCCE.Acuicola
+                    Dim dRows() As DataRow = Me.ObtenerDetalleParaComercioExteriorAcuicola.Select("LEN(FRACCION_ARANCELARIA)=0")
 
-                Next
+                    If dRows.Length > 0 Then
+                        For i As Integer = 0 To dRows.Length - 1
+                            MsgBox("El artículo " & dRows(i)("DESCRIPCION").ToString & " no tiene fracción arancelaria y es obligatoria para timbrar CCE.", MsgBoxStyle.Exclamation, sProcedure)
+                        Next
 
-                Return False
-            End If
+                        Return False
+                    End If
+            End Select
 
             bResultado = True
 
@@ -2739,7 +2749,7 @@ Public Class Class_Ventas_Global
         Dim sXmlComercioExterior As String = ""
         Try
 
-            If Me.ValidarComercioExterior() = False Then
+            If Me.ValidarComercioExterior(TipoCCE.Agricola) = False Then
                 Return ""
             End If
 
@@ -2828,7 +2838,7 @@ Public Class Class_Ventas_Global
         Dim sXmlComercioExterior As String = ""
         Try
 
-            If Me.ValidarComercioExterior() = False Then
+            If Me.ValidarComercioExterior(e) = False Then
                 Return ""
             End If
 

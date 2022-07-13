@@ -1764,6 +1764,8 @@ Module FacturacionElectronica33
                 .Rfc = sReceptorRFC
                 .Nombre = sReceptorNombre
 
+                MsgBox("FALTA algo para llenar residencia fiscal y numregid cuando es factura de traslado con cce")
+
                 If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
                     .ResidenciaFiscal = oCliente.CODIGO_PAIS_SAT  'usarlo sólo cuando el rfc sea extranjero y haya cce o numregid
                     .NumRegIdTrib = oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO
