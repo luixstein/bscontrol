@@ -462,6 +462,7 @@
     <Compile Include="Clases\Utilerias\Class_Imagenes.vb" />
     <Compile Include="Clases\Utilerias\cNum2Text.vb" />
     <Compile Include="Clases\Ventas\Class_CartaPorte.vb" />
+    <Compile Include="Clases\Ventas\Class_ComercioExterior.vb" />
     <Compile Include="dsTrabajadores.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
