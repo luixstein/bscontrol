@@ -16,6 +16,7 @@ Friend Class Class_CFDI_cce_ComercioExterior11
     Private xmlns As String
     Private xsischemaLocation As String
 
+#Region "Atributos y Nodos"
     Public Version As String
     Public MotivoTraslado As String
     Public TipoOperacion As String
@@ -42,6 +43,9 @@ Friend Class Class_CFDI_cce_ComercioExterior11
 
     Private AnexoNodo As String = ""
 
+#End Region
+
+#Region "Métodos y procedimientos"
     Public Sub New()
         AnexoNodo = "cce11:"
         xmlns = "http://www.sat.gob.mx/ComercioExterior11"
@@ -464,5 +468,6 @@ Friend Class Class_CFDI_cce_ComercioExterior11
 
         Return bResultado
     End Function
+#End Region
 
 End Class

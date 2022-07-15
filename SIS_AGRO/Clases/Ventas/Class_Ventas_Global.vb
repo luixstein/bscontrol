@@ -109,6 +109,7 @@ Public Class Class_Ventas_Global
     Private _RETENCION_ISR_USD As Decimal
     Private _FOLIO_DESCUENTO_ANTICIPO As String
     Private _TIENE_COMPLEMENTO_CARTA_PORTE As Boolean
+    Private _TOTAL_USD_CCE As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -882,6 +883,16 @@ Public Class Class_Ventas_Global
             Me._TIENE_COMPLEMENTO_CARTA_PORTE = Value
         End Set
     End Property
+
+    Public Property TOTAL_USD_CCE() As Decimal
+        Get
+            Return Me._TOTAL_USD_CCE
+        End Get
+        Set(ByVal Value As Decimal)
+            Me._TOTAL_USD_CCE = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1237,15 +1248,18 @@ Public Class Class_Ventas_Global
             ",U1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO,U2.NOMBRE_USUARIO NOMBRE_USUARIO_CANCELO,CFD.FELECTRONICA_CER,CFD.FELECTRONICA_KEY,CFD.CONTRASEÑA, " &
             "MP.NOMBRE_METODO_PAGO,RF.NOMBRE_REGIMEN_FISCAL," &
             "(SELECT MAX(FOLIO_EMBARQUE) FROM EMB_EMBARQUE_GLOBAL WHERE FOLIO_VENTA=G.FOLIO_VENTA) FOLIO_EMBARQUE,DOC.NOMBRE_FORMATO,DOC.ES_FACTURA_EMBARQUE_EXTRANJERO, " &
-            "ISNULL((SELECT TOP 1 '1' FROM VENTA_DETALLE WHERE FOLIO_VENTA=G.FOLIO_VENTA AND LEN(LISTA_SERIES)>0),0) TIENE_SERIES,DOC.CODIGO_TIPO_DOCUMENTO " &
+            "ISNULL((SELECT TOP 1 '1' FROM VENTA_DETALLE WHERE FOLIO_VENTA=G.FOLIO_VENTA AND LEN(LISTA_SERIES)>0),0) TIENE_SERIES,DOC.CODIGO_TIPO_DOCUMENTO," &
+            "CAST((SELECT SUM(R.CANTIDAD*R.PRECIO_USD) FROM VENTA_DETALLE R WHERE R.FOLIO_VENTA=G.FOLIO_VENTA) AS DECIMAL(18,2)) TOTAL_USD_CCE " &
             "FROM VENTA_GLOBAL G " &
-            "LEFT JOIN CFD_CAT_METODOS_PAGO MP ON(G.CODIGO_METODO_PAGO=MP.CODIGO_METODO_PAGO) " &
-            "INNER JOIN CDF_CAT_TIPOS_REGIMENES_FISCALES RF ON(G.CODIGO_REGIMEN_FISCAL=RF.CODIGO_REGIMEN_FISCAL) " &
-            "INNER JOIN SIS_USUARIOS U1 ON(G.CODIGO_USUARIO_GRABO=U1.CODIGO_USUARIO) " &
-            "LEFT JOIN SIS_USUARIOS U2 ON(G.CODIGO_USUARIO_CANCELO=U2.CODIGO_USUARIO) " &
-            "LEFT JOIN SIS_CFD_CATALOGO_CERTIFICADOS CFD ON(G.ID_SIS_CFD_CATALOGO_CERTIFICADOS=CFD.ID_SIS_CFD_CATALOGO_CERTIFICADOS) " &
-            "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC ON(G.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
+            "LEFT JOIN CFD_CAT_METODOS_PAGO MP On(G.CODIGO_METODO_PAGO=MP.CODIGO_METODO_PAGO) " &
+            "INNER JOIN CDF_CAT_TIPOS_REGIMENES_FISCALES RF On(G.CODIGO_REGIMEN_FISCAL=RF.CODIGO_REGIMEN_FISCAL) " &
+            "INNER JOIN SIS_USUARIOS U1 On(G.CODIGO_USUARIO_GRABO=U1.CODIGO_USUARIO) " &
+            "LEFT JOIN SIS_USUARIOS U2 On(G.CODIGO_USUARIO_CANCELO=U2.CODIGO_USUARIO) " &
+            "LEFT JOIN SIS_CFD_CATALOGO_CERTIFICADOS CFD On(G.ID_SIS_CFD_CATALOGO_CERTIFICADOS=CFD.ID_SIS_CFD_CATALOGO_CERTIFICADOS) " &
+            "INNER JOIN VW_SIS_CAT_DOCUMENTOS_EXTENDIDO DOC On(G.CODIGO_DOCUMENTO=DOC.CODIGO_DOCUMENTO) " &
             "WHERE G.FOLIO_VENTA='" & Replace(Me._FOLIO_VENTA, "'", "''") & "' "
+
+        'Cuando es una factura de traslado los totales en mxn y usd están en 0, por eso para el caso de cce se calcula el total en usd a partir de los renglones.
 
         If bFiltrarPlaza Then
             sSQL = sSQL & "AND G.CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " "
@@ -1360,6 +1374,7 @@ Public Class Class_Ventas_Global
                     Me._FOLIO_DESCUENTO_ANTICIPO = "" & dReader("FOLIO_DESCUENTO_ANTICIPO").ToString
                     Me._CODIGO_TIPO_DOCUMENTO = dReader("CODIGO_TIPO_DOCUMENTO").ToString
                     Me._TIENE_COMPLEMENTO_CARTA_PORTE = CBool(dReader("TIENE_COMPLEMENTO_CARTA_PORTE"))
+                    Me._TOTAL_USD_CCE = CDec(dReader("TOTAL_USD_CCE"))
 
                     bResultado = True
                 End If
@@ -2849,7 +2864,7 @@ Public Class Class_Ventas_Global
             With cfdiComercioExterior
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 .Version = "1.1"
-                .MotivoTraslado = ""
+                .MotivoTraslado = "03" '03=Envío de mercancías objeto de contrato de consignación
                 .TipoOperacion = "2"
                 .ClaveDePedimento = "A1"
 
@@ -2861,12 +2876,16 @@ Public Class Class_Ventas_Global
 
                 .Observaciones = ""
                 .TipoCambioUSD = FormatTipoCambio(Me._TIPO_DE_CAMBIO, False)
-                .TotalUSD = Format(Me._TOTAL_DOLARES, "######.00")
+                .TotalUSD = Format(Me._TOTAL_USD_CCE, "######.00")
 
                 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 'MsgBox("bTieneEmisor=true este no lo podiamos en 32, pongo solo los obligatorios")
                 .bTieneEmisor = True
-                '.Emisor.Curp = ""
+
+                If Empresa_Sistema.RFC.Length = 13 Then 'Si es persona física deberá llevar curp obligatoriamente.
+                    .Emisor.Curp = Empresa_Sistema.CURP
+                End If
+
                 .Emisor.Domicilio.Calle = Empresa_Sistema.CALLE 'Requerido
                 .Emisor.Domicilio.NumeroExterior = Empresa_Sistema.NUMERO_EXTERIOR
                 .Emisor.Domicilio.NumeroInterior = Empresa_Sistema.NUMERO_INTERIOR
