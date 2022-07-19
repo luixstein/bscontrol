@@ -3088,6 +3088,17 @@ busca_serie:
                 End If
             Next
 
+            Dim sql As Class_find
+            For Each d As DataRow In Me.dtSeries.Rows
+                sql = New Class_find("SELECT 1 FROM INVENTARIO_LOTES_COSTOS L INNER JOIN INVENTARIO_MOVIMIENTOS_GLOBAL I ON(L.FOLIO_MOVIMIENTO_INVENTARIO=I.FOLIO_MOVIMIENTO_INVENTARIO) WHERE L.NUMERO_SERIE='" & d("NUMERO_SERIE").ToString & "' AND I.ESTATUS='A' AND I.ESTA_CANCELADO='0' ")
+
+                If sql.Result1 = "1" Then
+                    MsgBox("La serie " & d("NUMERO_SERIE").ToString & " del artículo " & d("CODIGO_ARTICULO").ToString & " ya existe en una entrada de inventario.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+            Next
+
             Return True
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
