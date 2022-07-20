@@ -45,6 +45,7 @@ Public Class Class_CatArticulos
     Private _RETENCION_IVA_PORCENTAJE As Decimal
     Private _RETENCION_ISR_TIENE As Boolean
     Private _RETENCION_ISR_PORCENTAJE As Decimal
+    Private _FRACCION_ARANCELARIA As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -395,6 +396,14 @@ Public Class Class_CatArticulos
         End Set
     End Property
 
+    Public Property FRACCION_ARANCELARIA() As String
+        Get
+            Return Me._FRACCION_ARANCELARIA
+        End Get
+        Set(ByVal VALUE As String)
+            Me._FRACCION_ARANCELARIA = VALUE
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -542,6 +551,7 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@RETENCION_IVA_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_PORCENTAJE
             sqlParametro = .Parameters.Add("@RETENCION_ISR_TIENE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._RETENCION_ISR_TIENE)
             sqlParametro = .Parameters.Add("@RETENCION_ISR_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_PORCENTAJE
+            sqlParametro = .Parameters.Add("@FRACCION_ARANCELARIA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._FRACCION_ARANCELARIA
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = sAccion
 
             Try

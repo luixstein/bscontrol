@@ -981,6 +981,7 @@ Buscar:
                 Me.cboUsoCFDI.SelectedValue = "P01"
             End If
 
+            Me.chkTieneCCE.Checked = False
             Me.chkTieneCartaPorte.Checked = False
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -1360,6 +1361,9 @@ Buscar:
             Me.GridCFDIsRelacionados.Locked = True
             Me.tsbFacturaACartaPorte.Visible = False
 
+            Me.chkTieneCCE.Enabled = False
+            Me.chkTieneCCE.Visible = False
+
             Me.chkTieneCartaPorte.Visible = False
             Me.btnCartaPorte.Visible = False
             Me.btnCartaPorte.Enabled = False
@@ -1454,6 +1458,11 @@ Buscar:
                         Me.cboTipoNegociacion.Enabled = False
                         Me.chkTieneCartaPorte.Visible = True
                         Me.chkTieneCartaPorte.Enabled = True
+                    End If
+
+                    If Me.oDocumento.AFECTA_CXC = True Then
+                        Me.chkTieneCCE.Visible = True
+                        Me.chkTieneCCE.Enabled = True
                     End If
 
                     If Me.Visible = True Then
@@ -1582,6 +1591,7 @@ Buscar:
 
                     Me.chkTieneCartaPorte.Enabled = False
                     If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then
+                        Me.chkTieneCCE.Visible = True
                         Me.chkTieneCartaPorte.Visible = True
 
                         If Me.oVenta.TIENE_COMPLEMENTO_CARTA_PORTE = True Or Me.oVenta.TIMBRADO_CFDI = "0" Then 'Si no esta timbrada va permitir grabar carta porte.
@@ -1871,6 +1881,12 @@ Buscar:
                     sListaCFDIsRelacionados = sListaCFDIsRelacionados.Substring(0, sListaCFDIsRelacionados.Length - 1) 'Para quitarle la última coma que sale sobrando.
                 Else
                     MsgBox("Seleccionó un tipo de relación CFDI, pero no indicó cuales son los CFDIs relacionados.", vbExclamation, sProcedure)
+                    Return False
+                End If
+            End If
+
+            If Me.chkTieneCCE.Checked = True Then
+                If Me.ValidarComercioExterior = False Then
                     Return False
                 End If
             End If
@@ -4245,6 +4261,7 @@ salto:
                 Me.cboTipoRelacionCFDI.SelectedIndex = -1
             End If
 
+            Me.chkTieneCCE.Checked = Me.oVenta.TIENE_COMPLEMENTO_COMERCIO_EXTERIOR
             Me.chkTieneCartaPorte.Checked = Me.oVenta.TIENE_COMPLEMENTO_CARTA_PORTE
 
             bResultado = True
@@ -6511,6 +6528,45 @@ BuscaVentas:
         End If
     End Sub
 
+    Public Function ValidarComercioExterior() As Boolean
+        Dim bResultado As Boolean = False
+        Const sProcedure As String = "ValidarComercioExterior"
+        Try
+            If valorNumericoD(Me.txtTipoCambio.Text) <= 0 Then
+                MsgBox("La venta debió grabarse en USD.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            Dim oCliente As New Class_CatClientes(Me.TxtCliente.Text)
+
+            If txtLEN(oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO) = False Then
+                MsgBox("Al cliente le falta configurar el número de registro de identificación fiscal extranjero.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO.Length < 6 Then
+                MsgBox("El número de registro de identificación fiscal extranjero del cliente debe ser 6 caracteres mínimo.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            For i = 1 To Me.Grid.Rows - 1
+                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
+                    Dim oArticulo As New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
+                    If oArticulo.FRACCION_ARANCELARIA.Length = 0 Then
+                        MsgBox("El artículo " & oArticulo.CODIGO_ARTICULO & "-" & oArticulo.DESCRIPCION & " no tiene fracción arancelaria y es obligatoria para timbrar CCE.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+                End If
+            Next
+
+            bResultado = True
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
 #End Region
 
 End Class

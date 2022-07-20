@@ -892,7 +892,6 @@ Public Class Class_Ventas_Global
             Me._TOTAL_USD_CCE = Value
         End Set
     End Property
-
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1375,6 +1374,7 @@ Public Class Class_Ventas_Global
                     Me._CODIGO_TIPO_DOCUMENTO = dReader("CODIGO_TIPO_DOCUMENTO").ToString
                     Me._TIENE_COMPLEMENTO_CARTA_PORTE = CBool(dReader("TIENE_COMPLEMENTO_CARTA_PORTE"))
                     Me._TOTAL_USD_CCE = CDec(dReader("TOTAL_USD_CCE"))
+                    Me._TIENE_COMPLEMENTO_COMERCIO_EXTERIOR = CBool(dReader("TIENE_COMPLEMENTO_COMERCIO_EXTERIOR"))
 
                     bResultado = True
                 End If

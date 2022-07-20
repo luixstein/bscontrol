@@ -147,8 +147,10 @@ Partial Class Ventas_Movimientos
         Me.LblPoliza = New System.Windows.Forms.LinkLabel()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.tpArticulos = New System.Windows.Forms.TabPage()
+        Me.btnAgregarRenglon = New System.Windows.Forms.Button()
         Me.Grid = New FlexCell.Grid()
         Me.tpSeries = New System.Windows.Forms.TabPage()
+        Me.btnMostrarMasColumnasGridSeries = New System.Windows.Forms.Button()
         Me.GridSeries = New FlexCell.Grid()
         Me.tpCFDIsRelacionados = New System.Windows.Forms.TabPage()
         Me.GridCFDIsRelacionados = New FlexCell.Grid()
@@ -164,8 +166,9 @@ Partial Class Ventas_Movimientos
         Me.btnTimbradoTrasladoPrueba = New System.Windows.Forms.Button()
         Me.btnCartaPorte = New System.Windows.Forms.Button()
         Me.chkTieneCartaPorte = New System.Windows.Forms.CheckBox()
-        Me.btnAgregarRenglon = New System.Windows.Forms.Button()
-        Me.btnMostrarMasColumnasGridSeries = New System.Windows.Forms.Button()
+        Me.chkTieneCCE = New System.Windows.Forms.CheckBox()
+        Me.cboIncoterm = New System.Windows.Forms.ComboBox()
+        Me.Label4 = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -1453,6 +1456,16 @@ Partial Class Ventas_Movimientos
         Me.tpArticulos.Text = "Artículos"
         Me.tpArticulos.UseVisualStyleBackColor = True
         '
+        'btnAgregarRenglon
+        '
+        Me.btnAgregarRenglon.Location = New System.Drawing.Point(3, 189)
+        Me.btnAgregarRenglon.Name = "btnAgregarRenglon"
+        Me.btnAgregarRenglon.Size = New System.Drawing.Size(17, 20)
+        Me.btnAgregarRenglon.TabIndex = 373
+        Me.btnAgregarRenglon.Text = "+"
+        Me.btnAgregarRenglon.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnAgregarRenglon.UseVisualStyleBackColor = True
+        '
         'Grid
         '
         Me.Grid.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
@@ -1483,6 +1496,15 @@ Partial Class Ventas_Movimientos
         Me.tpSeries.TabIndex = 1
         Me.tpSeries.Text = "Series"
         Me.tpSeries.UseVisualStyleBackColor = True
+        '
+        'btnMostrarMasColumnasGridSeries
+        '
+        Me.btnMostrarMasColumnasGridSeries.Location = New System.Drawing.Point(1233, 183)
+        Me.btnMostrarMasColumnasGridSeries.Name = "btnMostrarMasColumnasGridSeries"
+        Me.btnMostrarMasColumnasGridSeries.Size = New System.Drawing.Size(29, 21)
+        Me.btnMostrarMasColumnasGridSeries.TabIndex = 374
+        Me.btnMostrarMasColumnasGridSeries.Text = "+"
+        Me.btnMostrarMasColumnasGridSeries.UseVisualStyleBackColor = True
         '
         'GridSeries
         '
@@ -1662,30 +1684,43 @@ Partial Class Ventas_Movimientos
         Me.chkTieneCartaPorte.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTieneCartaPorte.Location = New System.Drawing.Point(1001, 165)
         Me.chkTieneCartaPorte.Name = "chkTieneCartaPorte"
-        Me.chkTieneCartaPorte.Size = New System.Drawing.Size(158, 20)
+        Me.chkTieneCartaPorte.Size = New System.Drawing.Size(212, 20)
         Me.chkTieneCartaPorte.TabIndex = 387
-        Me.chkTieneCartaPorte.Text = "Tiene carta porte ?"
+        Me.chkTieneCartaPorte.Text = "Complemento carta porte ?"
         Me.chkTieneCartaPorte.UseVisualStyleBackColor = True
         Me.chkTieneCartaPorte.Visible = False
         '
-        'btnAgregarRenglon
+        'chkTieneCCE
         '
-        Me.btnAgregarRenglon.Location = New System.Drawing.Point(3, 189)
-        Me.btnAgregarRenglon.Name = "btnAgregarRenglon"
-        Me.btnAgregarRenglon.Size = New System.Drawing.Size(17, 20)
-        Me.btnAgregarRenglon.TabIndex = 373
-        Me.btnAgregarRenglon.Text = "+"
-        Me.btnAgregarRenglon.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnAgregarRenglon.UseVisualStyleBackColor = True
+        Me.chkTieneCCE.AutoSize = True
+        Me.chkTieneCCE.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTieneCCE.Location = New System.Drawing.Point(1000, 69)
+        Me.chkTieneCCE.Name = "chkTieneCCE"
+        Me.chkTieneCCE.Size = New System.Drawing.Size(257, 20)
+        Me.chkTieneCCE.TabIndex = 388
+        Me.chkTieneCCE.Text = "Complemento comercio exterior ?"
+        Me.chkTieneCCE.UseVisualStyleBackColor = True
+        Me.chkTieneCCE.Visible = False
         '
-        'btnMostrarMasColumnasGridSeries
+        'cboIncoterm
         '
-        Me.btnMostrarMasColumnasGridSeries.Location = New System.Drawing.Point(1233, 183)
-        Me.btnMostrarMasColumnasGridSeries.Name = "btnMostrarMasColumnasGridSeries"
-        Me.btnMostrarMasColumnasGridSeries.Size = New System.Drawing.Size(29, 21)
-        Me.btnMostrarMasColumnasGridSeries.TabIndex = 374
-        Me.btnMostrarMasColumnasGridSeries.Text = "+"
-        Me.btnMostrarMasColumnasGridSeries.UseVisualStyleBackColor = True
+        Me.cboIncoterm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboIncoterm.Enabled = False
+        Me.cboIncoterm.FormattingEnabled = True
+        Me.cboIncoterm.Location = New System.Drawing.Point(1000, 106)
+        Me.cboIncoterm.MaxLength = 1
+        Me.cboIncoterm.Name = "cboIncoterm"
+        Me.cboIncoterm.Size = New System.Drawing.Size(281, 21)
+        Me.cboIncoterm.TabIndex = 389
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(997, 90)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(54, 13)
+        Me.Label4.TabIndex = 390
+        Me.Label4.Text = "Incoterm :"
         '
         'Ventas_Movimientos
         '
@@ -1693,6 +1728,9 @@ Partial Class Ventas_Movimientos
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(1287, 678)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.cboIncoterm)
+        Me.Controls.Add(Me.chkTieneCCE)
         Me.Controls.Add(Me.chkTieneCartaPorte)
         Me.Controls.Add(Me.btnCartaPorte)
         Me.Controls.Add(Me.btnTimbradoTrasladoPrueba)
@@ -1876,4 +1914,7 @@ Partial Class Ventas_Movimientos
     Friend WithEvents btnAceptarRemisionesSeries As Button
     Friend WithEvents btnAgregarRenglon As Button
     Friend WithEvents btnMostrarMasColumnasGridSeries As Button
+    Friend WithEvents chkTieneCCE As CheckBox
+    Friend WithEvents cboIncoterm As ComboBox
+    Friend WithEvents Label4 As Label
 End Class
