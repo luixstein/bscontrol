@@ -386,6 +386,7 @@ Public Class Ventas_Movimientos
             Me.DesplegarTiposCredito()
             Me.DesplegarTiposRelacionCFDI()
             Me.DesplegarRegimenesFiscales()
+            Me.DesplegarIncoterm()
 
             Me.DesplegarDocumentos()
 
@@ -1463,6 +1464,7 @@ Buscar:
                     If Me.oDocumento.AFECTA_CXC = True Then
                         Me.chkTieneCCE.Visible = True
                         Me.chkTieneCCE.Enabled = True
+                        Me.cboIncoterm.Enabled = True
                     End If
 
                     If Me.Visible = True Then
@@ -1591,13 +1593,17 @@ Buscar:
 
                     Me.chkTieneCartaPorte.Enabled = False
                     If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then
-                        Me.chkTieneCCE.Visible = True
                         Me.chkTieneCartaPorte.Visible = True
 
                         If Me.oVenta.TIENE_COMPLEMENTO_CARTA_PORTE = True Or Me.oVenta.TIMBRADO_CFDI = "0" Then 'Si no esta timbrada va permitir grabar carta porte.
                             Me.btnCartaPorte.Visible = True
                             Me.btnCartaPorte.Enabled = True
                         End If
+                    End If
+
+                    If Me.chkTieneCCE.Checked = True Then
+                        Me.chkTieneCCE.Visible = True
+                        Me.cboIncoterm.Visible = True : Me.lblDisplayIncoterm.Visible = True
                     End If
 
                     'If Me.oVenta.ADDENDA = "1" Then
@@ -2167,6 +2173,14 @@ Buscar:
 
                 If Me.chkTieneCartaPorte.Checked = True Then
                     If Me.GestionaCartaPorte = False Then
+                        If MsgBox("No grabó la carta porte, quiere aún así timbrar la factura sin carta porte?", vbQuestion Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
+                            GoTo SaltarTimbrado
+                        End If
+                    End If
+                End If
+
+                If Me.chkTieneCCE.Checked = True Then
+                    If .GrabaComplementoComercioExteriorDatos(Me.cboIncoterm.SelectedValue.ToString) = False Then
                         If MsgBox("No grabó la carta porte, quiere aún así timbrar la factura sin carta porte?", vbQuestion Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
                             GoTo SaltarTimbrado
                         End If
@@ -4263,6 +4277,10 @@ salto:
 
             Me.chkTieneCCE.Checked = Me.oVenta.TIENE_COMPLEMENTO_COMERCIO_EXTERIOR
             Me.chkTieneCartaPorte.Checked = Me.oVenta.TIENE_COMPLEMENTO_CARTA_PORTE
+
+            If Me.chkTieneCCE.Checked = True Then
+                Me.cboIncoterm.SelectedValue = Me.oVenta.CODIGO_INCOTERM
+            End If
 
             bResultado = True
 
@@ -6518,6 +6536,14 @@ BuscaVentas:
         Return bResultado
     End Function
 
+    Private Sub chkTieneCCE_CheckedChanged(sender As Object, e As EventArgs) Handles chkTieneCCE.CheckedChanged
+        If Me.chkTieneCCE.Checked = True Then
+            Me.cboIncoterm.Visible = True : Me.lblDisplayIncoterm.Visible = True
+        Else
+            Me.cboIncoterm.Visible = False : Me.lblDisplayIncoterm.Visible = False
+        End If
+    End Sub
+
     Private Sub chkTieneCartaPorte_CheckedChanged(sender As Object, e As EventArgs) Handles chkTieneCartaPorte.CheckedChanged
         If Me.chkTieneCartaPorte.Checked = True Then
             Me.cboMoneda.Text = "XXX"
@@ -6532,8 +6558,13 @@ BuscaVentas:
         Dim bResultado As Boolean = False
         Const sProcedure As String = "ValidarComercioExterior"
         Try
-            If valorNumericoD(Me.txtTipoCambio.Text) <= 0 Then
+            If Me.cboMoneda.Text <> "USD" Then
                 MsgBox("La venta debió grabarse en USD.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If valorNumericoD(Me.txtTipoCambio.Text) <= 0 Then
+                MsgBox("Falta indicar el tipo de cambio.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
@@ -6556,8 +6587,18 @@ BuscaVentas:
                         MsgBox("El artículo " & oArticulo.CODIGO_ARTICULO & "-" & oArticulo.DESCRIPCION & " no tiene fracción arancelaria y es obligatoria para timbrar CCE.", MsgBoxStyle.Exclamation, sProcedure)
                         Return False
                     End If
+
+                    If oArticulo.CODIGO_UNIDAD <> "KGM" AndAlso oArticulo.FACTOR_CONVERSION = 0 Then
+                        MsgBox("El artículo " & oArticulo.CODIGO_ARTICULO & "-" & oArticulo.DESCRIPCION & " no es en kilos por lo que debe especificar el factor de conversión para poder calcular los valores a kilos para el CCE.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
                 End If
             Next
+
+            If Me.cboIncoterm.SelectedIndex = -1 Then
+                MsgBox("Seleccione el tipo de incoterm.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
 
             bResultado = True
 
@@ -6567,6 +6608,25 @@ BuscaVentas:
 
         Return bResultado
     End Function
+
+    Private Sub DesplegarIncoterm()
+        Const sProcedure As String = "DesplegarIncoterm"
+        Dim dView As New Data.DataView
+        Try
+            Dim oIncoterm As New Class_CatCfdiIncoterm
+            With Me.cboIncoterm
+                .DisplayMember = "NOMBRE_INCOTERM"
+                .ValueMember = "CODIGO_INCOTERM"
+                dView = New Data.DataView(oIncoterm.ObtenerElementos)
+                .DataSource = dView
+                '.SelectedIndex = -1
+                .SelectedValue = "DDP" 'DDP=ENTREGADA DERECHOS PAGADOS (LUGAR DE DESTINO CONVENIDO).
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
+
 #End Region
 
 End Class

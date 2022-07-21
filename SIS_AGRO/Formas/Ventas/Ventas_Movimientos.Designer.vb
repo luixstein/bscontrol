@@ -168,7 +168,7 @@ Partial Class Ventas_Movimientos
         Me.chkTieneCartaPorte = New System.Windows.Forms.CheckBox()
         Me.chkTieneCCE = New System.Windows.Forms.CheckBox()
         Me.cboIncoterm = New System.Windows.Forms.ComboBox()
-        Me.Label4 = New System.Windows.Forms.Label()
+        Me.lblDisplayIncoterm = New System.Windows.Forms.Label()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -1712,15 +1712,17 @@ Partial Class Ventas_Movimientos
         Me.cboIncoterm.Name = "cboIncoterm"
         Me.cboIncoterm.Size = New System.Drawing.Size(281, 21)
         Me.cboIncoterm.TabIndex = 389
+        Me.cboIncoterm.Visible = False
         '
-        'Label4
+        'lblDisplayIncoterm
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(997, 90)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(54, 13)
-        Me.Label4.TabIndex = 390
-        Me.Label4.Text = "Incoterm :"
+        Me.lblDisplayIncoterm.AutoSize = True
+        Me.lblDisplayIncoterm.Location = New System.Drawing.Point(997, 90)
+        Me.lblDisplayIncoterm.Name = "lblDisplayIncoterm"
+        Me.lblDisplayIncoterm.Size = New System.Drawing.Size(54, 13)
+        Me.lblDisplayIncoterm.TabIndex = 390
+        Me.lblDisplayIncoterm.Text = "Incoterm :"
+        Me.lblDisplayIncoterm.Visible = False
         '
         'Ventas_Movimientos
         '
@@ -1728,7 +1730,7 @@ Partial Class Ventas_Movimientos
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(1287, 678)
-        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.lblDisplayIncoterm)
         Me.Controls.Add(Me.cboIncoterm)
         Me.Controls.Add(Me.chkTieneCCE)
         Me.Controls.Add(Me.chkTieneCartaPorte)
@@ -1916,5 +1918,5 @@ Partial Class Ventas_Movimientos
     Friend WithEvents btnMostrarMasColumnasGridSeries As Button
     Friend WithEvents chkTieneCCE As CheckBox
     Friend WithEvents cboIncoterm As ComboBox
-    Friend WithEvents Label4 As Label
+    Friend WithEvents lblDisplayIncoterm As Label
 End Class

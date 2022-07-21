@@ -24,6 +24,8 @@ Partial Class Catalogo_Articulos
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Catalogo_Articulos))
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayFraccionArancelaria = New System.Windows.Forms.Label()
+        Me.txtFraccionArancelaria = New System.Windows.Forms.TextBox()
         Me.cboRetencionISRPorcentaje = New System.Windows.Forms.ComboBox()
         Me.chkRetencionISRTiene = New System.Windows.Forms.CheckBox()
         Me.cboRetencionIVAPorcentaje = New System.Windows.Forms.ComboBox()
@@ -81,8 +83,6 @@ Partial Class Catalogo_Articulos
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.lblDisplayFraccionArancelaria = New System.Windows.Forms.Label()
-        Me.txtFraccionArancelaria = New System.Windows.Forms.TextBox()
         Me.gBoxInformacion.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -144,6 +144,23 @@ Partial Class Catalogo_Articulos
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información de los artículos"
         '
+        'lblDisplayFraccionArancelaria
+        '
+        Me.lblDisplayFraccionArancelaria.AutoSize = True
+        Me.lblDisplayFraccionArancelaria.Location = New System.Drawing.Point(10, 607)
+        Me.lblDisplayFraccionArancelaria.Name = "lblDisplayFraccionArancelaria"
+        Me.lblDisplayFraccionArancelaria.Size = New System.Drawing.Size(109, 13)
+        Me.lblDisplayFraccionArancelaria.TabIndex = 253
+        Me.lblDisplayFraccionArancelaria.Text = "Fracción arancelaria :"
+        '
+        'txtFraccionArancelaria
+        '
+        Me.txtFraccionArancelaria.Location = New System.Drawing.Point(128, 604)
+        Me.txtFraccionArancelaria.MaxLength = 10
+        Me.txtFraccionArancelaria.Name = "txtFraccionArancelaria"
+        Me.txtFraccionArancelaria.Size = New System.Drawing.Size(72, 20)
+        Me.txtFraccionArancelaria.TabIndex = 19
+        '
         'cboRetencionISRPorcentaje
         '
         Me.cboRetencionISRPorcentaje.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -192,16 +209,18 @@ Partial Class Catalogo_Articulos
         Me.lblDisplayImpuestoFlete.Size = New System.Drawing.Size(79, 13)
         Me.lblDisplayImpuestoFlete.TabIndex = 251
         Me.lblDisplayImpuestoFlete.Text = "Impuesto flete :"
+        Me.lblDisplayImpuestoFlete.Visible = False
         '
         'cboImpuestoFlete
         '
         Me.cboImpuestoFlete.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboImpuestoFlete.FormattingEnabled = True
         Me.cboImpuestoFlete.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
-        Me.cboImpuestoFlete.Location = New System.Drawing.Point(325, 582)
+        Me.cboImpuestoFlete.Location = New System.Drawing.Point(236, 599)
         Me.cboImpuestoFlete.Name = "cboImpuestoFlete"
-        Me.cboImpuestoFlete.Size = New System.Drawing.Size(212, 21)
+        Me.cboImpuestoFlete.Size = New System.Drawing.Size(155, 21)
         Me.cboImpuestoFlete.TabIndex = 250
+        Me.cboImpuestoFlete.Visible = False
         '
         'lblNombreProducto
         '
@@ -673,23 +692,6 @@ Partial Class Catalogo_Articulos
         '
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 17)
-        '
-        'lblDisplayFraccionArancelaria
-        '
-        Me.lblDisplayFraccionArancelaria.AutoSize = True
-        Me.lblDisplayFraccionArancelaria.Location = New System.Drawing.Point(10, 607)
-        Me.lblDisplayFraccionArancelaria.Name = "lblDisplayFraccionArancelaria"
-        Me.lblDisplayFraccionArancelaria.Size = New System.Drawing.Size(109, 13)
-        Me.lblDisplayFraccionArancelaria.TabIndex = 253
-        Me.lblDisplayFraccionArancelaria.Text = "Fracción arancelaria :"
-        '
-        'txtFraccionArancelaria
-        '
-        Me.txtFraccionArancelaria.Location = New System.Drawing.Point(128, 604)
-        Me.txtFraccionArancelaria.MaxLength = 10
-        Me.txtFraccionArancelaria.Name = "txtFraccionArancelaria"
-        Me.txtFraccionArancelaria.Size = New System.Drawing.Size(72, 20)
-        Me.txtFraccionArancelaria.TabIndex = 19
         '
         'Catalogo_Articulos
         '

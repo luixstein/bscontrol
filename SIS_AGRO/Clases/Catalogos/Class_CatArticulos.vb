@@ -694,6 +694,7 @@ Public Class Class_CatArticulos
                     Me._RETENCION_IVA_PORCENTAJE = CDec(dReader("RETENCION_IVA_PORCENTAJE").ToString)
                     Me._RETENCION_ISR_TIENE = CBool(dReader("RETENCION_ISR_TIENE").ToString)
                     Me._RETENCION_ISR_PORCENTAJE = CDec(dReader("RETENCION_ISR_PORCENTAJE").ToString)
+                    Me._FRACCION_ARANCELARIA = "" & dReader("FRACCION_ARANCELARIA").ToString
 
                     bResultado = True
                 End If

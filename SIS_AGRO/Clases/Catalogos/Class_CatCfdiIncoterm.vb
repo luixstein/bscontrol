@@ -136,7 +136,7 @@ Public Class Class_CatCfdiIncoterm
     Public Function ObtenerElementos() As System.Data.DataTable
         Const sProcedure As String = "ObtenerElementos"
         Dim dTable As New DataTable
-        Dim da As New SqlDataAdapter(Me._QuerySelect & Me._QueryOrder, Me._Conexion)
+        Dim da As New SqlDataAdapter("SELECT CODIGO_INCOTERM,CODIGO_INCOTERM+'-'+NOMBRE_INCOTERM NOMBRE_INCOTERM FROM CFDI_CAT_INCOTERM ORDER BY NOMBRE_INCOTERM", Me._Conexion)
         Try
             da.Fill(dTable)
         Catch ex As Exception

@@ -468,11 +468,19 @@ Module FacturacionElectronica33
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''CCE COMPLEMENTO COMERCIO EXTERIOR''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Dim sXmlComercioExterior As String = ""
 
-            If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
-                sXmlComercioExterior = oVenta.GeneraXmlComercioExterior11(TipoCCE.Agricola)
+            If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True Then
+                If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                    sXmlComercioExterior = oVenta.GeneraXmlComercioExterior11(TipoCCE.Agricola)
 
-                If txtLEN(sXmlComercioExterior) = False Then
-                    Return False 'Abortamos
+                    If txtLEN(sXmlComercioExterior) = False Then
+                        Return False 'Abortamos
+                    End If
+                ElseIf oVenta.TIENE_COMPLEMENTO_COMERCIO_EXTERIOR = True Then
+                    sXmlComercioExterior = oVenta.GeneraXmlComercioExterior11()
+
+                    If txtLEN(sXmlComercioExterior) = False Then
+                        Return False 'Abortamos
+                    End If
                 End If
 
                 Cfd.XmlComplementoComercioExterior = sXmlComercioExterior
