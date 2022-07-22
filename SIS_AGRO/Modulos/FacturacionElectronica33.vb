@@ -475,15 +475,16 @@ Module FacturacionElectronica33
                     If txtLEN(sXmlComercioExterior) = False Then
                         Return False 'Abortamos
                     End If
-                ElseIf oVenta.TIENE_COMPLEMENTO_COMERCIO_EXTERIOR = True Then
-                    sXmlComercioExterior = oVenta.GeneraXmlComercioExterior11()
 
-                    If txtLEN(sXmlComercioExterior) = False Then
+                    Cfd.XmlComplementoComercioExterior = sXmlComercioExterior
+
+                ElseIf oVenta.TIENE_COMPLEMENTO_COMERCIO_EXTERIOR = True Then
+                    Cfd.ComplementoCCE11 = oVenta.CargaValoresComercioExterior11()
+
+                    If Cfd.ComplementoCCE11.ValoresComplementoCargados = False Then
                         Return False 'Abortamos
                     End If
                 End If
-
-                Cfd.XmlComplementoComercioExterior = sXmlComercioExterior
             End If
 
             'Fin de llenado de nodos del comprobante''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2031,18 +2032,10 @@ ImpuestosConceptos:
                 End If
 
                 Cfd.XmlComplementoComercioExterior = sXmlComercioExterior
-            ElseIf oVenta.CODIGO_TIPO_DOCUMENTO = "FT" And oVenta.TIENE_COMPLEMENTO_COMERCIO_EXTERIOR = True Then
-                sXmlComercioExterior = oVenta.GeneraXmlComercioExterior11(TipoCCE.Acuicola)
 
-                If txtLEN(sXmlComercioExterior) = False Then
-                    Return False 'Abortamos
-                End If
+            ElseIf oVenta.TIENE_COMPLEMENTO_CARTA_PORTE = True Then
+                'If oVenta.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado, omitimos los impuestos
 
-                Cfd.XmlComplementoComercioExterior = sXmlComercioExterior
-            End If
-
-            'If oVenta.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado, omitimos los impuestos
-            If oVenta.TIENE_COMPLEMENTO_CARTA_PORTE = True Then
                 Cfd.ComplementoCartaPorte20 = oVenta.CargaValoresComplementoCartaPorte20 'No genera el complemento, sólo carga los valores
                 If Cfd.ComplementoCartaPorte20.ValoresComplementoCargados = False Then
                     Return False 'Abortamos

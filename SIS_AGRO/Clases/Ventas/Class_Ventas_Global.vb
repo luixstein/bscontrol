@@ -2424,7 +2424,7 @@ Public Class Class_Ventas_Global
         Dim sSQL As String
 
         Try
-            sSQL = "SELECT DISTINCT(A.UNIDAD_VENTA) UNIDAD_VENTA FROM VENTA_DETALLE R INNER JOIN VW_CAT_PRODUCTOS_AGRICOLAS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO)" & _
+            sSQL = "SELECT DISTINCT(A.UNIDAD_VENTA) UNIDAD_VENTA FROM VENTA_DETALLE R INNER JOIN VW_CAT_PRODUCTOS_AGRICOLAS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO)" &
                    "UNION SELECT 'BTO'"
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
@@ -2858,77 +2858,108 @@ Public Class Class_Ventas_Global
         Return sXmlComercioExterior
     End Function
 
-    Public Function GeneraXmlComercioExterior11() As String
-        Const sProcedure As String = "GeneraXmlComercioExterior11"
-        Dim sXmlComercioExterior As String = ""
+    Friend Function CargaValoresComercioExterior11() As Class_CFDI_cce_ComercioExterior11
+        Const sProcedure As String = "CargaValoresComercioExterior11"
+        'Dim sXmlComercioExterior As String = ""
+        Dim CCE11 As New Class_CFDI_cce_ComercioExterior11
         Try
-            Dim cfdiComercioExterior As New Class_CFDI_cce_ComercioExterior11
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            Dim da As SqlDataAdapter
+            Dim sSQL As String = ""
 
-            With cfdiComercioExterior
+            sSQL = "SELECT G.* " &
+            "FROM CFDI_CCE_GLOBAL G " &
+            "WHERE G.FOLIO_VENTA='" & Replace(Me._FOLIO_VENTA, "'", "''") & "' "
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            Dim dtCCE As New DataTable(""), dRowCCE As DataRow
+            da.Fill(dtCCE)
+            da.Dispose()
+
+            If dtCCE.Rows.Count = 0 Then
+                MsgBox("No se encontraron los datos globales del comercio exterior.", MsgBoxStyle.Exclamation, sProcedure)
+                Return CCE11
+            End If
+
+            dRowCCE = dtCCE.Rows(0)
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            sSQL = "SELECT D.* " &
+                    "FROM CFDI_CCE_DETALLE_MERCANCIAS D " &
+                    "WHERE D.ID_CFDI_CCE_GLOBAL=" & dRowCCE("ID_CFDI_CCE_GLOBAL").ToString & " " &
+                    "ORDER BY D.ID_CFDI_CCE_DETALLE_MERCANCIAS"
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            Dim dtMercancias As New DataTable("")
+            da.Fill(dtMercancias)
+            da.Dispose()
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            sSQL = "SELECT D.ID_CFDI_CCE_FIGURA,D.* " &
+                    "FROM CFDI_CCE_FIGURAS D " &
+                    "WHERE D.ID_CFDI_CCE_GLOBAL=" & dRowCCE("ID_CFDI_CCE_GLOBAL").ToString & " " &
+                    "ORDER BY D.ID_CFDI_CCE_FIGURA"
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            Dim dtFiguras As New DataTable("")
+            da.Fill(dtFiguras)
+            da.Dispose()
+
+            Dim dRowEmisor As DataRow = dtFiguras.Select("TIPO_FIGURA='EMISOR'")(0)
+            Dim dRowReceptor As DataRow = dtFiguras.Select("TIPO_FIGURA='RECEPTOR'")(0)
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            With CCE11
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                .Version = "1.1"
-                .MotivoTraslado = "03" '03=Envío de mercancías objeto de contrato de consignación
-                .TipoOperacion = "2"
-                .ClaveDePedimento = "A1"
+                .Version = "" & dRowCCE("VERSION").ToString '"1.1"
+                .MotivoTraslado = "" & dRowCCE("MOTIVO_TRASLADO").ToString '"03" '03=Envío de mercancías objeto de contrato de consignación
+                .TipoOperacion = "" & dRowCCE("TIPO_OPERACION").ToString '"2"
+                .ClaveDePedimento = "" & dRowCCE("CLAVE_PEDIMIENTO").ToString '"A1"
 
-                .CertificadoOrigen = "0"
-                .NumCertificadoOrigen = ""
-                .NumeroExportadorConfiable = ""
-                .Incoterm = "DAP" 'DAP=ENTREGADA EN LUGAR
-                .Subdivision = "0"
+                .CertificadoOrigen = "" & dRowCCE("CERTIFICADO_ORIGEN").ToString '"0"
+                .NumCertificadoOrigen = "" & dRowCCE("NUMERO_CERTIFICADO_ORIGEN").ToString ' ""
+                .NumeroExportadorConfiable = "" & dRowCCE("NUMERO_EXPORTADOR_CONFIABLE").ToString '""
+                .Incoterm = "" & dRowCCE("CODIGO_INCOTERM").ToString '"DAP" 'DAP=ENTREGADA EN LUGAR
+                .Subdivision = "" & dRowCCE("SUBDIVISION").ToString '"0"
 
-                .Observaciones = ""
-                .TipoCambioUSD = FormatTipoCambio(Me._TIPO_DE_CAMBIO, False)
-                .TotalUSD = Format(Me._TOTAL_DOLARES, "######.00")
+                .Observaciones = "" & dRowCCE("OBSERVACIONES").ToString '""
+                .TipoCambioUSD = FormatTipoCambio(CDbl(dRowCCE("TIPO_CAMBIO_USD")), False)
+                .TotalUSD = Format(CDbl(dRowCCE("TOTAL_USD")), "######.00")
 
                 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                'MsgBox("bTieneEmisor=true este no lo podiamos en 32, pongo solo los obligatorios")
                 .bTieneEmisor = True
 
                 If Empresa_Sistema.RFC.Length = 13 Then 'Si es persona física deberá llevar curp obligatoriamente.
-                    .Emisor.Curp = Empresa_Sistema.CURP
+                    .Emisor.Curp = "" & dRowEmisor("CURP").ToString  ' Empresa_Sistema.CURP
                 End If
 
-                .Emisor.Domicilio.Calle = Empresa_Sistema.CALLE 'Requerido
-                .Emisor.Domicilio.NumeroExterior = Empresa_Sistema.NUMERO_EXTERIOR
-                .Emisor.Domicilio.NumeroInterior = Empresa_Sistema.NUMERO_INTERIOR
+                .Emisor.Domicilio.Calle = "" & dRowEmisor("CALLE").ToString 'Empresa_Sistema.CALLE 'Requerido
+                .Emisor.Domicilio.NumeroExterior = "" & dRowEmisor("NUMERO_EXTERIOR").ToString 'Empresa_Sistema.NUMERO_EXTERIOR
+                .Emisor.Domicilio.NumeroInterior = "" & dRowEmisor("NUMERO_INTERIOR").ToString ' Empresa_Sistema.NUMERO_INTERIOR
                 '.Emisor.Domicilio.Colonia = ""
                 '.Emisor.Domicilio.Localidad = ""
                 '.Emisor.Domicilio.Referencia = ""
-                .Emisor.Domicilio.Municipio = Empresa_Sistema.CODIGO_MUNICIPIO_SAT
-                .Emisor.Domicilio.Estado = Empresa_Sistema.CODIGO_ESTADO_SAT 'Requerido
-                .Emisor.Domicilio.Pais = Empresa_Sistema.CODIGO_PAIS_SAT 'Requerido
-                .Emisor.Domicilio.CodigoPostal = Empresa_Sistema.CODIGO_POSTAL 'Requerido
+                .Emisor.Domicilio.Municipio = "" & dRowEmisor("MUNICIPIO").ToString 'Empresa_Sistema.CODIGO_MUNICIPIO_SAT
+                .Emisor.Domicilio.Estado = "" & dRowEmisor("ESTADO").ToString 'Empresa_Sistema.CODIGO_ESTADO_SAT 'Requerido
+                .Emisor.Domicilio.Pais = "" & dRowEmisor("CODIGO_PAIS_SAT").ToString 'Empresa_Sistema.CODIGO_PAIS_SAT 'Requerido
+                .Emisor.Domicilio.CodigoPostal = "" & dRowEmisor("CODIGO_POSTAL").ToString 'Empresa_Sistema.CODIGO_POSTAL 'Requerido
                 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
                 .bTienePropietario = False
                 '.Propietario.NumRegIdTrib = ""
                 '.Propietario.ResidenciaFiscal = ""
 
                 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
                 .bTieneReceptor = True
 
-                '"752491201"  farsmestbest,"205582956" 'nidia
-                '.Receptor.NumRegIdTrib = oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO'El atributo cce11:ComercioExterior:Receptor:NumRegIdTrib no debe registrarse si la versión de CFDI es 3.3. 
-
-                .Receptor.Domicilio.Calle = fElectronicaValidaCampo(oCliente.CALLE) 'Requerido
-                .Receptor.Domicilio.NumeroExterior = fElectronicaValidaCampo(oCliente.NUMERO_EXTERIOR)
-                .Receptor.Domicilio.NumeroInterior = fElectronicaValidaCampo(oCliente.NUMERO_INTERIOR)
-                .Receptor.Domicilio.Colonia = fElectronicaValidaCampo(oCliente.COLONIA)
-                .Receptor.Domicilio.Localidad = fElectronicaValidaCampo(oCliente.LOCALIDAD)
-                '.Receptor.Domicilio.Referencia = ""
-                If oCliente.CODIGO_PAIS_SAT <> "MEX" Then
-                    .Receptor.Domicilio.Municipio = fElectronicaValidaCampo(oCliente.CIUDAD)
-                    .Receptor.Domicilio.Estado = fElectronicaValidaCampo(oCliente.NOMBRE_ESTADO) 'Requerido
-                Else
-                    .Receptor.Domicilio.Municipio = fElectronicaValidaCampo(oCliente.CODIGO_MUNICIPIO)
-                    .Receptor.Domicilio.Estado = fElectronicaValidaCampo(oCliente.CODIGO_ESTADO_SAT) 'Requerido
-                End If
-                .Receptor.Domicilio.Pais = fElectronicaValidaCampo(oCliente.CODIGO_PAIS_SAT) 'Requerido
-                .Receptor.Domicilio.CodigoPostal = fElectronicaValidaCampo(oCliente.CODIGO_POSTAL.ToString) 'Requerido
+                .Receptor.Domicilio.Calle = "" & dRowReceptor("CALLE").ToString 'fElectronicaValidaCampo(oCliente.CALLE) 'Requerido
+                .Receptor.Domicilio.NumeroExterior = "" & dRowReceptor("NUMERO_EXTERIOR").ToString 'fElectronicaValidaCampo(oCliente.NUMERO_EXTERIOR)
+                .Receptor.Domicilio.NumeroInterior = "" & dRowReceptor("NUMERO_INTERIOR").ToString 'fElectronicaValidaCampo(oCliente.NUMERO_INTERIOR)
+                .Receptor.Domicilio.Colonia = "" & dRowReceptor("COLONIA").ToString 'fElectronicaValidaCampo(oCliente.COLONIA)
+                .Receptor.Domicilio.Localidad = "" & dRowReceptor("LOCALIDAD").ToString 'fElectronicaValidaCampo(oCliente.LOCALIDAD)
+                .Receptor.Domicilio.Referencia = "" & dRowReceptor("REFERENCIA").ToString
+                .Receptor.Domicilio.Municipio = "" & dRowReceptor("MUNICIPIO").ToString 'fElectronicaValidaCampo(oCliente.CIUDAD)
+                .Receptor.Domicilio.Estado = "" & dRowReceptor("ESTADO").ToString 'fElectronicaValidaCampo(oCliente.NOMBRE_ESTADO) 'Requerido
+                .Receptor.Domicilio.Pais = "" & dRowReceptor("CODIGO_PAIS_SAT").ToString 'fElectronicaValidaCampo(oCliente.CODIGO_PAIS_SAT) 'Requerido
+                .Receptor.Domicilio.CodigoPostal = "" & dRowReceptor("CODIGO_POSTAL").ToString 'fElectronicaValidaCampo(oCliente.CODIGO_POSTAL.ToString) 'Requerido
                 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
                 .bTieneDestinatario = False
                 'Estos se habilitarian si se llevara destinatario
                 '.Destinatario.NumRegIdTrib = oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO
@@ -2948,66 +2979,28 @@ Public Class Class_Ventas_Global
 
                 'Ciclo a los artículos
 
-                Dim dCantidadAduana As Decimal, dValorUnitarioAduana As Decimal, dValorDolares As Decimal, dPesoxCaja As Decimal, dValorDolaresNuevo As Decimal
-                Dim dtDetalle As New DataTable
-
-                Select Case e
-                    Case TipoCCE.Agricola
-                        dtDetalle = Me.ObtenerDetalleParaComercioExterior
-                    Case TipoCCE.Acuicola
-                        dtDetalle = Me.ObtenerDetalleParaComercioExteriorAcuicola
-                End Select
-
-                For Each dRow As DataRow In dtDetalle.Rows
-                    .Mercancia.NoIdentificacion = dRow("CODIGO_ARTICULO").ToString
-                    .Mercancia.FraccionArancelaria = dRow("FRACCION_ARANCELARIA").ToString
-
-                    dCantidadAduana = CDec(dRow("CANTIDAD").ToString)
-                    dValorUnitarioAduana = CDec(dRow("PRECIO_USD").ToString)
-                    dValorDolares = CDec(dRow("IMPORTE_USD").ToString)
-                    dPesoxCaja = CDec(dRow("PESO").ToString)
-
-                    If dPesoxCaja = 0 Then
-                        MsgBox("El producto " & dRow("CODIGO_ARTICULO").ToString & "-" & dRow("DESCRIPCION").ToString & " no tiene configurado el peso x caja." & vbCrLf &
-                               "Debe hacerlo para hacer la conversión a kilos para la aduana en el complemento exterior.", MsgBoxStyle.Exclamation, sProcedure)
-                        Return ""
-                    End If
-
-                    dValorUnitarioAduana = RedondearD(dValorUnitarioAduana / dPesoxCaja, 2)
-                    dCantidadAduana = RedondearD(dValorDolares / dValorUnitarioAduana, 3)
-
-                    'dValorDolares='Este se queda como orignalmente es, y así se va poner en el ValorDolares, aunque la multiplicación no de el valor exacto.
-                    dValorDolaresNuevo = RedondearD(dCantidadAduana * dValorUnitarioAduana, 2)
-
-                    If dValorDolaresNuevo <> dValorDolares Then
-                        If MsgBox("El campo ValorDolares(en datos de aduana) es diferente al del concepto original. Seguro quiere continuar así ?" & vbCrLf &
-                                   "Concepto.Importe=" & dValorDolares & vbCrLf & "ValorDolares=" & dValorDolaresNuevo.ToString, MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
-                            Return ""
-                        End If
-                    End If
-
-                    'MsgBox("quite de momento la unidad al parecer es incompatible, o nos dirá que pongamos kilos ? MATRIX DE ERRORES CCE209")
-                    '.Mercancia.UnidadAduana = "20" '20=CAJA,01=KILO
-                    .Mercancia.UnidadAduana = "01"
-
-                    .Mercancia.CantidadAduana = Format(dCantidadAduana, "#####0.000")
-                    .Mercancia.ValorUnitarioAduana = Format(dValorUnitarioAduana, "#####0.00")
-                    .Mercancia.ValorDolares = Format(dValorDolares, "#####0.00")
+                For Each dRow As DataRow In dtMercancias.Rows
+                    .Mercancia.NoIdentificacion = "" & dRow("NO_IDENTIFICACION").ToString
+                    .Mercancia.FraccionArancelaria = "" & dRow("FRACCION_ARANCELARIA").ToString
+                    .Mercancia.UnidadAduana = "" & dRow("UNIDAD_ADUANA").ToString
+                    .Mercancia.CantidadAduana = Format(CDbl(dRow("CANTIDAD_ADUANA")), "#####0.000")
+                    .Mercancia.ValorUnitarioAduana = Format(CDbl(dRow("VALOR_UNITARIO_ADUANA")), "#####0.00")
+                    .Mercancia.ValorDolares = Format(CDbl(dRow("VALOR_DOLARES")), "#####0.00")
                     .Mercancia.Add(.Mercancia.NoIdentificacion)
                 Next
             End With
 
-            sXmlComercioExterior = cfdiComercioExterior.GenerarCadenaXMLComercioExterior()
+            dtCCE.Dispose()
+            dtMercancias.Dispose()
+            dtFiguras.Dispose()
 
-            If txtLEN(sXmlComercioExterior) = False Then
-                MsgBox("No se logró generar el XML del comercio exterior.", MsgBoxStyle.Exclamation, Me._Nombre_Catalogo)
-            End If
+            CCE11.ValoresComplementoCargados = True
 
         Catch ex As Exception
             HandleError(Me._Nombre_Catalogo, sProcedure, ex)
         End Try
 
-        Return sXmlComercioExterior
+        Return CCE11
     End Function
 
     Public Function GeneraXmlComercioExterior11(ByVal e As TipoCCE) As String

@@ -1364,6 +1364,7 @@ Buscar:
 
             Me.chkTieneCCE.Enabled = False
             Me.chkTieneCCE.Visible = False
+            Me.cboIncoterm.Enabled = False
 
             Me.chkTieneCartaPorte.Visible = False
             Me.btnCartaPorte.Visible = False

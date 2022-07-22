@@ -43,6 +43,9 @@ Friend Class Class_CFDI_cce_ComercioExterior11
 
     Private AnexoNodo As String = ""
 
+    Public ValoresComplementoCargados As Boolean = False
+    Public ComplementoGenerado As Boolean
+    Public Complemento As MSXML2.IXMLDOMElement
 #End Region
 
 #Region "Métodos y procedimientos"
@@ -51,6 +54,18 @@ Friend Class Class_CFDI_cce_ComercioExterior11
         xmlns = "http://www.sat.gob.mx/ComercioExterior11"
         xsischemaLocation = "http://www.sat.gob.mx/ComercioExterior11 http://www.sat.gob.mx/sitio_internet/cfd/ComercioExterior11/ComercioExterior11.xsd"
     End Sub
+
+    'Public Function GenerarNodoComplementoCCE11() As Boolean
+    '    Const sProcedure As String = "GenerarNodoComplementoCartaPorte20"
+    '    Dim bResultado As Boolean = False
+    '    Try
+
+    '    Catch ex As Exception
+
+    '    End Try
+
+    '    Return bResultado
+    'End Function
 
     Public Function GenerarCadenaXMLComercioExterior() As String
         Const sProcedure As String = "GenerarCadenaXMLComercioExterior"
@@ -99,6 +114,7 @@ Friend Class Class_CFDI_cce_ComercioExterior11
                 If txtLEN(Me.NumCertificadoOrigen) = True Then
                     .setAttribute("NumCertificadoOrigen", Me.NumCertificadoOrigen)
                 End If
+
                 If txtLEN(Me.NumeroExportadorConfiable) = True Then
                     .setAttribute("NumeroExportadorConfiable", Me.NumeroExportadorConfiable)
                 End If
@@ -428,22 +444,23 @@ Friend Class Class_CFDI_cce_ComercioExterior11
 
             sResultado = xmlDoc.xml
 
+            'If Me.ValidacionesProveedorComplementoExterior() = True Then
+            Me.Complemento = NodoComercioExterior
+                Me.ComplementoGenerado = True
+                'bResultado = True
+            'End If
+
         Catch ex As Exception
             HandleError(Me.NombreClase, sProcedure, ex)
         End Try
 
         Return sResultado
-
     End Function
 
     Public Function ValidacionesProveedorComplementoExterior() As Boolean
         Dim bResultado As Boolean = False
         Try
-
-
             MsgBox("falta meter aqui validaciones tipo proveedor, revisat pdf 1.1, al parecrer si se tiene que poner a fuerza algunos domicilios en 3.3")
-
-
 
             MsgBox("falta validar los datos del domicilio, ya no son del nodo del receptor, hay que ver el cce versión 1.1")
             Return False

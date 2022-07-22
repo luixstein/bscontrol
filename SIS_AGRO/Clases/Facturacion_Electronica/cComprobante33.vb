@@ -54,6 +54,7 @@ Friend Class cComprobante33
     'Public ComplementoCCE10 As cComplementoCCE10
     Public ComplementoPagos10 As cComplementoPagos
     Public ComplementoCartaPorte20 As cComplementoCartaPorte20
+    Public ComplementoCCE11 As Class_CFDI_cce_ComercioExterior11
 
     Public XmlComplementoComercioExterior As String
 #End Region
@@ -607,6 +608,14 @@ Friend Class cComprobante33
                 End If
             End If
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            If Not (Me.ComplementoCCE11 Is Nothing) Then
+                If txtLEN(Me.ComplementoCCE11.GenerarCadenaXMLComercioExterior) = True Then
+                    NodoComplemento.appendChild(Me.ComplementoCCE11.Complemento)
+                Else
+                    Return False
+                End If
+            End If
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             'Si hubiera mas complementos, aqui se agregarian
             'If Not (Me.ComplementoXX Is Nothing) Then
             '    NodoComplemento.appendChild Me.ComplementoXX.GenerarNodoComplementoXX
@@ -622,15 +631,17 @@ Friend Class cComprobante33
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             'Complemento cce
-            If tipoComprobante = TipoComprobante.FACTURA_VENTA Then
-                If txtLEN(XmlComplementoComercioExterior) = True Then
-                    Dim sXmlTemp As String = Me.xmlDoc.xml
-                    sXmlTemp = Replace(sXmlTemp, "</cfdi:Comprobante>", "") 'quitamos la terminación del comprobante para pegarle el complemento, y al final se la volvemos a poner.
+            If (Me.ComplementoCCE11 Is Nothing) Then
+                If tipoComprobante = TipoComprobante.FACTURA_VENTA Then
+                    If txtLEN(XmlComplementoComercioExterior) = True Then
+                        Dim sXmlTemp As String = Me.xmlDoc.xml
+                        sXmlTemp = Replace(sXmlTemp, "</cfdi:Comprobante>", "") 'quitamos la terminación del comprobante para pegarle el complemento, y al final se la volvemos a poner.
 
-                    'Pegar el xml base con el complemento
-                    sXmlTemp = sXmlTemp & "<cfdi:Complemento>" & XmlComplementoComercioExterior & "</cfdi:Complemento></cfdi:Comprobante>"
+                        'Pegar el xml base con el complemento
+                        sXmlTemp = sXmlTemp & "<cfdi:Complemento>" & XmlComplementoComercioExterior & "</cfdi:Complemento></cfdi:Comprobante>"
 
-                    Me.xmlDoc.loadXML(sXmlTemp)
+                        Me.xmlDoc.loadXML(sXmlTemp)
+                    End If
                 End If
             End If
 
