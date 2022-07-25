@@ -158,7 +158,7 @@ Friend Class cComprobante33
                 End If
 
                 'If Not (Me.ComplementoCCE11 Is Nothing) Then 'Si le pasó el complemento de comercio exterior
-                If txtLEN(Me.XmlComplementoComercioExterior) = True Then
+                If txtLEN(Me.XmlComplementoComercioExterior) = True Or Not (Me.ComplementoCCE11 Is Nothing) Then
                     .setAttribute("xmlns:cce11", xmlnsCCE11)
                     Me.xsischemaLocation = Me.xsischemaLocation & " http://www.sat.gob.mx/ComercioExterior11 http://www.sat.gob.mx/sitio_internet/cfd/ComercioExterior11/ComercioExterior11.xsd"
                 End If
