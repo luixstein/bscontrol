@@ -284,6 +284,7 @@ Public Class Ventas_Movimientos
             Me.cboFormaPago.SelectedIndex = -1
             Me.cboFormaPago.Enabled = False
             Me.cboMetodoPago.SelectedIndex = -1
+            Me.chkTieneCCE.Checked = False
             Me.chkTieneCartaPorte.Checked = True
 
         Catch ex As Exception
@@ -1462,7 +1463,7 @@ Buscar:
                         Me.chkTieneCartaPorte.Enabled = True
                     End If
 
-                    If Me.oDocumento.AFECTA_CXC = True Then
+                    If Me.oDocumento.TIMBRA_DOCUMENTO = True Then
                         Me.chkTieneCCE.Visible = True
                         Me.chkTieneCCE.Enabled = True
                         Me.cboIncoterm.Enabled = True
@@ -1892,8 +1893,19 @@ Buscar:
                 End If
             End If
 
+            If Me.chkTieneCCE.Checked = True And Me.chkTieneCartaPorte.Checked = True Then
+                MsgBox("De momento no esta permitido grabar facturas con ambos complementos CCE y CCP porque el CCP exige sea moneda en XXX y CCE necesita el tipo de cambio y precios en usd.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If Me.chkTieneCartaPorte.Checked = True Then
+                If Me.ValidaComplementoCartaPorte = False Then
+                    Return False
+                End If
+            End If
+
             If Me.chkTieneCCE.Checked = True Then
-                If Me.ValidarComercioExterior = False Then
+                If Me.ValidaComplementoComercioExterior = False Then
                     Return False
                 End If
             End If
@@ -2511,7 +2523,7 @@ CANCELAR:
 
             If Me.oDocumento.CODIGO_TIPO_DOCUMENTO <> "FT" Then 'FT=Factura de traslado
                 If Me.cboMoneda.Text = "XXX" Then
-                    MsgBox("La moneda de la venta debe ser diferente de XXX.", MsgBoxStyle.Exclamation, sProcedure)
+                    MsgBox("La moneda de la venta debe ser diferente de XXX para facturas normales.", MsgBoxStyle.Exclamation, sProcedure)
                     Return False
                 End If
             Else 'Es factura de traslado
@@ -6328,6 +6340,24 @@ BuscaVentas:
         End If
     End Sub
 
+    Private Function ValidaComplementoCartaPorte() As Boolean
+        Const sProcedure As String = "ValidaComplementoCartaPorte"
+        Dim bResultado As Boolean = False
+        Try
+            Dim oCliente As New Class_CatClientes(Me.TxtCliente.Text)
+
+            If oCliente.RFC <> Empresa_Sistema.RFC Then
+                MsgBox("Para las facturas de traslado el SAT exige que el Receptor.RFC(" & oCliente.RFC & ") debe ser igual que el Emisor.RFC(" & Empresa_Sistema.RFC & ") ", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+        Return bResultado
+    End Function
+
     Private Function GestionaCartaPorte() As Boolean
         Const sProcedure As String = "GestionaCartaPorte"
         Dim bResultado As Boolean = False
@@ -6555,12 +6585,12 @@ BuscaVentas:
         End If
     End Sub
 
-    Public Function ValidarComercioExterior() As Boolean
+    Public Function ValidaComplementoComercioExterior() As Boolean
         Dim bResultado As Boolean = False
-        Const sProcedure As String = "ValidarComercioExterior"
+        Const sProcedure As String = "ValidaComplementoComercioExterior"
         Try
             If Me.cboMoneda.Text <> "USD" Then
-                MsgBox("La venta debió grabarse en USD.", MsgBoxStyle.Exclamation, sProcedure)
+                MsgBox("La venta debe grabarse en USD.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
 
@@ -6571,14 +6601,16 @@ BuscaVentas:
 
             Dim oCliente As New Class_CatClientes(Me.TxtCliente.Text)
 
-            If txtLEN(oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO) = False Then
-                MsgBox("Al cliente le falta configurar el número de registro de identificación fiscal extranjero.", MsgBoxStyle.Exclamation, sProcedure)
-                Return False
-            End If
+            If oCliente.RFC = Empresa_Sistema.RFC_EXTRANJERO Then
+                If txtLEN(oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO) = False Then
+                    MsgBox("Al cliente le falta configurar el número de registro de identificación fiscal extranjero.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
 
-            If oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO.Length < 6 Then
-                MsgBox("El número de registro de identificación fiscal extranjero del cliente debe ser 6 caracteres mínimo.", MsgBoxStyle.Exclamation, sProcedure)
-                Return False
+                If oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO.Length < 6 Then
+                    MsgBox("El número de registro de identificación fiscal extranjero del cliente debe ser 6 caracteres mínimo.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
             End If
 
             For i = 1 To Me.Grid.Rows - 1
