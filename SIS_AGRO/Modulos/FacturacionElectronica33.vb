@@ -221,7 +221,8 @@ Module FacturacionElectronica33
                 .Rfc = sReceptorRFC
                 .Nombre = sReceptorNombre
 
-                If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                'If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True AndAlso Cfd.Receptor.Rfc = Empresa_Sistema.RFC_EXTRANJERO Then
                     .ResidenciaFiscal = oCliente.CODIGO_PAIS_SAT  'usarlo sólo cuando el rfc sea extranjero y haya cce o numregid
                     .NumRegIdTrib = oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO
                 End If
@@ -468,14 +469,23 @@ Module FacturacionElectronica33
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''CCE COMPLEMENTO COMERCIO EXTERIOR''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Dim sXmlComercioExterior As String = ""
 
-            If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
-                sXmlComercioExterior = oVenta.GeneraXmlComercioExterior11
+            If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True Then
+                If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                    sXmlComercioExterior = oVenta.GeneraXmlComercioExterior11(TipoCCE.Agricola)
 
-                If txtLEN(sXmlComercioExterior) = False Then
-                    Return False 'Abortamos
+                    If txtLEN(sXmlComercioExterior) = False Then
+                        Return False 'Abortamos
+                    End If
+
+                    Cfd.XmlComplementoComercioExterior = sXmlComercioExterior
+
+                ElseIf oVenta.TIENE_COMPLEMENTO_COMERCIO_EXTERIOR = True Then
+                    Cfd.ComplementoCCE11 = oVenta.CargaValoresComercioExterior11()
+
+                    If Cfd.ComplementoCCE11.ValoresComplementoCargados = False Then
+                        Return False 'Abortamos
+                    End If
                 End If
-
-                Cfd.XmlComplementoComercioExterior = sXmlComercioExterior
             End If
 
             'Fin de llenado de nodos del comprobante''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -1764,7 +1774,8 @@ Module FacturacionElectronica33
                 .Rfc = sReceptorRFC
                 .Nombre = sReceptorNombre
 
-                If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                'If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True AndAlso Cfd.Receptor.Rfc = Empresa_Sistema.RFC_EXTRANJERO Then
                     .ResidenciaFiscal = oCliente.CODIGO_PAIS_SAT  'usarlo sólo cuando el rfc sea extranjero y haya cce o numregid
                     .NumRegIdTrib = oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO
                 End If
@@ -2013,19 +2024,27 @@ ImpuestosConceptos:
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''CCE COMPLEMENTO COMERCIO EXTERIOR''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             Dim sXmlComercioExterior As String = ""
 
-            If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
-                sXmlComercioExterior = oVenta.GeneraXmlComercioExterior11
+            If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True Then
+                If oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
+                    sXmlComercioExterior = oVenta.GeneraXmlComercioExterior11(TipoCCE.Agricola)
 
-                If txtLEN(sXmlComercioExterior) = False Then
-                    Return False 'Abortamos
+                    If txtLEN(sXmlComercioExterior) = False Then
+                        Return False 'Abortamos
+                    End If
+
+                    Cfd.XmlComplementoComercioExterior = sXmlComercioExterior
+                ElseIf oVenta.TIENE_COMPLEMENTO_COMERCIO_EXTERIOR = True Then
+                    Cfd.ComplementoCCE11 = oVenta.CargaValoresComercioExterior11()
+
+                    If Cfd.ComplementoCCE11.ValoresComplementoCargados = False Then
+                        Return False 'Abortamos
+                    End If
                 End If
-
-                Cfd.XmlComplementoComercioExterior = sXmlComercioExterior
             End If
-
-            'If oVenta.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado, omitimos los impuestos
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''CCE COMPLEMENTO CARTA PORTE''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             If oVenta.TIENE_COMPLEMENTO_CARTA_PORTE = True Then
                 Cfd.ComplementoCartaPorte20 = oVenta.CargaValoresComplementoCartaPorte20 'No genera el complemento, sólo carga los valores
+
                 If Cfd.ComplementoCartaPorte20.ValoresComplementoCargados = False Then
                     Return False 'Abortamos
                 End If

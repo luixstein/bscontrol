@@ -284,6 +284,7 @@ Public Class Ventas_Movimientos
             Me.cboFormaPago.SelectedIndex = -1
             Me.cboFormaPago.Enabled = False
             Me.cboMetodoPago.SelectedIndex = -1
+            Me.chkTieneCCE.Checked = False
             Me.chkTieneCartaPorte.Checked = True
 
         Catch ex As Exception
@@ -386,6 +387,7 @@ Public Class Ventas_Movimientos
             Me.DesplegarTiposCredito()
             Me.DesplegarTiposRelacionCFDI()
             Me.DesplegarRegimenesFiscales()
+            Me.DesplegarIncoterm()
 
             Me.DesplegarDocumentos()
 
@@ -976,10 +978,12 @@ Buscar:
             Me.lblPorcentajeUtilidad.Text = "0.00"
 
             If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
-                Me.cboMoneda.Text = "XXX"
+                'Me.cboMoneda.Text = "XXX"
+                Me.cboMoneda.SelectedIndex = -1 'Por no saber que moneda quiera el usuario grabar.
                 Me.cboUsoCFDI.SelectedValue = "P01"
             End If
 
+            Me.chkTieneCCE.Checked = False
             Me.chkTieneCartaPorte.Checked = False
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -1359,6 +1363,10 @@ Buscar:
             Me.GridCFDIsRelacionados.Locked = True
             Me.tsbFacturaACartaPorte.Visible = False
 
+            Me.chkTieneCCE.Enabled = False
+            Me.chkTieneCCE.Visible = False
+            Me.cboIncoterm.Enabled = False
+
             Me.chkTieneCartaPorte.Visible = False
             Me.btnCartaPorte.Visible = False
             Me.btnCartaPorte.Enabled = False
@@ -1429,7 +1437,7 @@ Buscar:
                         Me.cboVendedor.SelectedValue = Usuario.CODIGO_VENDEDOR
                     End If
 
-                    EsFacturaVariasRemisiones = False
+                    Me.EsFacturaVariasRemisiones = False
                     Me.btnAceptar.Enabled = True
                     Me.btnAceptarRemisionesSeries.Enabled = True
                     Me.btnCargarRemisiones.Enabled = True
@@ -1437,8 +1445,15 @@ Buscar:
                     If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
                         Me.cboUsoCFDI.SelectedValue = "P01"
                         Me.cboUsoCFDI.Enabled = False
-                        Me.cboMoneda.Text = "XXX"
-                        Me.cboMoneda.Enabled = False
+
+                        If Me.chkTieneCartaPorte.Checked = True Then
+                            Me.cboMoneda.Text = "XXX"
+                            Me.cboMoneda.Enabled = False
+                        Else
+                            Me.cboMoneda.SelectedIndex = -1
+                            Me.cboMoneda.Enabled = True
+                        End If
+
                         Me.cboFormaPago.SelectedIndex = -1 'No se permitirá seleccionar ninguna forma de pago
                         Me.cboFormaPago.Enabled = False
                         Me.cboMetodoPago.SelectedIndex = -1 'No se permitirá seleccionar ningún método de pago
@@ -1446,6 +1461,12 @@ Buscar:
                         Me.cboTipoNegociacion.Enabled = False
                         Me.chkTieneCartaPorte.Visible = True
                         Me.chkTieneCartaPorte.Enabled = True
+                    End If
+
+                    If Me.oDocumento.TIMBRA_DOCUMENTO = True Then
+                        Me.chkTieneCCE.Visible = True
+                        Me.chkTieneCCE.Enabled = True
+                        Me.cboIncoterm.Enabled = True
                     End If
 
                     If Me.Visible = True Then
@@ -1580,6 +1601,11 @@ Buscar:
                             Me.btnCartaPorte.Visible = True
                             Me.btnCartaPorte.Enabled = True
                         End If
+                    End If
+
+                    If Me.chkTieneCCE.Checked = True Then
+                        Me.chkTieneCCE.Visible = True
+                        Me.cboIncoterm.Visible = True : Me.lblDisplayIncoterm.Visible = True
                     End If
 
                     'If Me.oVenta.ADDENDA = "1" Then
@@ -1783,7 +1809,7 @@ Buscar:
             '    End If
             'End If
 
-            If Me._EsPorEmbarqueExtranjero = True Or Me.sTipoVenta = "SR" Then 'SR=SUSTITUCION DE REMISION
+            If Me._EsPorEmbarqueExtranjero = True Or Me.sTipoVenta = "SR" Or valorNumericoD(Me.lblTotal.Text) = 0 Then 'SR=SUSTITUCION DE REMISION
                 'Continúa si es embarque extranjero porque no afecta saldos, o si es sust de remisión porque la venta ya se realizó de todas formas.
             ElseIf Me.oDocumento.AFECTA_CXC = False Then 'Si el documento no afecta como pudiera ser una cotización
                 Me.ValidarReglasCreditoplazo(True) 'Sólo entra en modo de advertencia pero dejará continuar grabar.
@@ -1863,6 +1889,23 @@ Buscar:
                     sListaCFDIsRelacionados = sListaCFDIsRelacionados.Substring(0, sListaCFDIsRelacionados.Length - 1) 'Para quitarle la última coma que sale sobrando.
                 Else
                     MsgBox("Seleccionó un tipo de relación CFDI, pero no indicó cuales son los CFDIs relacionados.", vbExclamation, sProcedure)
+                    Return False
+                End If
+            End If
+
+            If Me.chkTieneCCE.Checked = True And Me.chkTieneCartaPorte.Checked = True Then
+                MsgBox("De momento no esta permitido grabar facturas con ambos complementos CCE y CCP porque el CCP exige sea moneda en XXX y CCE necesita el tipo de cambio y precios en usd.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If Me.chkTieneCartaPorte.Checked = True Then
+                If Me.ValidaComplementoCartaPorte = False Then
+                    Return False
+                End If
+            End If
+
+            If Me.chkTieneCCE.Checked = True Then
+                If Me.ValidaComplementoComercioExterior = False Then
                     Return False
                 End If
             End If
@@ -2143,6 +2186,14 @@ Buscar:
 
                 If Me.chkTieneCartaPorte.Checked = True Then
                     If Me.GestionaCartaPorte = False Then
+                        If MsgBox("No grabó la carta porte, quiere aún así timbrar la factura sin carta porte?", vbQuestion Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
+                            GoTo SaltarTimbrado
+                        End If
+                    End If
+                End If
+
+                If Me.chkTieneCCE.Checked = True Then
+                    If .GrabaComplementoComercioExteriorDatos(Me.cboIncoterm.SelectedValue.ToString) = False Then
                         If MsgBox("No grabó la carta porte, quiere aún así timbrar la factura sin carta porte?", vbQuestion Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
                             GoTo SaltarTimbrado
                         End If
@@ -2465,6 +2516,30 @@ CANCELAR:
                 Return False
             End If
 
+            If Me.cboMoneda.SelectedIndex = -1 Then
+                MsgBox("Seleccione la moneda de la venta por favor.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If Me.oDocumento.CODIGO_TIPO_DOCUMENTO <> "FT" Then 'FT=Factura de traslado
+                If Me.cboMoneda.Text = "XXX" Then
+                    MsgBox("La moneda de la venta debe ser diferente de XXX para facturas normales.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+            Else 'Es factura de traslado
+                If Me.chkTieneCartaPorte.Checked = True Then
+                    If Me.cboMoneda.Text <> "XXX" Then
+                        MsgBox("La moneda de la venta debe ser XXX cuando es una factura de traslado con complemento carta porte.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+                Else
+                    If Me.cboMoneda.Text = "XXX" Then
+                        MsgBox("La moneda de la venta debe ser diferente de XXX cuando es una factura de traslado sin complemento carta porte.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+                End If
+            End If
+
             If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
                 If txtLEN(Me.oCliente.CUENTA_CONTABLE) = False Then
                     MsgBox("El cliente no tiene una cuenta contable en pesos asignada.", MsgBoxStyle.Exclamation, sProcedure)
@@ -2639,7 +2714,6 @@ CANCELAR:
                         End If
                     End If
                 End If
-
             End If
 
             If sTipoVenta <> "NM" Then
@@ -4214,7 +4288,12 @@ salto:
                 Me.cboTipoRelacionCFDI.SelectedIndex = -1
             End If
 
+            Me.chkTieneCCE.Checked = Me.oVenta.TIENE_COMPLEMENTO_COMERCIO_EXTERIOR
             Me.chkTieneCartaPorte.Checked = Me.oVenta.TIENE_COMPLEMENTO_CARTA_PORTE
+
+            If Me.chkTieneCCE.Checked = True Then
+                Me.cboIncoterm.SelectedValue = Me.oVenta.CODIGO_INCOTERM
+            End If
 
             bResultado = True
 
@@ -4492,8 +4571,8 @@ LlenaLinea:
                                 'If txtLEN(oArticulos.CODIGO_CULTIVO) = True Then
                                 'Dim Sql As New Class_find("SELECT CUENTA_CONTABLE_BASE FROM CAT_CULTIVOS Where CODIGO_CULTIVO='" & oArticulos.CODIGO_CULTIVO.ToString & "' AND CODIGO_PLAZA=" & Usuario.Codigo_Plaza)
 
-                        'Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + Sql.Result1 'En agr esta así, pero aquí la cuenta es general
-                        Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
+                                'Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString + Me.cboTipoMercado.SelectedValue.ToString + Sql.Result1 'En agr esta así, pero aquí la cuenta es general
+                                Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = Plaza.CUENTA_CONTABLE_VENTAS.ToString
                                 'Else
                                 ' Me.Grid.Cell(Renglon, Me.igyCuentaContable).Text = ""
                                 'End If
@@ -4879,6 +4958,19 @@ buscaCentrosCostos:
 
             Me.bClienteEsContribuyenteIEPS = CBool(Me.oCliente.ES_CONTRIBUYENTE_IEPS)
 
+            Select Case Me.oCliente.TIPO_PERSONA
+                Case "F"
+                    Me.DesplegarUsoCFDIPersonasFisicas()
+                Case "M"
+                    Me.DesplegarUsoCFDIPersonasMorales()
+            End Select
+
+            If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
+                Me.cboUsoCFDI.SelectedValue = "P01"
+            Else
+                Me.cboUsoCFDI.SelectedValue = Me.oCliente.CODIGO_USO_CFDI
+            End If
+
             If Me.oDocumento.CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
                 Return True 'Nos salimos ya que la forma de pago y método de pago son fijas y ya están establecidas.
             End If
@@ -4897,14 +4989,6 @@ buscaCentrosCostos:
                         End If
                 End Select
             End If
-
-            Select Case Me.oCliente.TIPO_PERSONA
-                Case "F"
-                    Me.DesplegarUsoCFDIPersonasFisicas()
-                Case "M"
-                    Me.DesplegarUsoCFDIPersonasMorales()
-            End Select
-            Me.cboUsoCFDI.SelectedValue = Me.oCliente.CODIGO_USO_CFDI
 
             If Me.oDocumento.ES_FACTURA_ANTICIPO = True Then
                 Me.cboTipoNegociacion.SelectedValue = "2" '1=Credito, 2=Contado , forzamos a contado porque al ser anticipo es contado-PUE según el SAT.
@@ -6256,6 +6340,24 @@ BuscaVentas:
         End If
     End Sub
 
+    Private Function ValidaComplementoCartaPorte() As Boolean
+        Const sProcedure As String = "ValidaComplementoCartaPorte"
+        Dim bResultado As Boolean = False
+        Try
+            Dim oCliente As New Class_CatClientes(Me.TxtCliente.Text)
+
+            If oCliente.RFC <> Empresa_Sistema.RFC Then
+                MsgBox("Para las facturas de traslado el SAT exige que el Receptor.RFC(" & oCliente.RFC & ") debe ser igual que el Emisor.RFC(" & Empresa_Sistema.RFC & ") ", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+        Return bResultado
+    End Function
+
     Private Function GestionaCartaPorte() As Boolean
         Const sProcedure As String = "GestionaCartaPorte"
         Dim bResultado As Boolean = False
@@ -6464,6 +6566,99 @@ BuscaVentas:
 
         Return bResultado
     End Function
+
+    Private Sub chkTieneCCE_CheckedChanged(sender As Object, e As EventArgs) Handles chkTieneCCE.CheckedChanged
+        If Me.chkTieneCCE.Checked = True Then
+            Me.cboIncoterm.Visible = True : Me.lblDisplayIncoterm.Visible = True
+        Else
+            Me.cboIncoterm.Visible = False : Me.lblDisplayIncoterm.Visible = False
+        End If
+    End Sub
+
+    Private Sub chkTieneCartaPorte_CheckedChanged(sender As Object, e As EventArgs) Handles chkTieneCartaPorte.CheckedChanged
+        If Me.chkTieneCartaPorte.Checked = True Then
+            Me.cboMoneda.Text = "XXX"
+            Me.cboMoneda.Enabled = False
+        Else
+            Me.cboMoneda.SelectedIndex = -1
+            Me.cboMoneda.Enabled = True
+        End If
+    End Sub
+
+    Public Function ValidaComplementoComercioExterior() As Boolean
+        Dim bResultado As Boolean = False
+        Const sProcedure As String = "ValidaComplementoComercioExterior"
+        Try
+            If Me.cboMoneda.Text <> "USD" Then
+                MsgBox("La venta debe grabarse en USD.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            If valorNumericoD(Me.txtTipoCambio.Text) <= 0 Then
+                MsgBox("Falta indicar el tipo de cambio.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            Dim oCliente As New Class_CatClientes(Me.TxtCliente.Text)
+
+            If oCliente.RFC = Empresa_Sistema.RFC_EXTRANJERO Then
+                If txtLEN(oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO) = False Then
+                    MsgBox("Al cliente le falta configurar el número de registro de identificación fiscal extranjero.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+
+                If oCliente.NUMERO_IDENTIFICACION_REGISTRO_FISCAL_EXTRANJERO.Length < 6 Then
+                    MsgBox("El número de registro de identificación fiscal extranjero del cliente debe ser 6 caracteres mínimo.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
+            End If
+
+            For i = 1 To Me.Grid.Rows - 1
+                If txtLEN(Me.Grid.Cell(i, Me.igyCodigo).Text) = True Then
+                    Dim oArticulo As New Class_CatArticulos(Me.Grid.Cell(i, Me.igyCodigo).Text)
+                    If oArticulo.FRACCION_ARANCELARIA.Length = 0 Then
+                        MsgBox("El artículo " & oArticulo.CODIGO_ARTICULO & "-" & oArticulo.DESCRIPCION & " no tiene fracción arancelaria y es obligatoria para timbrar CCE.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+
+                    If oArticulo.CODIGO_UNIDAD <> "KGM" AndAlso oArticulo.FACTOR_CONVERSION = 0 Then
+                        MsgBox("El artículo " & oArticulo.CODIGO_ARTICULO & "-" & oArticulo.DESCRIPCION & " no es en kilos por lo que debe especificar el factor de conversión para poder calcular los valores a kilos para el CCE.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+                End If
+            Next
+
+            If Me.cboIncoterm.SelectedIndex = -1 Then
+                MsgBox("Seleccione el tipo de incoterm.", MsgBoxStyle.Exclamation, sProcedure)
+                Return False
+            End If
+
+            bResultado = True
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
+
+    Private Sub DesplegarIncoterm()
+        Const sProcedure As String = "DesplegarIncoterm"
+        Dim dView As New Data.DataView
+        Try
+            Dim oIncoterm As New Class_CatCfdiIncoterm
+            With Me.cboIncoterm
+                .DisplayMember = "NOMBRE_INCOTERM"
+                .ValueMember = "CODIGO_INCOTERM"
+                dView = New Data.DataView(oIncoterm.ObtenerElementos)
+                .DataSource = dView
+                '.SelectedIndex = -1
+                .SelectedValue = "DDP" 'DDP=ENTREGADA DERECHOS PAGADOS (LUGAR DE DESTINO CONVENIDO).
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+    End Sub
 
 #End Region
 

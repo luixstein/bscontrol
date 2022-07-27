@@ -562,31 +562,33 @@ Public Class Catalogo_CFDI_Figuras_Transporte
                 Return False
             End If
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            sQuery = "SELECT TOP 1 1 " &
-                     "FROM CFDI_CAT_CODIGOS_POSTALES CP " &
-                     "INNER JOIN SIS_ESTADOS E ON(CP.CODIGO_ESTADO_SAT=E.CODIGO_ESTADO_SAT) " &
-                     "LEFT JOIN CAT_MUNICIPIOS M ON(CP.CODIGO_MUNICIPIO_SAT=M.CODIGO_MUNICIPIO_SAT AND E.CODIGO_ESTADO=M.CODIGO_ESTADO) " &
-                     "LEFT JOIN CFDI_CAT_COLONIAS COL ON(CP.CODIGO_POSTAL=COL.CODIGO_POSTAL) " &
-                     "LEFT JOIN CFDI_CAT_LOCALIDADES LOC ON(CP.CODIGO_LOCALIDAD=LOC.CODIGO_LOCALIDAD AND E.CODIGO_ESTADO_SAT=LOC.CODIGO_ESTADO_SAT) " &
-                     "WHERE CP.CODIGO_POSTAL='" & sReplace(Me.TxtCodigoPostal.Text) & "' AND CP.CODIGO_ESTADO_SAT='" & Me.TxtEstado.Text & "' "
+            If Me.TxtPaisDomicilio.Text = "MEX" Then
+                sQuery = "SELECT TOP 1 1 " &
+                         "FROM CFDI_CAT_CODIGOS_POSTALES CP " &
+                         "INNER JOIN SIS_ESTADOS E ON(CP.CODIGO_ESTADO_SAT=E.CODIGO_ESTADO_SAT) " &
+                         "LEFT JOIN CAT_MUNICIPIOS M ON(CP.CODIGO_MUNICIPIO_SAT=M.CODIGO_MUNICIPIO_SAT AND E.CODIGO_ESTADO=M.CODIGO_ESTADO) " &
+                         "LEFT JOIN CFDI_CAT_COLONIAS COL ON(CP.CODIGO_POSTAL=COL.CODIGO_POSTAL) " &
+                         "LEFT JOIN CFDI_CAT_LOCALIDADES LOC ON(CP.CODIGO_LOCALIDAD=LOC.CODIGO_LOCALIDAD AND E.CODIGO_ESTADO_SAT=LOC.CODIGO_ESTADO_SAT) " &
+                         "WHERE CP.CODIGO_POSTAL='" & sReplace(Me.TxtCodigoPostal.Text) & "' AND CP.CODIGO_ESTADO_SAT='" & Me.TxtEstado.Text & "' "
 
-            If txtLEN(Me.TxtMunicipio.Text) = True Then
-                sQuery = sQuery + " AND M.CODIGO_MUNICIPIO=" & sReplace(Me.TxtMunicipio.Text) & " "
-            End If
+                If txtLEN(Me.TxtMunicipio.Text) = True Then
+                    sQuery = sQuery + " AND M.CODIGO_MUNICIPIO=" & sReplace(Me.TxtMunicipio.Text) & " "
+                End If
 
-            If txtLEN(Me.TxtIdLocalidad.Text) = True Then
-                sQuery = sQuery + " AND LOC.ID_LOCALIDAD=" & sReplace(Me.TxtIdLocalidad.Text) & " "
-            End If
+                If txtLEN(Me.TxtIdLocalidad.Text) = True Then
+                    sQuery = sQuery + " AND LOC.ID_LOCALIDAD=" & sReplace(Me.TxtIdLocalidad.Text) & " "
+                End If
 
-            If txtLEN(Me.TxtIdColonia.Text) = True Then
-                sQuery = sQuery + " AND COL.ID_COLONIA=" & sReplace(Me.TxtIdColonia.Text) & " "
-            End If
+                If txtLEN(Me.TxtIdColonia.Text) = True Then
+                    sQuery = sQuery + " AND COL.ID_COLONIA=" & sReplace(Me.TxtIdColonia.Text) & " "
+                End If
 
-            sql = New Class_find(sQuery)
+                sql = New Class_find(sQuery)
 
-            If txtLEN(sql.Result1) = False Then
-                MsgBox("No coinciden los datos de domicilio para este código postal según el SAT, verifique la tabla de este código postal.", MsgBoxStyle.Exclamation, sProcedure)
-                Return False
+                If txtLEN(sql.Result1) = False Then
+                    MsgBox("No coinciden los datos de domicilio para este código postal según el SAT, verifique la tabla de este código postal.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+                End If
             End If
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 

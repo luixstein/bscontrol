@@ -203,6 +203,7 @@
     <Compile Include="Clases\Catalogos\Class_Catalogos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatArticulos.vb" />
     <Compile Include="Clases\Catalogos\Class_CatCfdiFigurasTransporte.vb" />
+    <Compile Include="Clases\Catalogos\Class_CatCfdiIncoterm.vb" />
     <Compile Include="Clases\Catalogos\Class_CatPrioridadesRequisicion.vb" />
     <Compile Include="Clases\Catalogos\Class_CatClientesCuentasBancarias.vb" />
     <Compile Include="Clases\Catalogos\Class_CatParticipacionSocios.vb" />
@@ -462,6 +463,7 @@
     <Compile Include="Clases\Utilerias\Class_Imagenes.vb" />
     <Compile Include="Clases\Utilerias\cNum2Text.vb" />
     <Compile Include="Clases\Ventas\Class_CartaPorte.vb" />
+    <Compile Include="Clases\Ventas\Class_ComercioExterior.vb" />
     <Compile Include="dsTrabajadores.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

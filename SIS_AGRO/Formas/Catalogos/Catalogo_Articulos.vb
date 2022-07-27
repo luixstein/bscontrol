@@ -271,6 +271,7 @@ Public Class Catalogo_Articulos
             Me.cboRetencionIVAPorcentaje.SelectedIndex = -1
             Me.chkRetencionISRTiene.Checked = False
             Me.cboRetencionISRPorcentaje.SelectedIndex = -1
+            Me.txtFraccionArancelaria.Text = ""
 
         Catch ex As Exception
             HandleError(Me.Name, "InicializaElemento", ex)
@@ -442,6 +443,8 @@ Public Class Catalogo_Articulos
                         Me.cboRetencionISRPorcentaje.SelectedIndex = -1
                     End If
 
+                    Me.txtFraccionArancelaria.Text = .FRACCION_ARANCELARIA
+
                     oUnidad = Nothing
                     oProductoServicio = Nothing
                 End With
@@ -496,6 +499,7 @@ Public Class Catalogo_Articulos
                         If Me.chkRetencionISRTiene.Checked = True Then
                             .RETENCION_ISR_PORCENTAJE = valorNumericoD(Me.cboRetencionISRPorcentaje.Text)
                         End If
+                        .FRACCION_ARANCELARIA = Me.txtFraccionArancelaria.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -747,7 +751,7 @@ Public Class Catalogo_Articulos
         txtTAB(e)
     End Sub
 
-    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles CboEstatus.KeyPress, TxtDescripcion.KeyPress, TxtUnidadVenta.KeyPress, cboLinea.KeyPress,
+    Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodArticulo.KeyPress, CboEstatus.KeyPress, TxtDescripcion.KeyPress, TxtUnidadVenta.KeyPress, cboLinea.KeyPress,
         CboFamilia.KeyPress, cboGradoToxicidad.KeyPress, txtCodigoUnidadSAT.KeyPress, txtClaveProductoSAT.KeyPress
         txtNoBeep(e)
     End Sub
@@ -767,11 +771,11 @@ Public Class Catalogo_Articulos
         End If
     End Sub
 
-    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodArticulo.KeyPress
+    Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFraccionArancelaria.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
+        txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
-
 #End Region
 
 #Region "Keydown específicos"
