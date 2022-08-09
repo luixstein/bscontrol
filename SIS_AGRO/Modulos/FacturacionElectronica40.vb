@@ -1347,15 +1347,16 @@ Module FacturacionElectronica40
                                     Format(valorNumericoD(dRowImpuesto("BASE_DR").ToString), "#0.000000"),
                                     dRowImpuesto("IMPUESTO_DR").ToString,
                                     dRowImpuesto("TIPO_FACTOR_DR").ToString,
-                                    Format(valorNumericoD(dRowImpuesto("TASA_O_CUOTA_DR").ToString), "#0.000000"),
-                                    Format(valorNumericoD(dRowImpuesto("IMPORTE_DR").ToString), "#0.000000"))
-                            Case "RETENCION"
+                                    IIf(dRowImpuesto("TIPO_FACTOR_DR").ToString <> "Exento", Format(valorNumericoD(dRowImpuesto("TASA_O_CUOTA_DR").ToString), "#0.000000"), "").ToString(),
+                                    IIf(dRowImpuesto("TIPO_FACTOR_DR").ToString <> "Exento", Format(valorNumericoD(dRowImpuesto("IMPORTE_DR").ToString), "#0.000000"), "").ToString())
+
+                            Case "RETENCION" 'Aunque ni grabamos valores de retenciones en los pagos.
                                 ImpuestosRetencionesDR40.Add(
                                     Format(valorNumericoD(dRowImpuesto("BASE_DR").ToString), "#0.000000"),
                                     dRowImpuesto("IMPUESTO_DR").ToString,
                                     dRowImpuesto("TIPO_FACTOR_DR").ToString,
-                                    Format(valorNumericoD(dRowImpuesto("TASA_O_CUOTA_DR").ToString), "#0.000000"),
-                                    Format(valorNumericoD(dRowImpuesto("IMPORTE_DR").ToString), "#0.000000"))
+                                    IIf(dRowImpuesto("TIPO_FACTOR_DR").ToString <> "Exento", Format(valorNumericoD(dRowImpuesto("TASA_O_CUOTA_DR").ToString), "#0.000000"), "").ToString(),
+                                    IIf(dRowImpuesto("TIPO_FACTOR_DR").ToString <> "Exento", Format(valorNumericoD(dRowImpuesto("IMPORTE_DR").ToString), "#0.000000"), "").ToString())
                         End Select
                     Next
 
@@ -1382,8 +1383,9 @@ Module FacturacionElectronica40
                                 Format(valorNumericoD(dRowImpuesto("BASE_P").ToString), "#0.000000"),
                                 dRowImpuesto("IMPUESTO_P").ToString,
                                 dRowImpuesto("TIPO_FACTOR_P").ToString,
-                                Format(valorNumericoD(dRowImpuesto("TASA_O_CUOTA_P").ToString), "#0.000000"),
-                                Format(valorNumericoD(dRowImpuesto("IMPORTE_P").ToString), "#0.000000"))
+                                IIf(dRowImpuesto("TIPO_FACTOR_P").ToString <> "Exento", Format(valorNumericoD(dRowImpuesto("TASA_O_CUOTA_P").ToString), "#0.000000"), "").ToString(),
+                                IIf(dRowImpuesto("TIPO_FACTOR_P").ToString <> "Exento", Format(valorNumericoD(dRowImpuesto("IMPORTE_P").ToString), "#0.000000"), "").ToString())
+
                         Case "RETENCION"
                             .ImpuestosP.Retenciones.Add(
                                 dRowImpuesto("IMPUESTO_P").ToString,
