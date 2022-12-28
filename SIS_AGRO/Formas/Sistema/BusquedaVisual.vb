@@ -7,101 +7,6 @@ Public Class BusquedaVisual
     Inherits Form
 
 #Region "Campos"
-
-
-#Region "Campos de la tabla"
-
-#End Region
-
-#Region "Campos ligados a la tabla"
-
-#End Region
-
-#Region "Campos públicos"
-
-#End Region
-
-
-#Region "Campos privados"
-
-#End Region
-
-#Region "Campos de sistema"
-
-#End Region
-
-#End Region
-
-#Region "Propiedades"
-
-#Region "Propiedades Campos de la tabla"
-
-
-
-
-#End Region
-
-#Region "Propiedades de campos ligados a la tabla"
-
-#End Region
-
-#Region "Propiedades públicos"
-
-#End Region
-
-#Region "Propiedades de campos privados"
-
-#End Region
-#Region "Propiedades de campos de sistema"
-
-
-#End Region
-
-#End Region
-
-#Region "Propiedades públicos"
-    Public arrayWidthColumns(-1) As Integer
-    Private CollectionWidthColumns As Collection
-#End Region
-
-#Region "Constructor y destructor"
-
-#End Region
-
-#Region "Opciones"
-
-#End Region
-
-#Region "Métodos y procedimientos"
-
-#End Region
-
-#Region "Eventos de objetos"
-
-#Region "Eventos de la lista de elementos"
-
-#End Region
-
-#Region " Eventos de TxtFiltro"
-
-#End Region
-
-#Region "Eventos Genericos"
-
-#End Region
-
-
-#Region "Keydown específicos"
-
-
-#End Region
-
-#Region "Validating específicos"
-
-#End Region
-
-#End Region
-
     Public sCampo As String
     Public sTable As String
     Public sOrder As String
@@ -112,9 +17,15 @@ Public Class BusquedaVisual
     Public Colwidths() As Integer
     Public iRows As Integer
 
+    Public arrayWidthColumns(-1) As Integer
+    Private CollectionWidthColumns As Collection
+    Private arrColsAlignment(-1) As Integer
+#End Region
+
     Public BuscaTodaCadena As Boolean = False, BuscarDatatableLocal As Boolean = False, bIniciado As Boolean = False
     Private dTablaLocal As New DataTable, vwLocal As New DataView
 
+#Region "Constructor"
     Public Sub New()
         MyBase.New()
         '
@@ -136,10 +47,9 @@ Public Class BusquedaVisual
         Me.GridBusqueda.ReadOnly = True
         Me.GridBusqueda.RowHeadersVisible = False
     End Sub
+#End Region
 
 #Region " Windows Form Designer generated code "
-
-
     Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
 
         If disposing Then
@@ -186,15 +96,43 @@ Public Class BusquedaVisual
     'End Sub
 #End Region
 
+#Region "Eventos"
     Private Sub Txtbusca_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtBusca.TextChanged
-        Inicia(txtBusca.Text)
+        Me.Inicia(Me.txtBusca.Text)
     End Sub
 
+    Private Sub GridBusqueda_keyEnter_presed() Handles GridBusqueda.keyEnter_presed
+        'Me.Hide()
+        Me.Close()
+    End Sub
+
+    Private Sub txtBusca_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtBusca.KeyDown
+        Select Case e.KeyCode
+            Case Keys.Escape
+                'Me.Hide()
+                Me.iRows = 0
+                Me.Close()
+            Case Keys.Return
+                'dataGrid1.Tag = "X"
+                Me.GridBusqueda.Select()
+            Case Keys.Down
+                Me.GridBusqueda.Tag = "X"
+                Me.GridBusqueda.Select()
+        End Select
+    End Sub
+
+    Private Sub txtBusca_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtBusca.KeyPress
+        txtNoBeep(e)
+    End Sub
+#End Region
+
+#Region "Métodos y procedimientos"
     Public Sub Inicia(ByVal sCodigo As String)
         Dim dv As New DataView, iColumnas As Integer
         Dim i As Integer
+        Dim dsTable As New DataSet
 
-        GridBusqueda.inicia(sTable)
+        Me.GridBusqueda.inicia(sTable)
         If Me.sExtraFilter.Length > 0 Then
             sCodigo = Me.sExtraFilter & sCodigo & Me.sExtraFilter
         End If
@@ -208,9 +146,6 @@ Public Class BusquedaVisual
             'iColumnas = dv.Table.Columns.Count
             'iRows = dv.Count
         Else 'Si leeremos directamente del servidor
-
-            Dim dsTable As New DataSet
-
             If BuscaTodaCadena = True Then
                 sCodigo = "%" & sCodigo
             End If
@@ -259,7 +194,7 @@ Public Class BusquedaVisual
                 'dTablaLocal.Select(sCampo & " like '" & sCodigo & "%'")
                 'dTablaFiltrada = vw.ToTable
 
-                GridBusqueda.DataSource = vwLocal 'dTablaFiltrada
+                Me.GridBusqueda.DataSource = vwLocal 'dTablaFiltrada
                 iRows = vwLocal.Count
                 iColumnas = vwLocal.Table.Columns.Count
                 'iColumnas = dTablaFiltrada.Columns.Count
@@ -267,7 +202,7 @@ Public Class BusquedaVisual
             Else
                 daTable.Fill(dsTable, sTable)
                 daTable.Dispose()
-                GridBusqueda.DataSource = dsTable.Tables(sTable)
+                Me.GridBusqueda.DataSource = dsTable.Tables(sTable)
                 iColumnas = dsTable.Tables(sTable).Columns.Count
                 iRows = dsTable.Tables(sTable).Rows.Count
             End If
@@ -297,30 +232,28 @@ Public Class BusquedaVisual
             Next
         End If
 
-    End Sub
+        'Esta sección sirve para que detecte las columnas numéricas y las alinee a la derecha automáticamente.
+        If Me.arrColsAlignment.Length > 0 Then 'Esto es para que si ya entró una vez a buscar, las subsecuentes veces ya no vea si son numéricas o no, porque esa información ya se recopiló en un arreglo.
+            For i = 0 To Me.arrColsAlignment.Length - 1
+                If Me.arrColsAlignment(i) = HorizontalAlignment.Right Then
+                    Me.GridBusqueda.TableStyles(0).GridColumnStyles(i).Alignment = Me.arrColsAlignment(i)
+                End If
+            Next
+        Else
+            If iRows > 0 Then
+                ReDim Preserve Me.arrColsAlignment(iColumnas - 1)
 
-    Private Sub GridBusqueda_keyEnter_presed() Handles GridBusqueda.keyEnter_presed
-        'Me.Hide()
-        Me.Close()
-    End Sub
+                For i = 1 To iColumnas - 1 'Omitimos la 1er columna porque regularmente en un código y sea numérico o no se alinea a la izquierda para que no se pegue con el nombre de la segunda columna
+                    If Microsoft.VisualBasic.IsNumeric(Me.GridBusqueda.Item(0, i).ToString) Then
+                        Me.arrColsAlignment(i) = HorizontalAlignment.Right
+                        Me.GridBusqueda.TableStyles(0).GridColumnStyles(i).Alignment = HorizontalAlignment.Right
+                    End If
+                Next
+            End If
+        End If
 
-    Private Sub txtBusca_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtBusca.KeyDown
-        Select Case e.KeyCode
-            Case Keys.Escape
-                'Me.Hide()
-                Me.iRows = 0
-                Me.Close()
-            Case Keys.Return
-                'dataGrid1.Tag = "X"
-                GridBusqueda.Select()
-            Case Keys.Down
-                GridBusqueda.Tag = "X"
-                GridBusqueda.Select()
-        End Select
     End Sub
+#End Region
 
-    Private Sub txtBusca_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtBusca.KeyPress
-        txtNoBeep(e)
-    End Sub
 End Class
 
