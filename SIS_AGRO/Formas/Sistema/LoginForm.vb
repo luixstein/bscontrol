@@ -173,7 +173,7 @@ Public Class LoginForm
 #Region "Eventos de objetos"
 
     Private Sub LoginForm_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        If My.Computer.Name = "PCSISTEMASJGC" Then
+        If My.Computer.Name = "PCSISTEMASJGC22" Then
             Me.txtPassword.Text = Decrypt("¦¡¨", "871")
             Me.LogoPictureBox.Image = Nothing
             Me.Label1.Text = ""
@@ -305,7 +305,7 @@ Public Class LoginForm
             '    End If
             'End If
 
-            If My.Settings.PrecargarLogins = "1" And (My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA") Then
+            If My.Settings.PrecargarLogins = "1" And (My.Computer.Name = "PCSISTEMASJGC22" Or My.Computer.Name = "ERNESTOA") Then
                 Me.DespliegaUsuarios()
                 Me.CboUsuarios.Visible = True
                 Me.CboUsuarios.Text = "dba"

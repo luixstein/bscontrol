@@ -2812,6 +2812,18 @@ CANCELAR:
                     If bUsoCFDIInvalido = True Then
                         Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = "" : Return False
                     End If
+
+                    If Me.chkVentaPublicoGeneral.Checked = False Then 'Se pregunta porque si es público general el nombre se asigna en automático como sNombreReceptor="PUBLICO GENERAL" 
+                        Dim sPatronInvalido As String = ""
+                        sPatronInvalido = Me.oCliente.TieneNombreClientePatronInvalido(Me.oCliente.NOMBRE_CLIENTE)
+                        If txtLEN(sPatronInvalido) = True Then
+                            If MsgBox("El cliente tiene siglas como S.A. DE C.V. o alguna similar lo cual no es permitido desde la versión 4.0 " & vbCrLf &
+                                    "Patrón inválido detectado " & sPatronInvalido & vbCrLf &
+                                     "Es probable que no se timbre y tenga que cancelar la factura, seguro desea continuar ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
+                                Return False
+                            End If
+                        End If
+                    End If
                     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 End If
             End If

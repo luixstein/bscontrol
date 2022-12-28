@@ -128,19 +128,24 @@ Module FacturacionElectronica
         Dim bResultado As Boolean = False, bMododemo As Boolean = False
 
         Try
-            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "PCSISTEMASJGC" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "DANIEL-PC" Or Usuario.Codigo_Usuario = 1 Then
-                MsgBox("Las computadoras de sistemas no deben timbrar documentos." & vbCrLf & "Ni el dba(por protección de timbrar por error estando en pruebas).", MsgBoxStyle.Exclamation, sProcedure)
-                Return False
-            End If
-
             Dim sUserWS As String = Empresa_Sistema.FELECTRONICA_USER_WS
             Dim sContraseñaWS As String = Empresa_Sistema.FELECTRONICA_PASS_WS
 
-            'Note que aquí se sobreescribe el usuario a demo y en el new no se usan las propiedades de Empresa_Sistema
-            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "PCSISTEMASJGC" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "DANIEL-PC" Or Usuario.Codigo_Usuario = 1 Then
-                bMododemo = True
-                sUserWS = "demo.demo"
-                sContraseñaWS = "R3FL?W9M7EX8" ' "demo", antes era demo
+            If My.Computer.Name = "PCSISTEMASJGC22" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "DANIEL-PC" Or Usuario.Codigo_Usuario = 1 Then
+                MsgBox("Las computadoras de sistemas no deben timbrar documentos." & vbCrLf & "Ni el dba(por protección de timbrar por error estando en pruebas).", MsgBoxStyle.Exclamation, sProcedure)
+                If Empresa_Sistema.RFC = "CACX7605101P8" Then 'Si el el rfc es CACX7605101P8=XOCHILT CASAS CHAVEZ entonces es proveedor para timbres demo.
+                    If MsgBox("Timbrar demo ? Empresa " & Empresa_Sistema.NOMBRE_EMPRESA & " " & Empresa_Sistema.RFC & ")" & vbCrLf &
+                              "si responde no, no se timbrará nada", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.Yes Then
+                        bMododemo = True
+                        'Note que aquí se sobreescribe el usuario a demo y en el new no se usan las propiedades de Empresa_Sistema
+                        sUserWS = "demo.demo"
+                        sContraseñaWS = "R3FL?W9M7EX8" ' "demo", antes era demo
+                    Else
+                        Return False
+                    End If
+                Else
+                    Return False
+                End If
             End If
 
             Using cfd As New clsCFDI(sRutaXML, Empresa_Sistema.BaseDatos, Empresa_Sistema.Servidor,

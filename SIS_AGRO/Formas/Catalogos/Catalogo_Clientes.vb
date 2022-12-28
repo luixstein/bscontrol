@@ -1119,6 +1119,16 @@ SaltoUsoCFDI:
                 If bUsoCFDIInvalido = True Then
                     Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = "" : Return False
                 End If
+
+                Dim sPatronInvalido As String = ""
+                sPatronInvalido = Me.oClientes.TieneNombreClientePatronInvalido(Me.TxtNombreCliente.Text)
+                If txtLEN(sPatronInvalido) = True Then
+                    If MsgBox("El cliente tiene siglas como S.A. DE C.V. o alguna similar lo cual no es permitido desde la versión 4.0 " & vbCrLf &
+                            "Patrón inválido detectado " & sPatronInvalido & vbCrLf &
+                             "Es probable que no se timbre, seguro desea grabarlo ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
+                        Return False
+                    End If
+                End If
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             End If
 

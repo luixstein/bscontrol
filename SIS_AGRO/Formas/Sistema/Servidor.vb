@@ -4,7 +4,7 @@ Public Class Servidor
 
     Private Sub Servidor_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-            If My.Computer.Name = "PCSISTEMASJORGE" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "AREACREDITO" Then
+            If My.Computer.Name = "PCSISTEMASJGC22" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "AREACREDITO" Then
                 Me.btnSistemaDirecto.Visible = True
                 Me.btnSistemaDirectoSol.Visible = True
                 Me.btnSistemaDirectoComer1.Visible = True
@@ -144,8 +144,8 @@ Public Class Servidor
     Private Sub btnSistemaDirectoSol_Click(sender As Object, e As EventArgs) Handles btnSistemaDirectoSol.Click
         bSistemaDirecto = True
         Select Case My.Computer.Name
-            Case "PCSISTEMASJORGE"
-                Me.cboServerName.SelectedValue = "PCSISTEMASJORGE\SQL14"
+            Case "PCSISTEMASJGC22"
+                Me.cboServerName.SelectedValue = "PCSISTEMASJGC22\SQL14"
                 My.Settings.BaseDatos1 = "AGRINET_LAND_S"
             Case "ERNESTOA"
                 Me.cboServerName.SelectedValue = "ERNESTOA"

@@ -1300,6 +1300,21 @@ Public Class Class_CatClientes
             MsgBox("El nombre del reporte no ha sido especificado, no hay nada que imprimir.", MsgBoxStyle.Critical, Me.Nombre_Catalogo)
         End If
     End Sub
+
+    Public Function TieneNombreClientePatronInvalido(ByVal sNombreCliente As String) As String
+        Const sProcedure As String = "TieneNombreClientePatronInvalido"
+        Dim sResultado As String = ""
+        Try
+            Dim oSQL As New Class_find("SELECT TOP 1 PATRON FROM CFDI_CAT_PATRONES_INVALIDOS_CLIENTES P WHERE '" & sNombreCliente & "' LIKE '%'+P.PATRON")
+            If txtLEN(oSQL.Result1) = True Then
+                'Return True
+                sResultado = oSQL.Result1
+            End If
+        Catch ex As Exception
+            HandleError(Me.Nombre_Catalogo, sProcedure, ex)
+        End Try
+        Return sResultado
+    End Function
 #End Region
 
 End Class
