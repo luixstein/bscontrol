@@ -2393,6 +2393,10 @@ BuscaVenta:                         'Se usa esta busqueda visual porque trae las
         Dim i As Integer
         Dim sProveedor As String = Me.TxtCodigoProveedor.Text
 
+        If MsgBox("Deseas grabar el Gasto con el folio : " & Me.txtFolioCompra.Text & " ?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Grabar") = MsgBoxResult.No Then
+            Return False
+        End If
+
         Me.TotalizaGridCentrosCostosyActivos()
         'Me.Totales()
 
