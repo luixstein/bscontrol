@@ -52,6 +52,22 @@ Public Class Class_CXC_Pago_CFDI_Global
     Private _SELLO_PAGO As String
     Private _RFCPROVCERTIF As String
     Private _LEYENDA As String
+    Private _EXPORTACION As String
+    Private _RFC_RECEPTOR As String
+    Private _CODIGO_REGIMEN_FISCAL_RECEPTOR As String
+    Private _NOMBRE_RECEPTOR As String
+    Private _DOMICILIO_FISCAL_RECEPTOR As String
+    Private _TOTAL_RETENCIONES_IVA As Decimal
+    Private _TOTAL_RETENCIONES_ISR As Decimal
+    Private _TOTAL_RETENCIONES_IEPS As Decimal
+    Private _TOTAL_TRASLADOS_BASE_IVA_16 As Decimal
+    Private _TOTAL_TRASLADOS_IMPUESTO_IVA_16 As Decimal
+    Private _TOTAL_TRASLADOS_BASE_IVA_8 As Decimal
+    Private _TOTAL_TRASLADOS_IMPUESTO_IVA_8 As Decimal
+    Private _TOTAL_TRASLADOS_BASE_IVA_0 As Decimal
+    Private _TOTAL_TRASLADOS_IMPUESTO_IVA_0 As Decimal
+    Private _TOTAL_TRASLADOS_BASE_IVA_EXENTO As Decimal
+    Private _MONTO_TOTAL_PAGOS As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -73,9 +89,7 @@ Public Class Class_CXC_Pago_CFDI_Global
 #End Region
 
 #Region "Propiedades"
-
 #Region "Propiedades Campos de la tabla"
-
     'Public Property FOLIO_VENTA() As String
     '    Get
     '        Return Me._FOLIO_VENTA
@@ -96,6 +110,7 @@ Public Class Class_CXC_Pago_CFDI_Global
             Return Me._FOLIO_PAGO
         End Get
     End Property
+
     Public ReadOnly Property ESTATUS_PAGO() As String
         Get
             Return Me._ESTATUS_PAGO
@@ -315,6 +330,101 @@ Public Class Class_CXC_Pago_CFDI_Global
         End Get
     End Property
 
+    Public ReadOnly Property EXPORTACION() As String
+        Get
+            Return Me._EXPORTACION
+        End Get
+    End Property
+
+    Public ReadOnly Property RFC_RECEPTOR() As String
+        Get
+            Return Me._RFC_RECEPTOR
+        End Get
+    End Property
+
+    Public ReadOnly Property CODIGO_REGIMEN_FISCAL_RECEPTOR() As String
+        Get
+            Return Me._CODIGO_REGIMEN_FISCAL_RECEPTOR
+        End Get
+    End Property
+
+    Public ReadOnly Property NOMBRE_RECEPTOR() As String
+        Get
+            Return Me._NOMBRE_RECEPTOR
+        End Get
+    End Property
+
+    Public ReadOnly Property DOMICILIO_FISCAL_RECEPTOR() As String
+        Get
+            Return Me._DOMICILIO_FISCAL_RECEPTOR
+        End Get
+    End Property
+
+    Public ReadOnly Property TOTAL_RETENCIONES_IVA() As Decimal
+        Get
+            Return Me._TOTAL_RETENCIONES_IVA
+        End Get
+    End Property
+
+    Public ReadOnly Property TOTAL_RETENCIONES_ISR() As Decimal
+        Get
+            Return Me._TOTAL_RETENCIONES_ISR
+        End Get
+    End Property
+
+    Public ReadOnly Property TOTAL_RETENCIONES_IEPS() As Decimal
+        Get
+            Return Me._TOTAL_RETENCIONES_IEPS
+        End Get
+    End Property
+
+    Public ReadOnly Property TOTAL_TRASLADOS_BASE_IVA_16() As Decimal
+        Get
+            Return Me._TOTAL_TRASLADOS_BASE_IVA_16
+        End Get
+    End Property
+
+    Public ReadOnly Property TOTAL_TRASLADOS_IMPUESTO_IVA_16() As Decimal
+        Get
+            Return Me._TOTAL_TRASLADOS_IMPUESTO_IVA_16
+        End Get
+    End Property
+
+    Public ReadOnly Property TOTAL_TRASLADOS_BASE_IVA_8() As Decimal
+        Get
+            Return Me._TOTAL_TRASLADOS_BASE_IVA_8
+        End Get
+    End Property
+
+    Public ReadOnly Property TOTAL_TRASLADOS_IMPUESTO_IVA_8() As Decimal
+        Get
+            Return Me._TOTAL_TRASLADOS_IMPUESTO_IVA_8
+        End Get
+    End Property
+
+    Public ReadOnly Property TOTAL_TRASLADOS_BASE_IVA_0() As Decimal
+        Get
+            Return Me._TOTAL_TRASLADOS_BASE_IVA_0
+        End Get
+    End Property
+
+    Public ReadOnly Property TOTAL_TRASLADOS_IMPUESTO_IVA_0() As Decimal
+        Get
+            Return Me._TOTAL_TRASLADOS_IMPUESTO_IVA_0
+        End Get
+    End Property
+
+    Public ReadOnly Property TOTAL_TRASLADOS_BASE_IVA_EXENTO() As Decimal
+        Get
+            Return Me._TOTAL_TRASLADOS_BASE_IVA_EXENTO
+        End Get
+    End Property
+
+    Public ReadOnly Property MONTO_TOTAL_PAGOS() As Decimal
+        Get
+            Return Me._MONTO_TOTAL_PAGOS
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -406,6 +516,7 @@ Public Class Class_CXC_Pago_CFDI_Global
 
 #Region "Métodos y procedimientos"
     Public Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
 
         Dim sSQL As String = ""
@@ -470,6 +581,23 @@ Public Class Class_CXC_Pago_CFDI_Global
                     Me._SELLO_PAGO = "" & dReader("SELLO_PAGO").ToString
                     Me._RFCPROVCERTIF = "" & dReader("RFCPROVCERTIF").ToString
                     Me._LEYENDA = "" & dReader("LEYENDA").ToString
+                    Me._EXPORTACION = "" & dReader("EXPORTACION").ToString
+                    Me._RFC_RECEPTOR = "" & dReader("RFC_RECEPTOR").ToString
+                    Me._CODIGO_REGIMEN_FISCAL_RECEPTOR = "" & dReader("CODIGO_REGIMEN_FISCAL_RECEPTOR").ToString
+                    Me._NOMBRE_RECEPTOR = "" & dReader("NOMBRE_RECEPTOR").ToString
+                    Me._DOMICILIO_FISCAL_RECEPTOR = "" & dReader("DOMICILIO_FISCAL_RECEPTOR").ToString
+
+                    Me._TOTAL_RETENCIONES_IVA = CDec(dReader("TOTAL_RETENCIONES_IVA").ToString)
+                    Me._TOTAL_RETENCIONES_ISR = CDec(dReader("TOTAL_RETENCIONES_ISR").ToString)
+                    Me._TOTAL_RETENCIONES_IEPS = CDec(dReader("TOTAL_RETENCIONES_IEPS").ToString)
+                    Me._TOTAL_TRASLADOS_BASE_IVA_16 = CDec(dReader("TOTAL_TRASLADOS_BASE_IVA_16").ToString)
+                    Me._TOTAL_TRASLADOS_IMPUESTO_IVA_16 = CDec(dReader("TOTAL_TRASLADOS_IMPUESTO_IVA_16").ToString)
+                    Me._TOTAL_TRASLADOS_BASE_IVA_8 = CDec(dReader("TOTAL_TRASLADOS_BASE_IVA_8").ToString)
+                    Me._TOTAL_TRASLADOS_IMPUESTO_IVA_8 = CDec(dReader("TOTAL_TRASLADOS_IMPUESTO_IVA_8").ToString)
+                    Me._TOTAL_TRASLADOS_BASE_IVA_0 = CDec(dReader("TOTAL_TRASLADOS_BASE_IVA_0").ToString)
+                    Me._TOTAL_TRASLADOS_IMPUESTO_IVA_0 = CDec(dReader("TOTAL_TRASLADOS_IMPUESTO_IVA_0").ToString)
+                    Me._TOTAL_TRASLADOS_BASE_IVA_EXENTO = CDec(dReader("TOTAL_TRASLADOS_BASE_IVA_EXENTO").ToString)
+                    Me._MONTO_TOTAL_PAGOS = CDec(dReader("MONTO_TOTAL_PAGOS").ToString)
 
                     Me._SERIE = "" & dReader("SERIE").ToString
                     Me._FELECTRONICA_CER = "" & dReader("FELECTRONICA_CER").ToString
@@ -482,7 +610,7 @@ Public Class Class_CXC_Pago_CFDI_Global
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Consultar", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -501,7 +629,16 @@ Public Class Class_CXC_Pago_CFDI_Global
             sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me._FOLIO_PAGO & ".xml"
 
             If Me._TIMBRADO_CFDI = "0" Then
-                bResultado = FacturacionElectronica33.GeneraPagoElectronico33(Me, bMensajes, sRutaXML)
+                Select Case Empresa_Sistema.VERSION_ESQUEMA_CFD
+                    Case "3.3"
+                        bResultado = FacturacionElectronica33.GeneraPagoElectronico33(Me, bMensajes, sRutaXML)
+                    Case "4.0"
+                        bResultado = FacturacionElectronica40.GeneraPagoElectronico40(Me, bMensajes, sRutaXML)
+                    Case Else
+                        MsgBox("La versión del cfdi " & Empresa_Sistema.VERSION_ESQUEMA_CFD & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                End Select
+
 
                 If bResultado = False Then
                     MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
@@ -555,14 +692,14 @@ Public Class Class_CXC_Pago_CFDI_Global
             bResultado = CancelarCFDI(Me.FOLIO_PAGO, Me.SERIE, CInt(Me.FOLIO_NUMERICO), Me.FOLIO_FISCAL_SAT, Me.TIMBRADO_CFDI, TipoComprobante.PAGO_CXC, sCadenaXML)
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "CancelarTimbre", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return bResultado
     End Function
 
     Public Sub Imprimir()
-        Dim sProcedure As String = "Imprimir"
+        Const sProcedure As String = "Imprimir"
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
         Try
@@ -584,11 +721,12 @@ Public Class Class_CXC_Pago_CFDI_Global
             frm.Show()
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "Imprimir", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
     End Sub
 
     Public Function ExportarAPdf(Optional ByVal sRutaPDF As String = "") As Boolean
+        Const sProcedure As String = "ExportarAPdf"
         Dim bResultado As Boolean = False
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
@@ -611,7 +749,7 @@ Public Class Class_CXC_Pago_CFDI_Global
             bResultado = True
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ExportarAPdf", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         Finally
             oReporte = Nothing
         End Try
@@ -725,6 +863,7 @@ Public Class Class_CXC_Pago_CFDI_Global
     End Function
 
     Public Function MarcaEnviadoxCorreo(ByVal sFolio As String) As Boolean
+        Const sProcedure As String = "MarcaEnviadoxCorreo"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -741,7 +880,7 @@ Public Class Class_CXC_Pago_CFDI_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "MarcaEnviadoxCorreo", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -753,6 +892,7 @@ Public Class Class_CXC_Pago_CFDI_Global
     End Function
 
     Public Function RecuperaXML(ByVal sRutaXML As String) As Boolean
+        Const sProcedure As String = "RecuperaXML"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -784,7 +924,7 @@ Public Class Class_CXC_Pago_CFDI_Global
 
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "RecuperaXML", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -796,6 +936,7 @@ Public Class Class_CXC_Pago_CFDI_Global
     End Function
 
     Public Function RecuperaXML() As String
+        Const sProcedure As String = "RecuperaXML"
         Dim sResultado As String = ""
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -841,13 +982,14 @@ Public Class Class_CXC_Pago_CFDI_Global
             _Conexion.Close()
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "RecuperaXML", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return sResultado
     End Function
 
     Public Function ObtenerPagosDetalle() As DataTable
+        Const sProcedure As String = "ObtenerPagosDetalle"
         Dim dTabla As New DataTable, da As SqlDataAdapter
         Dim sSQL As String
 
@@ -859,16 +1001,16 @@ Public Class Class_CXC_Pago_CFDI_Global
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
-
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerPagosDetalle", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return dTabla
     End Function
 
     Public Function ObtenerPagosDetalleParaConsultaCFDI() As DataTable
+        Const sProcedure As String = "ObtenerPagosDetalleParaConsultaCFDI"
         Dim dTabla As New DataTable, da As SqlDataAdapter
         Dim sSQL As String
 
@@ -881,16 +1023,16 @@ Public Class Class_CXC_Pago_CFDI_Global
         Try
             da = New SqlDataAdapter(sSQL, Me._Conexion)
             da.Fill(dTabla)
-
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerPagosDetalleParaConsultaCFDI", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return dTabla
     End Function
 
     Public Function BusquedaVisualPagosClienteParaRelacionarCFDIs(ByVal sCodigoCliente As String) As String
+        Const sProcedure As String = "BusquedaVisualPagosClienteParaRelacionarCFDIs"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de pagos del cliente."
@@ -908,9 +1050,31 @@ Public Class Class_CXC_Pago_CFDI_Global
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "BusquedaVisualPagosClienteParaRelacionarCFDIs", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
         Return Resultado
+    End Function
+
+    Public Function ObtenerDetalleImpuestosP() As DataTable
+        Const sProcedure As String = "ObtenerDetalleImpuestosP"
+        Dim dTabla As New DataTable, da As New SqlDataAdapter
+        Dim sSQL As String
+
+        Try
+            sSQL = "SELECT * " &
+            "FROM CFDI_PAGOS_CXC_GLOBAL_IMPUESTOS_P " &
+            "WHERE FOLIO_PAGO='" & sReplace(Me._FOLIO_PAGO) & "' " &
+            "ORDER BY ID_CFDI_PAGOS_CXC_GLOBAL_IMPUESTOS_P"
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        Finally
+            da.Dispose()
+        End Try
+
+        Return dTabla
     End Function
 #End Region
 

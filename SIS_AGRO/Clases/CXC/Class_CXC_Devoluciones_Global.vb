@@ -37,18 +37,16 @@ Public Class Class_CXC_Devoluciones_Global
     Private _CODIGO_USUARIO_CANCELO As Integer
     Private _FECHA_CANCELACION As Date
     Private _FECHA_CANCELACION_SERVIDOR As Date
-
     Private _FOLIO_NUMERICO As String
     Private _SERIE As String
     Private _ES_A_PUBLICO_GENERAL As String
     Private _ES_COMPROBANTE_ELECTRONICO As String
-    Private _CODIGO_REGIMEN_FISCAL As String
+    Private _CODIGO_REGIMEN_FISCAL_EMISOR As String
     Private _CODIGO_METODO_PAGO As String
     Private _CODIGO_METODO_PAGO_EVENTO As String
     Private _CODIGO_USO_CFDI As String
     Private _CODIGO_MONEDA_SAT As String
     Private _CODIGO_TIPO_RELACION_CFDI As String
-
     'Private _IDCATALOGO_FOLIO_FELECTRONICA As String
     Private _ID_SIS_CFD_CATALOGO_CERTIFICADOS As String
     Private _ENVIADA_POR_CORREO As Boolean
@@ -68,9 +66,13 @@ Public Class Class_CXC_Devoluciones_Global
     Private _FOLIO_FISCAL_CANCELACION_SAT As String
     Private _ESTATUS_CANCELACION_CFDI As String
     Private _TIENE_IEPS_DESGLOSADO As Boolean
-
     Private _RETENCION_IVA As Decimal
     Private _RETENCION_ISR As Decimal
+    Private _EXPORTACION As String
+    Private _RFC_RECEPTOR As String
+    Private _CODIGO_REGIMEN_FISCAL_RECEPTOR As String
+    Private _NOMBRE_RECEPTOR As String
+    Private _DOMICILIO_FISCAL_RECEPTOR As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -322,12 +324,12 @@ Public Class Class_CXC_Devoluciones_Global
         End Set
     End Property
 
-    Public Property CODIGO_REGIMEN_FISCAL() As String
+    Public Property CODIGO_REGIMEN_FISCAL_EMISOR() As String
         Get
-            Return Me._CODIGO_REGIMEN_FISCAL
+            Return Me._CODIGO_REGIMEN_FISCAL_EMISOR
         End Get
         Set(ByVal Value As String)
-            Me._CODIGO_REGIMEN_FISCAL = Value
+            Me._CODIGO_REGIMEN_FISCAL_EMISOR = Value
         End Set
     End Property
 
@@ -497,6 +499,51 @@ Public Class Class_CXC_Devoluciones_Global
             Me._RETENCION_ISR = value
         End Set
     End Property
+
+    Public Property EXPORTACION() As String
+        Get
+            Return Me._EXPORTACION
+        End Get
+        Set(value As String)
+            Me._EXPORTACION = value
+        End Set
+    End Property
+
+    Public Property RFC_RECEPTOR() As String
+        Get
+            Return Me._RFC_RECEPTOR
+        End Get
+        Set(value As String)
+            Me._RFC_RECEPTOR = value
+        End Set
+    End Property
+
+    Public Property CODIGO_REGIMEN_FISCAL_RECEPTOR() As String
+        Get
+            Return Me._CODIGO_REGIMEN_FISCAL_RECEPTOR
+        End Get
+        Set(value As String)
+            Me._CODIGO_REGIMEN_FISCAL_RECEPTOR = value
+        End Set
+    End Property
+
+    Public Property NOMBRE_RECEPTOR() As String
+        Get
+            Return Me._NOMBRE_RECEPTOR
+        End Get
+        Set(value As String)
+            Me._NOMBRE_RECEPTOR = value
+        End Set
+    End Property
+
+    Public Property DOMICILIO_FISCAL_RECEPTOR() As String
+        Get
+            Return Me._DOMICILIO_FISCAL_RECEPTOR
+        End Get
+        Set(value As String)
+            Me._DOMICILIO_FISCAL_RECEPTOR = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -609,6 +656,8 @@ Public Class Class_CXC_Devoluciones_Global
 
 #Region "Métodos y procedimientos"
     Public Function GrabaDevolucionGlobal() As Boolean
+        Const sProcedure As String = "GrabaDevolucionGlobal"
+
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -642,9 +691,14 @@ Public Class Class_CXC_Devoluciones_Global
                 sqlParametro = .Parameters.Add("@CODIGO_USO_CFDI", SqlDbType.NVarChar, 4) : sqlParametro.Value = Me._CODIGO_USO_CFDI
                 sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
                 sqlParametro = .Parameters.Add("@CODIGO_TIPO_RELACION_CFDI", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._CODIGO_TIPO_RELACION_CFDI
-                sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL
+                sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL_EMISOR", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL_EMISOR
                 sqlParametro = .Parameters.Add("@RETENCION_IVA", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA
                 sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
+                sqlParametro = .Parameters.Add("@EXPORTACION", SqlDbType.NVarChar, 2) : sqlParametro.Value = Me._EXPORTACION
+                sqlParametro = .Parameters.Add("@RFC_RECEPTOR", SqlDbType.NVarChar, 13) : sqlParametro.Value = Me._RFC_RECEPTOR
+                sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL_RECEPTOR", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL_RECEPTOR
+                sqlParametro = .Parameters.Add("@NOMBRE_RECEPTOR", SqlDbType.NVarChar, 254) : sqlParametro.Value = Me._NOMBRE_RECEPTOR
+                sqlParametro = .Parameters.Add("@DOMICILIO_FISCAL_RECEPTOR", SqlDbType.NVarChar, 5) : sqlParametro.Value = Me._DOMICILIO_FISCAL_RECEPTOR
 
                 Me._Conexion.Open()
                 .ExecuteNonQuery()
@@ -653,7 +707,7 @@ Public Class Class_CXC_Devoluciones_Global
                 Me._FOLIO_DEVOLUCION = "" & .Parameters("@FOLIO_DEVOLUCION").Value.ToString
                 Me._FOLIO_DESCUENTO_DEVOLUCION = "" & .Parameters("@FOLIO_DESCUENTO_DEVOLUCION_APLICADO").Value.ToString
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "GrabaDevolucionGlobal", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -664,6 +718,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand("SELECT DG.*," &
                                   "S1.NOMBRE_USUARIO NOMBRE_USUARIO_GRABO," &
@@ -725,19 +780,17 @@ Public Class Class_CXC_Devoluciones_Global
                     Me._NOMBRE_USUARIO_GRABO = "" & dReader("NOMBRE_USUARIO_GRABO").ToString()
                     Me._CODIGO_ALMACEN = "" & dReader("CODIGO_ALMACEN").ToString()
                     Me._NOMBRE_ALMACEN = "" & dReader("NOMBRE_ALMACEN").ToString()
-
                     Me._FOLIO_NUMERICO = "" & dReader("FOLIO_NUMERICO").ToString()
                     Me._SERIE = "" & Trim(dReader("SERIE").ToString)
                     Me._ES_A_PUBLICO_GENERAL = "" & dReader("ES_A_PUBLICO_GENERAL").ToString()
                     Me._ES_COMPROBANTE_ELECTRONICO = "" & dReader("ES_COMPROBANTE_ELECTRONICO").ToString()
-                    Me._CODIGO_REGIMEN_FISCAL = "" & dReader("CODIGO_REGIMEN_FISCAL").ToString()
+                    Me._CODIGO_REGIMEN_FISCAL_EMISOR = "" & dReader("CODIGO_REGIMEN_FISCAL").ToString()
                     Me._CODIGO_METODO_PAGO = "" & dReader("CODIGO_METODO_PAGO").ToString()
                     Me._CODIGO_METODO_PAGO_EVENTO = "" & dReader("CODIGO_METODO_PAGO_EVENTO").ToString()
                     Me._CODIGO_USO_CFDI = "" & dReader("CODIGO_USO_CFDI").ToString()
                     Me._CODIGO_MONEDA_SAT = "" & dReader("CODIGO_MONEDA_SAT").ToString()
                     Me._CODIGO_TIPO_RELACION_CFDI = "" & dReader("CODIGO_TIPO_RELACION_CFDI").ToString()
-                    Me._CODIGO_REGIMEN_FISCAL = "" & dReader("CODIGO_REGIMEN_FISCAL").ToString()
-
+                    Me._CODIGO_REGIMEN_FISCAL_EMISOR = "" & dReader("CODIGO_REGIMEN_FISCAL").ToString()
                     'Me._IDCATALOGO_FOLIO_FELECTRONICA = "" & dReader("IDCATALOGO_FOLIO_FELECTRONICA").ToString()
                     Me._ID_SIS_CFD_CATALOGO_CERTIFICADOS = "" & dReader("ID_SIS_CFD_CATALOGO_CERTIFICADOS").ToString()
                     Me._ENVIADA_POR_CORREO = CBool(dReader("ENVIADA_POR_CORREO").ToString())
@@ -756,21 +809,23 @@ Public Class Class_CXC_Devoluciones_Global
                     Me._LEYENDA = "" & dReader("LEYENDA").ToString()
                     Me._FOLIO_FISCAL_CANCELACION_SAT = "" & dReader("FOLIO_FISCAL_CANCELACION_SAT").ToString()
                     Me._ESTATUS_CANCELACION_CFDI = dReader("ESTATUS_CANCELACION_CFDI").ToString()
-
                     Me._FELECTRONICA_CER = "" & dReader("FELECTRONICA_CER").ToString
                     Me._FELECTRONICA_KEY = "" & dReader("FELECTRONICA_KEY").ToString
                     Me._FELECTRONICA_CONTRASENIA_CLAVE_PRIVADA = IIf(txtLEN("" & dReader("CONTRASEÑA").ToString) = True, Decrypt("" & dReader("CONTRASEÑA").ToString, "r7"), "").ToString
-
                     Me._TIENE_IEPS_DESGLOSADO = CBool(dReader("TIENE_IEPS_DESGLOSADO").ToString)
-
                     Me._RETENCION_IVA = CDec(dReader("RETENCION_IVA"))
                     Me._RETENCION_ISR = CDec(dReader("RETENCION_ISR"))
+                    Me._EXPORTACION = "" & dReader("EXPORTACION").ToString
+                    Me._RFC_RECEPTOR = "" & dReader("RFC_RECEPTOR").ToString
+                    Me._CODIGO_REGIMEN_FISCAL_RECEPTOR = "" & dReader("CODIGO_REGIMEN_FISCAL_RECEPTOR").ToString
+                    Me._NOMBRE_RECEPTOR = "" & dReader("NOMBRE_RECEPTOR").ToString
+                    Me._DOMICILIO_FISCAL_RECEPTOR = "" & dReader("DOMICILIO_FISCAL_RECEPTOR").ToString
 
                     bResultado = True
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Consultar", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -781,6 +836,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function Cancelar() As Boolean
+        Const sProcedure As String = "Cancelar"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -800,7 +856,7 @@ Public Class Class_CXC_Devoluciones_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Cancelar", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -811,6 +867,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function AfectaInventarios() As Boolean
+        Const sProcedure As String = "AfectaInventarios"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -826,7 +883,7 @@ Public Class Class_CXC_Devoluciones_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "AfectaInventarios", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -837,6 +894,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function AplicarPoliza() As Boolean
+        Const sProcedure As String = "AplicarPoliza"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -852,7 +910,7 @@ Public Class Class_CXC_Devoluciones_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "AplicarPoliza", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -864,6 +922,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function BusquedaVisual_PorFolio() As String
+        Const sProcedure As String = "BusquedaVisual_PorFolio"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de devoluciones en CXC."
@@ -880,12 +939,13 @@ Public Class Class_CXC_Devoluciones_Global
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "BusquedaVisual_PorFolio", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
         Return Resultado
     End Function
 
     Public Function ObtenerDetalle() As DataTable
+        Const sProcedure As String = "ObtenerDetalle"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
@@ -905,7 +965,7 @@ Public Class Class_CXC_Devoluciones_Global
 
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerDetalle", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return dTabla
@@ -916,6 +976,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Sub
 
     Public Sub Imprimir()
+        Const sProcedure As String = "Imprimir"
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
 
@@ -933,43 +994,58 @@ Public Class Class_CXC_Devoluciones_Global
             frm.Show()
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "Imprimir", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         Finally
             oReporte = Nothing
         End Try
     End Sub
 
     Public Function GeneraDevolucionElectronica(ByVal bMensajes As Boolean, ByVal bGenerarPDF As Boolean) As Boolean
+        Const sProcedure As String = "GeneraDevolucionElectronica"
         Dim bResultado As Boolean = False
-        Dim sProcedure As String = "GeneraDevolucionElectronica"
         Dim sRutaXML As String
 
         Try
             sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me._FOLIO_DEVOLUCION & ".xml"
 
-            If Me._TIMBRADO_CFDI = "0" Then
-                bResultado = FacturacionElectronica33.GeneraDevolucionElectronica33(Me, bMensajes, sRutaXML)
-
-                If bResultado = False Then
-                    MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
-                Else
-                    bResultado = True
-                    If bGenerarPDF = True Then
-                        Me.ExportarAPdf()
-                    End If
-                End If
-                'Else
-                '    Me.RecuperarFacturaElectronicaLocal(bMensajes)
-            Else
+            If Me._TIMBRADO_CFDI = "1" Then
                 MsgBox("La devolución ya esta timbrada.", vbExclamation, sProcedure)
+                Return False
             End If
+
+            Select Case Empresa_Sistema.VERSION_ESQUEMA_CFD
+                Case <= "3.2"
+                    MsgBox("La versión del cfdi " & Empresa_Sistema.VERSION_ESQUEMA_CFD & " no esta soportada.", MsgBoxStyle.Exclamation, sProcedure)
+                        'Nota nunca se desarrolló
+                Case "3.3"
+                    bResultado = FacturacionElectronica33.GeneraDevolucionElectronica33(Me, bMensajes, sRutaXML)
+                Case "4.0"
+                    bResultado = FacturacionElectronica40.GeneraDevolucionElectronica40(Me, bMensajes, sRutaXML)
+                Case Else
+                    MsgBox("La versión del cfdi " & Empresa_Sistema.VERSION_ESQUEMA_CFD & " no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                    Return False
+            End Select
+
+            If bResultado = False Then
+                MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+            Else
+                bResultado = True
+                If bGenerarPDF = True Then
+                    Me.ExportarAPdf()
+                End If
+            End If
+            'Else
+            '    Me.RecuperarFacturaElectronicaLocal(bMensajes)
+
         Catch ex As Exception
             HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
+
         Return bResultado
     End Function
 
     Public Function ExportarAPdf(Optional ByVal sRutaPDF As String = "") As Boolean
+        Const sProcedure As String = "ExportarAPdf"
         Dim bResultado As Boolean = False
         Dim Rpt As New ReportDocument
         Dim oReporte As Class_Reporte
@@ -994,7 +1070,7 @@ Public Class Class_CXC_Devoluciones_Global
             bResultado = True
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ExportarAPdf", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         Finally
             oReporte = Nothing
         End Try
@@ -1003,6 +1079,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function ObtenerDetalleParaCFDI(Optional ByVal bSinComentarios As Boolean = True) As DataTable
+        Const sProcedure As String = "ObtenerDetalleParaCFDI"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
@@ -1010,7 +1087,7 @@ Public Class Class_CXC_Devoluciones_Global
             sSQL = "SELECT R.CODIGO_ARTICULO,VR.DESCRIPCION,R.CANTIDAD,R.PRECIO,R.PRECIO_TOTAL,VR.UNIDAD_VENTA,R.IMPUESTO_PORCENTAJE,R.IMPORTE, " &
                 "R.IMPUESTO_IMPORTE,R.ID_CXC_DEVOLUCION_DETALLE, " &
                 "A.CODIGO_PRODUCTO_SERVICIO,A.CODIGO_UNIDAD,R.IEPS_PORCENTAJE,R.IEPS_UNITARIO,R.IEPS_IMPORTE,R.BASE_IEPS,R.BASE_IVA,R.PRECIO_TOTAL, " &
-                "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD,R.RETENCION_IVA_BASE,R.RETENCION_IVA_IMPORTE,R.RETENCION_IVA_PORCENTAJE,R.RETENCION_ISR_BASE,R.RETENCION_ISR_IMPORTE,R.RETENCION_ISR_PORCENTAJE  " &
+                "R.ID_SIS_CAT_IMPUESTOS,R.GRADO_TOXICIDAD,R.RETENCION_IVA_BASE,R.RETENCION_IVA_IMPORTE,R.RETENCION_IVA_PORCENTAJE,R.RETENCION_ISR_BASE,R.RETENCION_ISR_IMPORTE,R.RETENCION_ISR_PORCENTAJE,R.OBJETO_IMP  " &
                 "FROM CXC_DEVOLUCION_DETALLE R " &
                 "INNER JOIN CAT_ARTICULOS A ON(R.CODIGO_ARTICULO=A.CODIGO_ARTICULO) " &
                 "INNER JOIN VENTA_DETALLE VR ON(R.ID_VENTA_DETALLE=VR.ID_VENTA_DETALLE) " &
@@ -1023,14 +1100,14 @@ Public Class Class_CXC_Devoluciones_Global
             da.Dispose()
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerDetalleParaCFDI", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return dTabla
     End Function
 
     Public Function EnviarCorreo() As Boolean
-        Dim sProcedure As String = "EnviarCorreo"
+        Const sProcedure As String = "EnviarCorreo"
         Dim Ret As Long, tabla() As String, n As Integer, archivos As String = sFelectronicaCarpetaXMLPDF & "\"
         Dim oCliente As Class_CatClientes
         Dim MyMailMsg As New Net.Mail.MailMessage
@@ -1135,9 +1212,11 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Private Function MarcaEnviadoxCorreo(ByVal sFolio As String) As Boolean
+        Const sProcedure As String = "MarcaEnviadoxCorreo"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
+
         With cmd
             .Connection = Me._Conexion
             .CommandTimeout = 0
@@ -1151,7 +1230,7 @@ Public Class Class_CXC_Devoluciones_Global
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "MarcaEnviadoxCorreo", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -1163,6 +1242,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function RecuperaXML(ByVal sRutaXML As String) As Boolean
+        Const sProcedure As String = "RecuperaXML"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -1194,7 +1274,7 @@ Public Class Class_CXC_Devoluciones_Global
 
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "RecuperaXML", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -1206,6 +1286,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function RecuperaXML() As String
+        Const sProcedure As String = "RecuperaXML"
         Dim sResultado As String = ""
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -1234,7 +1315,7 @@ Public Class Class_CXC_Devoluciones_Global
 
                 sResultado = docXml.InnerXml
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "RecuperaXML", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -1246,7 +1327,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function RecuperarXMLyPDF() As Boolean
-        Dim sProcedure As String = "RecuperarXMLyPDF"
+        Const sProcedure As String = "RecuperarXMLyPDF"
         Dim bResultado As Boolean = False
 
         Dim oCliente As Class_CatClientes
@@ -1291,8 +1372,9 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function CancelarTimbre() As Boolean
+        Const sProcedure As String = "CancelarTimbre"
         Dim bResultado As Boolean = False
-        Dim sProcedure As String = "CancelarTimbre"
+
         Try
             If Me.Consultar() = False Then 'Refrescamos la factura para tener los datos mas nuevos.
                 Return False
@@ -1334,6 +1416,7 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function BusquedaVisualSeriesDevolucion(ByVal FolioVenta As String, ByVal sCodigoArticulo As String) As String
+        Const sProcedure As String = "BusquedaVisualSeriesDevolucion"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         Dim oArticulo As New Class_CatArticulos(sCodigoArticulo)
@@ -1354,7 +1437,7 @@ Public Class Class_CXC_Devoluciones_Global
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "BusquedaVisualSeriesDevolucion", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
         Return Resultado
     End Function
@@ -1390,16 +1473,15 @@ Public Class Class_CXC_Devoluciones_Global
     End Function
 
     Public Function ObtenerDetalleSeries(ByVal sFolio As String) As DataTable
+        Const sProcedure As String = "ObtenerDetalleSeries"
         Dim dTabla As New DataTable, da As SqlDataAdapter
 
         Try
-
             da = New SqlDataAdapter("EXEC MP_CXC_DEVOLUCIONES_CONSULTA_TABLA_SERIES @FOLIO_DEVOLUCION='" & sFolio & "'", Me._Conexion)
             da.Fill(dTabla)
             da.Dispose()
-
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerDetalleSeries", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
         Return dTabla
     End Function

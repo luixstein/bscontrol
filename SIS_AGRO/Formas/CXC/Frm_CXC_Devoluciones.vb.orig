@@ -1627,6 +1627,7 @@ busca_serie:
 
             'FALTA:Validaciones de datos fiscales si se va timbrar
 
+<<<<<<< HEAD
             '
             Dim oSQL As New Class_find("SELECT 1 FROM VENTAS_RELACION_FACTURAS_REMISIONES WHERE FOLIO_FACTURA='" & sReplace(Me.txtFolioVenta.Text) & "'")
 
@@ -1635,7 +1636,7 @@ busca_serie:
                 Return False
             End If
             oSQL = Nothing
-
+=======
             If Empresa_Sistema.FELECTRONICA_ACTIVA = True And oDocumento.TIMBRA_DOCUMENTO = True Then
                 Dim oDocumentoReferencia As New Class_CatDocumentos(Me.oVenta.CODIGO_DOCUMENTO)
 
@@ -1767,6 +1768,7 @@ busca_serie:
 
                 End If
             End If
+>>>>>>> Cfdi40
 
             bResultado = True
         Catch ex As Exception

@@ -1119,6 +1119,8 @@ SaltoUsoCFDI:
                 If bUsoCFDIInvalido = True Then
                     Me.txtUsoCFDI.Text = "" : Me.lblUsoCFDI.Text = "" : Return False
                 End If
+<<<<<<< HEAD
+=======
 
                 Dim sPatronInvalido As String = ""
                 sPatronInvalido = Me.oClientes.TieneNombreClientePatronInvalido(Me.TxtNombreCliente.Text)
@@ -1129,6 +1131,7 @@ SaltoUsoCFDI:
                         Return False
                     End If
                 End If
+>>>>>>> Cfdi40
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             End If
 

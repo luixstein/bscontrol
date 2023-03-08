@@ -4,7 +4,11 @@ Public Class Servidor
 
     Private Sub Servidor_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
+<<<<<<< HEAD
+            If My.Computer.Name = "PCSISTEMASJGC22" Then 'Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "AREACREDITO" Then
+=======
             If My.Computer.Name = "PCSISTEMASJGC22" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "AREACREDITO" Then
+>>>>>>> Cfdi40
                 Me.btnSistemaDirecto.Visible = True
                 Me.btnSistemaDirectoSol.Visible = True
                 Me.btnSistemaDirectoComer1.Visible = True

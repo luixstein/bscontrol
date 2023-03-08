@@ -108,11 +108,14 @@ Public Class Class_Ventas_Global
     Private _RETENCION_ISR As Decimal
     Private _RETENCION_ISR_USD As Decimal
     Private _FOLIO_DESCUENTO_ANTICIPO As String
+<<<<<<< HEAD
     Private _TIENE_COMPLEMENTO_CARTA_PORTE As Boolean
+=======
     Private _CODIGO_REGIMEN_FISCAL_RECEPTOR As String
     Private _NOMBRE_RECEPTOR As String
     Private _DOMICILIO_FISCAL_RECEPTOR As String
     Private _EXPORTACION As String
+>>>>>>> Cfdi40
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -880,6 +883,7 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
+<<<<<<< HEAD
     Public Property TIENE_COMPLEMENTO_CARTA_PORTE() As Boolean
         Get
             Return Me._TIENE_COMPLEMENTO_CARTA_PORTE
@@ -897,7 +901,7 @@ Public Class Class_Ventas_Global
     '        Me._TOTAL_USD_CCE = Value
     '    End Set
     'End Property
-
+=======
     Public Property CODIGO_REGIMEN_FISCAL_RECEPTOR() As String
         Get
             Return Me._CODIGO_REGIMEN_FISCAL_RECEPTOR
@@ -934,6 +938,7 @@ Public Class Class_Ventas_Global
         End Set
     End Property
 
+>>>>>>> Cfdi40
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1120,11 +1125,15 @@ Public Class Class_Ventas_Global
             sqlParametro = .Parameters.Add("@RETENCION_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_IVA_USD
             sqlParametro = .Parameters.Add("@RETENCION_ISR", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR
             sqlParametro = .Parameters.Add("@RETENCION_ISR_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_USD
+<<<<<<< HEAD
+            sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL
             sqlParametro = .Parameters.Add("@TIENE_COMPLEMENTO_CARTA_PORTE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._TIENE_COMPLEMENTO_CARTA_PORTE).ToString
+=======
             sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL_EMISOR", SqlDbType.SmallInt) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL_EMISOR
             sqlParametro = .Parameters.Add("@CODIGO_REGIMEN_FISCAL_RECEPTOR", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_REGIMEN_FISCAL_RECEPTOR
             sqlParametro = .Parameters.Add("@NOMBRE_RECEPTOR", SqlDbType.NVarChar, 254) : sqlParametro.Value = Me._NOMBRE_RECEPTOR
             sqlParametro = .Parameters.Add("@DOMICILIO_FISCAL_RECEPTOR", SqlDbType.NVarChar, 5) : sqlParametro.Value = Me._DOMICILIO_FISCAL_RECEPTOR
+>>>>>>> Cfdi40
             sqlParametro = .Parameters.Add("@ACCION", SqlDbType.NVarChar, 20) : sqlParametro.Value = sAccion 'INSERTAR,ACTUALIZAR
 
             Try
@@ -1424,15 +1433,18 @@ Public Class Class_Ventas_Global
                     Me._RETENCION_ISR = CDec(dReader("RETENCION_ISR"))
                     Me._RETENCION_ISR_USD = CDec(dReader("RETENCION_ISR_USD"))
                     Me._FOLIO_DESCUENTO_ANTICIPO = "" & dReader("FOLIO_DESCUENTO_ANTICIPO").ToString
+<<<<<<< HEAD
                     Me._CODIGO_TIPO_DOCUMENTO = dReader("CODIGO_TIPO_DOCUMENTO").ToString
                     Me._TIENE_COMPLEMENTO_CARTA_PORTE = CBool(dReader("TIENE_COMPLEMENTO_CARTA_PORTE"))
                     'Me._TOTAL_USD_CCE = CDec(dReader("TOTAL_USD_CCE"))
                     Me._TIENE_COMPLEMENTO_COMERCIO_EXTERIOR = CBool(dReader("TIENE_COMPLEMENTO_COMERCIO_EXTERIOR"))
                     Me._CODIGO_INCOTERM = "" & dReader("CODIGO_INCOTERM").ToString
+=======
                     Me._CODIGO_REGIMEN_FISCAL_RECEPTOR = "" & dReader("CODIGO_REGIMEN_FISCAL_RECEPTOR").ToString
                     Me._NOMBRE_RECEPTOR = "" & dReader("NOMBRE_RECEPTOR").ToString
                     Me._DOMICILIO_FISCAL_RECEPTOR = "" & dReader("DOMICILIO_FISCAL_RECEPTOR").ToString
                     Me._EXPORTACION = "" & dReader("EXPORTACION").ToString
+>>>>>>> Cfdi40
 
                     bResultado = True
                 End If
@@ -3282,7 +3294,38 @@ Public Class Class_Ventas_Global
         Try
             sRutaXML = sFelectronicaCarpetaXMLPDF & "\" & Me._FOLIO_VENTA & ".xml"
 
+<<<<<<< HEAD
+            If Me._TIMBRADO_CFDI = "0" Then
+                If Empresa_Sistema.VERSION_ESQUEMA_CFD <= "3.2" Then
+                    bResultado = FacturacionElectronica.GeneraFacturaElectronica(Me, bMensajes, sRutaXML)
+                Else
+                    If Me._CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
+                        bResultado = FacturacionElectronica33.GeneraFacturaTrasladoElectronica33(Me, bMensajes, sRutaXML)
+                    Else
+                        bResultado = FacturacionElectronica33.GeneraFacturaElectronica33(Me, bMensajes, sRutaXML)
+                    End If
+                End If
+
+                If bResultado = False Then
+                    MsgBox("Los datos digitales del documento no fueron generados correctamente. Avíse al depto. de sistemas.", vbExclamation, sProcedure)
+                Else
+                    bResultado = True
+
+                    'Actualiza el rfc_receptor en la factura para registrar el rfc exacto con el que la timbraron porque puede ser que hayan grabado con un rfc que no es válido, y ese dato se queda incorrecto para cuando ya lo corrigen
+                    'en el catálgo de clientes.
+                    Me.ActualizaRFCReceptor()
+
+                    If bGenerarPDF = True Then
+                        Me.ExportarAPdf()
+                    End If
+
+                End If
+                'Else
+                '    Me.RecuperarFacturaElectronicaLocal(bMensajes)
+            Else
+=======
             If Me._TIMBRADO_CFDI = "1" Then
+>>>>>>> Cfdi40
                 MsgBox("La factura ya esta timbrada.", vbExclamation, sProcedure)
                 Return False
             End If
@@ -3291,11 +3334,7 @@ Public Class Class_Ventas_Global
                 Case <= "3.2"
                     bResultado = FacturacionElectronica.GeneraFacturaElectronica(Me, bMensajes, sRutaXML)
                 Case "3.3"
-                    If Me._CODIGO_TIPO_DOCUMENTO = "FT" Then 'Factura de traslado
-                        bResultado = FacturacionElectronica33.GeneraFacturaTrasladoElectronica33(Me, bMensajes, sRutaXML)
-                    Else
-                        bResultado = FacturacionElectronica33.GeneraFacturaElectronica33(Me, bMensajes, sRutaXML)
-                    End If
+                    bResultado = FacturacionElectronica33.GeneraFacturaElectronica33(Me, bMensajes, sRutaXML)
                 Case "4.0"
                     bResultado = FacturacionElectronica40.GeneraFacturaElectronica40(Me, bMensajes, sRutaXML)
                 Case Else

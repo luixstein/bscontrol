@@ -725,6 +725,7 @@ Buscar:
 
 #Region "Métodos y procedimientos"
     Private Sub Inicializa()
+        Const sProcedure As String = "Inicializa"
         Try
             Me.TxtFolio.Text = ""
             Me.dtFecha.Value = Date.Now
@@ -780,11 +781,12 @@ Buscar:
             End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "Inicializa", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub InicializaGridVentas()
+        Const sProcedure As String = "InicializaGridVentas"
         Try
             With Me.GridVentas
                 .DataSource = Nothing
@@ -795,11 +797,12 @@ Buscar:
                 Me.FormateaGridVentas()
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "InicializaGridVentas", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub InicializaGridDocumentosPago()
+        Const sProcedure As String = "InicializaGridDocumentosPago"
         Try
             With Me.GridDocumentosPago
                 .DataSource = Nothing
@@ -810,11 +813,12 @@ Buscar:
                 Me.FormateaGridDocumentosPago()
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "InicializaGridDocumentosPago", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub FormateaGridVentas()
+        Const sProcedure As String = "FormateaGridVentas"
         Try
             With Me.GridVentas
                 .Column(Me.iGyB_PagoFolioDetalle).Width = 0 '80
@@ -895,7 +899,7 @@ Buscar:
                 .Cell(0, Me.iGyB_CxcPagoSubtotaMXNNuevos).Text = "CXCSubTotalMXNNuevos"
                 .Cell(0, Me.iGyB_VtaRetencionIvaMXN).Text = "V.RetIVA"
                 .Cell(0, Me.iGyB_VtaRetencionISRMXN).Text = "V.RetISR"
-                .Cell(0, Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Text = "V.RetIEPS"
+                .Cell(0, Me.iGyB_VtaIEPSDesglosadoEIncluidoMXN).Text = "V.IEPS"
 
                 Me.DespliegaCombosGrid()
 
@@ -1066,11 +1070,12 @@ Buscar:
             End With
 
         Catch ex As Exception
-            HandleError(Me.Name, "FormateaGridVentas", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub FormateaGridDocumentosPago()
+        Const sProcedure As String = "FormateaGridDocumentosPago"
         Try
             With Me.GridDocumentosPago
                 .Column(Me.iGyDocID_BANCOS_DETALLE).Visible = False
@@ -1115,11 +1120,12 @@ Buscar:
                 .Refresh()
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "FormateaGridDocumentosPago", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub DespliegaCombosGrid()
+        Const sProcedure As String = "DespliegaCombosGrid"
         Try
             Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
             Dim sSQL As String = ("SELECT ID_MEDIO_PAGO,NOMBRE_MEDIO_PAGO FROM SIS_MEDIOS_PAGO ORDER BY NOMBRE_MEDIO_PAGO")
@@ -1146,7 +1152,7 @@ Buscar:
             Me.GridVentas.ComboBox(Me.iGyB_PagoBanco).ValueMember = "CODIGO_BANCO"
 
         Catch ex As Exception
-            HandleError(Me.Name, "DespliegaCombosGrid", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
     End Sub
@@ -1350,7 +1356,7 @@ Buscar:
             End Select
 
         Catch ex As Exception
-            HandleError(Me.Text, "CargaFacturas", ex)
+            HandleError(Me.Text, sProcedure, ex)
         End Try
 
         'If Me.cboMoneda.Text = "USD" Then
@@ -1666,8 +1672,7 @@ Buscar:
         For iRow = 1 To Me.GridVentas.Rows - 1
             If Me.GridVentas.Cell(iRow, Me.iGyB_VtaCodigoCliente).Text.Length > 0 Then
                 If sFolioVenta = Me.GridVentas.Cell(iRow, Me.iGyB_VtaFolio).Text Then
-                    ExisteYaDocumentoVenta = True
-                    Exit Function
+                    Return True
                 End If
             End If
         Next iRow
@@ -1693,6 +1698,7 @@ Buscar:
     End Sub
 
     Private Sub Totales()
+        Const sProcedure As String = "Totales"
         Try
             Me.TxtTotal.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridVentas, CShort(Me.iGyB_CxcPagoMXNCapturado)))
             Me.txtTotalUSD.Text = FormatImporteContable(FG_Grid_SumaCol(Me.GridVentas, CShort(Me.iGyB_CxcPagoUSDCapturado)))
@@ -1700,7 +1706,7 @@ Buscar:
             'Me.CalculaImporteDolares()
             Me.TotalesLista()
         Catch ex As Exception
-            HandleError(Me.Name, "Totales", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         'For I = 1 To Me.Grid1.Rows - 1
@@ -1714,12 +1720,13 @@ Buscar:
     End Sub
 
     Private Function GestionaGrabar() As Boolean
+        Const sProcedure As String = "GestionaGrabar"
         Dim bResultado As Boolean = False
 
         Try
             Me.oPolizaGlobal = New Class_Contabilidad_Poliza_Global(Me.TxtFolio.Text) 'yo Jorgegc no identifico porque esta esto aqui?, revisar luego.
 
-            If MsgBox("Deseas grabar el documento " & Me.CboDocumento.Text & " con el folio : " & Me.TxtFolio.Text & "?", CType(vbYesNo + vbQuestion, MsgBoxStyle), "Grabar") = MsgBoxResult.No Then
+            If MsgBox("Deseas grabar el documento " & Me.CboDocumento.Text & " con el folio : " & Me.TxtFolio.Text & " ?", CType(vbYesNo + vbQuestion, MsgBoxStyle), sProcedure) = MsgBoxResult.No Then
                 Return False
             End If
 
@@ -1741,17 +1748,18 @@ Buscar:
                     Me.oFormaPoliza.lblFolioOrigen.Text = Me.TxtFolio.Text
                     If Me.oFormaPoliza.Aplicar(False, False) = True Then
                         If Me.oBancosCXC.ActualizaFolioPoliza() = True Then
-                            MsgBox("Movimiento grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+                            MsgBox("Movimiento grabado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
                         Else
-                            MsgBox("Movimiento grabado sin relacionar el folio de la póliza.", MsgBoxStyle.Information, Me.Text)
+                            MsgBox("Movimiento grabado sin relacionar el folio de la póliza.", MsgBoxStyle.Information, sProcedure)
                         End If
                         bResultado = True
                     Else
-                        MsgBox("Movimiento grabado sin relacionar el folio de la póliza.", MsgBoxStyle.Information, Me.Text)
+                        MsgBox("Movimiento grabado sin relacionar el folio de la póliza.", MsgBoxStyle.Information, sProcedure)
                     End If
 
                     If Me.oDocumento.TIMBRA_DOCUMENTO = True Then
                         If Me.oBancosCXC.GestionaCFDI() = True Then
+                            Me.oBancosCXC.GeneraImpuestos("GRABAR", GetFoliosConImportes)
                             Me.oBancosCXC.GeneraPagosElectronicos()
                         End If
                     End If
@@ -1760,16 +1768,32 @@ Buscar:
             Else 'No contabiliza, ni timbra
                 bResultado = Me.Grabar()
                 If bResultado = True Then
-                    MsgBox("Movimiento grabado satisfactoriamente.", MsgBoxStyle.Information, Me.Text)
+                    MsgBox("Movimiento grabado satisfactoriamente.", MsgBoxStyle.Information, sProcedure)
                 End If
             End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "GestionaGrabar", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
+    End Function
 
+    Private Function GetFoliosConImportes() As String
+        Const sProcedure As String = "GetFoliosConImportes"
+        Dim Resultado As String = "|", dPagoMXN As Decimal, dCxcTotal As Decimal
+        Try
+            For i = 1 To Me.GridVentas.Rows - 1
+                dPagoMXN = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
+                dCxcTotal = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcTotal).Text)
+                If txtLEN(Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text) = True And dCxcTotal > 0 Then
+                    Resultado &= Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text & ", " & dCxcTotal.ToString & "|"
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+        Return Resultado
     End Function
 
     Private Function Grabar() As Boolean
@@ -1818,7 +1842,7 @@ Buscar:
 
                 For i = 1 To Me.GridCFDIsRelacionados.Rows - 1
                     If txtLEN(Me.GridCFDIsRelacionados.Cell(i, Me.iGyGRFolioPago).Text) = True Then
-                        sListaCFDIsRelacionados = sListaCFDIsRelacionados & Me.GridCFDIsRelacionados.Cell(i, iGyGRFolioPago).Text & ","
+                        sListaCFDIsRelacionados = sListaCFDIsRelacionados & Me.GridCFDIsRelacionados.Cell(i, iGyGRFolioPago).Text & ", "
                     End If
                 Next
 
@@ -1943,7 +1967,7 @@ Buscar:
                     oCxcAfectaDocumentos.IVA_COBRADO = dIVACobrado 'IVA pesos nuevos
 
                     Dim sql As New Class_find("SELECT ID_MEDIO_PAGO FROM SIS_MEDIOS_PAGO WHERE NOMBRE_MEDIO_PAGO='" & Me.GridVentas.Cell(i, Me.iGyB_PagoMedioPago).Text & "'")
-                    If txtLEN(sql.Result1) = True Then
+                If txtLEN(sql.Result1) = True Then
                         oCxcAfectaDocumentos.ID_MEDIO_PAGO = CInt(sql.Result1)
                     End If
                     sql = New Class_find("SELECT CODIGO_BANCO FROM CAT_BANCOS WHERE NOMBRE_BANCO='" & Me.GridVentas.Cell(i, Me.iGyB_PagoBanco).Text & "'")
@@ -2175,6 +2199,7 @@ Buscar:
     End Function
 
     Private Sub ImprimirPoliza()
+        Const sProcedure As String = "ImprimirPoliza"
         Dim StrFiltros As String = ""
         Dim FormatoDeReporte As String
         Dim Rpt As New ReportDocument
@@ -2190,7 +2215,7 @@ Buscar:
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
             frm.Show()
         Catch ex As Exception
-            HandleError(Me.Name, "ImprimirPoliza", ex)
+            HandleError(Me.Name, sProcedure, ex)
         Finally
             oReporte = Nothing
         End Try
@@ -2206,6 +2231,7 @@ Buscar:
     End Sub
 
     Private Sub DesplegarDocumentos()
+        Const sProcedure As String = "DesplegarDocumentos"
         Try
             Dim oElementos As New Class_CatDocumentos
             With Me.CboDocumento
@@ -2220,11 +2246,12 @@ Buscar:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarDocumentos", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub DesplegarMedioDePagos()
+        Const sProcedure As String = "DesplegarMedioDePagos"
         Try
             Dim oElementos As New Class_CatMedioPago
             With Me.CboMedioDePago
@@ -2239,11 +2266,12 @@ Buscar:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarMedioDePagos", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub DesplegarMetodosPago()
+        Const sProcedure As String = "DesplegarMetodosPago"
         Try
             Dim oElementos As New Class_CFD_CatFormasPago
             With Me.cboFormaPago
@@ -2256,11 +2284,12 @@ Buscar:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Text, "DesplegarMetodosPago", ex)
+            HandleError(Me.Text, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub DesplegarBancos()
+        Const sProcedure As String = "DesplegarBancos"
         Try
             Dim oElementos As New Class_CatBancos
             With Me.CboBancos
@@ -2274,11 +2303,12 @@ Buscar:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Text, "DesplegarBancos", ex)
+            HandleError(Me.Text, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub DesplegarMonedas()
+        Const sProcedure As String = "DesplegarMonedas"
         Dim dView As New Data.DataView
         Try
             With Me.cboMonedaPago
@@ -2286,12 +2316,13 @@ Buscar:
                 .Items.Add("USD")
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarMonedas", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Function ValidaPrePoliza() As Boolean
         Const sProcedure As String = "ValidaPrePoliza"
+
         Dim bResultado As Boolean = False
         Dim oCuentaBancaria As Class_CatCuentasBancarias
         Dim oCliente As Class_CatClientes
@@ -2301,7 +2332,7 @@ Buscar:
             If Me.ExisteDocumento(Me.TxtFolio.Text) = True Then
                 Me.GeneraFolio() 'No hay que generar folio nuevo porque se manda el folio del documento
 
-                'MsgBox("El folio del documento : " & Me.CboDocumento.Text & " ya existe, verifíquelo.", MsgBoxStyle.Exclamation, "ValidaPrePoliza")
+                'MsgBox("El folio del documento :  " & Me.CboDocumento.Text & " ya existe, verifíquelo.", MsgBoxStyle.Exclamation, "ValidaPrePoliza")
                 'Exit Function
             End If
 
@@ -2676,6 +2707,7 @@ Buscar:
     End Function
 
     Private Function AgregaPrepolizaIVAAcreditable() As Boolean
+        Const sProcedure As String = "AgregaPrepolizaIVAAcreditable"
         Dim i As Integer, dPago As Double, sFolio As String, sCodigoDocumento As String ', dIvaImporte As Double
         Dim oCompra As Class_Compras_Global, dtImpuestosAbonos As New DataTable("tabla"), dtImpuestosCargos As New DataTable("tabla")
         Dim dA As SqlDataAdapter
@@ -2761,12 +2793,13 @@ Buscar:
             End If
 
         Catch ex As Exception
-            HandleError(Me.Text, "AgregaPrepolizaIVAAcreditable", ex)
+            HandleError(Me.Text, sProcedure, ex)
         End Try
     End Function
 
     Private Function Consultar() As Boolean
         Const sProcedure As String = "Consultar"
+
         Dim bResultado As Boolean = False
         Dim sFolio As String = Me.TxtFolio.Text
 
@@ -2918,13 +2951,14 @@ Buscar:
     'End Function
 
     Private Function ExisteDocumento(ByVal sFolio As String) As Boolean
+        Const sProcedure As String = "ExisteDocumento"
         Try
             Dim sql As New Class_find("SELECT 1 FROM BANCOS_GLOBAL WHERE FOLIO_BANCO='" & sReplace(sFolio) & "'")
             If sql.Result1.Length > 0 Then
                 ExisteDocumento = True
             End If
         Catch ex As Exception
-            HandleError(Me.Name, "ExisteDocumento", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
 
@@ -3035,6 +3069,7 @@ Buscar:
     End Function
 
     Private Function BusquedaVisual_PorDescripcion() As String
+        Const sProcedure As String = "BusquedaVisual_PorDescripcion"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de pagos CXC en bancos."
@@ -3049,23 +3084,25 @@ Buscar:
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
         Catch ex As Exception
-            HandleError(Me.Name, "BusquedaVisual_PorDescripcion", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
         Return Resultado
     End Function
 
     Private Sub GeneraFolio()
+        Const sProcedure As String = "GeneraFolio"
         Try
             If Me.bDocumentosCargados = True Then
                 Me.oBancosCXC.CODIGO_DOCUMENTO = Me.CboDocumento.SelectedValue.ToString
                 Me.TxtFolio.Text = Me.oBancosCXC.GeneraFolio
             End If
         Catch ex As Exception
-            HandleError(Me.Name, "GeneraFolio", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub Cambia_Estado(ByVal pEstado As enumEstados)
+        Const sProcedure As String = "Cambia_Estado"
         Try
 
             Me.gbAgregaDocCliente.Enabled = False 'Se habilita hasta asignar una cuenta bancaria
@@ -3177,11 +3214,12 @@ Buscar:
 
             End Select
         Catch ex As Exception
-            HandleError(Me.Name, "Cambia_Estado", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Function NavegadorDepositos(ByVal sTipoDeBusqueda As String) As Boolean
+        Const sProcedure As String = "NavegadorDepositos"
         Try
             'No se ocupa la cuenta para navegar
             'If txtLEN(Me.TxtCuentaBancaria.Text) = False Then
@@ -3235,38 +3273,45 @@ Buscar:
                 End If
             End If
 
-            NavegadorDepositos = True
+            Return True
         Catch ex As Exception
-            HandleError(Me.Name, "NavegadorDepositos", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
 
     Private Sub TotalesLista()
-        Dim i As Integer, dPago As Double, sCodigoClientes As String, oCliente As Class_CatClientes
-        Me.lstClientesAgregados.Items.Clear()
+        Const sProcedure As String = "TotalesLista"
+        Try
+            Dim i As Integer, dPago As Double, sCodigoClientes As String, oCliente As Class_CatClientes
+            Me.lstClientesAgregados.Items.Clear()
 
-        For i = 1 To Me.GridVentas.Rows - 1
-            sCodigoClientes = Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text
-            dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
-            If sCodigoClientes.Length > 0 AndAlso dPago > 0 Then
-                Dim item As ListViewItem = Me.lstClientesAgregados.FindItemWithText(sCodigoClientes)
+            For i = 1 To Me.GridVentas.Rows - 1
+                sCodigoClientes = Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text
+                dPago = valorNumerico(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
+                If sCodigoClientes.Length > 0 AndAlso dPago > 0 Then
+                    Dim item As ListViewItem = Me.lstClientesAgregados.FindItemWithText(sCodigoClientes)
 
-                If item Is Nothing Then
-                    oCliente = New Class_CatClientes(sCodigoClientes)
+                    If item Is Nothing Then
+                        oCliente = New Class_CatClientes(sCodigoClientes)
 
-                    item = New ListViewItem(sCodigoClientes)
-                    item.SubItems.Add(oCliente.NOMBRE_CLIENTE)
-                    item.SubItems.Add(FormatCurrency(dPago, 2))
+                        item = New ListViewItem(sCodigoClientes)
+                        item.SubItems.Add(oCliente.NOMBRE_CLIENTE)
+                        item.SubItems.Add(FormatCurrency(dPago, 2))
 
-                    Me.lstClientesAgregados.Items.Add(item)
-                Else
-                    item.SubItems(2).Text = FormatCurrency(valorNumerico(item.SubItems(2).Text) + dPago, 2)
+                        Me.lstClientesAgregados.Items.Add(item)
+                    Else
+                        item.SubItems(2).Text = FormatCurrency(valorNumerico(item.SubItems(2).Text) + dPago, 2)
+                    End If
                 End If
-            End If
-        Next
+            Next
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Function InicializaDocumentoPago() As Boolean
+        Const sProcedure As String = "InicializaDocumentoPago"
         Try
             Me.TxtCodigoCliente.Text = "" : Me.LblCliente.Text = ""
             Me.cboFormaPago.SelectedValue = "03" '03=Transferencia
@@ -3285,7 +3330,7 @@ Buscar:
             Me.chkVentasNoFiscales.Enabled = False
             Me.TxtCodigoCliente.Focus()
         Catch ex As Exception
-            HandleError(Me.Name, "InicializaDocumentoPago", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
 
@@ -3488,6 +3533,7 @@ Buscar:
     End Function
 
     Private Function ExisteFolioPago(ByVal sFolioPago As String) As Boolean
+        Const sProcedure As String = "ExisteFolioPago"
         Dim bResultado As Boolean = False
         Try
             With Me.GridDocumentosPago
@@ -3499,12 +3545,13 @@ Buscar:
                 Next
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "ExisteFolioPago", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
         Return bResultado
     End Function
 
     Private Function ObtieneIDBancosDetalle(ByVal sFolioPago As String) As Long
+        Const sProcedure As String = "ObtieneIDBancosDetalle"
         Dim Resultado As Long
         Try
             With Me.GridDocumentosPago
@@ -3516,12 +3563,13 @@ Buscar:
                 Next
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "ObtieneIDBancosDetalle", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
         Return Resultado
     End Function
 
     Private Function EliminarDocumentoPago() As Boolean
+        Const sProcedure As String = "EliminarDocumentoPago"
         Dim bResultado As Boolean = False, sFolioPago As String, iRow As Integer = 1
         Try
             With Me.GridDocumentosPago
@@ -3551,7 +3599,7 @@ Buscar:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "ExisteFolioPago", ex)
+            HandleError(Me.Name, sProcedure, ex)
         Finally
             Me.GridVentas.AutoRedraw = False
             Me.GridVentas.Refresh()
@@ -3640,6 +3688,7 @@ Buscar:
     End Function
 
     Private Function CargaCuentasBancariasCliente() As Boolean
+        Const sProcedure As String = "CargaCuentasBancariasCliente"
         Dim bResultado As Boolean = False
         Try
             Dim oElementos As New Class_CatClientesCuentasBancarias()
@@ -3654,12 +3703,13 @@ Buscar:
             End With
             bResultado = True
         Catch ex As Exception
-            HandleError(Me.Name, "CargaCuentasBancariasCliente", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
         Return bResultado
     End Function
 
     Private Function SeleccionaCuentaEmisor() As Boolean
+        Const sProcedure As String = "SeleccionaCuentaEmisor"
         Dim bResultado As Boolean = False
         Try
             Dim oCuenta As New Class_CatClientesCuentasBancarias(Me.cboCuentaEmisor.SelectedValue.ToString)
@@ -3669,12 +3719,13 @@ Buscar:
             Me.chkEsBancoExtranjero.Checked = oCuenta.ES_BANCO_EXTRANJERO
             bResultado = True
         Catch ex As Exception
-            HandleError(Me.Name, "SeleccionaCuentaEmisor", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
         Return bResultado
     End Function
 
     Private Function GestionaAltaEdicionCuentaBancariaCliente(ByVal bAlta As Boolean) As Boolean
+        Const sProcedure As String = "GestionaAltaEdicionCuentaBancariaCliente"
         Dim bResultado As Boolean = False
         Try
             Dim oCuenta As New Catalogo_ClientesCuentasBancarias
@@ -3700,13 +3751,14 @@ Buscar:
             bResultado = True
 
         Catch ex As Exception
-            HandleError(Me.Name, "GestionaAltaEdicionCuentaBancariaCliente", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
     End Function
 
     Private Sub CalculaImporteDolares()
+        Const sProcedure As String = "CalculaImporteDolares"
         Try
             Dim i As Integer, dPago As Double
             For i = 1 To Me.GridVentas.Rows - 1
@@ -3716,11 +3768,12 @@ Buscar:
                 End If
             Next i
         Catch ex As Exception
-            HandleError(Me.Name, "CalculaImporteDolares", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub CalculaImportesPagoUSD_old(ByVal Renglon As Integer)
+        Const sProcedure As String = "CalculaImportesPagoUSD_old"
         Try
             Dim oVenta As New Class_Ventas_Global '(Me.GridVentas.Cell(Renglon, Me.iGyVentaFolio).Text)
             oVenta.FOLIO_VENTA = Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text
@@ -3768,11 +3821,12 @@ Buscar:
             Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text = dSaldoAnteriorMonedaPago.ToString
 
         Catch ex As Exception
-            HandleError(Me.Name, "CalculaImportesPagoUSD_old", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub CalculaImportesPagoUSD(ByVal Renglon As Integer)
+        Const sProcedure As String = "CalculaImportesPagoUSD"
         Try
             Dim dPagoTipoCambio As Decimal, dPagoUSD As Decimal
             Dim dVtaIvaMXN As Decimal, dVtaTotalMXN As Decimal, dVtaTotalUSD As Decimal, dVtaTipoCambio As Decimal, sVtaMoneda As String, dVtaSaldoMXN_TpPago As Decimal, dVtaSaldoMXN_CXC As Decimal, dVtaSaldoUSD As Decimal
@@ -3876,11 +3930,12 @@ Buscar:
             Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoSubtotaMXNNuevos).Text = dCxcPagoSubtotaMXNNuevos.ToString
 
         Catch ex As Exception
-            HandleError(Me.Name, "CalculaImportesPagoUSD", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub CalculaImportesPagoUSD_intento1(ByVal Renglon As Integer)
+        Const sProcedure As String = "CalculaImportesPagoUSD_intento1"
         Try
             Dim dPagoTipoCambio As Decimal, dPagoUSD As Decimal, dPagoUSD_IVA As Decimal, dPagoUSD_Subtotal As Decimal
             Dim dVtaIvaMXN As Decimal, dVtaTotalMXN As Decimal, dVtaTotalUSD As Decimal, dVtaIvaUSD As Decimal, dVtaTipoCambio As Decimal, sVtaMoneda As String, dVtaSaldoMXN_TpPago As Decimal, dVtaSaldoMXN_CXC As Decimal, dVtaSaldoUSD As Decimal
@@ -3976,11 +4031,12 @@ Buscar:
             Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text = dSaldoAnteriorMonedaPago.ToString
 
         Catch ex As Exception
-            HandleError(Me.Name, "CalculaImportesPagoUSD_intento1", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub CalculaImportesPagoMXN_old(ByVal Renglon As Integer)
+        Const sProcedure As String = "CalculaImportesPagoMXN_old"
         Try
             Dim oVenta As New Class_Ventas_Global '(Me.GridVentas.Cell(Renglon, Me.iGyVentaFolio).Text)
             oVenta.FOLIO_VENTA = Me.GridVentas.Cell(Renglon, Me.iGyB_VtaFolio).Text
@@ -4027,11 +4083,12 @@ Buscar:
             Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text = dSaldoAnteriorMonedaPago.ToString
 
         Catch ex As Exception
-            HandleError(Me.Name, "CalculaImportesPagoMXN_old", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub CalculaImportesPagoMXN(ByVal Renglon As Integer)
+        Const sProcedure As String = "CalculaImportesPagoMXN"
         Try
             Dim dPagoTipoCambio As Decimal, dPagoUSD As Decimal
             Dim dVtaIvaMXN As Decimal, dVtaTotalMXN As Decimal, dVtaTotalUSD As Decimal, dVtaTipoCambio As Decimal, sVtaMoneda As String, dVtaSaldoMXN_TpPago As Decimal, dVtaSaldoMXN_CXC As Decimal, dVtaSaldoUSD As Decimal
@@ -4125,11 +4182,12 @@ Buscar:
             Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoSubtotaMXNNuevos).Text = dCxcPagoSubtotaMXNNuevos.ToString
 
         Catch ex As Exception
-            HandleError(Me.Name, "CalculaImportesPagoMXN", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub CalculaImportesPagoMXN_intento1(ByVal Renglon As Integer)
+        Const sProcedure As String = "CalculaImportesPagoMXN_intento1"
         Try
             Dim dPagoTipoCambio As Decimal, dPagoUSD As Decimal, dPagoUSD_IVA As Decimal, dPagoUSD_Subtotal As Decimal
             Dim dVtaIvaMXN As Decimal, dVtaTotalMXN As Decimal, dVtaTotalUSD As Decimal, dVtaIvaUSD As Decimal, dVtaTipoCambio As Decimal, sVtaMoneda As String, dVtaSaldoMXN_TpPago As Decimal, dVtaSaldoMXN_CXC As Decimal, dVtaSaldoUSD As Decimal
@@ -4220,7 +4278,7 @@ Buscar:
             Me.GridVentas.Cell(Renglon, Me.iGyB_CxcSaldoAnteriorMonedaPago).Text = dSaldoAnteriorMonedaPago.ToString
 
         Catch ex As Exception
-            HandleError(Me.Name, "CalculaImportesPagoMXN_intento1", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
@@ -4374,6 +4432,7 @@ Buscar:
     End Sub
 
     Private Sub BorraPago(ByVal Renglon As Integer)
+        Const sProcedure As String = "BorraPago"
         Try
             Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoMXNCapturado).Text = "0"
             Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoUSDCapturado).Text = "0"
@@ -4387,11 +4446,12 @@ Buscar:
             Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoSubtotaMXNViejos).Text = "0"
             Me.GridVentas.Cell(Renglon, Me.iGyB_CxcPagoSubtotaMXNNuevos).Text = "0"
         Catch ex As Exception
-            HandleError(Me.Name, "BorraPago", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Function SeleccionarSPEI() As Boolean
+        Const sProcedure As String = "SeleccionarSPEI"
         Try
             Dim OpenFileDialog1 As New OpenFileDialog(), sRutaXML As String = ""
 
@@ -4414,7 +4474,7 @@ Buscar:
             End If
 
         Catch ex As Exception
-            HandleError(Me.Name, "SeleccionarSPEI", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
 
@@ -4488,6 +4548,7 @@ Buscar:
     End Function
 
     Private Function ValidaVentasTimbradas() As Boolean
+        Const sProcedure As String = "ValidaVentasTimbradas"
         Dim bResultado As Boolean = False, dPago As Double, sFacturas As String = ""
         Try
             For i = 1 To Me.GridVentas.Rows - 1
@@ -4511,13 +4572,14 @@ Buscar:
 
             bResultado = True
         Catch ex As Exception
-            HandleError(Me.Name, "ValidaVentasTimbradas", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
 
         Return bResultado
     End Function
 
     Private Sub ImprimirComprobante()
+        Const sProcedure As String = "ImprimirComprobante"
         Dim StrFiltros As String = ""
         Dim FormatoDeReporte As String
         Dim Rpt As New ReportDocument
@@ -4533,7 +4595,7 @@ Buscar:
             frm.CRViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None
             frm.Show()
         Catch ex As Exception
-            HandleError(Me.Name, "ImprimirComprobante", ex)
+            HandleError(Me.Name, sProcedure, ex)
         Finally
             oReporte = Nothing
         End Try
@@ -4554,6 +4616,7 @@ Buscar:
     End Sub
 
     Private Sub DesplegarRegimenesFiscales()
+        Const sProcedure As String = "DesplegarRegimenesFiscales"
         Try
             Dim oRegimenes As New Class_CFDCatTiposRegimenesFiscales
             With Me.cboRegimenFiscal
@@ -4567,11 +4630,12 @@ Buscar:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarRegimenesFiscales", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub VisibilidadColumnasGridVentas()
+        Const sProcedure As String = "VisibilidadColumnasGridVentas"
         Try
             If Me.cboMonedaPago.Text = "USD" Then
                 Me.GridVentas.Column(Me.iGyB_VtaTotalMXN).Visible = False
@@ -4596,11 +4660,12 @@ Buscar:
             'Me.GridVentas.Column(Me.iGyB_CxcTotal).Visible = True
 
         Catch ex As Exception
-            HandleError(Me.Name, "VisibilidadColumnasGridVentas", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub DesplegarTiposRelacionCFDI()
+        Const sProcedure As String = "DesplegarTiposRelacionCFDI"
         Try
             With Me.cboTipoRelacionCFDI
                 .DisplayMember = "NOMBRE_TIPO_RELACION_CFDI"
@@ -4613,11 +4678,12 @@ Buscar:
                 End If
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "DesplegarTiposRelacionCFDI", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub InicializaGridCFDIsRelacionados()
+        Const sProcedure As String = "InicializaGridCFDIsRelacionados"
         Try
             Me.GridCFDIsRelacionados.DataSource = Nothing
             FG_Grid_Limpiar(Me.GridCFDIsRelacionados)
@@ -4625,11 +4691,12 @@ Buscar:
             Me.GridCFDIsRelacionados.Cols = 6
             Me.FormateaGridCFDIsRelacionados()
         Catch ex As Exception
-            HandleError(Me.Name, "InicializaGridCFDIsRelacionados", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub FormateaGridCFDIsRelacionados()
+        Const sProcedure As String = "FormateaGridCFDIsRelacionados"
         Try
             With Me.GridCFDIsRelacionados
                 .AutoRedraw = False
@@ -4665,11 +4732,12 @@ Buscar:
 
             End With
         Catch ex As Exception
-            HandleError(Me.Name, "FormateaGridCFDIsRelacionados", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
     Private Sub GestionaGridCFDIsRelacionados(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Const sProcedure As String = "GestionaGridCFDIsRelacionados"
         Try
             If Me.GridCFDIsRelacionados.Locked = True Then
                 Return
@@ -4728,7 +4796,7 @@ BuscaPagos:
             End Select
 
         Catch ex As Exception
-            HandleError(Me.Name, "GestionaGridCFDIsRelacionados", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 

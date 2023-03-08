@@ -522,6 +522,7 @@ Public Class Class_Bancos_CXC
 
 #Region "Métodos y procedimientos"
     Public Function Inserta_Global() As Boolean
+        Const sProcedure As String = "Inserta_Global"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -554,7 +555,7 @@ Public Class Class_Bancos_CXC
                 Me._FOLIO_BANCO = "" & .Parameters("@FOLIO_BANCO").Value.ToString
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Inserta_Global", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -566,6 +567,7 @@ Public Class Class_Bancos_CXC
     End Function
 
     Public Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
 
         'VW_BANCOS_GLOBAL_CON_CXC_GLOBAL Where FOLIO_BANCO=
@@ -635,7 +637,7 @@ Public Class Class_Bancos_CXC
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Consultar", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -646,6 +648,7 @@ Public Class Class_Bancos_CXC
     End Function
 
     Public Function ActualizaFolioPoliza() As Boolean
+        Const sProcedure As String = "ActualizaFolioPoliza"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -663,7 +666,7 @@ Public Class Class_Bancos_CXC
                 Me._FOLIO_POLIZA = Me._FOLIO_BANCO
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "ActualizaFolioPoliza", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -675,6 +678,7 @@ Public Class Class_Bancos_CXC
     End Function
 
     Public Function ObtenerDetalle() As DataTable
+        Const sProcedure As String = "ObtenerDetalle"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
@@ -717,13 +721,14 @@ Public Class Class_Bancos_CXC
             da.Fill(dTabla)
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerDetalle", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return dTabla
     End Function
 
     Public Function CargaVentasClienteConSaldo(ByVal CodigoCliente As String) As DataTable
+        Const sProcedure As String = "CargaVentasClienteConSaldo"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String = ("SELECT FOLIO_CLIENTE,FECHA,FOLIO_VENTA,CONCEPTO,TOTAL,SALDO,0 PAGAR,0 SELECCION, CODIGO_DOCUMENTO " &
                               "FROM VENTA_GLOBAL WHERE CODIGO_Cliente='" & sReplace(CodigoCliente) & "' AND SALDO>0 and CODIGO_PLAZA=" & Plaza.CODIGO_PLAZA & " ORDER BY FECHA")
@@ -733,13 +738,14 @@ Public Class Class_Bancos_CXC
             da.Dispose()
 
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "CargaVentasClienteConSaldo", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return dTabla
     End Function
 
     Public Function CargaFacturaClienteConSaldo(ByVal CodigoCliente As String, ByVal sFolioVenta As String) As DataTable
+        Const sProcedure As String = "CargaFacturaClienteConSaldo"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
         ''"LEFT JOIN VW_CAT_PRODUCTOS_AGRICOLAS P ON(R.CODIGO_ARTICULO=P.CODIGO_ARTICULO) " & _
@@ -757,13 +763,14 @@ Public Class Class_Bancos_CXC
             da.Fill(dTabla)
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "CargaFacturaClienteConSaldo", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return dTabla
     End Function
 
     Public Function BusquedaVisual_FacturasClienteSaldo(Optional ByVal sCodigoCliente As String = "") As String
+        Const sProcedure As String = "BusquedaVisual_FacturasClienteSaldo"
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de ventas del cliente."
@@ -784,12 +791,13 @@ Public Class Class_Bancos_CXC
                 Resultado = CType(f.GridBusqueda.Item(f.GridBusqueda.CurrentCell.RowNumber, 0), String)
             End If
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "BusquedaVisual_FacturasClienteSaldo", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
         Return Resultado
     End Function
 
     Public Function CargaFacturasPagadas(ByVal CodigoCliente As String, ByVal Folio As String) As DataTable
+        Const sProcedure As String = "CargaFacturasPagadas"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
@@ -802,7 +810,7 @@ Public Class Class_Bancos_CXC
             da.Fill(dTabla)
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "CargaFacturasPagadas", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
         Return dTabla
     End Function
@@ -814,17 +822,20 @@ Public Class Class_Bancos_CXC
     End Function
 
     Public Function ExisteDocumento(ByVal sFolio As String) As Boolean
+        Const sProcedure As String = "ExisteDocumento"
         Try
             Dim sql As New Class_find("SELECT 1 FROM BANCOS_GLOBAL WHERE FOLIO_BANCO='" & sReplace(sFolio) & "'")
             If sql.Result1.Length > 0 Then
                 Return True
             End If
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ExisteDocumento", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
     End Function
 
     Public Function ConsultarCXC(ByVal sFolio As String) As Boolean
+        Const sProcedure As String = "ConsultarCXC"
+
         Dim bResultado As Boolean = False
         'CXC.TOTAL_PAGO,,FOLIO_REFERENCIA
         Dim sql As String = "SELECT  CXC.CXC_FOLIO_CXC,CXC.CXC_ESTATUS_CXC,CXC.CXC_CODIGO_DOCUMENTO,T.NOMBRE_TIPO_DOCUMENTO,CXC.CXC_TOTAL,CXC.CXC_CODIGO_CLIENTE,CXC.CXC_NOMBRE_CLIENTE," &
@@ -860,7 +871,7 @@ Public Class Class_Bancos_CXC
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "ConsultarCXC", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Conexion.Close()
                 cmd.Dispose()
@@ -870,6 +881,7 @@ Public Class Class_Bancos_CXC
     End Function
 
     Public Function CancelaBancosCXC() As Boolean
+        Const sProcedure As String = "CancelaBancosCXC"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -889,7 +901,7 @@ Public Class Class_Bancos_CXC
                 Me._FOLIO_POLIZA = Me._FOLIO_BANCO
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "CancelaBancosCXC", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -903,6 +915,7 @@ Public Class Class_Bancos_CXC
                                        ByVal sCuentaEmisor As String, ByVal dFecha As Date,
                                        ByVal sRFCEmisor As String, ByVal dMonto As Double, ByVal sCodigoMonedaSAT As String, ByVal dTipoCambio As Double, ByVal sCuentaDestino As String,
                                         ByVal sCodigoBancoDestinoNacional As String, ByVal sNombreBancoEmisorExtranjero As String) As Long
+        Const sProcedure As String = "AgregaDocumentoPago"
 
         Dim lResultado As Long
 
@@ -937,7 +950,7 @@ Public Class Class_Bancos_CXC
                 lResultado = CLng("" & .Parameters("@ID_BANCOS_DETALLE").Value.ToString)
                 'AgregaDocumentoPago = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "AgregaDocumentoPago", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -949,6 +962,7 @@ Public Class Class_Bancos_CXC
     End Function
 
     Public Function ObtenerDetalleDocumentosPago() As DataTable
+        Const sProcedure As String = "ObtenerDetalleDocumentosPago"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
@@ -965,13 +979,14 @@ Public Class Class_Bancos_CXC
             da.Fill(dTabla)
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerDetalleDocumentosPago", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return dTabla
     End Function
 
     Public Function ObtenerPagosCFDI(ByVal bSoloPendientesTimbrar As Boolean) As DataTable
+        Const sProcedure As String = "ObtenerPagosCFDI"
         Dim dTabla As New DataTable, da As SqlDataAdapter
         Dim sSQL As String
 
@@ -988,13 +1003,14 @@ Public Class Class_Bancos_CXC
 
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerPagosCFDI", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return dTabla
     End Function
 
     Public Function ObtenerPagosCFDIParaCancelarTimbre() As DataTable
+        Const sProcedure As String = "ObtenerPagosCFDIParaCancelarTimbre"
         Dim dTabla As New DataTable, da As SqlDataAdapter
         Dim sSQL As String
 
@@ -1011,13 +1027,14 @@ Public Class Class_Bancos_CXC
 
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerPagosCFDIParaCancelarTimbre", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return dTabla
     End Function
 
     Public Function GestionaCFDI() As Boolean
+        Const sProcedure As String = "GestionaCFDI"
         Dim bResultado As Boolean = False
         Dim cmd As New SqlCommand
         Dim sqlParametro As SqlParameter
@@ -1034,7 +1051,7 @@ Public Class Class_Bancos_CXC
                 .ExecuteNonQuery()
                 bResultado = True
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "GestionaCFDI", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -1119,6 +1136,7 @@ Public Class Class_Bancos_CXC
     End Function
 
     Public Function ObtenerPagosParaConsultaCFDI() As DataTable
+        Const sProcedure As String = "ObtenerPagosParaConsultaCFDI"
         Dim dTabla As New DataTable, da As SqlDataAdapter
         Dim sSQL As String
 
@@ -1135,13 +1153,14 @@ Public Class Class_Bancos_CXC
 
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtenerPagosParaConsultaCFDI", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return dTabla
     End Function
 
     Public Function ObtienePagosRelacionados() As DataTable
+        Const sProcedure As String = "ObtienePagosRelacionados"
         Dim dTabla As New DataTable("detalle"), da As SqlDataAdapter
         Dim sSQL As String
 
@@ -1157,10 +1176,43 @@ Public Class Class_Bancos_CXC
 
             da.Dispose()
         Catch ex As Exception
-            HandleError(Me.Nombre_Clase, "ObtienePagosRelacionados", ex)
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
         End Try
 
         Return dTabla
+    End Function
+
+    Public Function GeneraImpuestos(ByVal Modo As String, ByVal FoliosConImportes As String) As Boolean
+        Const sProcedure As String = "GeneraImpuestos"
+        Dim bResultado As Boolean = False
+        Dim cmd As New SqlCommand
+        Dim sqlParametro As SqlParameter
+        With cmd
+            .Connection = Me._Conexion
+            .CommandTimeout = 0
+            .CommandType = CommandType.StoredProcedure
+            .CommandText = "MP_CXC_DEPOSITOS_GENERA_IMPUESTOS"
+
+            sqlParametro = .Parameters.Add("@FOLIOS_CON_IMPORTES", SqlDbType.NVarChar, -1) : sqlParametro.Value = FoliosConImportes
+            sqlParametro = .Parameters.Add("@CODIGO_MONEDA_SAT_PAGO", SqlDbType.NVarChar, 3) : sqlParametro.Value = Me._CODIGO_MONEDA_SAT
+            sqlParametro = .Parameters.Add("@TIPO_CAMBIO_PAGO", SqlDbType.Decimal) : sqlParametro.Value = Me._TIPO_DE_CAMBIO
+            sqlParametro = .Parameters.Add("@FOLIO_BANCO", SqlDbType.NVarChar, 15) : sqlParametro.Value = Me._FOLIO_BANCO
+            sqlParametro = .Parameters.Add("@MODO", SqlDbType.NVarChar, 30) : sqlParametro.Value = Modo
+
+            Try
+                Me._Conexion.Open()
+                .ExecuteNonQuery()
+                bResultado = True
+            Catch ex As Exception
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
+            Finally
+                Me._Conexion.Close()
+                cmd.Dispose()
+                sqlParametro = Nothing
+            End Try
+        End With
+
+        Return bResultado
     End Function
 
 #End Region

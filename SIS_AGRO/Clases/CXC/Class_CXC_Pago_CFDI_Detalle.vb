@@ -18,6 +18,7 @@ Public Class Class_CXC_Pago_CFDI_Detalle
     Private _IMPORTE_SALDO_ANTERIOR As Decimal
     Private _IMPORTE_PAGADO As Decimal
     Private _IMPORTE_SALDO_INSOLUTO As Decimal
+    Private _OBJETO_IMP_DR As String
 #End Region
 
 #Region "Campos de sistema"
@@ -96,6 +97,11 @@ Public Class Class_CXC_Pago_CFDI_Detalle
         End Get
     End Property
 
+    Public ReadOnly Property OBJETO_IMP_DR() As String
+        Get
+            Return Me._OBJETO_IMP_DR
+        End Get
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -162,6 +168,7 @@ Public Class Class_CXC_Pago_CFDI_Detalle
 
 #Region "Métodos y procedimientos"
     Public Function Consultar() As Boolean
+        Const sProcedure As String = "Consultar"
         Dim bResultado As Boolean = False
 
         Dim sSQL As String = ""
@@ -193,6 +200,7 @@ Public Class Class_CXC_Pago_CFDI_Detalle
                     Me._IMPORTE_SALDO_ANTERIOR = CDec(dReader("IMPORTE_SALDO_ANTERIOR").ToString)
                     Me._IMPORTE_PAGADO = CDec(dReader("IMPORTE_PAGADO").ToString)
                     Me._IMPORTE_SALDO_INSOLUTO = CDec(dReader("IMPORTE_SALDO_INSOLUTO").ToString)
+                    Me._OBJETO_IMP_DR = dReader("OBJETO_IMP_DR").ToString
 
                     Me._FACTURA_FOLIO_FISCAL_SAT = dReader("FACTURA_FOLIO_FISCAL_SAT").ToString
                     Me._FACTURA_SERIE = dReader("FACTURA_SERIE").ToString
@@ -202,7 +210,7 @@ Public Class Class_CXC_Pago_CFDI_Detalle
                 End If
                 dReader.Close()
             Catch ex As Exception
-                HandleError(Me.Nombre_Clase, "Consultar", ex)
+                HandleError(Me.Nombre_Clase, sProcedure, ex)
             Finally
                 Me._Conexion.Close()
                 cmd.Dispose()
@@ -210,6 +218,28 @@ Public Class Class_CXC_Pago_CFDI_Detalle
         End With
 
         Return bResultado
+    End Function
+
+    Public Function ObtenerDetalleImpuestosDR() As DataTable
+        Const sProcedure As String = "ObtenerDetalleImpuestosDR"
+        Dim dTabla As New DataTable, da As New SqlDataAdapter
+        Dim sSQL As String
+
+        Try
+            sSQL = "SELECT * " &
+            "FROM CFDI_PAGOS_CXC_DETALLE_IMPUESTOS_DR " &
+            "WHERE FOLIO_CXC='" & sReplace(Me._FOLIO_CXC) & "' " &
+            "ORDER BY ID_CFDI_PAGOS_CXC_DETALLE_IMPUESTOS_DR"
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+        Catch ex As Exception
+            HandleError(Me.Nombre_Clase, sProcedure, ex)
+        Finally
+            da.Dispose()
+        End Try
+
+        Return dTabla
     End Function
 #End Region
 
