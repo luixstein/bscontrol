@@ -1365,7 +1365,7 @@ Module FacturacionElectronica40
                         oPagoDetalle.FACTURA_SERIE,
                         oPagoDetalle.FACTURA_FOLIO_NUMERICO,
                         oPagoDetalle.CODIGO_MONEDA_SAT_DR,
-                        IIf(oPagoDetalle.TIPO_CAMBIO_DR = CDec("1"), "1", FormatTipoCambio(oPagoDetalle.TIPO_CAMBIO_DR, False, 6)).ToString,
+                        IIf(oPagoDetalle.TIPO_CAMBIO_DR = CDec("1"), "1", FormatTipoCambio(oPagoDetalle.TIPO_CAMBIO_DR, False, 10)).ToString,'El SAT ahora en 2023 en el xsd de pagos lo cambió a 10 decimales.
                         oPagoDetalle.NUMERO_PARCIALIDAD,
                         Format(oPagoDetalle.IMPORTE_SALDO_ANTERIOR, "#0.00"),
                         Format(oPagoDetalle.IMPORTE_PAGADO, "#0.00"),
