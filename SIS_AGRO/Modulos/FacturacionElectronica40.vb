@@ -405,7 +405,7 @@ Module FacturacionElectronica40
             Dim sXmlComercioExterior As String = ""
 
             If Empresa_Sistema.FELECTRONICA_CCE_HABILITADO = True And oVenta.ES_FACTURA_EMBARQUE_EXTRANJERO = True Then
-                sXmlComercioExterior = oVenta.GeneraXmlComercioExterior11
+                sXmlComercioExterior = oVenta.GeneraXmlComercioExterior11(TipoCCE.Agricola)
 
                 If txtLEN(sXmlComercioExterior) = False Then
                     Return False 'Abortamos

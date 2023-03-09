@@ -35,6 +35,7 @@ Partial Class Ventas_Movimientos
         Me.tsbCotizacionRemision = New System.Windows.Forms.ToolStripButton()
         Me.tsbCotizacionFactura = New System.Windows.Forms.ToolStripButton()
         Me.tsbRemisionVenta = New System.Windows.Forms.ToolStripButton()
+        Me.tsbFacturaACartaPorte = New System.Windows.Forms.ToolStripButton()
         Me.tsbCancelarTimbre = New System.Windows.Forms.ToolStripButton()
         Me.tsbTimbrar = New System.Windows.Forms.ToolStripButton()
         Me.tsbRecuperarXMLPDF = New System.Windows.Forms.ToolStripButton()
@@ -103,6 +104,11 @@ Partial Class Ventas_Movimientos
         Me.tsslElaboro = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tsslCancelo = New System.Windows.Forms.ToolStripStatusLabel()
         Me.frmDatos = New System.Windows.Forms.GroupBox()
+        Me.lblDisplayRegimenFiscalReceptor = New System.Windows.Forms.Label()
+        Me.txtRegimenFiscalReceptor = New System.Windows.Forms.TextBox()
+        Me.lblRegimenFiscalReceptor = New System.Windows.Forms.Label()
+        Me.txtUsoCFDI = New System.Windows.Forms.TextBox()
+        Me.lblUsoCFDI = New System.Windows.Forms.Label()
         Me.ckbMostrarUtilidad = New System.Windows.Forms.CheckBox()
         Me.gbUtilidad = New System.Windows.Forms.GroupBox()
         Me.Label7 = New System.Windows.Forms.Label()
@@ -147,22 +153,26 @@ Partial Class Ventas_Movimientos
         Me.tpArticulos = New System.Windows.Forms.TabPage()
         Me.Grid = New FlexCell.Grid()
         Me.tpSeries = New System.Windows.Forms.TabPage()
+        Me.btnMostrarMasColumnasGridSeries = New System.Windows.Forms.Button()
         Me.GridSeries = New FlexCell.Grid()
         Me.tpCFDIsRelacionados = New System.Windows.Forms.TabPage()
         Me.GridCFDIsRelacionados = New FlexCell.Grid()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cboTipoRelacionCFDI = New System.Windows.Forms.ComboBox()
         Me.tpFacturasRemisiones = New System.Windows.Forms.TabPage()
+        Me.btnAceptarRemisionesSeries = New System.Windows.Forms.Button()
         Me.btnAceptar = New System.Windows.Forms.Button()
         Me.btnCargarRemisiones = New System.Windows.Forms.Button()
         Me.GridFacturasVariasRemisiones = New FlexCell.Grid()
         Me.lblDisplayRegimenFiscalEmisor = New System.Windows.Forms.Label()
         Me.cboRegimenFiscalEmisor = New System.Windows.Forms.ComboBox()
-        Me.txtRegimenFiscalReceptor = New System.Windows.Forms.TextBox()
-        Me.lblRegimenFiscalReceptor = New System.Windows.Forms.Label()
-        Me.txtUsoCFDI = New System.Windows.Forms.TextBox()
-        Me.lblUsoCFDI = New System.Windows.Forms.Label()
-        Me.lblDisplayRegimenFiscalReceptor = New System.Windows.Forms.Label()
+        Me.lblDisplayIncoterm = New System.Windows.Forms.Label()
+        Me.cboIncoterm = New System.Windows.Forms.ComboBox()
+        Me.chkTieneCCE = New System.Windows.Forms.CheckBox()
+        Me.chkTieneCartaPorte = New System.Windows.Forms.CheckBox()
+        Me.btnCartaPorte = New System.Windows.Forms.Button()
+        Me.btnTimbradoTrasladoPrueba = New System.Windows.Forms.Button()
+        Me.btnAgregarRenglon = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -216,7 +226,7 @@ Partial Class Ventas_Movimientos
         'tsMenu
         '
         Me.tsMenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbCancelar, Me.tsbCotizacionRemision, Me.tsbCotizacionFactura, Me.tsbRemisionVenta, Me.tsbCancelarTimbre, Me.tsbTimbrar, Me.tsbRecuperarXMLPDF, Me.tsbEnviarCorreo, Me.tsbSubirXML, Me.tsbSalir})
+        Me.tsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNuevo, Me.tsbGrabar, Me.tsbImprimir, Me.tsbCancelar, Me.tsbCotizacionRemision, Me.tsbCotizacionFactura, Me.tsbRemisionVenta, Me.tsbFacturaACartaPorte, Me.tsbCancelarTimbre, Me.tsbTimbrar, Me.tsbRecuperarXMLPDF, Me.tsbEnviarCorreo, Me.tsbSubirXML, Me.tsbSalir})
         Me.tsMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsMenu.Name = "tsMenu"
         Me.tsMenu.Size = New System.Drawing.Size(1290, 27)
@@ -282,6 +292,15 @@ Partial Class Ventas_Movimientos
         Me.tsbRemisionVenta.Size = New System.Drawing.Size(121, 24)
         Me.tsbRemisionVenta.Text = "&Remisión a venta"
         Me.tsbRemisionVenta.Visible = False
+        '
+        'tsbFacturaACartaPorte
+        '
+        Me.tsbFacturaACartaPorte.Image = Global.BsControl.My.Resources.Resources._096
+        Me.tsbFacturaACartaPorte.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbFacturaACartaPorte.Name = "tsbFacturaACartaPorte"
+        Me.tsbFacturaACartaPorte.Size = New System.Drawing.Size(120, 24)
+        Me.tsbFacturaACartaPorte.Text = "Fac a Carta Porte"
+        Me.tsbFacturaACartaPorte.Visible = False
         '
         'tsbCancelarTimbre
         '
@@ -1010,6 +1029,49 @@ Partial Class Ventas_Movimientos
         Me.frmDatos.TabIndex = 0
         Me.frmDatos.TabStop = False
         '
+        'lblDisplayRegimenFiscalReceptor
+        '
+        Me.lblDisplayRegimenFiscalReceptor.AutoSize = True
+        Me.lblDisplayRegimenFiscalReceptor.Location = New System.Drawing.Point(2, 164)
+        Me.lblDisplayRegimenFiscalReceptor.Name = "lblDisplayRegimenFiscalReceptor"
+        Me.lblDisplayRegimenFiscalReceptor.Size = New System.Drawing.Size(82, 13)
+        Me.lblDisplayRegimenFiscalReceptor.TabIndex = 390
+        Me.lblDisplayRegimenFiscalReceptor.Text = "Régimen fiscal :"
+        '
+        'txtRegimenFiscalReceptor
+        '
+        Me.txtRegimenFiscalReceptor.Location = New System.Drawing.Point(84, 163)
+        Me.txtRegimenFiscalReceptor.MaxLength = 3
+        Me.txtRegimenFiscalReceptor.Name = "txtRegimenFiscalReceptor"
+        Me.txtRegimenFiscalReceptor.Size = New System.Drawing.Size(45, 20)
+        Me.txtRegimenFiscalReceptor.TabIndex = 9
+        '
+        'lblRegimenFiscalReceptor
+        '
+        Me.lblRegimenFiscalReceptor.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.lblRegimenFiscalReceptor.Location = New System.Drawing.Point(135, 166)
+        Me.lblRegimenFiscalReceptor.Name = "lblRegimenFiscalReceptor"
+        Me.lblRegimenFiscalReceptor.Size = New System.Drawing.Size(226, 13)
+        Me.lblRegimenFiscalReceptor.TabIndex = 386
+        Me.lblRegimenFiscalReceptor.Text = "_"
+        '
+        'txtUsoCFDI
+        '
+        Me.txtUsoCFDI.Location = New System.Drawing.Point(464, 163)
+        Me.txtUsoCFDI.MaxLength = 3
+        Me.txtUsoCFDI.Name = "txtUsoCFDI"
+        Me.txtUsoCFDI.Size = New System.Drawing.Size(45, 20)
+        Me.txtUsoCFDI.TabIndex = 10
+        '
+        'lblUsoCFDI
+        '
+        Me.lblUsoCFDI.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.lblUsoCFDI.Location = New System.Drawing.Point(515, 166)
+        Me.lblUsoCFDI.Name = "lblUsoCFDI"
+        Me.lblUsoCFDI.Size = New System.Drawing.Size(187, 13)
+        Me.lblUsoCFDI.TabIndex = 388
+        Me.lblUsoCFDI.Text = "_"
+        '
         'ckbMostrarUtilidad
         '
         Me.ckbMostrarUtilidad.AutoSize = True
@@ -1426,6 +1488,7 @@ Partial Class Ventas_Movimientos
         '
         'tpArticulos
         '
+        Me.tpArticulos.Controls.Add(Me.btnAgregarRenglon)
         Me.tpArticulos.Controls.Add(Me.Grid)
         Me.tpArticulos.Location = New System.Drawing.Point(4, 22)
         Me.tpArticulos.Name = "tpArticulos"
@@ -1456,6 +1519,7 @@ Partial Class Ventas_Movimientos
         '
         'tpSeries
         '
+        Me.tpSeries.Controls.Add(Me.btnMostrarMasColumnasGridSeries)
         Me.tpSeries.Controls.Add(Me.GridSeries)
         Me.tpSeries.Location = New System.Drawing.Point(4, 22)
         Me.tpSeries.Name = "tpSeries"
@@ -1464,6 +1528,15 @@ Partial Class Ventas_Movimientos
         Me.tpSeries.TabIndex = 1
         Me.tpSeries.Text = "Series"
         Me.tpSeries.UseVisualStyleBackColor = True
+        '
+        'btnMostrarMasColumnasGridSeries
+        '
+        Me.btnMostrarMasColumnasGridSeries.Location = New System.Drawing.Point(1236, 183)
+        Me.btnMostrarMasColumnasGridSeries.Name = "btnMostrarMasColumnasGridSeries"
+        Me.btnMostrarMasColumnasGridSeries.Size = New System.Drawing.Size(29, 21)
+        Me.btnMostrarMasColumnasGridSeries.TabIndex = 375
+        Me.btnMostrarMasColumnasGridSeries.Text = "+"
+        Me.btnMostrarMasColumnasGridSeries.UseVisualStyleBackColor = True
         '
         'GridSeries
         '
@@ -1480,7 +1553,7 @@ Partial Class Ventas_Movimientos
         Me.GridSeries.LockButton = True
         Me.GridSeries.Name = "GridSeries"
         Me.GridSeries.Rows = 6
-        Me.GridSeries.Size = New System.Drawing.Size(966, 198)
+        Me.GridSeries.Size = New System.Drawing.Size(1222, 198)
         Me.GridSeries.TabIndex = 2
         Me.GridSeries.UncheckedImage = CType(resources.GetObject("GridSeries.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -1537,6 +1610,7 @@ Partial Class Ventas_Movimientos
         '
         'tpFacturasRemisiones
         '
+        Me.tpFacturasRemisiones.Controls.Add(Me.btnAceptarRemisionesSeries)
         Me.tpFacturasRemisiones.Controls.Add(Me.btnAceptar)
         Me.tpFacturasRemisiones.Controls.Add(Me.btnCargarRemisiones)
         Me.tpFacturasRemisiones.Controls.Add(Me.GridFacturasVariasRemisiones)
@@ -1548,15 +1622,26 @@ Partial Class Ventas_Movimientos
         Me.tpFacturasRemisiones.Text = "Facturar varias remisiones"
         Me.tpFacturasRemisiones.UseVisualStyleBackColor = True
         '
+        'btnAceptarRemisionesSeries
+        '
+        Me.btnAceptarRemisionesSeries.Location = New System.Drawing.Point(1109, 155)
+        Me.btnAceptarRemisionesSeries.Margin = New System.Windows.Forms.Padding(2)
+        Me.btnAceptarRemisionesSeries.Name = "btnAceptarRemisionesSeries"
+        Me.btnAceptarRemisionesSeries.Size = New System.Drawing.Size(123, 32)
+        Me.btnAceptarRemisionesSeries.TabIndex = 7
+        Me.btnAceptarRemisionesSeries.Text = "Aceptar(Cargarlas)"
+        Me.btnAceptarRemisionesSeries.UseVisualStyleBackColor = True
+        '
         'btnAceptar
         '
-        Me.btnAceptar.Location = New System.Drawing.Point(1109, 114)
+        Me.btnAceptar.Location = New System.Drawing.Point(1109, 88)
         Me.btnAceptar.Margin = New System.Windows.Forms.Padding(2)
         Me.btnAceptar.Name = "btnAceptar"
         Me.btnAceptar.Size = New System.Drawing.Size(123, 32)
         Me.btnAceptar.TabIndex = 5
-        Me.btnAceptar.Text = "Aceptar"
+        Me.btnAceptar.Text = "Aceptar(Cargarlas)"
         Me.btnAceptar.UseVisualStyleBackColor = True
+        Me.btnAceptar.Visible = False
         '
         'btnCargarRemisiones
         '
@@ -1565,7 +1650,7 @@ Partial Class Ventas_Movimientos
         Me.btnCargarRemisiones.Name = "btnCargarRemisiones"
         Me.btnCargarRemisiones.Size = New System.Drawing.Size(123, 32)
         Me.btnCargarRemisiones.TabIndex = 4
-        Me.btnCargarRemisiones.Text = "Cargar remisiones"
+        Me.btnCargarRemisiones.Text = "Listar remisiones"
         Me.btnCargarRemisiones.UseVisualStyleBackColor = True
         '
         'GridFacturasVariasRemisiones
@@ -1606,48 +1691,80 @@ Partial Class Ventas_Movimientos
         Me.cboRegimenFiscalEmisor.Size = New System.Drawing.Size(281, 21)
         Me.cboRegimenFiscalEmisor.TabIndex = 1
         '
-        'txtRegimenFiscalReceptor
+        'lblDisplayIncoterm
         '
-        Me.txtRegimenFiscalReceptor.Location = New System.Drawing.Point(84, 163)
-        Me.txtRegimenFiscalReceptor.MaxLength = 3
-        Me.txtRegimenFiscalReceptor.Name = "txtRegimenFiscalReceptor"
-        Me.txtRegimenFiscalReceptor.Size = New System.Drawing.Size(45, 20)
-        Me.txtRegimenFiscalReceptor.TabIndex = 9
+        Me.lblDisplayIncoterm.AutoSize = True
+        Me.lblDisplayIncoterm.Location = New System.Drawing.Point(997, 85)
+        Me.lblDisplayIncoterm.Name = "lblDisplayIncoterm"
+        Me.lblDisplayIncoterm.Size = New System.Drawing.Size(54, 13)
+        Me.lblDisplayIncoterm.TabIndex = 395
+        Me.lblDisplayIncoterm.Text = "Incoterm :"
+        Me.lblDisplayIncoterm.Visible = False
         '
-        'lblRegimenFiscalReceptor
+        'cboIncoterm
         '
-        Me.lblRegimenFiscalReceptor.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.lblRegimenFiscalReceptor.Location = New System.Drawing.Point(135, 166)
-        Me.lblRegimenFiscalReceptor.Name = "lblRegimenFiscalReceptor"
-        Me.lblRegimenFiscalReceptor.Size = New System.Drawing.Size(226, 13)
-        Me.lblRegimenFiscalReceptor.TabIndex = 386
-        Me.lblRegimenFiscalReceptor.Text = "_"
+        Me.cboIncoterm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboIncoterm.Enabled = False
+        Me.cboIncoterm.FormattingEnabled = True
+        Me.cboIncoterm.Location = New System.Drawing.Point(1000, 101)
+        Me.cboIncoterm.MaxLength = 1
+        Me.cboIncoterm.Name = "cboIncoterm"
+        Me.cboIncoterm.Size = New System.Drawing.Size(281, 21)
+        Me.cboIncoterm.TabIndex = 394
+        Me.cboIncoterm.Visible = False
         '
-        'txtUsoCFDI
+        'chkTieneCCE
         '
-        Me.txtUsoCFDI.Location = New System.Drawing.Point(464, 163)
-        Me.txtUsoCFDI.MaxLength = 3
-        Me.txtUsoCFDI.Name = "txtUsoCFDI"
-        Me.txtUsoCFDI.Size = New System.Drawing.Size(45, 20)
-        Me.txtUsoCFDI.TabIndex = 10
+        Me.chkTieneCCE.AutoSize = True
+        Me.chkTieneCCE.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTieneCCE.Location = New System.Drawing.Point(1000, 64)
+        Me.chkTieneCCE.Name = "chkTieneCCE"
+        Me.chkTieneCCE.Size = New System.Drawing.Size(257, 20)
+        Me.chkTieneCCE.TabIndex = 393
+        Me.chkTieneCCE.Text = "Complemento comercio exterior ?"
+        Me.chkTieneCCE.UseVisualStyleBackColor = True
+        Me.chkTieneCCE.Visible = False
         '
-        'lblUsoCFDI
+        'chkTieneCartaPorte
         '
-        Me.lblUsoCFDI.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.lblUsoCFDI.Location = New System.Drawing.Point(515, 166)
-        Me.lblUsoCFDI.Name = "lblUsoCFDI"
-        Me.lblUsoCFDI.Size = New System.Drawing.Size(187, 13)
-        Me.lblUsoCFDI.TabIndex = 388
-        Me.lblUsoCFDI.Text = "_"
+        Me.chkTieneCartaPorte.AutoSize = True
+        Me.chkTieneCartaPorte.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTieneCartaPorte.Location = New System.Drawing.Point(1001, 160)
+        Me.chkTieneCartaPorte.Name = "chkTieneCartaPorte"
+        Me.chkTieneCartaPorte.Size = New System.Drawing.Size(212, 20)
+        Me.chkTieneCartaPorte.TabIndex = 392
+        Me.chkTieneCartaPorte.Text = "Complemento carta porte ?"
+        Me.chkTieneCartaPorte.UseVisualStyleBackColor = True
+        Me.chkTieneCartaPorte.Visible = False
         '
-        'lblDisplayRegimenFiscalReceptor
+        'btnCartaPorte
         '
-        Me.lblDisplayRegimenFiscalReceptor.AutoSize = True
-        Me.lblDisplayRegimenFiscalReceptor.Location = New System.Drawing.Point(2, 164)
-        Me.lblDisplayRegimenFiscalReceptor.Name = "lblDisplayRegimenFiscalReceptor"
-        Me.lblDisplayRegimenFiscalReceptor.Size = New System.Drawing.Size(82, 13)
-        Me.lblDisplayRegimenFiscalReceptor.TabIndex = 390
-        Me.lblDisplayRegimenFiscalReceptor.Text = "Régimen fiscal :"
+        Me.btnCartaPorte.Location = New System.Drawing.Point(1001, 182)
+        Me.btnCartaPorte.Name = "btnCartaPorte"
+        Me.btnCartaPorte.Size = New System.Drawing.Size(148, 32)
+        Me.btnCartaPorte.TabIndex = 391
+        Me.btnCartaPorte.Text = "Carta porte"
+        Me.btnCartaPorte.UseVisualStyleBackColor = True
+        Me.btnCartaPorte.Visible = False
+        '
+        'btnTimbradoTrasladoPrueba
+        '
+        Me.btnTimbradoTrasladoPrueba.Location = New System.Drawing.Point(1121, 581)
+        Me.btnTimbradoTrasladoPrueba.Name = "btnTimbradoTrasladoPrueba"
+        Me.btnTimbradoTrasladoPrueba.Size = New System.Drawing.Size(148, 32)
+        Me.btnTimbradoTrasladoPrueba.TabIndex = 396
+        Me.btnTimbradoTrasladoPrueba.Text = "TimbradoTrasladoPrueba"
+        Me.btnTimbradoTrasladoPrueba.UseVisualStyleBackColor = True
+        '
+        'btnAgregarRenglon
+        '
+        Me.btnAgregarRenglon.Location = New System.Drawing.Point(3, 189)
+        Me.btnAgregarRenglon.Name = "btnAgregarRenglon"
+        Me.btnAgregarRenglon.Size = New System.Drawing.Size(17, 20)
+        Me.btnAgregarRenglon.TabIndex = 374
+        Me.btnAgregarRenglon.Text = "+"
+        Me.btnAgregarRenglon.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnAgregarRenglon.UseVisualStyleBackColor = True
         '
         'Ventas_Movimientos
         '
@@ -1655,6 +1772,12 @@ Partial Class Ventas_Movimientos
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(1290, 678)
+        Me.Controls.Add(Me.btnTimbradoTrasladoPrueba)
+        Me.Controls.Add(Me.lblDisplayIncoterm)
+        Me.Controls.Add(Me.cboIncoterm)
+        Me.Controls.Add(Me.chkTieneCCE)
+        Me.Controls.Add(Me.chkTieneCartaPorte)
+        Me.Controls.Add(Me.btnCartaPorte)
         Me.Controls.Add(Me.lblDisplayRegimenFiscalEmisor)
         Me.Controls.Add(Me.cboRegimenFiscalEmisor)
         Me.Controls.Add(Me.TabControl1)
@@ -1832,4 +1955,14 @@ Partial Class Ventas_Movimientos
     Friend WithEvents txtUsoCFDI As TextBox
     Friend WithEvents lblUsoCFDI As Label
     Friend WithEvents lblDisplayRegimenFiscalReceptor As Label
+    Friend WithEvents btnMostrarMasColumnasGridSeries As Button
+    Friend WithEvents btnAceptarRemisionesSeries As Button
+    Friend WithEvents lblDisplayIncoterm As Label
+    Friend WithEvents cboIncoterm As ComboBox
+    Friend WithEvents chkTieneCCE As CheckBox
+    Friend WithEvents chkTieneCartaPorte As CheckBox
+    Friend WithEvents btnCartaPorte As Button
+    Friend WithEvents btnTimbradoTrasladoPrueba As Button
+    Friend WithEvents tsbFacturaACartaPorte As ToolStripButton
+    Friend WithEvents btnAgregarRenglon As Button
 End Class
