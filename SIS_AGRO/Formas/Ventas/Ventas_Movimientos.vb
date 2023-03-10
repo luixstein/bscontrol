@@ -2367,6 +2367,7 @@ Buscar:
                         Return False
                     End If
                 End If
+
                 If Me.chkTieneCartaPorte.Checked = True Then
                     If Me.GestionaCartaPorte = False Then
                         If MsgBox("No grabó la carta porte, quiere aún así timbrar la factura sin carta porte?", vbQuestion Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
@@ -5046,20 +5047,6 @@ LlenaLinea:
                     Me.Totales()
                     Me.CalculaUtilidad()
 
-                Case Keys.F9
-                    If Columna = Me.igyCodigo Then
-                        If Me.Grid.Column(Me.igyCodigo).Locked = True Then 'Si esta bloqueada la columna código no permite gestionarla
-                            Return
-                        End If
-
-                        oArticulo = New Class_CatArticulos
-                        StrCod = oArticulo.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString, False)
-                        If txtLEN(StrCod) = True Then
-                            Me.Grid.Cell(Renglon, Me.igyCodigo).Text = StrCod
-                            GoTo LlenaLinea : Return
-                        End If
-                    End If
-
                 Case Keys.F6
 BuscaArticulos:
                     Select Case Columna
@@ -5134,6 +5121,36 @@ buscaCentrosCostos:
                                 GoTo LlenaLinea : Return
                             End If
 
+                    End Select
+
+                Case Keys.F9
+                    If Columna = Me.igyCodigo Then
+                        If Me.Grid.Column(Me.igyCodigo).Locked = True Then 'Si esta bloqueada la columna código no permite gestionarla
+                            Return
+                        End If
+
+                        oArticulo = New Class_CatArticulos
+                        StrCod = oArticulo.BusquedaVisual_PorDescripcion_conExistencias(Me.CboAlmacen.SelectedValue.ToString, False)
+                        If txtLEN(StrCod) = True Then
+                            Me.Grid.Cell(Renglon, Me.igyCodigo).Text = StrCod
+                            GoTo LlenaLinea : Return
+                        End If
+                    End If
+
+                Case Keys.F11
+                    Select Case Columna
+                        Case Me.igyCodigo
+
+                            If Me.Grid.Column(Me.igyCodigo).Locked = True Then 'Si esta bloqueada la columna código no permite gestionarla
+                                Return
+                            End If
+
+                            oArticulo = New Class_CatArticulos
+                            StrCod = oArticulo.BusquedaVisualInventariablesConExistencia_PorDescripcion(Me.CboAlmacen.SelectedValue.ToString, True)
+                            If txtLEN(StrCod) = True Then
+                                Me.Grid.Cell(Renglon, Me.igyCodigo).Text = StrCod
+                                GoTo LlenaLinea : Return
+                            End If
                     End Select
 
                 Case Keys.F8, Keys.Delete  'Borrar renglón

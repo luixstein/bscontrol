@@ -998,7 +998,7 @@ Public Class Class_CatArticulos
         Return Resultado
     End Function
 
-    Public Function BusquedaVisualInventariablesConExistencia_PorDescripcion(ByVal sCodigoAlmacen As String) As String
+    Public Function BusquedaVisualInventariablesConExistencia_PorDescripcion(ByVal sCodigoAlmacen As String, Optional ByVal bSoloConExistencia As Boolean = False) As String
         Dim f As New BusquedaVisual
         Dim Resultado As String = ""
         f.Text = "Búsqueda de Articulos por Descripción."
@@ -1009,7 +1009,8 @@ Public Class Class_CatArticulos
         "FROM CAT_ARTICULOS A " &
         "INNER JOIN CAT_FAMILIAS F ON(A.CODIGO_FAMILIA=F.CODIGO_FAMILIA) " &
         "LEFT JOIN INVENTARIO_EXISTENCIA_ARTICULOS E ON(A.CODIGO_ARTICULO=E.CODIGO_ARTICULO AND E.CODIGO_ALMACEN='" & sReplace(sCodigoAlmacen) & "') " &
-        "WHERE A.PROTEGIDO=0 AND A.ESTATUS='A' AND A.INVENTARIABLE='1' AND "
+        "WHERE A.PROTEGIDO=0 AND A.ESTATUS='A' AND A.INVENTARIABLE='1' " &
+        IIf(bSoloConExistencia = True, "AND E.EXISTENCIA>0", "").ToString & " AND "
         f.arrayWidthColumns = New Integer() {150, 500, 250}
         f.Inicia("")
         f.ShowDialog()

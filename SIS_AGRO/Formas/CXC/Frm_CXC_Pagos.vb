@@ -1490,19 +1490,22 @@ Buscar:
                 End If
 
                 If dReader.HasRows = True Then
-
                     'Esto se usaria si es que se van a permitir agregar venta de otro cliente , de momento no es posible, el agregar sólo funciona una vez y deberian dar nuevo si queiren otras ventas.
                     'If Me.GridVentas.Cell(i, Me.iGyVentaCodigoCliente).Text.Length > 0 Then
                     '    Me.GridVentas.Rows += 1
                     '    i = i + 1
                     'End If
 
+                    'Se puso porque aunque no esta consultado hay clientes que tienen muchas facturas con saldo y dentro del siguiente while se core en automático el grid_cell_changing que llama al totaliza
+                    'y se pone muy lenta la consulta
+                    Me.bConsultando = True
+
                     'Aquí carga ventas con saldo
                     While dReader.Read() = True
-
                         If ExisteYaDocumentoVenta(dReader("FOLIO_VENTA").ToString) = True Then
                             MsgBox("El folio de venta " & dReader("FOLIO_VENTA").ToString & " ya existe, no se volverá a agregar.", MsgBoxStyle.Exclamation, Me.Text)
                         Else
+
                             Me.GridVentas.Rows = Me.GridVentas.Rows + 1
 
                             Me.GridVentas.Cell(i, Me.iGyB_PagoFolioDetalle).Text = Me.txtFolioDetalle.Text.ToUpper
@@ -1554,6 +1557,8 @@ Buscar:
                     bResultado = True
                 End If
                 dReader.Close()
+
+                Me.bConsultando = False 'Ver mas arriba el porqué temporalmente se habia puesto en true
 
                 Select Case Me.cboMonedaPago.Text
                     Case "MXN"
