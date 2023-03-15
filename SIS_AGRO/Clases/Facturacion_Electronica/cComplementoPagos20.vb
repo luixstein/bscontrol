@@ -755,7 +755,7 @@ Friend Class cComplementoPagos20
             End With
 
             With Me.ImpuestosP.Traslados
-                msgGenerico = "Impuestos.Retenciones.Traslado: "
+                msgGenerico = "ImpuestosP.TrasladosP.TrasladoP " & vbCrLf & "Tiene vacio el atributo "
                 For i = 1 To .Count
                     If txtLEN(.Item(i).Impuesto) = False Then
                         MsgBox(msgGenerico & "Impuesto", vbExclamation, sProcedure) : Exit Function
@@ -765,12 +765,14 @@ Friend Class cComplementoPagos20
                         MsgBox(msgGenerico & "TipoFactor", vbExclamation, sProcedure) : Exit Function
                     End If
 
-                    If txtLEN(.Item(i).TasaOCuota) = False Then
-                        MsgBox(msgGenerico & "TasaOCuota", vbExclamation, sProcedure) : Exit Function
-                    End If
+                    If .Item(i).TipoFactor <> "Exento" Then
+                        If txtLEN(.Item(i).TasaOCuota) = False Then
+                            MsgBox(msgGenerico & "TasaOCuota", vbExclamation, sProcedure) : Exit Function
+                        End If
 
-                    If txtLEN(.Item(i).Importe) = False Then
-                        MsgBox(msgGenerico & "Importe", vbExclamation, sProcedure) : Exit Function
+                        If txtLEN(.Item(i).Importe) = False Then
+                            MsgBox(msgGenerico & "Importe", vbExclamation, sProcedure) : Exit Function
+                        End If
                     End If
                 Next
             End With

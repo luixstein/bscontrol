@@ -341,12 +341,16 @@ Module FacturacionElectronica40
 
             If iEncontrados > 0 Then
                 For i = 1 To UBound(arr)
-                    dImpuestoIEPSImporte = CDec(arr(i).Importe)
-                    dBaseIEPS = CDec(arr(i).Base)
+                    dImpuestoIEPSImporte = valorNumericoD(arr(i).Importe)
+                    dBaseIEPS = valorNumericoD(arr(i).Base)
 
                     'Nota, no es necesario preguntar si es en USD y dividir por el tipo de cambio porque este valor se llena con el desglose x concepto el cual ya esta en USD
 
-                    Cfd.Impuestos.Traslados.Add(Format(dBaseIEPS, "##0.00"), arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIEPSImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                    If arr(i).TipoFactor = "Exento" Then
+                        Cfd.Impuestos.Traslados.Add(Format(dBaseIEPS, "##0.00"), arr(i).Impuesto, arr(i).TipoFactor, "", "")
+                    Else
+                        Cfd.Impuestos.Traslados.Add(Format(dBaseIEPS, "##0.00"), arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIEPSImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                    End If
                 Next
             End If
 
@@ -356,10 +360,14 @@ Module FacturacionElectronica40
 
             If iEncontrados > 0 Then
                 For i = 1 To UBound(arr)
-                    dImpuestoIVAImporte = CDec(arr(i).Importe)
-                    dBaseIVA = CDec(arr(i).Base)
+                    dImpuestoIVAImporte = valorNumericoD(arr(i).Importe)
+                    dBaseIVA = valorNumericoD(arr(i).Base)
 
-                    Cfd.Impuestos.Traslados.Add(Format(dBaseIVA, "##0.00"), arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIVAImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                    If arr(i).TipoFactor = "Exento" Then
+                        Cfd.Impuestos.Traslados.Add(Format(dBaseIVA, "##0.00"), arr(i).Impuesto, arr(i).TipoFactor, "", "")
+                    Else
+                        Cfd.Impuestos.Traslados.Add(Format(dBaseIVA, "##0.00"), arr(i).Impuesto, arr(i).TipoFactor, arr(i).TasaOCuota, Format(dImpuestoIVAImporte, "#0.00")) 'arr(i).TasaOCuota ya esta formateado
+                    End If
                 Next
             End If
 
@@ -445,7 +453,8 @@ Module FacturacionElectronica40
 
             For i = 1 To Cfd.Conceptos.Count
                 For j = 1 To Cfd.Conceptos.Item(i).Traslados.Count
-                    If Cfd.Conceptos.Item(i).Traslados.Item(j).Impuesto = sTipoImpuesto And Cfd.Conceptos.Item(i).Traslados.Item(j).TipoFactor <> "Exento" Then '003=ieps,002=iva
+                    'If Cfd.Conceptos.Item(i).Traslados.Item(j).Impuesto = sTipoImpuesto And Cfd.Conceptos.Item(i).Traslados.Item(j).TipoFactor <> "Exento" Then '003=ieps,002=iva
+                    If Cfd.Conceptos.Item(i).Traslados.Item(j).Impuesto = sTipoImpuesto Then '003=ieps,nota los exentos ahora si se agrupan por eso se comentarió lo anterior
                         If arrCount = 0 Then
                             arrCount = arrCount + 1
                             ReDim Preserve arr(arrCount)

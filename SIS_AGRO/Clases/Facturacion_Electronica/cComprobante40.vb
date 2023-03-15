@@ -591,17 +591,20 @@ Friend Class cComprobante40
                             MsgBox("El valor de Impuestos.Traslados.Traslado.TipoFactor es un dato requerido.", vbExclamation, sProcedure) : Return False
                         End If
 
-                        If txtLEN(Trim(Me.Impuestos.Traslados.Item(i).TasaOCuota)) = True Then
-                            .setAttribute("TasaOCuota", Me.Impuestos.Traslados.Item(i).TasaOCuota) 'required
-                        Else
-                            MsgBox("El valor de Impuestos.Traslados.Traslado.TasaOCuota es un dato requerido.", vbExclamation, sProcedure) : Return False
+                        If Me.Impuestos.Traslados.Item(i).TipoFactor <> "Exento" Then
+                            If txtLEN(Trim(Me.Impuestos.Traslados.Item(i).TasaOCuota)) = True Then
+                                .setAttribute("TasaOCuota", Me.Impuestos.Traslados.Item(i).TasaOCuota) 'required
+                            Else
+                                MsgBox("El valor de Impuestos.Traslados.Traslado.TasaOCuota es un dato requerido.", vbExclamation, sProcedure) : Return False
+                            End If
+
+                            If txtLEN(Trim(Me.Impuestos.Traslados.Item(i).Importe)) = True Then
+                                .setAttribute("Importe", Me.Impuestos.Traslados.Item(i).Importe) 'required
+                            Else
+                                MsgBox("El valor de Impuestos.Traslados.Traslado.Importe es un dato requerido.", vbExclamation, sProcedure) : Return False
+                            End If
                         End If
 
-                        If txtLEN(Trim(Me.Impuestos.Traslados.Item(i).Importe)) = True Then
-                            .setAttribute("Importe", Me.Impuestos.Traslados.Item(i).Importe) 'required
-                        Else
-                            MsgBox("El valor de Impuestos.Traslados.Traslado.Importe es un dato requerido.", vbExclamation, sProcedure) : Return False
-                        End If
                     End With
                     NodoTraslados.appendChild(NodoTraslado)
                 Next
