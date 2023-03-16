@@ -90,7 +90,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\cfdi.dll</HintPath>
     </Reference>
-    <Reference Include="CFDIXML, Version=1.0.0.13, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CFDIXML, Version=1.0.0.17, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\CFDIXML.dll</HintPath>
     </Reference>
