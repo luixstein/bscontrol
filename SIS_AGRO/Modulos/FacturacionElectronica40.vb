@@ -1342,6 +1342,9 @@ Module FacturacionElectronica40
                 Dim ImpuestosTrasladosDR40 As New iImpuestosTrasladosDR40, ImpuestosRetencionesDR40 As New iImpuestosRetencionesDR40
 
                 For Each dRow As DataRow In dTablaPagosDetalle.Rows
+                    ImpuestosTrasladosDR40 = New iImpuestosTrasladosDR40
+                    ImpuestosRetencionesDR40 = New iImpuestosRetencionesDR40
+
                     Dim oPagoDetalle As New Class_CXC_Pago_CFDI_Detalle(dRow("FOLIO_CXC").ToString)
 
                     If oPagoDetalle.EXISTE = False Then
