@@ -2185,6 +2185,10 @@ Buscar:
                         Return False
                     End If
                 End If
+
+                If Me.ValidaDatosFiscales = False Then
+                    Return False
+                End If
             End If
 
             'Valida que se haya agregado el documento de pago al grid
@@ -4831,6 +4835,46 @@ BuscaPagos:
         End Try
     End Function
 
+    Private Function ValidaDatosFiscales() As Boolean
+        Const sProcedure As String = "ValidaDatosFiscales"
+        Dim bResultado As Boolean = False
+        Try
+            Dim i As Integer, dPago As Decimal = 0, sCodigoCliente As String = "", sMensajesError As String = "", oVenta As New Class_Ventas_Global, oCliente As New Class_CatClientes
+            For i = 1 To Me.GridVentas.Rows - 1
+                dPago = valorNumericoD(Me.GridVentas.Cell(i, Me.iGyB_CxcPagoMXNCapturado).Text)
+                If dPago > 0 AndAlso Me.GridVentas.Cell(i, Me.iGyB_VtaEsFacturaElectronica).Text = "1" AndAlso Me.GridVentas.Cell(i, Me.iGyB_VtaMetodoPago).Text = "PPD" Then
+                    If sCodigoCliente <> Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text Then 'Hace esto para no repetir la misma validación del mismo cte
+                        sCodigoCliente = Me.GridVentas.Cell(i, Me.iGyB_VtaCodigoCliente).Text
+                        oVenta = New Class_Ventas_Global(Me.GridVentas.Cell(i, Me.iGyB_VtaFolio).Text)
+                        If oVenta.RFC_RECEPTOR <> Empresa_Sistema.RFC_VENTA_PUBLICO_GENERAL Then
+                            oCliente = New Class_CatClientes(sCodigoCliente)
+
+                            If txtLEN(oCliente.RFC) = False Then
+                                sMensajesError = sMensajesError & "El cliente " & sCodigoCliente & " no tiene RFC " & vbCrLf
+                            ElseIf txtLEN(oCliente.CODIGO_REGIMEN_FISCAL) = False Then
+                                sMensajesError = sMensajesError & "El cliente " & sCodigoCliente & " no tiene régimen fiscal " & vbCrLf
+                            ElseIf txtLEN(oCliente.NOMBRE_CLIENTE) = False Then
+                                sMensajesError = sMensajesError & "El cliente " & sCodigoCliente & " no tiene nombre " & vbCrLf
+                            ElseIf txtLEN(oCliente.CODIGO_POSTAL) = False Then
+                                sMensajesError = sMensajesError & "El cliente " & sCodigoCliente & " no tiene código postal " & vbCrLf
+                            End If
+                        End If
+                    End If
+                End If
+            Next
+
+            If txtLEN(sMensajesError) = True Then
+                MsgBox(sMensajesError, MsgBoxStyle.Exclamation, sProcedure)
+            Else
+                bResultado = True
+            End If
+
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
+
+        Return bResultado
+    End Function
 #End Region
 
 End Class
