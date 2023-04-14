@@ -181,6 +181,7 @@ Public Class Catalogo_Articulos
                     Me.CboFamilia.Enabled = True
                     Me.TxtPrecio.Enabled = True
                     Me.cboImpuestoFlete.Enabled = True
+                    Me.TxtUPC.Enabled = True
 
                     Me.InicializaElemento()
 
@@ -206,6 +207,7 @@ Public Class Catalogo_Articulos
                     Me.txtFactorConversion.Enabled = True
                     Me.txtCodigoProducto.Enabled = True
                     Me.cboImpuestoFlete.Enabled = True
+                    Me.TxtUPC.Enabled = True
 
                 Case enumEstados.CONSULTA
                     Me.gBoxInformacion.Enabled = False
@@ -272,6 +274,7 @@ Public Class Catalogo_Articulos
             Me.chkRetencionISRTiene.Checked = False
             Me.cboRetencionISRPorcentaje.SelectedIndex = -1
             Me.txtFraccionArancelaria.Text = ""
+            Me.TxtUPC.Text = ""
 
         Catch ex As Exception
             HandleError(Me.Name, "InicializaElemento", ex)
@@ -444,6 +447,7 @@ Public Class Catalogo_Articulos
                     End If
 
                     Me.txtFraccionArancelaria.Text = .FRACCION_ARANCELARIA
+                    Me.TxtUPC.Text = .UPC
 
                     oUnidad = Nothing
                     oProductoServicio = Nothing
@@ -500,6 +504,7 @@ Public Class Catalogo_Articulos
                             .RETENCION_ISR_PORCENTAJE = valorNumericoD(Me.cboRetencionISRPorcentaje.Text)
                         End If
                         .FRACCION_ARANCELARIA = Me.txtFraccionArancelaria.Text
+                        .UPC = Me.TxtUPC.Text
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -752,7 +757,7 @@ Public Class Catalogo_Articulos
     End Sub
 
     Private Sub txt_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodArticulo.KeyPress, CboEstatus.KeyPress, TxtDescripcion.KeyPress, TxtUnidadVenta.KeyPress, cboLinea.KeyPress,
-        CboFamilia.KeyPress, cboGradoToxicidad.KeyPress, txtCodigoUnidadSAT.KeyPress, txtClaveProductoSAT.KeyPress
+        CboFamilia.KeyPress, cboGradoToxicidad.KeyPress, txtCodigoUnidadSAT.KeyPress, txtClaveProductoSAT.KeyPress, TxtUPC.KeyPress
         txtNoBeep(e)
     End Sub
 

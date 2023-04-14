@@ -46,6 +46,7 @@ Public Class Class_CatArticulos
     Private _RETENCION_ISR_TIENE As Boolean
     Private _RETENCION_ISR_PORCENTAJE As Decimal
     Private _FRACCION_ARANCELARIA As String
+    Private _UPC As String
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -404,6 +405,15 @@ Public Class Class_CatArticulos
             Me._FRACCION_ARANCELARIA = VALUE
         End Set
     End Property
+
+    Public Property UPC() As String
+        Get
+            Return Me._UPC
+        End Get
+        Set(value As String)
+            Me._UPC = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -552,6 +562,7 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@RETENCION_ISR_TIENE", SqlDbType.Char, 1) : sqlParametro.Value = Convert.ToInt32(Me._RETENCION_ISR_TIENE)
             sqlParametro = .Parameters.Add("@RETENCION_ISR_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_PORCENTAJE
             sqlParametro = .Parameters.Add("@FRACCION_ARANCELARIA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._FRACCION_ARANCELARIA
+            sqlParametro = .Parameters.Add("@UPC", SqlDbType.NVarChar, 14) : sqlParametro.Value = Me._UPC
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = sAccion
 
             Try
@@ -695,6 +706,7 @@ Public Class Class_CatArticulos
                     Me._RETENCION_ISR_TIENE = CBool(dReader("RETENCION_ISR_TIENE").ToString)
                     Me._RETENCION_ISR_PORCENTAJE = CDec(dReader("RETENCION_ISR_PORCENTAJE").ToString)
                     Me._FRACCION_ARANCELARIA = "" & dReader("FRACCION_ARANCELARIA").ToString
+                    Me._UPC = "" & dReader("UPC").ToString
 
                     bResultado = True
                 End If
