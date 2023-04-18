@@ -182,6 +182,7 @@ Public Class Catalogo_Articulos
                     Me.TxtPrecio.Enabled = True
                     Me.cboImpuestoFlete.Enabled = True
                     Me.TxtUPC.Enabled = True
+                    Me.TxtMargenUtilidad.Enabled = True
 
                     Me.InicializaElemento()
 
@@ -208,6 +209,7 @@ Public Class Catalogo_Articulos
                     Me.txtCodigoProducto.Enabled = True
                     Me.cboImpuestoFlete.Enabled = True
                     Me.TxtUPC.Enabled = True
+                    Me.TxtMargenUtilidad.Enabled = True
 
                 Case enumEstados.CONSULTA
                     Me.gBoxInformacion.Enabled = False
@@ -275,6 +277,7 @@ Public Class Catalogo_Articulos
             Me.cboRetencionISRPorcentaje.SelectedIndex = -1
             Me.txtFraccionArancelaria.Text = ""
             Me.TxtUPC.Text = ""
+            Me.TxtMargenUtilidad.Text = "20.00"
 
         Catch ex As Exception
             HandleError(Me.Name, "InicializaElemento", ex)
@@ -448,6 +451,7 @@ Public Class Catalogo_Articulos
 
                     Me.txtFraccionArancelaria.Text = .FRACCION_ARANCELARIA
                     Me.TxtUPC.Text = .UPC
+                    Me.TxtMargenUtilidad.Text = .MARGEN_UTILIDAD.ToString
 
                     oUnidad = Nothing
                     oProductoServicio = Nothing
@@ -505,6 +509,7 @@ Public Class Catalogo_Articulos
                         End If
                         .FRACCION_ARANCELARIA = Me.txtFraccionArancelaria.Text
                         .UPC = Me.TxtUPC.Text
+                        .MARGEN_UTILIDAD = valorNumericoD(Me.TxtMargenUtilidad.Text)
 
                         Select Case Me.Estado
                             Case enumEstados.NUEVO
@@ -777,10 +782,16 @@ Public Class Catalogo_Articulos
     End Sub
 
     Private Sub txtNumericos_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFraccionArancelaria.KeyPress
-        Dim txt As TextBox = CType(sender, TextBox)
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
+
+    Private Sub txtMargenUtilidad_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtMargenUtilidad.KeyPress
+        Dim txt As TextBox = CType(sender, TextBox)
+        txtSoloNumerosDecimales(e, txt.Text)
+        txtNoBeep(e)
+    End Sub
+
 #End Region
 
 #Region "Keydown específicos"

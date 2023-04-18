@@ -24,6 +24,11 @@ Partial Class Catalogo_Articulos
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Catalogo_Articulos))
         Me.gBoxInformacion = New System.Windows.Forms.GroupBox()
+        Me.TxtMargenUtilidad = New System.Windows.Forms.TextBox()
+        Me.LblDisplayMargenUtilidad = New System.Windows.Forms.Label()
+        Me.TxtUPC = New System.Windows.Forms.TextBox()
+        Me.LblDisplayUPC = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.lblDisplayFraccionArancelaria = New System.Windows.Forms.Label()
         Me.txtFraccionArancelaria = New System.Windows.Forms.TextBox()
         Me.cboRetencionISRPorcentaje = New System.Windows.Forms.ComboBox()
@@ -83,9 +88,6 @@ Partial Class Catalogo_Articulos
         Me.StatusStripEstado = New System.Windows.Forms.StatusStrip()
         Me.tssLabel = New System.Windows.Forms.ToolStripStatusLabel()
         Me.tssLabelEstado = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.LblDisplayUPC = New System.Windows.Forms.Label()
-        Me.TxtUPC = New System.Windows.Forms.TextBox()
         Me.gBoxInformacion.SuspendLayout()
         Me.gBoxBusquedaRapida.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -98,6 +100,8 @@ Partial Class Catalogo_Articulos
         Me.gBoxInformacion.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gBoxInformacion.Controls.Add(Me.TxtMargenUtilidad)
+        Me.gBoxInformacion.Controls.Add(Me.LblDisplayMargenUtilidad)
         Me.gBoxInformacion.Controls.Add(Me.TxtUPC)
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayUPC)
         Me.gBoxInformacion.Controls.Add(Me.Label3)
@@ -144,13 +148,61 @@ Partial Class Catalogo_Articulos
         Me.gBoxInformacion.Controls.Add(Me.TxtDescripcion)
         Me.gBoxInformacion.Enabled = False
         Me.gBoxInformacion.Location = New System.Drawing.Point(11, 34)
-        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Name = "gBoxInformacion"
-        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxInformacion.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxInformacion.Size = New System.Drawing.Size(529, 775)
         Me.gBoxInformacion.TabIndex = 0
         Me.gBoxInformacion.TabStop = False
         Me.gBoxInformacion.Text = "Información de los artículos"
+        '
+        'TxtMargenUtilidad
+        '
+        Me.TxtMargenUtilidad.Location = New System.Drawing.Point(147, 651)
+        Me.TxtMargenUtilidad.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtMargenUtilidad.MaxLength = 20
+        Me.TxtMargenUtilidad.Name = "TxtMargenUtilidad"
+        Me.TxtMargenUtilidad.Size = New System.Drawing.Size(127, 22)
+        Me.TxtMargenUtilidad.TabIndex = 17
+        '
+        'LblDisplayMargenUtilidad
+        '
+        Me.LblDisplayMargenUtilidad.AutoSize = True
+        Me.LblDisplayMargenUtilidad.Location = New System.Drawing.Point(12, 654)
+        Me.LblDisplayMargenUtilidad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayMargenUtilidad.Name = "LblDisplayMargenUtilidad"
+        Me.LblDisplayMargenUtilidad.Size = New System.Drawing.Size(129, 17)
+        Me.LblDisplayMargenUtilidad.TabIndex = 257
+        Me.LblDisplayMargenUtilidad.Text = "% Margen utilidad :"
+        '
+        'TxtUPC
+        '
+        Me.TxtUPC.Location = New System.Drawing.Point(367, 651)
+        Me.TxtUPC.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtUPC.MaxLength = 14
+        Me.TxtUPC.Name = "TxtUPC"
+        Me.TxtUPC.Size = New System.Drawing.Size(143, 22)
+        Me.TxtUPC.TabIndex = 18
+        '
+        'LblDisplayUPC
+        '
+        Me.LblDisplayUPC.AutoSize = True
+        Me.LblDisplayUPC.Location = New System.Drawing.Point(293, 654)
+        Me.LblDisplayUPC.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LblDisplayUPC.Name = "LblDisplayUPC"
+        Me.LblDisplayUPC.Size = New System.Drawing.Size(44, 17)
+        Me.LblDisplayUPC.TabIndex = 255
+        Me.LblDisplayUPC.Text = "UPC :"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(190, 379)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(149, 17)
+        Me.Label3.TabIndex = 254
+        Me.Label3.Text = "Factor de conversión :"
         '
         'lblDisplayFraccionArancelaria
         '
@@ -165,11 +217,11 @@ Partial Class Catalogo_Articulos
         'txtFraccionArancelaria
         '
         Me.txtFraccionArancelaria.Location = New System.Drawing.Point(171, 743)
-        Me.txtFraccionArancelaria.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFraccionArancelaria.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFraccionArancelaria.MaxLength = 10
         Me.txtFraccionArancelaria.Name = "txtFraccionArancelaria"
         Me.txtFraccionArancelaria.Size = New System.Drawing.Size(95, 22)
-        Me.txtFraccionArancelaria.TabIndex = 19
+        Me.txtFraccionArancelaria.TabIndex = 21
         '
         'cboRetencionISRPorcentaje
         '
@@ -177,7 +229,7 @@ Partial Class Catalogo_Articulos
         Me.cboRetencionISRPorcentaje.FormattingEnabled = True
         Me.cboRetencionISRPorcentaje.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
         Me.cboRetencionISRPorcentaje.Location = New System.Drawing.Point(267, 389)
-        Me.cboRetencionISRPorcentaje.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboRetencionISRPorcentaje.Margin = New System.Windows.Forms.Padding(4)
         Me.cboRetencionISRPorcentaje.Name = "cboRetencionISRPorcentaje"
         Me.cboRetencionISRPorcentaje.Size = New System.Drawing.Size(96, 24)
         Me.cboRetencionISRPorcentaje.TabIndex = 10
@@ -186,7 +238,7 @@ Partial Class Catalogo_Articulos
         '
         Me.chkRetencionISRTiene.AutoSize = True
         Me.chkRetencionISRTiene.Location = New System.Drawing.Point(128, 391)
-        Me.chkRetencionISRTiene.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkRetencionISRTiene.Margin = New System.Windows.Forms.Padding(4)
         Me.chkRetencionISRTiene.Name = "chkRetencionISRTiene"
         Me.chkRetencionISRTiene.Size = New System.Drawing.Size(120, 21)
         Me.chkRetencionISRTiene.TabIndex = 9
@@ -199,7 +251,7 @@ Partial Class Catalogo_Articulos
         Me.cboRetencionIVAPorcentaje.FormattingEnabled = True
         Me.cboRetencionIVAPorcentaje.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
         Me.cboRetencionIVAPorcentaje.Location = New System.Drawing.Point(267, 358)
-        Me.cboRetencionIVAPorcentaje.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboRetencionIVAPorcentaje.Margin = New System.Windows.Forms.Padding(4)
         Me.cboRetencionIVAPorcentaje.Name = "cboRetencionIVAPorcentaje"
         Me.cboRetencionIVAPorcentaje.Size = New System.Drawing.Size(96, 24)
         Me.cboRetencionIVAPorcentaje.TabIndex = 8
@@ -208,7 +260,7 @@ Partial Class Catalogo_Articulos
         '
         Me.chkRetencionIVATiene.AutoSize = True
         Me.chkRetencionIVATiene.Location = New System.Drawing.Point(129, 361)
-        Me.chkRetencionIVATiene.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkRetencionIVATiene.Margin = New System.Windows.Forms.Padding(4)
         Me.chkRetencionIVATiene.Name = "chkRetencionIVATiene"
         Me.chkRetencionIVATiene.Size = New System.Drawing.Size(123, 21)
         Me.chkRetencionIVATiene.TabIndex = 7
@@ -232,10 +284,10 @@ Partial Class Catalogo_Articulos
         Me.cboImpuestoFlete.FormattingEnabled = True
         Me.cboImpuestoFlete.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
         Me.cboImpuestoFlete.Location = New System.Drawing.Point(315, 737)
-        Me.cboImpuestoFlete.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboImpuestoFlete.Margin = New System.Windows.Forms.Padding(4)
         Me.cboImpuestoFlete.Name = "cboImpuestoFlete"
         Me.cboImpuestoFlete.Size = New System.Drawing.Size(205, 24)
-        Me.cboImpuestoFlete.TabIndex = 250
+        Me.cboImpuestoFlete.TabIndex = 22
         Me.cboImpuestoFlete.Visible = False
         '
         'lblNombreProducto
@@ -261,11 +313,11 @@ Partial Class Catalogo_Articulos
         'txtCodigoProducto
         '
         Me.txtCodigoProducto.Location = New System.Drawing.Point(171, 687)
-        Me.txtCodigoProducto.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoProducto.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoProducto.MaxLength = 10
         Me.txtCodigoProducto.Name = "txtCodigoProducto"
         Me.txtCodigoProducto.Size = New System.Drawing.Size(95, 22)
-        Me.txtCodigoProducto.TabIndex = 18
+        Me.txtCodigoProducto.TabIndex = 19
         '
         'LblFactorConversion
         '
@@ -280,11 +332,11 @@ Partial Class Catalogo_Articulos
         'txtFactorConversion
         '
         Me.txtFactorConversion.Location = New System.Drawing.Point(425, 687)
-        Me.txtFactorConversion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFactorConversion.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFactorConversion.MaxLength = 12
         Me.txtFactorConversion.Name = "txtFactorConversion"
         Me.txtFactorConversion.Size = New System.Drawing.Size(95, 22)
-        Me.txtFactorConversion.TabIndex = 17
+        Me.txtFactorConversion.TabIndex = 20
         Me.txtFactorConversion.Text = "1.00"
         Me.txtFactorConversion.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -312,7 +364,7 @@ Partial Class Catalogo_Articulos
         Me.cboImpuestoIVA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboImpuestoIVA.FormattingEnabled = True
         Me.cboImpuestoIVA.Location = New System.Drawing.Point(129, 297)
-        Me.cboImpuestoIVA.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboImpuestoIVA.Margin = New System.Windows.Forms.Padding(4)
         Me.cboImpuestoIVA.Name = "cboImpuestoIVA"
         Me.cboImpuestoIVA.Size = New System.Drawing.Size(281, 24)
         Me.cboImpuestoIVA.TabIndex = 5
@@ -348,7 +400,7 @@ Partial Class Catalogo_Articulos
         'txtClaveProductoSAT
         '
         Me.txtClaveProductoSAT.Location = New System.Drawing.Point(13, 590)
-        Me.txtClaveProductoSAT.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtClaveProductoSAT.Margin = New System.Windows.Forms.Padding(4)
         Me.txtClaveProductoSAT.MaxLength = 10
         Me.txtClaveProductoSAT.Name = "txtClaveProductoSAT"
         Me.txtClaveProductoSAT.Size = New System.Drawing.Size(91, 22)
@@ -367,7 +419,7 @@ Partial Class Catalogo_Articulos
         'txtCodigoUnidadSAT
         '
         Me.txtCodigoUnidadSAT.Location = New System.Drawing.Point(13, 539)
-        Me.txtCodigoUnidadSAT.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCodigoUnidadSAT.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCodigoUnidadSAT.MaxLength = 10
         Me.txtCodigoUnidadSAT.Name = "txtCodigoUnidadSAT"
         Me.txtCodigoUnidadSAT.Size = New System.Drawing.Size(91, 22)
@@ -379,7 +431,7 @@ Partial Class Catalogo_Articulos
         Me.cboGradoToxicidad.FormattingEnabled = True
         Me.cboGradoToxicidad.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
         Me.cboGradoToxicidad.Location = New System.Drawing.Point(129, 327)
-        Me.cboGradoToxicidad.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboGradoToxicidad.Margin = New System.Windows.Forms.Padding(4)
         Me.cboGradoToxicidad.Name = "cboGradoToxicidad"
         Me.cboGradoToxicidad.Size = New System.Drawing.Size(281, 24)
         Me.cboGradoToxicidad.TabIndex = 6
@@ -408,7 +460,7 @@ Partial Class Catalogo_Articulos
         '
         Me.chkEsSerializable.AutoSize = True
         Me.chkEsSerializable.Location = New System.Drawing.Point(296, 268)
-        Me.chkEsSerializable.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkEsSerializable.Margin = New System.Windows.Forms.Padding(4)
         Me.chkEsSerializable.Name = "chkEsSerializable"
         Me.chkEsSerializable.Size = New System.Drawing.Size(173, 21)
         Me.chkEsSerializable.TabIndex = 4
@@ -419,7 +471,7 @@ Partial Class Catalogo_Articulos
         '
         Me.chkInventariable.AutoSize = True
         Me.chkInventariable.Location = New System.Drawing.Point(129, 268)
-        Me.chkInventariable.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.chkInventariable.Margin = New System.Windows.Forms.Padding(4)
         Me.chkInventariable.Name = "chkInventariable"
         Me.chkInventariable.Size = New System.Drawing.Size(111, 21)
         Me.chkInventariable.TabIndex = 3
@@ -432,7 +484,7 @@ Partial Class Catalogo_Articulos
         Me.CboFamilia.FormattingEnabled = True
         Me.CboFamilia.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
         Me.CboFamilia.Location = New System.Drawing.Point(128, 454)
-        Me.CboFamilia.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboFamilia.Margin = New System.Windows.Forms.Padding(4)
         Me.CboFamilia.Name = "CboFamilia"
         Me.CboFamilia.Size = New System.Drawing.Size(281, 24)
         Me.CboFamilia.TabIndex = 12
@@ -460,7 +512,7 @@ Partial Class Catalogo_Articulos
         'TxtPrecio
         '
         Me.TxtPrecio.Location = New System.Drawing.Point(128, 487)
-        Me.TxtPrecio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtPrecio.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtPrecio.MaxLength = 0
         Me.TxtPrecio.Name = "TxtPrecio"
         Me.TxtPrecio.Size = New System.Drawing.Size(95, 22)
@@ -474,7 +526,7 @@ Partial Class Catalogo_Articulos
         Me.cboLinea.FormattingEnabled = True
         Me.cboLinea.Items.AddRange(New Object() {"CARNES", "GRANOS Y", "ABARROTE", "CREMAS", "HIELOS", "JACOBSEN", "REGULADO", "RODILLO", "REFACCIO", "TRACTOR", "VINO BLA", "CONDIMEN", "ANIS", "BRANDY", "APERITIV", "RONES", "HERVICID", "COGÑAC", "VODKA", "GINEBRA", "HARINAS,", "TEQUILA", "VINO TIN", "VARIOS", "POLLO", "REFRESCO", "FRUTAS Y", "GRENN KI", "SALSAS Y", "GREENERA", "LATAS", "WHISKYS", "SALDOS", "PRODUCTO", "CREMERIA", "FUNGICID", "JUGO LAC", "PESCADO", "LICOR", "ACCESORI", "VAERATOR", "INSECTIC", "FERTILIZ"})
         Me.cboLinea.Location = New System.Drawing.Point(128, 420)
-        Me.cboLinea.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboLinea.Margin = New System.Windows.Forms.Padding(4)
         Me.cboLinea.Name = "cboLinea"
         Me.cboLinea.Size = New System.Drawing.Size(281, 24)
         Me.cboLinea.TabIndex = 11
@@ -505,7 +557,7 @@ Partial Class Catalogo_Articulos
         Me.CboEstatus.FormattingEnabled = True
         Me.CboEstatus.Items.AddRange(New Object() {"ACTIVO", "BAJA"})
         Me.CboEstatus.Location = New System.Drawing.Point(315, 487)
-        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatus.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatus.MaxLength = 1
         Me.CboEstatus.Name = "CboEstatus"
         Me.CboEstatus.Size = New System.Drawing.Size(95, 24)
@@ -524,7 +576,7 @@ Partial Class Catalogo_Articulos
         'TxtCodArticulo
         '
         Me.TxtCodArticulo.Location = New System.Drawing.Point(129, 27)
-        Me.TxtCodArticulo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtCodArticulo.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtCodArticulo.MaxLength = 16
         Me.TxtCodArticulo.Name = "TxtCodArticulo"
         Me.TxtCodArticulo.Size = New System.Drawing.Size(95, 22)
@@ -543,7 +595,7 @@ Partial Class Catalogo_Articulos
         'TxtUnidadVenta
         '
         Me.TxtUnidadVenta.Location = New System.Drawing.Point(129, 234)
-        Me.TxtUnidadVenta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtUnidadVenta.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtUnidadVenta.MaxLength = 20
         Me.TxtUnidadVenta.Name = "TxtUnidadVenta"
         Me.TxtUnidadVenta.Size = New System.Drawing.Size(91, 22)
@@ -562,7 +614,7 @@ Partial Class Catalogo_Articulos
         'TxtDescripcion
         '
         Me.TxtDescripcion.Location = New System.Drawing.Point(129, 59)
-        Me.TxtDescripcion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TxtDescripcion.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtDescripcion.MaxLength = 500
         Me.TxtDescripcion.Multiline = True
         Me.TxtDescripcion.Name = "TxtDescripcion"
@@ -581,9 +633,9 @@ Partial Class Catalogo_Articulos
         Me.gBoxBusquedaRapida.Controls.Add(Me.Grid)
         Me.gBoxBusquedaRapida.Controls.Add(Me.txtFiltro)
         Me.gBoxBusquedaRapida.Location = New System.Drawing.Point(548, 34)
-        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Margin = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Name = "gBoxBusquedaRapida"
-        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gBoxBusquedaRapida.Padding = New System.Windows.Forms.Padding(4)
         Me.gBoxBusquedaRapida.Size = New System.Drawing.Size(567, 775)
         Me.gBoxBusquedaRapida.TabIndex = 121
         Me.gBoxBusquedaRapida.TabStop = False
@@ -605,7 +657,7 @@ Partial Class Catalogo_Articulos
         Me.CboEstatusFiltro.FormattingEnabled = True
         Me.CboEstatusFiltro.Items.AddRange(New Object() {"A", "B"})
         Me.CboEstatusFiltro.Location = New System.Drawing.Point(500, 54)
-        Me.CboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CboEstatusFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.CboEstatusFiltro.MaxLength = 1
         Me.CboEstatusFiltro.Name = "CboEstatusFiltro"
         Me.CboEstatusFiltro.Size = New System.Drawing.Size(56, 24)
@@ -643,7 +695,7 @@ Partial Class Catalogo_Articulos
         Me.Grid.AllowUserToResizeRows = False
         Me.Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Grid.Location = New System.Drawing.Point(7, 86)
-        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4)
         Me.Grid.Name = "Grid"
         Me.Grid.ReadOnly = True
         Me.Grid.RowHeadersVisible = False
@@ -656,7 +708,7 @@ Partial Class Catalogo_Articulos
         Me.txtFiltro.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFiltro.Location = New System.Drawing.Point(8, 57)
-        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtFiltro.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFiltro.Name = "txtFiltro"
         Me.txtFiltro.Size = New System.Drawing.Size(413, 22)
         Me.txtFiltro.TabIndex = 0
@@ -749,35 +801,6 @@ Partial Class Catalogo_Articulos
         Me.tssLabelEstado.Name = "tssLabelEstado"
         Me.tssLabelEstado.Size = New System.Drawing.Size(0, 20)
         '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(190, 379)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(149, 17)
-        Me.Label3.TabIndex = 254
-        Me.Label3.Text = "Factor de conversión :"
-        '
-        'LblDisplayUPC
-        '
-        Me.LblDisplayUPC.AutoSize = True
-        Me.LblDisplayUPC.Location = New System.Drawing.Point(13, 656)
-        Me.LblDisplayUPC.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LblDisplayUPC.Name = "LblDisplayUPC"
-        Me.LblDisplayUPC.Size = New System.Drawing.Size(44, 17)
-        Me.LblDisplayUPC.TabIndex = 255
-        Me.LblDisplayUPC.Text = "UPC :"
-        '
-        'TxtUPC
-        '
-        Me.TxtUPC.Location = New System.Drawing.Point(87, 653)
-        Me.TxtUPC.Margin = New System.Windows.Forms.Padding(4)
-        Me.TxtUPC.MaxLength = 14
-        Me.TxtUPC.Name = "TxtUPC"
-        Me.TxtUPC.Size = New System.Drawing.Size(143, 22)
-        Me.TxtUPC.TabIndex = 256
-        '
         'Catalogo_Articulos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -789,7 +812,7 @@ Partial Class Catalogo_Articulos
         Me.Controls.Add(Me.StatusStripEstado)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Location = New System.Drawing.Point(8, 28)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "Catalogo_Articulos"
         Me.ShowIcon = False
@@ -871,4 +894,6 @@ Partial Class Catalogo_Articulos
     Friend WithEvents TxtUPC As System.Windows.Forms.TextBox
     Friend WithEvents LblDisplayUPC As System.Windows.Forms.Label
     Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents TxtMargenUtilidad As System.Windows.Forms.TextBox
+    Friend WithEvents LblDisplayMargenUtilidad As System.Windows.Forms.Label
 End Class

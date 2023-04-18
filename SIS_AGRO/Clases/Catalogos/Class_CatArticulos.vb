@@ -47,6 +47,7 @@ Public Class Class_CatArticulos
     Private _RETENCION_ISR_PORCENTAJE As Decimal
     Private _FRACCION_ARANCELARIA As String
     Private _UPC As String
+    Private _MARGEN_UTILIDAD As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -414,6 +415,15 @@ Public Class Class_CatArticulos
             Me._UPC = value
         End Set
     End Property
+
+    Public Property MARGEN_UTILIDAD() As Decimal
+        Get
+            Return Me._MARGEN_UTILIDAD
+        End Get
+        Set(value As Decimal)
+            Me._MARGEN_UTILIDAD = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -563,6 +573,7 @@ Public Class Class_CatArticulos
             sqlParametro = .Parameters.Add("@RETENCION_ISR_PORCENTAJE", SqlDbType.Decimal) : sqlParametro.Value = Me._RETENCION_ISR_PORCENTAJE
             sqlParametro = .Parameters.Add("@FRACCION_ARANCELARIA", SqlDbType.NVarChar, 20) : sqlParametro.Value = Me._FRACCION_ARANCELARIA
             sqlParametro = .Parameters.Add("@UPC", SqlDbType.NVarChar, 14) : sqlParametro.Value = Me._UPC
+            sqlParametro = .Parameters.Add("@MARGEN_UTILIDAD", SqlDbType.Decimal) : sqlParametro.Value = Me._MARGEN_UTILIDAD
             sqlParametro = .Parameters.Add("@AGREGAR", SqlDbType.NVarChar, 1) : sqlParametro.Value = sAccion
 
             Try
@@ -707,6 +718,7 @@ Public Class Class_CatArticulos
                     Me._RETENCION_ISR_PORCENTAJE = CDec(dReader("RETENCION_ISR_PORCENTAJE").ToString)
                     Me._FRACCION_ARANCELARIA = "" & dReader("FRACCION_ARANCELARIA").ToString
                     Me._UPC = "" & dReader("UPC").ToString
+                    Me._MARGEN_UTILIDAD = CDec(dReader("MARGEN_UTILIDAD").ToString)
 
                     bResultado = True
                 End If
