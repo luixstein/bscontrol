@@ -42,25 +42,28 @@ Public Class Compras_Movimientos
     Private igyImpuestoPorcentaje As Short = 8
     Private igyImporte As Short = 9
     Private igyIMPORTE_USD As Short = 10
-    Private igyCuentaContable As Short = 11
-    Private igyImpuestoImporte As Short = 12
-    Private igyIMPUESTO_IMPORTE_USD As Short = 13
-    Private igyIdArticulo As Short = 14
-    Private iGyNombreCuentaContable As Integer = 15
-    Private iGyBoton As Integer = 16
-    Private iGyIDAdicional As Integer = 17
-    Private igyIEPS_PORCENTAJE As Short = 18
-    Private igyIEPS_UNITARIO As Short = 19
-    Private igyIEPS_UNITARIO_USD As Short = 20
-    Private igyIEPS_IMPORTE As Short = 21
-    Private igyIEPS_IMPORTE_USD As Short = 22
-    Private igyBASE_IEPS As Short = 23
-    Private igyBASE_IEPS_USD As Short = 24
-    Private igyBASE_IVA As Short = 25
-    Private igyBASE_IVA_USD As Short = 26
-    Private igyID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA As Short = 27
-    Private igyIDRequisicionDetalle As Short = 28 'Eliminar despues
-    Private igyEsRequisicion As Short = 29
+    Private igyMargenUtilidad As Short = 11
+    Private igyCostoMercado As Short = 12
+    Private igyPrecioVenta As Short = 13
+    Private igyCuentaContable As Short = 14
+    Private igyImpuestoImporte As Short = 15
+    Private igyIMPUESTO_IMPORTE_USD As Short = 16
+    Private igyIdArticulo As Short = 17
+    Private iGyNombreCuentaContable As Integer = 18
+    Private iGyBoton As Integer = 19
+    Private iGyIDAdicional As Integer = 20
+    Private igyIEPS_PORCENTAJE As Short = 21
+    Private igyIEPS_UNITARIO As Short = 22
+    Private igyIEPS_UNITARIO_USD As Short = 23
+    Private igyIEPS_IMPORTE As Short = 24
+    Private igyIEPS_IMPORTE_USD As Short = 25
+    Private igyBASE_IEPS As Short = 26
+    Private igyBASE_IEPS_USD As Short = 27
+    Private igyBASE_IVA As Short = 28
+    Private igyBASE_IVA_USD As Short = 29
+    Private igyID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA As Short = 30
+    Private igyIDRequisicionDetalle As Short = 31 'Eliminar despues
+    Private igyEsRequisicion As Short = 32
 #End Region
 
 #Region "Columnas grid series"
@@ -485,6 +488,9 @@ Buscar:
                 Me.txtTipoCambio.Text = Format(valorNumericoD(Me.txtTipoCambio.Text), "##0.0000")
                 'Me.TotalesUSD()
                 Me.Totales()
+                If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
+                    Me.InicializaCostos()
+                End If
                 SendKeys.Send("{TAB}")
         End Select
     End Sub
@@ -751,7 +757,7 @@ Buscar:
                 .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
 
                 .Rows = 2
-                .Cols = 30
+                .Cols = 33
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
                 .Column(Me.igyCodigo).Width = 75
@@ -764,6 +770,9 @@ Buscar:
                 .Column(Me.igyImpuestoPorcentaje).Width = 70
                 .Column(Me.igyImporte).Width = 100
                 .Column(Me.igyIMPORTE_USD).Width = 100
+                .Column(Me.igyMargenUtilidad).Width = 70
+                .Column(Me.igyCostoMercado).Width = 100
+                .Column(Me.igyPrecioVenta).Width = 100
                 .Column(Me.igyCuentaContable).Width = 100
                 .Column(Me.igyImpuestoImporte).Width = 100
                 .Column(Me.igyIMPUESTO_IMPORTE_USD).Width = 100
@@ -795,6 +804,9 @@ Buscar:
                 .Cell(0, Me.igyImpuestoPorcentaje).Text = "IVA %"
                 .Cell(0, Me.igyImporte).Text = "Importe"
                 .Cell(0, Me.igyIMPORTE_USD).Text = "Importe_USD"
+                .Cell(0, Me.igyMargenUtilidad).Text = "% Margen utilidad"
+                .Cell(0, Me.igyCostoMercado).Text = "Costo mercado"
+                .Cell(0, Me.igyPrecioVenta).Text = "Precio venta"
                 .Cell(0, Me.igyCuentaContable).Text = "Cuenta Contable"
                 .Cell(0, Me.igyImpuestoImporte).Text = "IVA"
                 .Cell(0, Me.igyIMPUESTO_IMPORTE_USD).Text = "IVA_USD"
@@ -860,6 +872,20 @@ Buscar:
                 .Column(Me.igyIMPUESTO_IMPORTE_USD).DecimalLength = Empresa_Sistema.DECIMALES_CONTABILIDAD
                 .Column(Me.igyIMPUESTO_IMPORTE_USD).Alignment = FlexCell.AlignmentEnum.RightCenter
 
+                .Column(Me.igyMargenUtilidad).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyMargenUtilidad).DecimalLength = 2
+                .Column(Me.igyMargenUtilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.igyCostoMercado).FormatString = "$ ###,###,##0." & StrDup(3, "0")
+                .Column(Me.igyCostoMercado).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyCostoMercado).DecimalLength = 3 ' Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyCostoMercado).Alignment = FlexCell.AlignmentEnum.RightCenter
+
+                .Column(Me.igyPrecioVenta).FormatString = "$ ###,###,##0." & StrDup(3, "0")
+                .Column(Me.igyPrecioVenta).Mask = FlexCell.MaskEnum.Numeric
+                .Column(Me.igyPrecioVenta).DecimalLength = 3 ' Empresa_Sistema.DECIMALES_PRECIO
+                .Column(Me.igyPrecioVenta).Alignment = FlexCell.AlignmentEnum.RightCenter
+
                 .Column(Me.igyIdArticulo).Mask = FlexCell.MaskEnum.Numeric
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 .Column(Me.igyImporte).Locked = True
@@ -888,6 +914,10 @@ Buscar:
                 .Column(Me.igyIDRequisicionDetalle).Locked = True
                 .Column(Me.igyEsRequisicion).Locked = True
 
+                .Column(Me.igyMargenUtilidad).Locked = True
+                .Column(Me.igyCostoMercado).Locked = False
+                .Column(Me.igyPrecioVenta).Locked = False
+
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 .Column(Me.igyImpuestoImporte).Visible = False
                 .Column(Me.igyIMPUESTO_IMPORTE_USD).Visible = False
@@ -900,6 +930,7 @@ Buscar:
                     .Column(Me.iGyBoton).Visible = False
                     .Column(Me.iGyNombreCuentaContable).Visible = False
                 End If
+
                 .Column(Me.iGyIDAdicional).Visible = False
 
                 .Column(Me.igyIEPS_PORCENTAJE).Visible = False
@@ -915,8 +946,16 @@ Buscar:
                 .Column(Me.igyIDRequisicionDetalle).Visible = False
                 .Column(Me.igyEsRequisicion).Visible = False
 
-                If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = False Then
-                    .Column(Me.igyCosto).Visible = False
+                .Column(Me.igyCosto).Visible = False 'Se utilizara la nueva función de costos
+
+                .Column(Me.igyMargenUtilidad).Visible = False
+                .Column(Me.igyCostoMercado).Visible = False
+                .Column(Me.igyPrecioVenta).Visible = False
+
+                If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True And Me.oDocumento.AFECTA_CXP = True Then
+                    .Column(Me.igyMargenUtilidad).Visible = True
+                    .Column(Me.igyCostoMercado).Visible = True
+                    .Column(Me.igyPrecioVenta).Visible = True
                 End If
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 .Column(Me.iGyBoton).CellType = FlexCell.CellTypeEnum.Button
@@ -1619,6 +1658,9 @@ Buscar:
                     .oComprasDetalle.BASE_IEPS = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IEPS).Text)
                     .oComprasDetalle.BASE_IVA = valorNumerico(Me.Grid.Cell(i, Me.igyBASE_IVA).Text)
                     .oComprasDetalle.COSTO = valorNumerico(Me.Grid.Cell(i, Me.igyCosto).Text)
+                    .oComprasDetalle.MARGEN_UTILIDAD = valorNumericoD(Me.Grid.Cell(i, Me.igyMargenUtilidad).Text)
+                    .oComprasDetalle.COSTO_MERCADO = valorNumericoD(Me.Grid.Cell(i, Me.igyCostoMercado).Text)
+                    .oComprasDetalle.PRECIO_VENTA = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecioVenta).Text)
 
                     If Me.cboMoneda.Text = "USD" Then
                         .oComprasDetalle.PRECIO_USD = valorNumericoD(Me.Grid.Cell(i, Me.igyPRECIO_USD).Text)
@@ -2497,6 +2539,16 @@ Buscar:
                             End If
                         End If
 
+                        If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
+                            Dim costo As Double = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text), precioVenta As Double = valorNumerico(Me.Grid.Cell(i, Me.igyPrecioVenta).Text)
+                            If (precioVenta / costo) < 0.5 Then
+                                MsgBox("El precio de venta del artículo " & Me.Grid.Cell(i, Me.igyCodigo).Text & " debe ser de al menos el 50% del costo.", MsgBoxStyle.Exclamation, sProcedure)
+                                Me.Grid.Cell(i, Me.igyPrecioVenta).SetFocus()
+                                Return False
+                            End If
+
+                        End If
+
                     End If
                 Next i
 
@@ -2964,6 +3016,7 @@ LlenaLinea:
                                     Me.Grid.Cell(Renglon, Me.igyPrecio).Text = "0" 'traer el ultimo precio del mismo proveedor y mismo articulo"
                                     Me.Grid.Cell(Renglon, Me.igyPRECIO_USD).Text = "0" 'traer el ultimo precio del mismo proveedor y mismo articulo"
                                     Me.Grid.Cell(Renglon, Me.igyUnidad).Text = oArticulo.UNIDAD_VENTA
+                                    Me.Grid.Cell(Renglon, Me.igyMargenUtilidad).Text = oArticulo.MARGEN_UTILIDAD.ToString
 
                                     'If oArticulos.TIENE_IMPUESTO = "1" Then
                                     '    Me.Grid.Cell(Renglon, Me.igyImpuestoPorcentaje).Text = Plaza.Impuesto_Porcentaje.ToString
@@ -2974,6 +3027,7 @@ LlenaLinea:
 
                                     Me.Grid.Column(Me.igyDescripcion).Locked = True
                                     Me.Grid.Column(Me.igyUnidad).Locked = True
+                                    Me.Grid.Column(Me.igyMargenUtilidad).Locked = True
 
                                     Me.Grid.Cell(Renglon, Me.igyIEPS_PORCENTAJE).Text = oArticulo.IEPS_PORCENTAJE.ToString
                                 End If
@@ -3039,6 +3093,8 @@ LlenaLinea:
 
                             If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True AndAlso Me.Estado = enumEstados.NUEVO Then
                                 Me.Grid.Cell(Renglon, Me.igyCosto).Text = Me.Grid.Cell(Renglon, Me.igyPrecio).Text
+                                Me.Grid.Cell(Renglon, Me.igyCostoMercado).Text = Me.Grid.Cell(Renglon, Me.igyPrecio).Text
+                                CalculaPrecioVenta(Renglon, valorNumericoD(Me.Grid.Cell(Renglon, Me.igyMargenUtilidad).Text))
                             End If
 
                         Case Me.igyPRECIO_USD
@@ -3046,6 +3102,11 @@ LlenaLinea:
                             If dPrecio_USD <= 0 Then
                                 MsgBox("El precio debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
                                 Me.Grid.Cell(Renglon, Me.igyPrecio).SetFocus() 'Para que se vaya a igyPrecio_USD ponemos una celda anterior
+                            End If
+
+                        Case Me.igyCostoMercado
+                            If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
+                                CalculaPrecioVenta(Renglon, valorNumericoD(Me.Grid.Cell(Renglon, Me.igyMargenUtilidad).Text))
                             End If
 
                         Case Me.igyImpuestoPorcentaje
@@ -3089,6 +3150,17 @@ LlenaLinea:
 
                     'Me.Totales(True)
                     Me.Totales()
+
+                    'Calculo del precio venta, al final para asegurar que se calcule el precio mxn primero
+                    If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
+                        Select Case Columna
+                            Case Me.igyPrecio, Me.igyPRECIO_USD
+                                'Me.Grid.Cell(Renglon, Me.igyCostoMercado).Text = Me.Grid.Cell(Renglon, Me.igyPrecio).Text
+                                Dim Precio As Double = valorNumerico(Me.Grid.Cell(Renglon, Me.igyPrecio).Text) 'Si no se convierte a numero primero no copia el texto a la columna costoMercado
+                                Me.Grid.Cell(Renglon, Me.igyCostoMercado).Text = Precio.ToString
+                                CalculaPrecioVenta(Renglon, valorNumerico(Me.Grid.Cell(Renglon, Me.igyMargenUtilidad).Text))
+                        End Select
+                    End If
 
                 Case Keys.F2 'Establece el artículo para no inventariables.
                     Me.Grid.Cell(Renglon, Me.igyCodigo).Text = Empresa_Sistema.CODIGO_ARTICULO_NO_INVENTARIABLE_COMPRA_PROVEEDOR
@@ -3224,6 +3296,27 @@ BuscarCuentas:
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
+    End Sub
+
+    Private Sub CalculaPrecioVenta(ByVal iRenglon As Integer, ByVal dMargenUtilidad As Double)
+        Dim dPrecioVenta As Double = 0
+        dPrecioVenta = Math.Round((valorNumerico(Me.Grid.Cell(iRenglon, Me.igyCostoMercado).Text) * (1 + (dMargenUtilidad / 100))), 3)
+        Me.Grid.Cell(iRenglon, Me.igyPrecioVenta).Text = dPrecioVenta.ToString
+    End Sub
+
+    Private Sub InicializaCostos()
+        Dim i As Integer, sArticulo As String = ""
+        For i = 1 To Me.Grid.Rows - 1
+            sArticulo = Me.Grid.Cell(i, Me.igyCodigo).Text
+
+            If txtLEN(sArticulo) = True And sArticulo <> "-" Then
+                Dim Precio As Double = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text) 'Si no se convierte a numero primero no copia el texto a la columna costoMercado
+
+                Me.Grid.Cell(i, Me.igyCostoMercado).Text = Precio.ToString
+                CalculaPrecioVenta(i, valorNumerico(Me.Grid.Cell(i, Me.igyMargenUtilidad).Text))
+            End If
+
+        Next
     End Sub
 
     Private Sub OcultarControles()
@@ -4435,8 +4528,13 @@ BuscarCuentas:
 
             Me.Grid.DataSource = oInventarios.ObtenerDetalleDisponiblesEntradasPorOrdenCompra(sListaFoliosEntradas)
             Me.FormateaGrid()
+            Me.GestionaMoneda()
 
             Me.Totales()
+
+            If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
+                InicializaCostos()
+            End If
 
             Me.EstableceCuentaContableAlmacen()
 

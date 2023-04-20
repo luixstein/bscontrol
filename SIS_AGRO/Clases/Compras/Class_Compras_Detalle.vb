@@ -41,6 +41,10 @@ Public Class Class_Compras_Detalle
 
     Private _ID_REQUISICION_DETALLE As Integer = 0
     Private _ES_REQUISICION As Integer = 0
+
+    Private _MARGEN_UTILIDAD As Decimal
+    Private _COSTO_MERCADO As Decimal
+    Private _PRECIO_VENTA As Decimal
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -341,10 +345,37 @@ Public Class Class_Compras_Detalle
             Me._ES_REQUISICION = value
         End Set
     End Property
+
+    Public Property MARGEN_UTILIDAD() As Decimal
+        Get
+            Return Me._MARGEN_UTILIDAD
+        End Get
+        Set(value As Decimal)
+            Me._MARGEN_UTILIDAD = value
+        End Set
+    End Property
+
+    Public Property COSTO_MERCADO() As Decimal
+        Get
+            Return Me._COSTO_MERCADO
+        End Get
+        Set(value As Decimal)
+            Me._COSTO_MERCADO = value
+        End Set
+    End Property
+
+    Public Property PRECIO_VENTA() As Decimal
+        Get
+            Return Me._PRECIO_VENTA
+        End Get
+        Set(value As Decimal)
+            Me._PRECIO_VENTA = value
+        End Set
+    End Property
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
-
+    
 #End Region
 
 #Region "Propiedades públicos"
@@ -481,6 +512,9 @@ Public Class Class_Compras_Detalle
             sqlParametro = .Parameters.Add("@BASE_IEPS_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IEPS_USD
             sqlParametro = .Parameters.Add("@BASE_IVA_USD", SqlDbType.Decimal) : sqlParametro.Value = Me._BASE_IVA_USD
             sqlParametro = .Parameters.Add("@ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA", SqlDbType.Int) : sqlParametro.Value = Me._ID_INVENTARIO_MOVIMIENTOS_DETALLE_ENTRADA
+            sqlParametro = .Parameters.Add("@MARGEN_UTILIDAD", SqlDbType.Decimal) : sqlParametro.Value = Me._MARGEN_UTILIDAD
+            sqlParametro = .Parameters.Add("@COSTO_MERCADO", SqlDbType.Decimal) : sqlParametro.Value = Me._COSTO_MERCADO
+            sqlParametro = .Parameters.Add("@PRECIO_VENTA", SqlDbType.Decimal) : sqlParametro.Value = Me._PRECIO_VENTA
 
             Try
                 Me._Conexion.Open()
