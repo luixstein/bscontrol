@@ -735,6 +735,7 @@ Buscar:
             Me.Grid.DataSource = Nothing
             FG_Grid_Limpiar(Me.Grid)
             Me.Grid.Rows = 2
+            Me.Grid.Cols = 33
             Me.FormateaGrid()
             Me.Grid.Cell(1, Me.iGyIDAdicional).Text = "1"
         Catch ex As Exception
@@ -756,8 +757,8 @@ Buscar:
                 .BorderStyle = FlexCell.BorderStyleEnum.FixedSingle
                 .FixedRowColStyle = FlexCell.FixedRowColStyleEnum.Flat
 
-                .Rows = 2
-                .Cols = 33
+                '.Rows = 2
+                '.Cols = 33
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
                 .Column(Me.igyCodigo).Width = 75
@@ -960,12 +961,12 @@ Buscar:
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 .Column(Me.iGyBoton).CellType = FlexCell.CellTypeEnum.Button
                 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-                .AutoRedraw = True
-                .Refresh()
             End With
         Catch ex As Exception
             HandleError(Me.Name, "FormateaGrid", ex)
+        Finally
+            Me.Grid.AutoRedraw = True
+            Me.Grid.Refresh()
         End Try
     End Sub
 
@@ -3299,24 +3300,33 @@ BuscarCuentas:
     End Sub
 
     Private Sub CalculaPrecioVenta(ByVal iRenglon As Integer, ByVal dMargenUtilidad As Double)
-        Dim dPrecioVenta As Double = 0
-        dPrecioVenta = Math.Round((valorNumerico(Me.Grid.Cell(iRenglon, Me.igyCostoMercado).Text) * (1 + (dMargenUtilidad / 100))), 3)
-        Me.Grid.Cell(iRenglon, Me.igyPrecioVenta).Text = dPrecioVenta.ToString
+        Const sProcedure As String = ""
+        Try
+            Dim dPrecioVenta As Decimal = 0
+            dPrecioVenta = CDec(Math.Round(CDbl((valorNumericoD(Me.Grid.Cell(iRenglon, Me.igyCostoMercado).Text) * (1 + (dMargenUtilidad / 100)))), 3))
+            Me.Grid.Cell(iRenglon, Me.igyPrecioVenta).Text = dPrecioVenta.ToString
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Sub InicializaCostos()
-        Dim i As Integer, sArticulo As String = ""
-        For i = 1 To Me.Grid.Rows - 1
-            sArticulo = Me.Grid.Cell(i, Me.igyCodigo).Text
+        Const sProcedure As String = "InicializaCostos"
+        Try
+            Dim i As Integer, sArticulo As String = ""
+            For i = 1 To Me.Grid.Rows - 1
+                sArticulo = Me.Grid.Cell(i, Me.igyCodigo).Text
 
-            If txtLEN(sArticulo) = True And sArticulo <> "-" Then
-                Dim Precio As Double = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text) 'Si no se convierte a numero primero no copia el texto a la columna costoMercado
+                If txtLEN(sArticulo) = True And sArticulo <> "-" Then
+                    Dim Precio As Decimal = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text) 'Si no se convierte a numero primero no copia el texto a la columna costoMercado
 
-                Me.Grid.Cell(i, Me.igyCostoMercado).Text = Precio.ToString
-                CalculaPrecioVenta(i, valorNumerico(Me.Grid.Cell(i, Me.igyMargenUtilidad).Text))
-            End If
-
-        Next
+                    Me.Grid.Cell(i, Me.igyCostoMercado).Text = Precio.ToString
+                    Me.CalculaPrecioVenta(i, valorNumerico(Me.Grid.Cell(i, Me.igyMargenUtilidad).Text))
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        End Try
     End Sub
 
     Private Sub OcultarControles()
@@ -4515,25 +4525,66 @@ BuscarCuentas:
             Me.InicializaGridSeries()
             Me.Totales()
 
+            Me.Grid.Rows = 1 'Porque al inicializar tiene 2
+
             For i = 1 To Me.GridEntradas.Rows - 1
                 sFolioEntrada = Me.GridEntradas.Cell(i, Me.igyGridEFolioEntrada).Text
 
                 If txtLEN(sFolioEntrada) = True Then
                     sListaFoliosEntradas &= sFolioEntrada & "|"
                 End If
-
             Next
 
-            Dim oInventarios As New Class_Inventarios_Global
+            Dim oInventarios As New Class_Inventarios_Global, dTabla As New DataTable
 
-            Me.Grid.DataSource = oInventarios.ObtenerDetalleDisponiblesEntradasPorOrdenCompra(sListaFoliosEntradas)
+            'Me.Grid.DataSource = oInventarios.ObtenerDetalleDisponiblesEntradasPorOrdenCompra(sListaFoliosEntradas)
+            dTabla = oInventarios.ObtenerDetalleDisponiblesEntradasPorOrdenCompra(sListaFoliosEntradas)
+
+            Me.Grid.AutoRedraw = False
+
+            For Each dRow As DataRow In dTabla.Rows
+                Me.Grid.AddItem(
+                dRow("CODIGO_ARTICULO").ToString & Chr(9) &
+                dRow("DESCRIPCION").ToString & Chr(9) &
+                dRow("CANTIDAD").ToString & Chr(9) &
+                dRow("PRECIO").ToString & Chr(9) &
+                dRow("PRECIO_USD").ToString & Chr(9) &
+                dRow("COSTO").ToString & Chr(9) &
+                dRow("UNIDAD_VENTA").ToString & Chr(9) &
+                dRow("IMPUESTO_PORCENTAJE").ToString & Chr(9) &
+                dRow("IMPORTE").ToString & Chr(9) &
+                dRow("IMPORTE_USD").ToString & Chr(9) &
+                dRow("MARGEN_UTILIDAD").ToString & Chr(9) &
+                dRow("COSTO_MERCADO").ToString & Chr(9) &
+                dRow("PRECIO_VENTA").ToString & Chr(9) &
+                dRow("CUENTA_CONTABLE").ToString & Chr(9) &
+                dRow("IMPUESTO_IMPORTE").ToString & Chr(9) &
+                dRow("IMPUESTO_IMPORTE_USD").ToString & Chr(9) &
+                dRow("ID_COMPRA_DETALLE").ToString & Chr(9) &
+                dRow("NOMBRE_CUENTA").ToString & Chr(9) &
+                dRow("Boton").ToString & Chr(9) &
+                dRow("ID_ADICIONAL").ToString & Chr(9) &
+                dRow("IEPS_PORCENTAJE").ToString & Chr(9) &
+                dRow("IEPS_UNITARIO").ToString & Chr(9) &
+                dRow("IEPS_UNITARIO_USD").ToString & Chr(9) &
+                dRow("IEPS_IMPORTE").ToString & Chr(9) &
+                dRow("IEPS_IMPORTE_USD").ToString & Chr(9) &
+                dRow("BASE_IEPS").ToString & Chr(9) &
+                dRow("BASE_IEPS_USD").ToString & Chr(9) &
+                dRow("BASE_IVA").ToString & Chr(9) &
+                dRow("BASE_IVA_USD").ToString & Chr(9) &
+                dRow("ID_INVENTARIO_MOVIMIENTOS_DETALLE").ToString & Chr(9) &
+                dRow("ID_REQUISICION_DETALLE").ToString & Chr(9) &
+                dRow("ES_REQUISICION").ToString & Chr(9))
+            Next
+
             Me.FormateaGrid()
             Me.GestionaMoneda()
 
             Me.Totales()
 
             If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
-                InicializaCostos()
+                Me.InicializaCostos()
             End If
 
             Me.EstableceCuentaContableAlmacen()
@@ -4544,6 +4595,9 @@ BuscarCuentas:
             Return True
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
+        Finally
+            Me.Grid.AutoRedraw = True
+            Me.Grid.Refresh()
         End Try
     End Function
 
