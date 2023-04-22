@@ -765,14 +765,14 @@ Buscar:
                 .Column(Me.igyDescripcion).Width = 250
                 .Column(Me.igyCantidad).Width = 90
                 .Column(Me.igyPrecio).Width = 100
-                .Column(Me.igyPRECIO_USD).Width = 100
+                .Column(Me.igyPRECIO_USD).Width = 90
                 .Column(Me.igyCosto).Width = 100
                 .Column(Me.igyUnidad).Width = 75
-                .Column(Me.igyImpuestoPorcentaje).Width = 70
+                .Column(Me.igyImpuestoPorcentaje).Width = 40
                 .Column(Me.igyImporte).Width = 100
                 .Column(Me.igyIMPORTE_USD).Width = 100
-                .Column(Me.igyMargenUtilidad).Width = 70
-                .Column(Me.igyCostoMercado).Width = 100
+                .Column(Me.igyMargenUtilidad).Width = 65
+                .Column(Me.igyCostoMercado).Width = 90
                 .Column(Me.igyPrecioVenta).Width = 100
                 .Column(Me.igyCuentaContable).Width = 100
                 .Column(Me.igyImpuestoImporte).Width = 100
@@ -805,7 +805,7 @@ Buscar:
                 .Cell(0, Me.igyImpuestoPorcentaje).Text = "IVA %"
                 .Cell(0, Me.igyImporte).Text = "Importe"
                 .Cell(0, Me.igyIMPORTE_USD).Text = "Importe_USD"
-                .Cell(0, Me.igyMargenUtilidad).Text = "% Margen utilidad"
+                .Cell(0, Me.igyMargenUtilidad).Text = "%Margen ut"
                 .Cell(0, Me.igyCostoMercado).Text = "Costo mercado"
                 .Cell(0, Me.igyPrecioVenta).Text = "Precio venta"
                 .Cell(0, Me.igyCuentaContable).Text = "Cuenta Contable"
@@ -877,12 +877,12 @@ Buscar:
                 .Column(Me.igyMargenUtilidad).DecimalLength = 2
                 .Column(Me.igyMargenUtilidad).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.igyCostoMercado).FormatString = "$ ###,###,##0." & StrDup(3, "0")
+                .Column(Me.igyCostoMercado).FormatString = "$ ###,###,##0." & StrDup(6, "0")
                 .Column(Me.igyCostoMercado).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.igyCostoMercado).DecimalLength = 3 ' Empresa_Sistema.DECIMALES_PRECIO
                 .Column(Me.igyCostoMercado).Alignment = FlexCell.AlignmentEnum.RightCenter
 
-                .Column(Me.igyPrecioVenta).FormatString = "$ ###,###,##0." & StrDup(3, "0")
+                .Column(Me.igyPrecioVenta).FormatString = "$ ###,###,##0." & StrDup(6, "0")
                 .Column(Me.igyPrecioVenta).Mask = FlexCell.MaskEnum.Numeric
                 .Column(Me.igyPrecioVenta).DecimalLength = 3 ' Empresa_Sistema.DECIMALES_PRECIO
                 .Column(Me.igyPrecioVenta).Alignment = FlexCell.AlignmentEnum.RightCenter
@@ -2541,13 +2541,28 @@ Buscar:
                         End If
 
                         If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True Then
-                            Dim costo As Double = valorNumerico(Me.Grid.Cell(i, Me.igyPrecio).Text), precioVenta As Double = valorNumerico(Me.Grid.Cell(i, Me.igyPrecioVenta).Text)
-                            If (precioVenta / costo) < 0.5 Then
-                                MsgBox("El precio de venta del artículo " & Me.Grid.Cell(i, Me.igyCodigo).Text & " debe ser de al menos el 50% del costo.", MsgBoxStyle.Exclamation, sProcedure)
-                                Me.Grid.Cell(i, Me.igyPrecioVenta).SetFocus()
-                                Return False
+                            Dim Costo As Decimal = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecio).Text), PrecioVenta As Decimal = valorNumericoD(Me.Grid.Cell(i, Me.igyPrecioVenta).Text)
+                            Dim PtjeSobreCosto As Decimal = 0
+                            PtjeSobreCosto = ((PrecioVenta / Costo) - 1) * 100
+                            If PtjeSobreCosto < 0 Then
+                                If PtjeSobreCosto <= -50 Then
+                                    MsgBox("El precio de venta del artículo " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " debe de ser superior al 50% del costo." & vbCrLf &
+                                               "Ahorita esta " & Format(PtjeSobreCosto, "##.##") & "% por abajo del costo.", MsgBoxStyle.Exclamation, sProcedure)
+                                    Me.Grid.Cell(i, Me.igyPrecioVenta).SetFocus()
+                                    Return False
+                                Else
+                                    If MsgBox("El precio de venta del artículo " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " esta por debajo del costo " & PtjeSobreCosto.ToString & "%." & vbCrLf &
+                                               "Seguro desea continuar ?" & vbCrLf &
+                                               "Advertencia no habrá margen de ganancia si continua.", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
+                                        Return False
+                                    End If
+                                End If
+                            ElseIf PrecioVenta = Costo Then
+                                If MsgBox("El precio de venta del artículo " & Me.Grid.Cell(i, Me.igyDescripcion).Text & " es igual que el costo así que no habrá margen de ganancia." & vbCrLf &
+                                           "Seguro desea continuar ?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.No Then
+                                    Return False
+                                End If
                             End If
-
                         End If
 
                     End If
@@ -2762,7 +2777,8 @@ Buscar:
                     ''''''''''''''''
                     'Calculamos los otros valores en MXN capturables(que si bien no se capturaron se emularán)
                     dPrecio = dPrecio_USD * dTipoCambio
-                    dPrecio = RedondearD(dPrecio, Empresa_Sistema.DECIMALES_CANTIDAD)
+                    'dPrecio = RedondearD(dPrecio, Empresa_Sistema.DECIMALES_CANTIDAD)
+                    dPrecio = RedondearD(dPrecio, 6)
 
                     Me.Grid.Cell(i, Me.igyPrecio).Text = dPrecio.ToString
                     ''''''''''''''''
@@ -3095,7 +3111,7 @@ LlenaLinea:
                             If Empresa_Sistema.CONTROL_COSTOS_COMPRAS = True AndAlso Me.Estado = enumEstados.NUEVO Then
                                 Me.Grid.Cell(Renglon, Me.igyCosto).Text = Me.Grid.Cell(Renglon, Me.igyPrecio).Text
                                 Me.Grid.Cell(Renglon, Me.igyCostoMercado).Text = Me.Grid.Cell(Renglon, Me.igyPrecio).Text
-                                CalculaPrecioVenta(Renglon, valorNumericoD(Me.Grid.Cell(Renglon, Me.igyMargenUtilidad).Text))
+                                Me.CalculaPrecioVenta(Renglon, valorNumericoD(Me.Grid.Cell(Renglon, Me.igyMargenUtilidad).Text))
                             End If
 
                         Case Me.igyPRECIO_USD
@@ -3300,10 +3316,10 @@ BuscarCuentas:
     End Sub
 
     Private Sub CalculaPrecioVenta(ByVal iRenglon As Integer, ByVal dMargenUtilidad As Double)
-        Const sProcedure As String = ""
+        Const sProcedure As String = "CalculaPrecioVenta"
         Try
             Dim dPrecioVenta As Decimal = 0
-            dPrecioVenta = CDec(Math.Round(CDbl((valorNumericoD(Me.Grid.Cell(iRenglon, Me.igyCostoMercado).Text) * (1 + (dMargenUtilidad / 100)))), 3))
+            dPrecioVenta = CDec(Math.Round(CDbl((valorNumericoD(Me.Grid.Cell(iRenglon, Me.igyCostoMercado).Text) * (1 + (dMargenUtilidad / 100)))), 6))
             Me.Grid.Cell(iRenglon, Me.igyPrecioVenta).Text = dPrecioVenta.ToString
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -4577,6 +4593,8 @@ BuscarCuentas:
                 dRow("ID_REQUISICION_DETALLE").ToString & Chr(9) &
                 dRow("ES_REQUISICION").ToString & Chr(9))
             Next
+
+            Me.Grid.Rows += 1 '1 renglón adicional que pos estrucutura se necesita
 
             Me.FormateaGrid()
             Me.GestionaMoneda()
