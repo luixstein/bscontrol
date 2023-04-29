@@ -1,4 +1,5 @@
 ﻿Option Strict On
+Imports System.Web.Services.Description
 
 Public Class Ventas_Movimientos
 
@@ -6545,10 +6546,11 @@ BuscaVentas:
                             oPrecioMatriz = Nothing
 
                         Else 'Validacion normal
-
                             If dPrecio < dCosto Then
                                 Dim validaPass As New Frm_Contraseña_Cambio_Periodo
-                                validaPass.Mensaje = "El precio del artículo " & .Cell(i, Me.igyDescripcion).Text & " es menor que el costo(renglón #)" & i.ToString
+                                validaPass.Mensaje = "El precio del artículo " & .Cell(i, Me.igyDescripcion).Text & " es menor que el costo " &
+                                Format(dCosto, "$ ###,###,##0." & StrDup(Me.iDecimalesPrecio, "0")) & vbCrLf &
+                                 "Renglón #" & i.ToString
                                 validaPass.TipoContraseña = Frm_Contraseña_Cambio_Periodo.eTipoContraseña.PrecioMenorCosto
                                 validaPass.ShowDialog()
 
@@ -6750,7 +6752,6 @@ BuscaVentas:
                     FoliosRemisiones = FoliosRemisiones & "'" & Me.GridFacturasVariasRemisiones.Cell(i, Me.iGyFolio).Text & "',"
                 End If
             Next
-
             If txtLEN(FoliosRemisiones) = False Then
                 MsgBox("Debe listar primero las remisiones", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
@@ -6768,25 +6769,23 @@ BuscaVentas:
             Dim dtRenglones As DataTable = oVenta.ObtenerDetalleVariasRemisionesSeries(FoliosRemisiones)
             For Each dRow As DataRow In dtRenglones.Rows
                 Me.Grid.AddItem(
-                dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("TIPO_CONTROL_INVENTARIO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("DISPONIBLE").ToString & Chr(9) & dRow("PRECIO_SIN_DESCUENTO").ToString & Chr(9) &
-                dRow("PRECIO_SIN_DESCUENTO_USD").ToString & Chr(9) & dRow("PRECIO_TOTAL").ToString & Chr(9) & dRow("PRECIO_TOTAL_USD").ToString & Chr(9) & dRow("UNIDAD_VENTA").ToString & Chr(9) & dRow("CANTIDAD_KILOS").ToString & Chr(9) &
-                dRow("PRECIO_KILOS").ToString & Chr(9) & dRow("IMPUESTO_PORCENTAJE").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9) & dRow("IMPORTE_USD").ToString & Chr(9) & dRow("IMPORTE_KILOS").ToString & Chr(9) &
-                dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("IMPUESTO_IMPORTE").ToString & Chr(9) & dRow("IMPUESTO_IMPORTE_USD").ToString & Chr(9) & dRow("ID_ORIGEN").ToString & Chr(9) & dRow("ES_PRODUCTO_KILOS").ToString & Chr(9) &
-                dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) & dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9) & dRow("IEPS_PORCENTAJE").ToString & Chr(9) & dRow("IEPS_UNITARIO").ToString & Chr(9) & dRow("IEPS_UNITARIO_USD").ToString & Chr(9) &
-                dRow("IEPS_IMPORTE").ToString & Chr(9) & dRow("IEPS_IMPORTE_USD").ToString & Chr(9) & dRow("BASE_IEPS").ToString & Chr(9) & dRow("BASE_IEPS_USD").ToString & Chr(9) & dRow("BASE_IVA").ToString & Chr(9) &
-                dRow("BASE_IVA_USD").ToString & Chr(9) & dRow("COSTO").ToString & Chr(9) & dRow("UTILIDAD_UNITARIA").ToString & Chr(9) & dRow("UTILIDAD_TOTAL").ToString & Chr(9) & dRow("UTILIDAD_PORCENTAJE").ToString & Chr(9) &
-                dRow("ID_SIS_CAT_IMPUESTOS").ToString & Chr(9) & dRow("GRADO_TOXICIDAD").ToString & Chr(9) & dRow("DESCUENTO_UNITARIO").ToString & Chr(9) & dRow("DESCUENTO_UNITARIO_USD").ToString & Chr(9) & dRow("DESCUENTO_IMPORTE").ToString & Chr(9) &
-                dRow("DESCUENTO_IMPORTE_USD").ToString & Chr(9) & dRow("PRECIO_SIN_DESCUENTO").ToString & Chr(9) & dRow("PRECIO_SIN_DESCUENTO_USD").ToString & Chr(9) & dRow("RETENCION_IVA_TIENE").ToString & Chr(9) & dRow("RETENCION_IVA_PORCENTAJE").ToString & Chr(9) &
-                dRow("RETENCION_IVA_BASE").ToString & Chr(9) & dRow("RETENCION_IVA_BASE_USD").ToString & Chr(9) & dRow("RETENCION_IVA_IMPORTE").ToString & Chr(9) & dRow("RETENCION_IVA_IMPORTE_USD").ToString & Chr(9) & dRow("RETENCION_ISR_TIENE").ToString & Chr(9) &
-                dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE_USD").ToString & Chr(9) & dRow("RETENCION_ISR_IMPORTE").ToString & Chr(9) & dRow("RETENCION_ISR_IMPORTE_USD").ToString & Chr(9)
-                )
-
+dRow("CODIGO_ARTICULO").ToString & Chr(9) & dRow("TIPO_CONTROL_INVENTARIO").ToString & Chr(9) & dRow("DESCRIPCION").ToString & Chr(9) & dRow("DISPONIBLE").ToString & Chr(9) & dRow("PRECIO_SIN_DESCUENTO").ToString & Chr(9) &
+dRow("PRECIO_SIN_DESCUENTO_USD").ToString & Chr(9) & dRow("PRECIO_TOTAL").ToString & Chr(9) & dRow("PRECIO_TOTAL_USD").ToString & Chr(9) & dRow("UNIDAD_VENTA").ToString & Chr(9) & dRow("CANTIDAD_KILOS").ToString & Chr(9) &
+dRow("PRECIO_KILOS").ToString & Chr(9) & dRow("IMPUESTO_PORCENTAJE").ToString & Chr(9) & dRow("IMPORTE").ToString & Chr(9) & dRow("IMPORTE_USD").ToString & Chr(9) & dRow("IMPORTE_KILOS").ToString & Chr(9) &
+dRow("CUENTA_CONTABLE").ToString & Chr(9) & dRow("IMPUESTO_IMPORTE").ToString & Chr(9) & dRow("IMPUESTO_IMPORTE_USD").ToString & Chr(9) & dRow("ID_ORIGEN").ToString & Chr(9) & dRow("ES_PRODUCTO_KILOS").ToString & Chr(9) &
+dRow("CODIGO_CENTRO_COSTO").ToString & Chr(9) & dRow("NOMBRE_CENTRO_COSTO").ToString & Chr(9) & dRow("IEPS_PORCENTAJE").ToString & Chr(9) & dRow("IEPS_UNITARIO").ToString & Chr(9) & dRow("IEPS_UNITARIO_USD").ToString & Chr(9) &
+dRow("IEPS_IMPORTE").ToString & Chr(9) & dRow("IEPS_IMPORTE_USD").ToString & Chr(9) & dRow("BASE_IEPS").ToString & Chr(9) & dRow("BASE_IEPS_USD").ToString & Chr(9) & dRow("BASE_IVA").ToString & Chr(9) &
+dRow("BASE_IVA_USD").ToString & Chr(9) & dRow("COSTO").ToString & Chr(9) & dRow("UTILIDAD_UNITARIA").ToString & Chr(9) & dRow("UTILIDAD_TOTAL").ToString & Chr(9) & dRow("UTILIDAD_PORCENTAJE").ToString & Chr(9) &
+dRow("ID_SIS_CAT_IMPUESTOS").ToString & Chr(9) & dRow("GRADO_TOXICIDAD").ToString & Chr(9) & dRow("DESCUENTO_UNITARIO").ToString & Chr(9) & dRow("DESCUENTO_UNITARIO_USD").ToString & Chr(9) & dRow("DESCUENTO_IMPORTE").ToString & Chr(9) &
+dRow("DESCUENTO_IMPORTE_USD").ToString & Chr(9) & dRow("PRECIO_SIN_DESCUENTO").ToString & Chr(9) & dRow("PRECIO_SIN_DESCUENTO_USD").ToString & Chr(9) & dRow("RETENCION_IVA_TIENE").ToString & Chr(9) & dRow("RETENCION_IVA_PORCENTAJE").ToString & Chr(9) &
+dRow("RETENCION_IVA_BASE").ToString & Chr(9) & dRow("RETENCION_IVA_BASE_USD").ToString & Chr(9) & dRow("RETENCION_IVA_IMPORTE").ToString & Chr(9) & dRow("RETENCION_IVA_IMPORTE_USD").ToString & Chr(9) & dRow("RETENCION_ISR_TIENE").ToString & Chr(9) &
+dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE_USD").ToString & Chr(9) & dRow("RETENCION_ISR_IMPORTE").ToString & Chr(9) & dRow("RETENCION_ISR_IMPORTE_USD").ToString & Chr(9)
+)
                 Me.Grid.Cell(i, Me.igyCodigo).Locked = True 'Bloqueamos la celda del código porque no es válido editar, si se ocupa quitar quelo hagan con f8, no es válido cambiar por otro código en este modo.
                 i += 1
             Next
 
             Me.Grid.Rows += 1
-
             Me.FormateaGrid()
             Me.Totales()
             Me.CalculaUtilidad()
@@ -6799,14 +6798,12 @@ BuscaVentas:
             'End With
 
             Me.dtSeries = oVenta.ObtenerSeriesVariasRemisionesSeries(FoliosRemisiones)
-
             Me.RecargarGridSeries()
 
             Me.TabControl1.SelectTab(0) 'Muestra el tab de articulos
 
             Me.EsFacturaVariasRemisiones = True
             Me.sTipoVenta = "SR"
-
             bResultado = True
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -6814,7 +6811,6 @@ BuscaVentas:
             Me.Grid.AutoRedraw = True
             Me.Grid.Refresh()
         End Try
-
         Return bResultado
     End Function
 

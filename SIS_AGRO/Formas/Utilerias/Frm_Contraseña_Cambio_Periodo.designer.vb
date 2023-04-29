@@ -31,7 +31,7 @@ Partial Class Frm_Contraseña_Cambio_Periodo
         '
         'txtCambioPeriodo
         '
-        Me.txtCambioPeriodo.Location = New System.Drawing.Point(88, 81)
+        Me.txtCambioPeriodo.Location = New System.Drawing.Point(88, 155)
         Me.txtCambioPeriodo.Name = "txtCambioPeriodo"
         Me.txtCambioPeriodo.Size = New System.Drawing.Size(156, 20)
         Me.txtCambioPeriodo.TabIndex = 0
@@ -39,7 +39,7 @@ Partial Class Frm_Contraseña_Cambio_Periodo
         '
         'btnAceptar
         '
-        Me.btnAceptar.Location = New System.Drawing.Point(88, 107)
+        Me.btnAceptar.Location = New System.Drawing.Point(88, 181)
         Me.btnAceptar.Name = "btnAceptar"
         Me.btnAceptar.Size = New System.Drawing.Size(75, 23)
         Me.btnAceptar.TabIndex = 1
@@ -48,7 +48,7 @@ Partial Class Frm_Contraseña_Cambio_Periodo
         '
         'btnCancelar
         '
-        Me.btnCancelar.Location = New System.Drawing.Point(169, 107)
+        Me.btnCancelar.Location = New System.Drawing.Point(169, 181)
         Me.btnCancelar.Name = "btnCancelar"
         Me.btnCancelar.Size = New System.Drawing.Size(75, 23)
         Me.btnCancelar.TabIndex = 2
@@ -58,7 +58,7 @@ Partial Class Frm_Contraseña_Cambio_Periodo
         'lblEtiqueta
         '
         Me.lblEtiqueta.AutoSize = True
-        Me.lblEtiqueta.Location = New System.Drawing.Point(12, 65)
+        Me.lblEtiqueta.Location = New System.Drawing.Point(12, 139)
         Me.lblEtiqueta.Name = "lblEtiqueta"
         Me.lblEtiqueta.Size = New System.Drawing.Size(317, 13)
         Me.lblEtiqueta.TabIndex = 3
@@ -68,7 +68,7 @@ Partial Class Frm_Contraseña_Cambio_Periodo
         '
         Me.lblMensaje.Location = New System.Drawing.Point(12, 9)
         Me.lblMensaje.Name = "lblMensaje"
-        Me.lblMensaje.Size = New System.Drawing.Size(314, 26)
+        Me.lblMensaje.Size = New System.Drawing.Size(314, 130)
         Me.lblMensaje.TabIndex = 4
         Me.lblMensaje.Text = "Mensaje :"
         '
@@ -76,7 +76,7 @@ Partial Class Frm_Contraseña_Cambio_Periodo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(342, 145)
+        Me.ClientSize = New System.Drawing.Size(342, 207)
         Me.Controls.Add(Me.lblMensaje)
         Me.Controls.Add(Me.lblEtiqueta)
         Me.Controls.Add(Me.btnCancelar)
