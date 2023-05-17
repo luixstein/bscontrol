@@ -28,7 +28,6 @@ Partial Class Catalogo_Articulos
         Me.LblDisplayMargenUtilidad = New System.Windows.Forms.Label()
         Me.TxtUPC = New System.Windows.Forms.TextBox()
         Me.LblDisplayUPC = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
         Me.lblDisplayFraccionArancelaria = New System.Windows.Forms.Label()
         Me.txtFraccionArancelaria = New System.Windows.Forms.TextBox()
         Me.cboRetencionISRPorcentaje = New System.Windows.Forms.ComboBox()
@@ -104,7 +103,6 @@ Partial Class Catalogo_Articulos
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayMargenUtilidad)
         Me.gBoxInformacion.Controls.Add(Me.TxtUPC)
         Me.gBoxInformacion.Controls.Add(Me.LblDisplayUPC)
-        Me.gBoxInformacion.Controls.Add(Me.Label3)
         Me.gBoxInformacion.Controls.Add(Me.lblDisplayFraccionArancelaria)
         Me.gBoxInformacion.Controls.Add(Me.txtFraccionArancelaria)
         Me.gBoxInformacion.Controls.Add(Me.cboRetencionISRPorcentaje)
@@ -193,16 +191,6 @@ Partial Class Catalogo_Articulos
         Me.LblDisplayUPC.Size = New System.Drawing.Size(44, 17)
         Me.LblDisplayUPC.TabIndex = 255
         Me.LblDisplayUPC.Text = "UPC :"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(190, 379)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(149, 17)
-        Me.Label3.TabIndex = 254
-        Me.Label3.Text = "Factor de conversión :"
         '
         'lblDisplayFraccionArancelaria
         '
@@ -893,7 +881,6 @@ Partial Class Catalogo_Articulos
     Friend WithEvents txtFraccionArancelaria As TextBox
     Friend WithEvents TxtUPC As System.Windows.Forms.TextBox
     Friend WithEvents LblDisplayUPC As System.Windows.Forms.Label
-    Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents TxtMargenUtilidad As System.Windows.Forms.TextBox
     Friend WithEvents LblDisplayMargenUtilidad As System.Windows.Forms.Label
 End Class

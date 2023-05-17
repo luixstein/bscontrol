@@ -1628,10 +1628,10 @@ busca_serie:
             'FALTA:Validaciones de datos fiscales si se va timbrar
 
             '
-            Dim oSQL As New Class_find("SELECT 1 FROM VENTAS_RELACION_FACTURAS_REMISIONES WHERE FOLIO_FACTURA='" & sReplace(Me.txtFolioVenta.Text) & "'")
+            Dim oSQL As New Class_find("SELECT 1 FROM VENTAS_RELACION_FACTURAS_REMISIONES WHERE FOLIO_FACTURA='" & sReplace(Me.txtFolioVenta.Text) & "' HAVING COUNT(FOLIO_REMISION)>1")
 
             If txtLEN(oSQL.Result1) = True Then
-                MsgBox("Esta factura se hizo a partir de 1 ó mas remisiones, de momento no esta desarrollada la opción para hacer devoluciones de este tipo de facturas.", MsgBoxStyle.Exclamation, sProcedure)
+                MsgBox("Esta factura se hizo a partir de varias remisiones, de momento no esta desarrollada la opción para hacer devoluciones de este tipo de facturas.", MsgBoxStyle.Exclamation, sProcedure)
                 Return False
             End If
             oSQL = Nothing
