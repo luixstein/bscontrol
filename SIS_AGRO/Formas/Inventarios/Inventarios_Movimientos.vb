@@ -956,6 +956,13 @@ ArticuloEnBlanco:
                             Me.oArticulos = Nothing
 
                         Case Me.iGyCantidad
+
+                            If dCantidad <= 0 Then
+                                MsgBox("La cantidad debe de ser mayor a 0.", MsgBoxStyle.Exclamation, sProcedure)
+                                Me.Grid1.Cell(Renglon, Me.iGyDescripcion).SetFocus()
+                                Return
+                            End If
+
                             If sNaturalezaInventarios = "SA" Then
                                 'Dim sql3 As New Class_find("Select Existencia From INVENTARIO_EXISTENCIA_ARTICULOS Where CODIGO_Articulo='" & Grid1.Cell(Renglon, iGyCodigo).Text & "' and Codigo_Almacen='" & CboAlmacen.SelectedValue.ToString & "'")
                                 'If valorNumerico(sql3.Result1) < valorNumerico(StrCod) Then
