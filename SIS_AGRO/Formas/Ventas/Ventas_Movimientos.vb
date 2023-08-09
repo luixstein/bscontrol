@@ -3101,6 +3101,20 @@ CANCELAR:
                         End If
                     End If
                 Next
+
+                'Es sustitución de una sola remisión, se valida que tengan el mismo almacén ambos documentos.
+                If txtLEN(Me.TxtReferencia.Text) = True Then
+                    Dim oRemision As New Class_Ventas_Global(Me.TxtReferencia.Text)
+                    If oRemision.Existe = False Then
+                        MsgBox("La remisión que se quiere sustituir no existe.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+                    If Me.CboAlmacen.SelectedValue.ToString <> oRemision.CODIGO_ALMACEN Then
+                        MsgBox("El almacén de la factura debe ser igual que el almacén de la remisión.", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+                End If
+
             End If
 
             If Me.oDocumento.AFECTA_CONTABILIDAD = True Then
@@ -4324,6 +4338,12 @@ CANCELAR:
                 Return False
             End If
 
+            If sTipoVenta = "NM" And bEsReferencia = True And bEsRefrenciaSoloRenglones = True Then
+                If Me.oDocumento.AFECTA_CONTABILIDAD = True AndAlso oVentaLocal.CODIGO_TIPO_DOCUMENTO = "REM" Then
+                    MsgBox("Advertencia, este mecanismo no SUSTITUYE ó CONVIERTE la remisión en factura, es sólo para obtener su mismo detalle y si va necesitar inventario para facturar.", MsgBoxStyle.Information, sProcedure)
+                End If
+            End If
+
             Me.lblVersionCFDI.Text = "" & oVenta.VERSION_ESQUEMA_XML
 
             Me.DesplegarFormasPago(True) 'Para forzar a que muestre todos incluso los que están dados de baja porque al consultarlos fallaria si no estuvieran.
@@ -5263,6 +5283,7 @@ buscaCentrosCostos:
     End Sub
 
     Private Function ConsultarCliente() As Boolean
+        Const sProcedure As String = "ConsultarCliente"
         Try
             Me.oCliente = New Class_CatClientes(Me.TxtCliente.Text)
             If Me.oCliente.Existe = False Then
@@ -5280,10 +5301,12 @@ buscaCentrosCostos:
                 Me.cboVendedor.SelectedValue = Me.oCliente.CODIGO_VENDEDOR
             End If
 
-            If Empresa_Sistema.CODIGO_ALMACEN_POR_CLIENTE AndAlso txtLEN(Me.oCliente.CODIGO_ALMACEN) Then
-                Me.CboAlmacen.SelectedValue = Me.oCliente.CODIGO_ALMACEN
-            Else
-                Me.CboAlmacen.SelectedValue = Plaza.CODIGO_ALMACEN_PRINCIPAL
+            If sTipoVenta = "NM" Then 'Cuidado, aqui se estaba perdiendo el almacén que se obtuvo de la referencia en el caso de las sustituciones
+                If Empresa_Sistema.CODIGO_ALMACEN_POR_CLIENTE AndAlso txtLEN(Me.oCliente.CODIGO_ALMACEN) = True Then
+                    Me.CboAlmacen.SelectedValue = Me.oCliente.CODIGO_ALMACEN
+                Else
+                    Me.CboAlmacen.SelectedValue = Plaza.CODIGO_ALMACEN_PRINCIPAL
+                End If
             End If
 
             Dim bEstableceFormaPago As Boolean
@@ -5333,8 +5356,6 @@ buscaCentrosCostos:
                 End If
             End If
 
-
-
             'Select Case Me.oCliente.TIPO_PERSONA
             '    Case "F"
             '        Me.DesplegarUsoCFDIPersonasFisicas()
@@ -5353,7 +5374,7 @@ buscaCentrosCostos:
 
             Return True
         Catch ex As Exception
-            HandleError(Me.Name, "ConsultarCliente", ex)
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Function
 
