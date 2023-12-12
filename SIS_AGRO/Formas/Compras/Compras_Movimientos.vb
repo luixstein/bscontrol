@@ -2802,7 +2802,10 @@ Buscar:
                     dIEPS_UNITARIO = RedondearD(dIEPS_UNITARIO_USD * dTipoCambio, 4)
                     'dBASE_IEPS = Redondear((dBASE_IEPS_USD * dTipoCambio), 2)
                     dBASE_IEPS = RedondearD((dBASE_IEPS_USD * dTipoCambio), 6)
-                    dIEPS_IMPORTE = RedondearD(dIEPS_IMPORTE * dTipoCambio, 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
+
+                    'dIEPS_IMPORTE = RedondearD(dIEPS_IMPORTE * dTipoCambio, 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
+                    dIEPS_IMPORTE = RedondearD(dIEPS_IMPORTE_USD * dTipoCambio, 2) 'De momento este no se paso a mas decimales, habra que revisar estructura y factibilidad
+
                     dBASE_IVA = dIEPS_IMPORTE + dBASE_IEPS
                     dIVA_IMPORTE = RedondearD(dIVA_IMPORTE_USD * dTipoCambio, 2)
 
