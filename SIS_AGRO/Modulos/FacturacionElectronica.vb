@@ -133,7 +133,7 @@ Module FacturacionElectronica
 
             If My.Computer.Name = "PCSISTEMASJGC22" Or My.Computer.Name = "ERNESTOA" Or My.Computer.Name = "DANIEL-PC" Or Usuario.Codigo_Usuario = 1 Then
                 MsgBox("Las computadoras de sistemas no deben timbrar documentos." & vbCrLf & "Ni el dba(por protección de timbrar por error estando en pruebas).", MsgBoxStyle.Exclamation, sProcedure)
-                If Empresa_Sistema.RFC = "CACX7605101P8" Then 'Si el el rfc es CACX7605101P8=XOCHILT CASAS CHAVEZ entonces es proveedor para timbres demo.
+                If Empresa_Sistema.RFC = "IIA040805DZ4" Then 'Si el el rfc es IIA040805DZ4-ILUMINADORA, ANTES ERA CACX7605101P8=XOCHILT CASAS CHAVEZ entonces es proveedor para timbres demo.
                     If MsgBox("Timbrar demo ? Empresa " & Empresa_Sistema.NOMBRE_EMPRESA & " " & Empresa_Sistema.RFC & ")" & vbCrLf &
                               "si responde no, no se timbrará nada", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, sProcedure) = MsgBoxResult.Yes Then
                         bMododemo = True

@@ -24,6 +24,7 @@ Friend Class cComprobante40
     Private xsischemaLocation As String
     Private xmlnscfdi As String
     Private xmlnspago20 As String
+    Private xmlnsine As String
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Version As String
     Public Serie As String
@@ -53,6 +54,7 @@ Friend Class cComprobante40
 
     'Public ComplementoCCE10 As cComplementoCCE10
     Public ComplementoPagos20 As cComplementoPagos20
+    Public ComplementoINE11 As cComplementoINE11
 
     Public XmlComplementoComercioExterior As String
 #End Region
@@ -78,6 +80,7 @@ Friend Class cComprobante40
         'Me.xsischemaLocation = "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd" 'ahora se gestiona en el ConstruyeXML
         Me.xmlnscfdi = "http://www.sat.gob.mx/cfd/4"
         Me.xmlnspago20 = "http://www.sat.gob.mx/Pagos20"
+        Me.xmlnsine = "http://www.sat.gob.mx/ine"
 
         Me.xmlDoc = New MSXML2.DOMDocument60
     End Sub
@@ -150,11 +153,22 @@ Friend Class cComprobante40
 
                 Select Case Me.tipoComprobante
                     Case TipoComprobante.FACTURA_VENTA, TipoComprobante.NOTA_CREDITO_CXC, TipoComprobante.DEVOLUCION_CXC
-                        Me.xsischemaLocation = "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd"
+
+                        If Not (Me.ComplementoINE11 Is Nothing) Then 'Si le pasó el complemento de pagos
+                            Me.xsischemaLocation = "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd " &
+                            "http://www.sat.gob.mx/ine http://www.sat.gob.mx/sitio_internet/cfd/ine/ine11.xsd"
+
+                            .setAttribute("xmlns:ine", xmlnsine)
+                        Else
+                            Me.xsischemaLocation = "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd"
+                        End If
+
                     Case TipoComprobante.PAGO_CXC
                         Me.xsischemaLocation = "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd " &
                                                 "http://www.sat.gob.mx/Pagos20 http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos20.xsd"
+
                         .setAttribute("xmlns:pago20", xmlnspago20)
+
                     Case Else
                         MsgBox("No se indicó el tipo de documento.", vbInformation, sProcedure)
                 End Select
@@ -636,7 +650,16 @@ Friend Class cComprobante40
                 'End If
             End If
 
-            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            If Not (Me.ComplementoINE11 Is Nothing) Then 'Si le pasó el complemento de pagos
+                If Me.ComplementoINE11.GenerarNodoComplementoINE = True Then
+                    NodoComplemento.appendChild(Me.ComplementoINE11.Complemento)
+                Else
+                    Return False
+                End If
+            End If
+
+            '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             'Si hubiera mas complementos, aqui se agregarian
             'If Not (Me.ComplementoXX Is Nothing) Then
             '    NodoComplemento.appendChild Me.ComplementoXX.GenerarNodoComplementoXX

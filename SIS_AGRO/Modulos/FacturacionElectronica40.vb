@@ -422,6 +422,63 @@ Module FacturacionElectronica40
                 Cfd.XmlComplementoComercioExterior = sXmlComercioExterior
             End If
 
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Complemento INE'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            MsgBox("FALTA validar si tiene complemento de INE y si lo tiene llenar con datos reales", vbExclamation)
+
+            Dim complementoINE11 As New cComplementoINE11
+
+            With complementoINE11
+                .Version = "1.1"
+                .TipoProceso = "Ordinario"
+                .TipoComite = "Ejecutivo Estatal"
+
+                Dim Contabilidades As New cINEContabilidades
+                Contabilidades.Add("521")
+
+                .Entidades.Add("SIN", "", Contabilidades)
+            End With
+
+            'With complementoINE11
+            '    .Version = "1.1"
+            '    .TipoProceso = "Campaña"
+            '    .TipoComite = ""
+
+            '    Dim Contabilidades As New cINEContabilidades
+            '    Contabilidades.Add("521")
+            '    Contabilidades.Add("522")
+            '    Contabilidades.Add("523")
+            '    .Entidades.Add("SIN", "Local", Contabilidades)
+
+            '    Contabilidades = New cINEContabilidades
+            '    Contabilidades.Add("566")
+            '    .Entidades.Add("ROO", "Federal", Contabilidades)
+            'End With
+
+            'With complementoINE11
+            '    .Version = "1.1"
+            '    .TipoProceso = "Ordinario"
+            '    .TipoComite = "Directivo Estatal"
+            '    .IdContabilidad = "566"
+
+            '    Dim Contabilidades As New cINEContabilidades
+            '    Contabilidades.Add("521")
+            '    .Entidades.Add("SIN", "", Contabilidades)
+            'End With
+
+            'With complementoINE11
+            '    .Version = "1.1"
+            '    .TipoProceso = "Ordinario"
+            '    .TipoComite = "Ejecutivo Nacional"
+            '    .IdContabilidad = "566"
+
+            '    Dim Contabilidades As New cINEContabilidades
+            '    Contabilidades.Add("521")
+            '    .Entidades.Add("SIN", "", Contabilidades)
+            'End With
+
+            Cfd.ComplementoINE11 = complementoINE11
+
             'Fin de llenado de nodos del comprobante''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
             If Cfd.GeneraCFD(TipoComprobante.FACTURA_VENTA, sRutaXML) = True Then
