@@ -126,6 +126,15 @@ Public Class Ventas_Movimientos
     Private iGyConcepto As Short = 5
 #End Region
 
+#Region "Columnas grid Entidades Complemento INE"
+    Private iGyCodigoEntidad As Short = 1
+    Private iGyNombreEntidad As Short = 2
+    Private iGyCodigoAmbito As Short = 3
+    Private iGyNombreAmbito As Short = 4
+    Private iGyIdContabiliad As Short = 5
+    Private iGyIdAdicional As Short = 6
+#End Region
+
 #Region "Campos/propiedades para facturas embarques extrajeros que se inician desde otra pantalla"
     Private _EsPorEmbarqueExtranjero As Boolean = False
     'Private sFolioEmbarqueExtranjero As String = ""
@@ -1045,6 +1054,48 @@ Buscar:
             HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
+
+    Private Sub BtnAgregarEntidad_Click(sender As Object, e As EventArgs) Handles BtnAgregarEntidad.Click
+        Me.AgregarEntidad()
+    End Sub
+
+    Private Sub CboTipoProceso_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CboTipoProceso.SelectedIndexChanged
+        If Me.CboTipoProceso.Text = "Ordinario" Then 'Ordinario
+            Me.CboTipoComite.Enabled = True
+            Me.CboTipoComite.SelectedIndex = -1
+            Me.GbEntidades.Enabled = False
+
+        Else ' 2-Precampaña / 3-Campaña
+            Me.CboTipoComite.Enabled = False
+            Me.CboTipoComite.SelectedIndex = -1
+            Me.TxtIdContabilidad.Enabled = False
+            Me.TxtIdContabilidad.Text = ""
+
+            Me.GbEntidades.Enabled = True
+            Me.CboAmbito.Enabled = True
+
+        End If
+    End Sub
+
+    Private Sub CboTipoComite_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CboTipoComite.SelectedIndexChanged
+        Me.GbEntidades.Enabled = True
+        Me.CboAmbito.Enabled = False
+
+        If Me.CboTipoComite.Text = "Ejecutivo Estatal" Then
+            Me.TxtIdContabilidad.Enabled = False
+            Me.TxtIdContabilidad.Text = ""
+
+        Else 'Ejecutivo nacional / Directivo estatal
+            Me.TxtIdContabilidad.Enabled = True
+            Me.TxtIdContabilidad.Text = ""
+
+            If Me.CboTipoComite.Text = "Ejecutivo Nacional" Then
+                Me.GbEntidades.Enabled = False
+            End If
+
+        End If
+    End Sub
+
 #End Region
 
 #Region "Eventos genéricos"
@@ -1053,7 +1104,7 @@ Buscar:
         txtNoBeep(e)
     End Sub
 
-    Private Sub txtSoloNumerosEnteros_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtRegimenFiscalReceptor.KeyPress
+    Private Sub txtSoloNumerosEnteros_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtRegimenFiscalReceptor.KeyPress, TxtIdContabilidad.KeyPress, TxtIdContabilidadEntidad.KeyPress
         txtSoloNumerosEnteros(e)
         txtNoBeep(e)
     End Sub
@@ -1158,6 +1209,8 @@ Buscar:
 
             Me.chkTieneCCE.Checked = False
             Me.chkTieneCartaPorte.Checked = False
+
+            Me.InicializaControlesComplementoINE()
 
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -1613,6 +1666,11 @@ Buscar:
                         Me.cboVendedor.SelectedValue = Usuario.CODIGO_VENDEDOR
                     End If
 
+                    Me.CboTipoProceso.Enabled = True
+                    Me.CboTipoComite.Enabled = False
+                    Me.TxtIdContabilidad.Enabled = False
+                    Me.GbEntidades.Enabled = False
+
                     Me.EsFacturaVariasRemisiones = False
                     Me.btnAceptar.Enabled = True
                     Me.btnAceptarRemisionesSeries.Enabled = True
@@ -1674,6 +1732,11 @@ Buscar:
                     Me.lblConceptoCancelacion.Visible = False
                     Me.TxtConceptoCancelacion.Visible = False
 
+                    Me.CboTipoProceso.Enabled = False
+                    Me.CboTipoComite.Enabled = False
+                    Me.TxtIdContabilidad.Enabled = False
+                    Me.GbEntidades.Enabled = False
+
                     Me.btnAceptar.Enabled = False
                     Me.btnAceptarRemisionesSeries.Enabled = False
                     Me.btnCargarRemisiones.Enabled = False
@@ -1705,6 +1768,11 @@ Buscar:
 
                     Me.lblConceptoCancelacion.Visible = False
                     Me.TxtConceptoCancelacion.Visible = False
+
+                    Me.CboTipoProceso.Enabled = False
+                    Me.CboTipoComite.Enabled = False
+                    Me.TxtIdContabilidad.Enabled = False
+                    Me.GbEntidades.Enabled = False
 
                     Me.btnAceptar.Enabled = False
                     Me.btnAceptarRemisionesSeries.Enabled = False
@@ -1801,6 +1869,11 @@ Buscar:
 
                     Me.lblConceptoCancelacion.Visible = False
                     Me.TxtConceptoCancelacion.Visible = False
+
+                    Me.CboTipoProceso.Enabled = False
+                    Me.CboTipoComite.Enabled = False
+                    Me.TxtIdContabilidad.Enabled = False
+                    Me.GbEntidades.Enabled = False
 
                     Me.btnAceptar.Enabled = False
                     Me.btnAceptarRemisionesSeries.Enabled = False
@@ -1905,6 +1978,11 @@ Buscar:
                     Me.lblConceptoCancelacion.Visible = True
                     Me.TxtConceptoCancelacion.Visible = True
                     Me.TxtConceptoCancelacion.ReadOnly = True
+
+                    Me.CboTipoProceso.Enabled = False
+                    Me.CboTipoComite.Enabled = False
+                    Me.TxtIdContabilidad.Enabled = False
+                    Me.GbEntidades.Enabled = False
 
                     Me.btnAceptar.Enabled = False
                     Me.btnAceptarRemisionesSeries.Enabled = False
@@ -2383,6 +2461,16 @@ Buscar:
                             GoTo SaltarTimbrado
                         End If
                     End If
+                End If
+
+                'Complemento INE
+                If Me.CboTipoProceso.SelectedIndex <> -1 Then
+                    'Graba complemento INE
+                    If Me.GrabarComplementoINE(Me.txtFolio.Text) = False Then
+                        MsgBox("Error al tratar de grabar el Complemento INE", MsgBoxStyle.Exclamation, sProcedure)
+                        GoTo SaltarTimbrado
+                    End If
+
                 End If
 
                 Dim bVentaTimbrada As Boolean = False
@@ -2876,14 +2964,14 @@ CANCELAR:
 
                 Select Case Me.cboTipoNegociacion.Text
                     Case "CONTADO"
-                                    'Se quitó la restricción, biologos ocupa facturar un auto a una aseguradora con PUE-99
-                                    'If Me.cboFormaPago.SelectedValue.ToString = "99" Then
-                                    '    MsgBox("La forma de pago no puede ser 99-Por definir porque al ser venta de ""contado"" entonces se sabe como se esta pagando el documento.", vbExclamation, sProcedure)
-                                    '    If Me.cboFormaPago.Enabled = True Then
-                                    '        Me.cboFormaPago.Focus()
-                                    '    End If
-                                    '    Return False
-                                    'End If
+                        'Se quitó la restricción, biologos ocupa facturar un auto a una aseguradora con PUE-99
+                        'If Me.cboFormaPago.SelectedValue.ToString = "99" Then
+                        '    MsgBox("La forma de pago no puede ser 99-Por definir porque al ser venta de ""contado"" entonces se sabe como se esta pagando el documento.", vbExclamation, sProcedure)
+                        '    If Me.cboFormaPago.Enabled = True Then
+                        '        Me.cboFormaPago.Focus()
+                        '    End If
+                        '    Return False
+                        'End If
                     Case "CREDITO" 'SE PERMITIRA GRABAR A CREDITO CON OTRA FORMA DE PAGO
                         'If Me.cboFormaPago.SelectedValue.ToString <> "99" Then
                         '    MsgBox("La forma de pago debe ser 99-Por definir porque al ser venta de ""crédito"" no hay pago.", vbExclamation, sProcedure)
@@ -3318,6 +3406,13 @@ CANCELAR:
                     Return False
                 End If
 
+            End If
+
+            'Complemento INE
+            If Me.CboTipoProceso.SelectedIndex <> -1 Then
+                If Me.ValidaDatosComplementoINE() = False Then
+                    Return False
+                End If
             End If
 
             bResultado = True
@@ -4642,11 +4737,6 @@ salto:
                 Me.cboIncoterm.SelectedValue = Me.oVenta.CODIGO_INCOTERM
             End If
 
-            bResultado = True
-
-            Me.GestionaCambioEstado()
-            Me.GestionaMoneda()
-
             Me.txtFolio.Enabled = False
             If Me.sTipoVenta = "SR" Then
                 'Ya no ejecutamos el código siguiente porque este documento es nuevo
@@ -4689,6 +4779,30 @@ salto:
             Me.GridFacturasVariasRemisiones.DataSource = oVenta.ObtenerRelacionFacturasRemisiones(oVenta.FOLIO_VENTA)
             Me.FormateaGridFacturasVariasRemisiones()
             Me.GridFacturasVariasRemisiones.Locked = True
+
+            'ComplementoINE
+            Dim sql As New Class_find("SELECT FOLIO_VENTA FROM CFDI_COMPLEMENTO_INE_GLOBAL WHERE FOLIO_VENTA='" & Me.txtFolio.Text & "'")
+
+            If txtLEN(sql.Result1) Then
+                Dim oComplementoINEGlobal As New Class_ComplementoINE_Global(sql.Result1)
+                Me.CboTipoProceso.SelectedValue = oComplementoINEGlobal.CODIGO_PROCESO
+                If oComplementoINEGlobal.CODIGO_COMITE < 1 Then
+                    Me.CboTipoComite.SelectedIndex = -1
+                Else
+                    Me.CboTipoComite.SelectedValue = oComplementoINEGlobal.CODIGO_COMITE
+                End If
+
+                Me.TxtIdContabilidad.Text = oComplementoINEGlobal.ID_CONTABILIDAD
+
+                Me.InicializaGridEntidadesINE()
+                Me.GridEntidades.DataSource = oComplementoINEGlobal.ObtenerDetalleEntidades
+                Me.FormateaGridEntidadesINE()
+            End If
+
+            bResultado = True
+
+            Me.GestionaCambioEstado()
+            Me.GestionaMoneda()
 
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -7039,6 +7153,348 @@ dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE").
             HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
+
+    Private Sub InicializaControlesComplementoINE()
+        Me.TxtIdContabilidadEntidad.Text = ""
+        Me.TxtIdContabilidad.Text = ""
+        Me.InicializaGridEntidadesINE()
+        Me.DesplegarProcesos()
+        Me.DesplegarComites()
+        Me.DesplegarEntidades()
+        Me.DesplegarAmbitos()
+        Me.CboTipoComite.Enabled = False
+        Me.TxtIdContabilidad.Enabled = False
+        Me.GbEntidades.Enabled = False
+
+    End Sub
+
+    Private Sub InicializaGridEntidadesINE()
+        Try
+            Me.GridEntidades.DataSource = Nothing
+            FG_Grid_Limpiar(Me.GridEntidades)
+            Me.GridEntidades.Rows = 1
+            Me.GridEntidades.Cols = 7
+            Me.FormateaGridEntidadesINE()
+        Catch ex As Exception
+            HandleError(Me.Name, "InicializaGridEntidadesINE", ex)
+        End Try
+    End Sub
+
+    Private Sub FormateaGridEntidadesINE()
+        Const sProcedure As String = "FormateaGridEntidadesINE"
+        Try
+            With Me.GridEntidades
+                .AutoRedraw = False
+
+                .Column(Me.iGyCodigoEntidad).Width = 50
+                .Column(Me.iGyNombreEntidad).Width = 150
+                .Column(Me.iGyCodigoAmbito).Width = 50
+                .Column(Me.iGyNombreAmbito).Width = 150
+                .Column(Me.iGyIdContabiliad).Width = 100
+                .Column(Me.iGyIdAdicional).Width = 20
+
+                .Cell(0, Me.iGyCodigoEntidad).Text = "CodigoEntidad"
+                .Cell(0, Me.iGyNombreEntidad).Text = "Entidad"
+                .Cell(0, Me.iGyCodigoAmbito).Text = "CodigoAmbito"
+                .Cell(0, Me.iGyNombreAmbito).Text = "Ambito"
+                .Cell(0, Me.iGyIdContabiliad).Text = "Clave Contabilidad"
+                .Cell(0, Me.iGyIdAdicional).Text = "IdAdicional"
+
+                .Column(Me.iGyCodigoEntidad).Locked = True
+                .Column(Me.iGyNombreEntidad).Locked = True
+                .Column(Me.iGyCodigoAmbito).Locked = True
+                .Column(Me.iGyNombreAmbito).Locked = True
+                .Column(Me.iGyIdContabiliad).Locked = True
+                .Column(Me.iGyIdAdicional).Locked = True
+
+                .Column(Me.iGyCodigoEntidad).Visible = False
+                .Column(Me.iGyCodigoAmbito).Visible = False
+                .Column(Me.iGyIdAdicional).Visible = False
+
+                .Locked = True
+
+                .AutoRedraw = True
+                .Refresh()
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
+        Finally
+            Me.GridEntidades.AutoRedraw = True
+            Me.GridEntidades.Refresh()
+        End Try
+    End Sub
+
+    Private Sub DesplegarProcesos()
+        Try
+            Dim oProcesos As New Class_INE_CatTipoProcesos
+            With Me.CboTipoProceso
+                .DisplayMember = "NOMBRE_PROCESO"
+                .ValueMember = "CODIGO_PROCESO"
+                Dim dView As New Data.DataView(oProcesos.ObtenerTipoProcesos)
+                dView.Sort = "CODIGO_PROCESO"
+                .DataSource = dView
+                .SelectedIndex = -1
+
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarProcesos", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarComites()
+        Try
+            Dim oComites As New Class_INE_CatTipoComites
+            With Me.CboTipoComite
+                .DisplayMember = "NOMBRE_COMITE"
+                .ValueMember = "CODIGO_COMITE"
+                Dim dView As New Data.DataView(oComites.ObtenerTipoComites)
+                dView.Sort = "CODIGO_COMITE"
+                .DataSource = dView
+                .SelectedIndex = -1
+
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarComites", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarEntidades()
+        Try
+            Dim oEntidades As New Class_INE_CatEntidades
+            With Me.CboEntidad
+                .DisplayMember = "NOMBRE_ENTIDAD"
+                .ValueMember = "CODIGO_ENTIDAD"
+                Dim dView As New Data.DataView(oEntidades.ObtenerEntidades)
+                dView.Sort = "NOMBRE_ENTIDAD"
+                .DataSource = dView
+                .SelectedIndex = -1
+
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarEntidades", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarAmbitos()
+        Try
+            Dim oAmbitos As New Class_INE_CatAmbitos
+            With Me.CboAmbito
+                .DisplayMember = "NOMBRE_AMBITO"
+                .ValueMember = "CODIGO_AMBITO"
+                Dim dView As New Data.DataView(oAmbitos.ObtenerAmbitos)
+                dView.Sort = "CODIGO_AMBITO"
+                .DataSource = dView
+                .SelectedIndex = -1
+
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarAmbito", ex)
+        End Try
+    End Sub
+
+    Private Sub AgregarEntidad()
+        Try
+            If Me.CboEntidad.SelectedIndex < 0 Then
+                MsgBox("Capture una Entidad.", MsgBoxStyle.Exclamation, "AgregarEntidad")
+                Me.CboEntidad.Focus()
+                Return
+            End If
+
+            With Me.GridEntidades
+                .Rows = .Rows + 1
+                Dim renglon = .Rows - 1
+
+                .Cell(renglon, iGyCodigoEntidad).Text = Me.CboEntidad.SelectedValue.ToString
+                .Cell(renglon, iGyNombreEntidad).Text = Me.CboEntidad.Text
+
+                If Me.CboAmbito.SelectedIndex <> -1 Then 'Este campo puede ser omitido dependiendo del tipo de Proceso
+                    .Cell(renglon, iGyCodigoAmbito).Text = Me.CboAmbito.SelectedValue.ToString
+                    .Cell(renglon, iGyNombreAmbito).Text = Me.CboAmbito.Text
+                Else
+                    .Cell(renglon, iGyCodigoAmbito).Text = "0"
+                    .Cell(renglon, iGyNombreAmbito).Text = ""
+                End If
+                .Cell(renglon, iGyIdContabiliad).Text = Me.TxtIdContabilidadEntidad.Text
+
+            End With
+
+        Catch ex As Exception
+            HandleError(Me.Name, "AgregarEntidad", ex)
+        End Try
+        
+    End Sub
+
+    Private Function GrabarComplementoINE(ByVal sFolioVenta As String) As Boolean
+        Dim bResultado As Boolean = True
+        Dim oComplementoINEGlobal As Class_ComplementoINE_Global
+        Dim oComplementoINEDetalle As Class_ComplementoINE_Detalle
+
+        Try
+            oComplementoINEGlobal = New Class_ComplementoINE_Global(sFolioVenta)
+
+            With oComplementoINEGlobal
+                .FOLIO_VENTA = sFolioVenta
+                .CODIGO_PROCESO = CInt(Me.CboTipoProceso.SelectedValue)
+                If Me.CboTipoComite.SelectedIndex <> -1 Then
+                    .CODIGO_COMITE = CInt(Me.CboTipoComite.SelectedValue)
+                Else
+                    .CODIGO_COMITE = 0
+                End If
+
+                .ID_CONTABILIDAD = Me.TxtIdContabilidad.Text
+
+                If .Grabar() = False Then
+                    MsgBox("Error al intentar grabar los datos globales del Complemento INE.", MsgBoxStyle.Exclamation, "GrabarComplementoINE")
+                    Return bResultado
+                End If
+
+            End With
+
+            'Agregar IdAdicional
+            Dim IdAdicional As Integer = 1, Entidad As String = "", Ambito As Integer = 0
+
+            For i As Integer = 1 To Me.GridEntidades.Rows - 1
+                If txtLEN(Me.GridEntidades.Cell(i, Me.iGyIdAdicional).Text) = False Then
+                    Entidad = Me.GridEntidades.Cell(i, Me.iGyCodigoEntidad).Text
+                    Ambito = CInt(Me.GridEntidades.Cell(i, Me.iGyCodigoAmbito).Text)
+                    Me.GridEntidades.Cell(i, Me.iGyIdAdicional).Text = IdAdicional.ToString
+
+                    For j As Integer = 1 To Me.GridEntidades.Rows - 1
+                        If Me.GridEntidades.Cell(j, Me.iGyCodigoEntidad).Text = Entidad And CInt(Me.GridEntidades.Cell(j, Me.iGyCodigoAmbito).Text) = Ambito Then
+                            If txtLEN(Me.GridEntidades.Cell(j, Me.iGyIdAdicional).Text) = False Then
+                                Me.GridEntidades.Cell(j, Me.iGyIdAdicional).Text = IdAdicional.ToString
+                            End If
+                        End If
+                    Next
+
+                    IdAdicional = IdAdicional + 1
+                End If
+                
+            Next
+
+            'Grabar detalle Entidades
+            IdAdicional = 1
+
+            For i = 1 To Me.GridEntidades.Rows - 1
+                If Me.GridEntidades.Cell(i, Me.iGyIdAdicional).Text = IdAdicional.ToString Then
+                    oComplementoINEDetalle = New Class_ComplementoINE_Detalle
+
+                    With oComplementoINEDetalle
+                        .FOLIO_VENTA = sFolioVenta
+                        .CODIGO_ENTIDAD = Me.GridEntidades.Cell(i, Me.iGyCodigoEntidad).Text
+                        .CODIGO_AMBITO = CInt(Me.GridEntidades.Cell(i, Me.iGyCodigoAmbito).Text)
+
+                        If .GrabarDetalleEntidades() = False Then
+                            MsgBox("Error al tratar de grabar el detalle de Entidades del Complemento INE", MsgBoxStyle.Exclamation, "GrabarComplementoINE")
+                            Return bResultado
+                        End If
+
+                        'Graba el detalle de Contabilidad de esta entidad antes de continuar con las demas
+                        For j = i To Me.GridEntidades.Rows - 1
+                            If Me.GridEntidades.Cell(j, Me.iGyIdAdicional).Text = IdAdicional.ToString Then
+                                With oComplementoINEDetalle
+                                    .ID_CONTABILIDAD = Me.GridEntidades.Cell(j, Me.iGyIdContabiliad).Text
+
+                                    If .GrabarDetalleContabilidades() = False Then
+                                        MsgBox("Error al tratar de grabar el detalle de Contabilidades del Complemento INE", MsgBoxStyle.Exclamation, "GrabarComplementoINE")
+                                        Return bResultado
+                                    End If
+
+                                End With
+                            End If
+
+                        Next
+
+                        IdAdicional = IdAdicional + 1
+
+                    End With
+                End If
+            Next
+
+            bResultado = True
+        Catch ex As Exception
+            HandleError(Me.Name, "GrabarComplementoINE", ex)
+        End Try
+        Return bResultado
+    End Function
+
+    Private Function ValidaDatosComplementoINE() As Boolean
+        Dim sProcedure As String = "ValidaDatosComplementoINE"
+
+        Try
+            If Me.CboTipoProceso.Text = "Ordinario" Then
+                If Me.CboTipoComite.SelectedIndex < 0 Then
+                    MsgBox("El proceso Ordinario requiere seleccionar un tipo de Comite.", MsgBoxStyle.Exclamation, sProcedure)
+                    Me.CboTipoComite.Focus()
+                    Return False
+                End If
+
+                Select Case Me.CboTipoComite.Text
+                    Case "Ejecutivo Nacional"
+                        If txtLEN(Me.GridEntidades.Cell(1, Me.iGyCodigoEntidad).Text) Then
+                            MsgBox("En el comite Ejecutivo Nacional se debe omitir capturar Entidades.", MsgBoxStyle.Exclamation, sProcedure)
+                            Return False
+                        End If
+
+                    Case "Ejecutivo Estatal", "Directivo Estatal"
+
+                        If Me.CboTipoComite.Text = "Ejecutivo Estatal" Then
+                            If txtLEN(Me.TxtIdContabilidad.Text) Then
+                                MsgBox("En el comite Ejecutivo Estatal se debe omitir la Clave de Contabilidad.", MsgBoxStyle.Exclamation, sProcedure)
+                                Me.TxtIdContabilidad.Focus()
+                                Return False
+                            End If
+                        End If
+
+                        If txtLEN(Me.GridEntidades.Cell(1, Me.iGyCodigoEntidad).Text) = False Then
+                            MsgBox("El comite Ejecutivo Estatal/Directivo Estatal requiere al menos una Entidad capturada.", MsgBoxStyle.Exclamation, sProcedure)
+                            Me.CboEntidad.Focus()
+                            Return False
+                        End If
+
+                        For i As Integer = 1 To Me.GridEntidades.Rows - 1
+                            If txtLEN(Me.GridEntidades.Cell(1, Me.iGyCodigoAmbito).Text) Then
+                                MsgBox("El comite Ejecutivo Estatal/Directivo Estatal requiere que se omita el tipo de Ambito en la Entidad en el renglon " & i.ToString & ".", MsgBoxStyle.Exclamation, sProcedure)
+                                Return False
+                            End If
+                        Next
+
+                End Select
+
+            Else 'Precampaña/Campaña
+                If Me.CboTipoComite.SelectedIndex > 0 Then
+                    MsgBox("En el proceso Precampaña/Campaña se debe omitir el tipo de Comite.", MsgBoxStyle.Exclamation, sProcedure)
+                    Me.CboTipoComite.SelectedIndex = -1
+                    Return False
+                End If
+
+                If txtLEN(Me.TxtIdContabilidad.Text) Then
+                    MsgBox("En el proceso Precampaña/Campaña se debe omitir la Clave de Contabilidad.", MsgBoxStyle.Exclamation, sProcedure)
+                    Me.TxtIdContabilidad.Focus()
+                    Return False
+                End If
+
+                If txtLEN(Me.GridEntidades.Cell(1, Me.iGyCodigoEntidad).Text) = False Then
+                    MsgBox("El tipo de proceso Precampaña/Campaña requiere al menos una Entidad capturada.", MsgBoxStyle.Exclamation, sProcedure)
+                    Me.CboEntidad.Focus()
+                    Return False
+                End If
+
+                For i As Integer = 1 To Me.GridEntidades.Rows - 1
+                    If txtLEN(Me.GridEntidades.Cell(1, Me.iGyCodigoAmbito).Text) = False Then
+                        MsgBox("El tipo de proceso Precampaña/Campaña requiere el tipo de Ambito en todas las Entidades. Capture el tipo de Ambito en el renglon " & i.ToString & ".", MsgBoxStyle.Exclamation, sProcedure)
+                        Return False
+                    End If
+                Next
+            End If
+
+            Return True
+
+        Catch ex As Exception
+            HandleError(Me.Name, "ValidaDatosComplementoINE", ex)
+        End Try
+
+    End Function
 
 #End Region
 
