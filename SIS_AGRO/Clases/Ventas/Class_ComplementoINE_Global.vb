@@ -218,7 +218,41 @@ Public Class Class_ComplementoINE_Global
         Return dTabla
     End Function
 
+    Public Function ObtenerDetalleEntidadesParaComplemento() As DataTable
+        Dim dTabla As New DataTable("Entidades"), da As SqlDataAdapter
+        Dim sSQL As String
 
+        Try
+            sSQL = "SELECT E.ID_DETALLE_ENTIDADES,E.CODIGO_ENTIDAD,ISNULL(E.CODIGO_AMBITO,'') CODIGO_AMBITO,ISNULL(A.NOMBRE_AMBITO,'') NOMBRE_AMBITO FROM CFDI_COMPLEMENTO_INE_DETALLE_ENTIDADES E " & _
+                    "LEFT JOIN CFDI_INE_CAT_AMBITOS A ON(E.CODIGO_AMBITO=A.CODIGO_AMBITO) WHERE E.FOLIO_VENTA='" & Me._FOLIO_VENTA & "' ORDER BY E.ID_DETALLE_ENTIDADES "
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.NombreClase, "ObtenerDetalleEntidadesParaComplemento", ex)
+        End Try
+        Return dTabla
+    End Function
+
+    Public Function ObtenerDetalleContabilidadesParaComplemento(ByVal iIdDetalleEntidad As Integer) As DataTable
+        Dim dTabla As New DataTable("Contabilidades"), da As SqlDataAdapter
+        Dim sSQL As String
+
+        Try
+            sSQL = "SELECT E.ID_DETALLE_ENTIDADES,C.ID_CONTABILIDAD FROM CFDI_COMPLEMENTO_INE_DETALLE_ENTIDADES E INNER JOIN CFDI_COMPLEMENTO_INE_DETALLE_CONTABILIDADES C ON(E.ID_DETALLE_ENTIDADES=C.ID_DETALLE_ENTIDADES) " & _
+                    "WHERE E.ID_DETALLE_ENTIDADES=" & iIdDetalleEntidad & " ORDER BY C.ID_CONTABILIDAD "
+
+            da = New SqlDataAdapter(sSQL, Me._Conexion)
+            da.Fill(dTabla)
+            da.Dispose()
+
+        Catch ex As Exception
+            HandleError(Me.NombreClase, "ObtenerDetalleContabilidadesParaComplemento", ex)
+        End Try
+        Return dTabla
+    End Function
 #End Region
 
 End Class

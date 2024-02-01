@@ -423,59 +423,42 @@ Module FacturacionElectronica40
             End If
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Complemento INE'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-            MsgBox("FALTA validar si tiene complemento de INE y si lo tiene llenar con datos reales", vbExclamation)
-
+            Dim oComplementoINEGlobal As New Class_ComplementoINE_Global(oVenta.FOLIO_VENTA)
             Dim complementoINE11 As New cComplementoINE11
 
-            With complementoINE11
-                .Version = "1.1"
-                .TipoProceso = "Ordinario"
-                .TipoComite = "Ejecutivo Estatal"
+            If oComplementoINEGlobal.Existe Then
 
-                Dim Contabilidades As New cINEContabilidades
-                Contabilidades.Add("521")
+                Dim oProcesos As New Class_INE_CatTipoProcesos(oComplementoINEGlobal.CODIGO_PROCESO)
+                Dim oComites As New Class_INE_CatTipoComites(oComplementoINEGlobal.CODIGO_COMITE)
 
-                .Entidades.Add("SIN", "", Contabilidades)
-            End With
+                With complementoINE11
+                    .Version = oComplementoINEGlobal.VERSION
+                    .TipoProceso = oProcesos.NOMBRE_PROCESO
+                    .TipoComite = oComites.NOMBRE_COMITE
+                    .IdContabilidad = oComplementoINEGlobal.ID_CONTABILIDAD
 
-            'With complementoINE11
-            '    .Version = "1.1"
-            '    .TipoProceso = "Campaña"
-            '    .TipoComite = ""
+                    Dim Contabilidades As New cINEContabilidades
 
-            '    Dim Contabilidades As New cINEContabilidades
-            '    Contabilidades.Add("521")
-            '    Contabilidades.Add("522")
-            '    Contabilidades.Add("523")
-            '    .Entidades.Add("SIN", "Local", Contabilidades)
+                    Dim dtEntidades As DataTable = oComplementoINEGlobal.ObtenerDetalleEntidadesParaComplemento()
+                    Dim dtContabilidadesDetalle As DataTable
 
-            '    Contabilidades = New cINEContabilidades
-            '    Contabilidades.Add("566")
-            '    .Entidades.Add("ROO", "Federal", Contabilidades)
-            'End With
+                    If dtEntidades.Rows.Count > 0 Then
+                        For Each row As DataRow In dtEntidades.Rows
+                            dtContabilidadesDetalle = New DataTable
+                            dtContabilidadesDetalle = oComplementoINEGlobal.ObtenerDetalleContabilidadesParaComplemento(CInt(row("ID_DETALLE_ENTIDADES").ToString))
 
-            'With complementoINE11
-            '    .Version = "1.1"
-            '    .TipoProceso = "Ordinario"
-            '    .TipoComite = "Directivo Estatal"
-            '    .IdContabilidad = "566"
+                            For Each rowContabilidad As DataRow In dtContabilidadesDetalle.Rows
+                                Contabilidades.Add(rowContabilidad("ID_CONTABILIDAD").ToString)
+                            Next
 
-            '    Dim Contabilidades As New cINEContabilidades
-            '    Contabilidades.Add("521")
-            '    .Entidades.Add("SIN", "", Contabilidades)
-            'End With
+                            .Entidades.Add(row("CODIGO_ENTIDAD").ToString, row("NOMBRE_AMBITO").ToString, Contabilidades)
 
-            'With complementoINE11
-            '    .Version = "1.1"
-            '    .TipoProceso = "Ordinario"
-            '    .TipoComite = "Ejecutivo Nacional"
-            '    .IdContabilidad = "566"
+                        Next
 
-            '    Dim Contabilidades As New cINEContabilidades
-            '    Contabilidades.Add("521")
-            '    .Entidades.Add("SIN", "", Contabilidades)
-            'End With
+                    End If
+
+                End With
+            End If
 
             Cfd.ComplementoINE11 = complementoINE11
 

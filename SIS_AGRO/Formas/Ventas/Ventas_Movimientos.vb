@@ -7431,7 +7431,7 @@ dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE").
 
                 Select Case Me.CboTipoComite.Text
                     Case "Ejecutivo Nacional"
-                        If txtLEN(Me.GridEntidades.Cell(1, Me.iGyCodigoEntidad).Text) Then
+                        If Me.GridEntidades.Rows > 1 Then
                             MsgBox("En el comite Ejecutivo Nacional se debe omitir capturar Entidades.", MsgBoxStyle.Exclamation, sProcedure)
                             Return False
                         End If
@@ -7446,14 +7446,14 @@ dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE").
                             End If
                         End If
 
-                        If txtLEN(Me.GridEntidades.Cell(1, Me.iGyCodigoEntidad).Text) = False Then
+                        If Me.GridEntidades.Rows <= 1 Then
                             MsgBox("El comite Ejecutivo Estatal/Directivo Estatal requiere al menos una Entidad capturada.", MsgBoxStyle.Exclamation, sProcedure)
                             Me.CboEntidad.Focus()
                             Return False
                         End If
 
                         For i As Integer = 1 To Me.GridEntidades.Rows - 1
-                            If txtLEN(Me.GridEntidades.Cell(1, Me.iGyCodigoAmbito).Text) Then
+                            If txtLEN(Me.GridEntidades.Cell(1, Me.iGyNombreAmbito).Text) Then
                                 MsgBox("El comite Ejecutivo Estatal/Directivo Estatal requiere que se omita el tipo de Ambito en la Entidad en el renglon " & i.ToString & ".", MsgBoxStyle.Exclamation, sProcedure)
                                 Return False
                             End If
@@ -7474,7 +7474,7 @@ dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE").
                     Return False
                 End If
 
-                If txtLEN(Me.GridEntidades.Cell(1, Me.iGyCodigoEntidad).Text) = False Then
+                If Me.GridEntidades.Rows <= 1 Then
                     MsgBox("El tipo de proceso Precampaña/Campaña requiere al menos una Entidad capturada.", MsgBoxStyle.Exclamation, sProcedure)
                     Me.CboEntidad.Focus()
                     Return False
