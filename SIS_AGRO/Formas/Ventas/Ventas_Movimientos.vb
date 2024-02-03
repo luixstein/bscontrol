@@ -1096,6 +1096,17 @@ Buscar:
         End If
     End Sub
 
+    Private Sub btnEliminarDatosINE_Click(sender As Object, e As EventArgs) Handles btnEliminarDatosINE.Click
+        If MsgBox("¿Deseas eliminar los datos capturados del complemento INE?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Complemento INE") = MsgBoxResult.Yes Then
+            Me.InicializaControlesComplementoINE()
+            Me.InicializaGridEntidadesINE()
+        End If
+    End Sub
+
+    Private Sub GridEntidades_KeyDown(ByVal Sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridEntidades.KeyDown
+        Me.GestionaGridEntidades(e)
+    End Sub
+
 #End Region
 
 #Region "Eventos genéricos"
@@ -1670,6 +1681,7 @@ Buscar:
                     Me.CboTipoComite.Enabled = False
                     Me.TxtIdContabilidad.Enabled = False
                     Me.GbEntidades.Enabled = False
+                    Me.GridEntidades.Locked = False
 
                     Me.EsFacturaVariasRemisiones = False
                     Me.btnAceptar.Enabled = True
@@ -1736,6 +1748,7 @@ Buscar:
                     Me.CboTipoComite.Enabled = False
                     Me.TxtIdContabilidad.Enabled = False
                     Me.GbEntidades.Enabled = False
+                    Me.GridEntidades.Locked = True
 
                     Me.btnAceptar.Enabled = False
                     Me.btnAceptarRemisionesSeries.Enabled = False
@@ -1773,6 +1786,7 @@ Buscar:
                     Me.CboTipoComite.Enabled = False
                     Me.TxtIdContabilidad.Enabled = False
                     Me.GbEntidades.Enabled = False
+                    Me.GridEntidades.Locked = True
 
                     Me.btnAceptar.Enabled = False
                     Me.btnAceptarRemisionesSeries.Enabled = False
@@ -1874,6 +1888,7 @@ Buscar:
                     Me.CboTipoComite.Enabled = False
                     Me.TxtIdContabilidad.Enabled = False
                     Me.GbEntidades.Enabled = False
+                    Me.GridEntidades.Locked = True
 
                     Me.btnAceptar.Enabled = False
                     Me.btnAceptarRemisionesSeries.Enabled = False
@@ -1983,6 +1998,7 @@ Buscar:
                     Me.CboTipoComite.Enabled = False
                     Me.TxtIdContabilidad.Enabled = False
                     Me.GbEntidades.Enabled = False
+                    Me.GridEntidades.Locked = True
 
                     Me.btnAceptar.Enabled = False
                     Me.btnAceptarRemisionesSeries.Enabled = False
@@ -7187,10 +7203,10 @@ dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE").
                 .AutoRedraw = False
 
                 .Column(Me.iGyCodigoEntidad).Width = 50
-                .Column(Me.iGyNombreEntidad).Width = 150
+                .Column(Me.iGyNombreEntidad).Width = 300
                 .Column(Me.iGyCodigoAmbito).Width = 50
                 .Column(Me.iGyNombreAmbito).Width = 150
-                .Column(Me.iGyIdContabiliad).Width = 100
+                .Column(Me.iGyIdContabiliad).Width = 150
                 .Column(Me.iGyIdAdicional).Width = 20
 
                 .Cell(0, Me.iGyCodigoEntidad).Text = "CodigoEntidad"
@@ -7211,7 +7227,7 @@ dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE").
                 .Column(Me.iGyCodigoAmbito).Visible = False
                 .Column(Me.iGyIdAdicional).Visible = False
 
-                .Locked = True
+                '.Locked = True
 
                 .AutoRedraw = True
                 .Refresh()
@@ -7221,6 +7237,19 @@ dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE").
         Finally
             Me.GridEntidades.AutoRedraw = True
             Me.GridEntidades.Refresh()
+        End Try
+    End Sub
+
+    Private Sub GestionaGridEntidades(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Dim sProcedure As String = "GestionaGridEntidades"
+        Try
+            Select Case e.KeyCode
+                Case Keys.F8, Keys.Delete
+                    Me.GridEntidades.Selection.DeleteByRow()
+
+            End Select
+        Catch ex As Exception
+            HandleError(Me.Name, sProcedure, ex)
         End Try
     End Sub
 
@@ -7317,6 +7346,8 @@ dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE").
                 .Cell(renglon, iGyIdContabiliad).Text = Me.TxtIdContabilidadEntidad.Text
 
             End With
+
+            Me.TxtIdContabilidadEntidad.Text = ""
 
         Catch ex As Exception
             HandleError(Me.Name, "AgregarEntidad", ex)

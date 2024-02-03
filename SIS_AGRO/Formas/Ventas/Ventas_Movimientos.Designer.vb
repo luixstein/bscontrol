@@ -189,6 +189,7 @@ Partial Class Ventas_Movimientos
         Me.chkTieneCartaPorte = New System.Windows.Forms.CheckBox()
         Me.btnCartaPorte = New System.Windows.Forms.Button()
         Me.btnTimbradoTrasladoPrueba = New System.Windows.Forms.Button()
+        Me.btnEliminarDatosINE = New System.Windows.Forms.Button()
         Me.tsMenu.SuspendLayout()
         Me.gbPesos.SuspendLayout()
         Me.gbDolares.SuspendLayout()
@@ -1828,6 +1829,7 @@ Partial Class Ventas_Movimientos
         'tpComplementoINE
         '
         Me.tpComplementoINE.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.tpComplementoINE.Controls.Add(Me.btnEliminarDatosINE)
         Me.tpComplementoINE.Controls.Add(Me.GbEntidades)
         Me.tpComplementoINE.Controls.Add(Me.TxtIdContabilidad)
         Me.tpComplementoINE.Controls.Add(Me.CboTipoComite)
@@ -1855,7 +1857,7 @@ Partial Class Ventas_Movimientos
         Me.GbEntidades.Location = New System.Drawing.Point(393, 23)
         Me.GbEntidades.Name = "GbEntidades"
         Me.GbEntidades.Size = New System.Drawing.Size(356, 207)
-        Me.GbEntidades.TabIndex = 391
+        Me.GbEntidades.TabIndex = 3
         Me.GbEntidades.TabStop = False
         Me.GbEntidades.Text = "Entidades"
         '
@@ -1865,7 +1867,7 @@ Partial Class Ventas_Movimientos
         Me.BtnAgregarEntidad.Margin = New System.Windows.Forms.Padding(4)
         Me.BtnAgregarEntidad.Name = "BtnAgregarEntidad"
         Me.BtnAgregarEntidad.Size = New System.Drawing.Size(176, 29)
-        Me.BtnAgregarEntidad.TabIndex = 393
+        Me.BtnAgregarEntidad.TabIndex = 3
         Me.BtnAgregarEntidad.Text = "Agregar"
         Me.BtnAgregarEntidad.UseVisualStyleBackColor = True
         '
@@ -1876,7 +1878,7 @@ Partial Class Ventas_Movimientos
         Me.TxtIdContabilidadEntidad.MaxLength = 6
         Me.TxtIdContabilidadEntidad.Name = "TxtIdContabilidadEntidad"
         Me.TxtIdContabilidadEntidad.Size = New System.Drawing.Size(68, 22)
-        Me.TxtIdContabilidadEntidad.TabIndex = 392
+        Me.TxtIdContabilidadEntidad.TabIndex = 2
         '
         'CboAmbito
         '
@@ -1887,7 +1889,7 @@ Partial Class Ventas_Movimientos
         Me.CboAmbito.MaxLength = 1
         Me.CboAmbito.Name = "CboAmbito"
         Me.CboAmbito.Size = New System.Drawing.Size(211, 24)
-        Me.CboAmbito.TabIndex = 391
+        Me.CboAmbito.TabIndex = 1
         '
         'CboEntidad
         '
@@ -1898,7 +1900,7 @@ Partial Class Ventas_Movimientos
         Me.CboEntidad.MaxLength = 1
         Me.CboEntidad.Name = "CboEntidad"
         Me.CboEntidad.Size = New System.Drawing.Size(211, 24)
-        Me.CboEntidad.TabIndex = 390
+        Me.CboEntidad.TabIndex = 0
         '
         'LblClaveContabilidadEntidad
         '
@@ -1934,7 +1936,7 @@ Partial Class Ventas_Movimientos
         Me.TxtIdContabilidad.MaxLength = 6
         Me.TxtIdContabilidad.Name = "TxtIdContabilidad"
         Me.TxtIdContabilidad.Size = New System.Drawing.Size(68, 22)
-        Me.TxtIdContabilidad.TabIndex = 390
+        Me.TxtIdContabilidad.TabIndex = 2
         '
         'CboTipoComite
         '
@@ -1945,7 +1947,7 @@ Partial Class Ventas_Movimientos
         Me.CboTipoComite.MaxLength = 1
         Me.CboTipoComite.Name = "CboTipoComite"
         Me.CboTipoComite.Size = New System.Drawing.Size(211, 24)
-        Me.CboTipoComite.TabIndex = 389
+        Me.CboTipoComite.TabIndex = 1
         '
         'LblClaveContabilidad
         '
@@ -1983,7 +1985,7 @@ Partial Class Ventas_Movimientos
         Me.CboTipoProceso.MaxLength = 1
         Me.CboTipoProceso.Name = "CboTipoProceso"
         Me.CboTipoProceso.Size = New System.Drawing.Size(211, 24)
-        Me.CboTipoProceso.TabIndex = 385
+        Me.CboTipoProceso.TabIndex = 0
         '
         'GridEntidades
         '
@@ -2096,6 +2098,16 @@ Partial Class Ventas_Movimientos
         Me.btnTimbradoTrasladoPrueba.TabIndex = 396
         Me.btnTimbradoTrasladoPrueba.Text = "TimbradoTrasladoPrueba"
         Me.btnTimbradoTrasladoPrueba.UseVisualStyleBackColor = True
+        '
+        'btnEliminarDatosINE
+        '
+        Me.btnEliminarDatosINE.Location = New System.Drawing.Point(94, 201)
+        Me.btnEliminarDatosINE.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnEliminarDatosINE.Name = "btnEliminarDatosINE"
+        Me.btnEliminarDatosINE.Size = New System.Drawing.Size(176, 29)
+        Me.btnEliminarDatosINE.TabIndex = 5
+        Me.btnEliminarDatosINE.Text = "Eliminar datos"
+        Me.btnEliminarDatosINE.UseVisualStyleBackColor = True
         '
         'Ventas_Movimientos
         '
@@ -2317,4 +2329,5 @@ Partial Class Ventas_Movimientos
     Friend WithEvents TxtIdContabilidad As System.Windows.Forms.TextBox
     Friend WithEvents CboTipoComite As System.Windows.Forms.ComboBox
     Friend WithEvents BtnAgregarEntidad As System.Windows.Forms.Button
+    Friend WithEvents btnEliminarDatosINE As System.Windows.Forms.Button
 End Class
