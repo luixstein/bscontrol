@@ -426,7 +426,7 @@ Module FacturacionElectronica40
             Dim oComplementoINEGlobal As New Class_ComplementoINE_Global(oVenta.FOLIO_VENTA)
             Dim complementoINE11 As New cComplementoINE11
 
-            If oComplementoINEGlobal.Existe Then
+            If oComplementoINEGlobal.Existe = True Then
 
                 Dim oProcesos As New Class_INE_CatTipoProcesos(oComplementoINEGlobal.CODIGO_PROCESO)
                 Dim oComites As New Class_INE_CatTipoComites(oComplementoINEGlobal.CODIGO_COMITE)
@@ -444,6 +444,8 @@ Module FacturacionElectronica40
 
                     If dtEntidades.Rows.Count > 0 Then
                         For Each row As DataRow In dtEntidades.Rows
+                            Contabilidades = New cINEContabilidades
+
                             dtContabilidadesDetalle = New DataTable
                             dtContabilidadesDetalle = oComplementoINEGlobal.ObtenerDetalleContabilidadesParaComplemento(CInt(row("ID_DETALLE_ENTIDADES").ToString))
 
@@ -452,9 +454,7 @@ Module FacturacionElectronica40
                             Next
 
                             .Entidades.Add(row("CODIGO_ENTIDAD").ToString, row("NOMBRE_AMBITO").ToString, Contabilidades)
-
                         Next
-
                     End If
 
                 End With
