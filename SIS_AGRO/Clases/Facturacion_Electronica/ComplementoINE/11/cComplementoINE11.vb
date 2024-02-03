@@ -128,9 +128,7 @@ Friend Class cComplementoINE11
                     End If
                 End With
 
-                If NodoEntidad.childNodes.length > 0 Then
-                    NodoINE.appendChild(NodoEntidad)
-                End If
+                NodoINE.appendChild(NodoEntidad)
             Next
 
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -273,7 +271,7 @@ Friend Class cComplementoINE11
                 Dim sAmbito As String = Me.Entidades.Item(i).Ambito
 
                 For j = i + 1 To Me.Entidades.Count
-                    If Me.Entidades.Item(j).ClaveEntidad = sClaveEntidadAnterior AndAlso Me.Entidades.Item(i).Ambito = sAmbito Then
+                    If Me.Entidades.Item(j).ClaveEntidad = sClaveEntidadAnterior AndAlso Me.Entidades.Item(j).Ambito = sAmbito Then
                         MsgBox("ine:Entidad:ClaveEntidad" & vbCrLf &
                                 "La combinación del valor de este atributo con el valor del atributo ine:Entidad:Ambito, no se debe repetir en este complemento.", vbExclamation, sProcedure)
                         Return False

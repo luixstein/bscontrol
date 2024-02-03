@@ -491,6 +491,12 @@
     <Compile Include="Clases\Utilerias\cNum2Text.vb" />
     <Compile Include="Clases\Ventas\Class_CartaPorte.vb" />
     <Compile Include="Clases\Ventas\Class_ComercioExterior.vb" />
+    <Compile Include="Clases\Ventas\Class_ComplementoINE_Detalle.vb" />
+    <Compile Include="Clases\Ventas\Class_ComplementoINE_Global.vb" />
+    <Compile Include="Clases\Ventas\Class_INE_CatAmbitos.vb" />
+    <Compile Include="Clases\Ventas\Class_INE_CatEntidades.vb" />
+    <Compile Include="Clases\Ventas\Class_INE_CatTipoComites.vb" />
+    <Compile Include="Clases\Ventas\Class_INE_CatTipoProcesos.vb" />
     <Compile Include="dsTrabajadores.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
