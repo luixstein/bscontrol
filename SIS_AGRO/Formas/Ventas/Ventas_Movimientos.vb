@@ -7329,12 +7329,6 @@ dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE").
                 Return
             End If
 
-            If txtLEN(Me.TxtIdContabilidadEntidad.Text) = False Then
-                MsgBox("Capure una Clave de Contabilidad para la Entidad", MsgBoxStyle.Exclamation, "AgregarEntidad")
-                Me.TxtIdContabilidadEntidad.Focus()
-                Return
-            End If
-
             With Me.GridEntidades
                 .Rows = .Rows + 1
                 Dim renglon = .Rows - 1
@@ -7428,7 +7422,7 @@ dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE").
 
                         'Graba el detalle de Contabilidad de esta entidad antes de continuar con las demas
                         For j = i To Me.GridEntidades.Rows - 1
-                            If Me.GridEntidades.Cell(j, Me.iGyIdAdicional).Text = IdAdicional.ToString Then
+                            If Me.GridEntidades.Cell(j, Me.iGyIdAdicional).Text = IdAdicional.ToString And txtLEN(Me.GridEntidades.Cell(j, Me.iGyIdContabiliad).Text) Then
                                 With oComplementoINEDetalle
                                     .ID_CONTABILIDAD = Me.GridEntidades.Cell(j, Me.iGyIdContabiliad).Text
 
@@ -7494,11 +7488,6 @@ dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE").
                                 MsgBox("El comite Ejecutivo Estatal/Directivo Estatal requiere que se omita el tipo de Ambito en la Entidad en el renglon " & i.ToString & ".", MsgBoxStyle.Exclamation, sProcedure)
                                 Return False
                             End If
-
-                            If txtLEN(Me.GridEntidades.Cell(i, Me.iGyIdContabiliad).Text) = False Then
-                                MsgBox("Se requiere la Clave de Contabilidad en el renglon " & i.ToString, MsgBoxStyle.Exclamation, sProcedure)
-                                Return False
-                            End If
                         Next
 
                 End Select
@@ -7525,11 +7514,6 @@ dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE").
                 For i As Integer = 1 To Me.GridEntidades.Rows - 1
                     If txtLEN(Me.GridEntidades.Cell(1, Me.iGyCodigoAmbito).Text) = False Then
                         MsgBox("El tipo de proceso Precampaña/Campaña requiere el tipo de Ambito en todas las Entidades. Capture el tipo de Ambito en el renglon " & i.ToString & ".", MsgBoxStyle.Exclamation, sProcedure)
-                        Return False
-                    End If
-
-                    If txtLEN(Me.GridEntidades.Cell(i, Me.iGyIdContabiliad).Text) = False Then
-                        MsgBox("Se requiere la Clave de Contabilidad en el renglon " & i.ToString, MsgBoxStyle.Exclamation, sProcedure)
                         Return False
                     End If
                 Next
