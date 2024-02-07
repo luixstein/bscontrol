@@ -458,9 +458,10 @@ Module FacturacionElectronica40
                     End If
 
                 End With
-            End If
 
             Cfd.ComplementoINE11 = complementoINE11
+
+            End if
 
             'Fin de llenado de nodos del comprobante''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 

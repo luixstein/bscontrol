@@ -1682,6 +1682,7 @@ Buscar:
                     Me.TxtIdContabilidad.Enabled = False
                     Me.GbEntidades.Enabled = False
                     Me.GridEntidades.Locked = False
+                    Me.btnEliminarDatosINE.Enabled = True
 
                     Me.EsFacturaVariasRemisiones = False
                     Me.btnAceptar.Enabled = True
@@ -1749,6 +1750,7 @@ Buscar:
                     Me.TxtIdContabilidad.Enabled = False
                     Me.GbEntidades.Enabled = False
                     Me.GridEntidades.Locked = True
+                    Me.btnEliminarDatosINE.Enabled = False
 
                     Me.btnAceptar.Enabled = False
                     Me.btnAceptarRemisionesSeries.Enabled = False
@@ -1787,6 +1789,7 @@ Buscar:
                     Me.TxtIdContabilidad.Enabled = False
                     Me.GbEntidades.Enabled = False
                     Me.GridEntidades.Locked = True
+                    Me.btnEliminarDatosINE.Enabled = False
 
                     Me.btnAceptar.Enabled = False
                     Me.btnAceptarRemisionesSeries.Enabled = False
@@ -1889,6 +1892,7 @@ Buscar:
                     Me.TxtIdContabilidad.Enabled = False
                     Me.GbEntidades.Enabled = False
                     Me.GridEntidades.Locked = True
+                    Me.btnEliminarDatosINE.Enabled = False
 
                     Me.btnAceptar.Enabled = False
                     Me.btnAceptarRemisionesSeries.Enabled = False
@@ -1999,6 +2003,7 @@ Buscar:
                     Me.TxtIdContabilidad.Enabled = False
                     Me.GbEntidades.Enabled = False
                     Me.GridEntidades.Locked = True
+                    Me.btnEliminarDatosINE.Enabled = False
 
                     Me.btnAceptar.Enabled = False
                     Me.btnAceptarRemisionesSeries.Enabled = False
