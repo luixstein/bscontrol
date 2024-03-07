@@ -68,6 +68,8 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.tsbConsultar = New System.Windows.Forms.ToolStripButton()
         Me.tsbImprimir = New System.Windows.Forms.ToolStripButton()
         Me.tsbSalir = New System.Windows.Forms.ToolStripButton()
+        Me.cboVendedor = New System.Windows.Forms.ComboBox()
+        Me.lblDisplayVendedor = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.gFiltrarUtilidad.SuspendLayout()
         Me.gbConsulta.SuspendLayout()
@@ -76,6 +78,8 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.cboVendedor)
+        Me.GroupBox1.Controls.Add(Me.lblDisplayVendedor)
         Me.GroupBox1.Controls.Add(Me.lblTipoCambio)
         Me.GroupBox1.Controls.Add(Me.txtTipoCambio)
         Me.GroupBox1.Controls.Add(Me.cboTipoPago)
@@ -101,9 +105,11 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.GroupBox1.Controls.Add(Me.DtFechaHasta)
         Me.GroupBox1.Controls.Add(Me.LblDisplayFecha)
         Me.GroupBox1.Controls.Add(Me.DtFechaDesde)
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 33)
+        Me.GroupBox1.Location = New System.Drawing.Point(16, 41)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(968, 113)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Size = New System.Drawing.Size(1291, 139)
         Me.GroupBox1.TabIndex = 4
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Filtros"
@@ -111,19 +117,21 @@ Partial Class Rpt_Ventas_TopTenProductos
         'lblTipoCambio
         '
         Me.lblTipoCambio.AutoSize = True
-        Me.lblTipoCambio.Location = New System.Drawing.Point(767, 80)
+        Me.lblTipoCambio.Location = New System.Drawing.Point(1023, 98)
+        Me.lblTipoCambio.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblTipoCambio.Name = "lblTipoCambio"
-        Me.lblTipoCambio.Size = New System.Drawing.Size(86, 13)
+        Me.lblTipoCambio.Size = New System.Drawing.Size(113, 17)
         Me.lblTipoCambio.TabIndex = 397
         Me.lblTipoCambio.Text = "Tipo de cambio :"
         Me.lblTipoCambio.Visible = False
         '
         'txtTipoCambio
         '
-        Me.txtTipoCambio.Location = New System.Drawing.Point(859, 78)
+        Me.txtTipoCambio.Location = New System.Drawing.Point(1145, 96)
+        Me.txtTipoCambio.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtTipoCambio.MaxLength = 7
         Me.txtTipoCambio.Name = "txtTipoCambio"
-        Me.txtTipoCambio.Size = New System.Drawing.Size(49, 20)
+        Me.txtTipoCambio.Size = New System.Drawing.Size(64, 22)
         Me.txtTipoCambio.TabIndex = 396
         Me.txtTipoCambio.Text = "00.0000"
         Me.txtTipoCambio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
@@ -133,17 +141,19 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         Me.cboTipoPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboTipoPago.FormattingEnabled = True
-        Me.cboTipoPago.Location = New System.Drawing.Point(664, 26)
+        Me.cboTipoPago.Location = New System.Drawing.Point(885, 32)
+        Me.cboTipoPago.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cboTipoPago.Name = "cboTipoPago"
-        Me.cboTipoPago.Size = New System.Drawing.Size(89, 21)
+        Me.cboTipoPago.Size = New System.Drawing.Size(117, 24)
         Me.cboTipoPago.TabIndex = 7
         '
         'chkFiltrarPorUtilidad
         '
         Me.chkFiltrarPorUtilidad.AutoSize = True
-        Me.chkFiltrarPorUtilidad.Location = New System.Drawing.Point(444, 13)
+        Me.chkFiltrarPorUtilidad.Location = New System.Drawing.Point(592, 16)
+        Me.chkFiltrarPorUtilidad.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.chkFiltrarPorUtilidad.Name = "chkFiltrarPorUtilidad"
-        Me.chkFiltrarPorUtilidad.Size = New System.Drawing.Size(125, 17)
+        Me.chkFiltrarPorUtilidad.Size = New System.Drawing.Size(168, 21)
         Me.chkFiltrarPorUtilidad.TabIndex = 398
         Me.chkFiltrarPorUtilidad.Text = "Filtrar por % utilidad ?"
         Me.chkFiltrarPorUtilidad.UseVisualStyleBackColor = True
@@ -151,9 +161,10 @@ Partial Class Rpt_Ventas_TopTenProductos
         'LblTipoPago
         '
         Me.LblTipoPago.AutoSize = True
-        Me.LblTipoPago.Location = New System.Drawing.Point(595, 28)
+        Me.LblTipoPago.Location = New System.Drawing.Point(793, 34)
+        Me.LblTipoPago.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblTipoPago.Name = "LblTipoPago"
-        Me.LblTipoPago.Size = New System.Drawing.Size(61, 13)
+        Me.LblTipoPago.Size = New System.Drawing.Size(80, 17)
         Me.LblTipoPago.TabIndex = 395
         Me.LblTipoPago.Text = "Tipo pago :"
         '
@@ -164,29 +175,31 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.gFiltrarUtilidad.Controls.Add(Me.rbMinimo)
         Me.gFiltrarUtilidad.Controls.Add(Me.txtPorcentajeUtilidad)
         Me.gFiltrarUtilidad.Enabled = False
-        Me.gFiltrarUtilidad.Location = New System.Drawing.Point(438, 12)
-        Me.gFiltrarUtilidad.Margin = New System.Windows.Forms.Padding(2)
+        Me.gFiltrarUtilidad.Location = New System.Drawing.Point(584, 15)
+        Me.gFiltrarUtilidad.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.gFiltrarUtilidad.Name = "gFiltrarUtilidad"
-        Me.gFiltrarUtilidad.Padding = New System.Windows.Forms.Padding(2)
-        Me.gFiltrarUtilidad.Size = New System.Drawing.Size(137, 64)
+        Me.gFiltrarUtilidad.Padding = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.gFiltrarUtilidad.Size = New System.Drawing.Size(183, 79)
         Me.gFiltrarUtilidad.TabIndex = 4
         Me.gFiltrarUtilidad.TabStop = False
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(115, 31)
+        Me.Label1.Location = New System.Drawing.Point(153, 38)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(15, 13)
+        Me.Label1.Size = New System.Drawing.Size(20, 17)
         Me.Label1.TabIndex = 401
         Me.Label1.Text = "%"
         '
         'rbMaximo
         '
         Me.rbMaximo.AutoSize = True
-        Me.rbMaximo.Location = New System.Drawing.Point(25, 42)
+        Me.rbMaximo.Location = New System.Drawing.Point(33, 52)
+        Me.rbMaximo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.rbMaximo.Name = "rbMaximo"
-        Me.rbMaximo.Size = New System.Drawing.Size(61, 17)
+        Me.rbMaximo.Size = New System.Drawing.Size(76, 21)
         Me.rbMaximo.TabIndex = 400
         Me.rbMaximo.Text = "Máximo"
         Me.rbMaximo.UseVisualStyleBackColor = True
@@ -195,9 +208,10 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         Me.rbMinimo.AutoSize = True
         Me.rbMinimo.Checked = True
-        Me.rbMinimo.Location = New System.Drawing.Point(25, 22)
+        Me.rbMinimo.Location = New System.Drawing.Point(33, 27)
+        Me.rbMinimo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.rbMinimo.Name = "rbMinimo"
-        Me.rbMinimo.Size = New System.Drawing.Size(60, 17)
+        Me.rbMinimo.Size = New System.Drawing.Size(73, 21)
         Me.rbMinimo.TabIndex = 399
         Me.rbMinimo.TabStop = True
         Me.rbMinimo.Text = "Mínimo"
@@ -205,53 +219,59 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         'txtPorcentajeUtilidad
         '
-        Me.txtPorcentajeUtilidad.Location = New System.Drawing.Point(87, 28)
+        Me.txtPorcentajeUtilidad.Location = New System.Drawing.Point(116, 34)
+        Me.txtPorcentajeUtilidad.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtPorcentajeUtilidad.MaxLength = 3
         Me.txtPorcentajeUtilidad.Name = "txtPorcentajeUtilidad"
-        Me.txtPorcentajeUtilidad.Size = New System.Drawing.Size(27, 20)
+        Me.txtPorcentajeUtilidad.Size = New System.Drawing.Size(35, 22)
         Me.txtPorcentajeUtilidad.TabIndex = 3
         '
         'cboOrden
         '
         Me.cboOrden.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboOrden.FormattingEnabled = True
-        Me.cboOrden.Location = New System.Drawing.Point(664, 78)
+        Me.cboOrden.Location = New System.Drawing.Point(885, 96)
+        Me.cboOrden.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.cboOrden.Name = "cboOrden"
-        Me.cboOrden.Size = New System.Drawing.Size(89, 21)
+        Me.cboOrden.Size = New System.Drawing.Size(117, 24)
         Me.cboOrden.TabIndex = 9
         '
         'LblOrden
         '
         Me.LblOrden.AutoSize = True
-        Me.LblOrden.Location = New System.Drawing.Point(584, 80)
+        Me.LblOrden.Location = New System.Drawing.Point(779, 98)
+        Me.LblOrden.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblOrden.Name = "LblOrden"
-        Me.LblOrden.Size = New System.Drawing.Size(72, 13)
+        Me.LblOrden.Size = New System.Drawing.Size(98, 17)
         Me.LblOrden.TabIndex = 390
         Me.LblOrden.Text = "Ordenar por  :"
         '
         'TxtCodigosProductos
         '
-        Me.TxtCodigosProductos.Location = New System.Drawing.Point(73, 60)
+        Me.TxtCodigosProductos.Location = New System.Drawing.Point(97, 74)
+        Me.TxtCodigosProductos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtCodigosProductos.MaxLength = 2000
         Me.TxtCodigosProductos.Name = "TxtCodigosProductos"
-        Me.TxtCodigosProductos.Size = New System.Drawing.Size(110, 20)
+        Me.TxtCodigosProductos.Size = New System.Drawing.Size(145, 22)
         Me.TxtCodigosProductos.TabIndex = 2
         '
         'LblCodigosProductos
         '
         Me.LblCodigosProductos.AutoSize = True
-        Me.LblCodigosProductos.Location = New System.Drawing.Point(6, 63)
+        Me.LblCodigosProductos.Location = New System.Drawing.Point(8, 78)
+        Me.LblCodigosProductos.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblCodigosProductos.Name = "LblCodigosProductos"
-        Me.LblCodigosProductos.Size = New System.Drawing.Size(56, 13)
+        Me.LblCodigosProductos.Size = New System.Drawing.Size(73, 17)
         Me.LblCodigosProductos.TabIndex = 388
         Me.LblCodigosProductos.Text = "Producto :"
         '
         'txtUtilidadMaxima
         '
-        Me.txtUtilidadMaxima.Location = New System.Drawing.Point(525, 84)
+        Me.txtUtilidadMaxima.Location = New System.Drawing.Point(700, 103)
+        Me.txtUtilidadMaxima.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.txtUtilidadMaxima.MaxLength = 3
         Me.txtUtilidadMaxima.Name = "txtUtilidadMaxima"
-        Me.txtUtilidadMaxima.Size = New System.Drawing.Size(49, 20)
+        Me.txtUtilidadMaxima.Size = New System.Drawing.Size(64, 22)
         Me.txtUtilidadMaxima.TabIndex = 6
         Me.txtUtilidadMaxima.Text = "101"
         Me.txtUtilidadMaxima.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
@@ -259,26 +279,29 @@ Partial Class Rpt_Ventas_TopTenProductos
         'lblDisplayUtilidadMaxima
         '
         Me.lblDisplayUtilidadMaxima.AutoSize = True
-        Me.lblDisplayUtilidadMaxima.Location = New System.Drawing.Point(447, 86)
+        Me.lblDisplayUtilidadMaxima.Location = New System.Drawing.Point(596, 106)
+        Me.lblDisplayUtilidadMaxima.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayUtilidadMaxima.Name = "lblDisplayUtilidadMaxima"
-        Me.lblDisplayUtilidadMaxima.Size = New System.Drawing.Size(70, 13)
+        Me.lblDisplayUtilidadMaxima.Size = New System.Drawing.Size(92, 17)
         Me.lblDisplayUtilidadMaxima.TabIndex = 383
         Me.lblDisplayUtilidadMaxima.Text = "Utilidad máx :"
         '
         'TxtDescripcion
         '
-        Me.TxtDescripcion.Location = New System.Drawing.Point(73, 84)
+        Me.TxtDescripcion.Location = New System.Drawing.Point(97, 103)
+        Me.TxtDescripcion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtDescripcion.MaxLength = 30
         Me.TxtDescripcion.Name = "TxtDescripcion"
-        Me.TxtDescripcion.Size = New System.Drawing.Size(236, 20)
+        Me.TxtDescripcion.Size = New System.Drawing.Size(313, 22)
         Me.TxtDescripcion.TabIndex = 3
         '
         'LblDescripcion
         '
         Me.LblDescripcion.AutoSize = True
-        Me.LblDescripcion.Location = New System.Drawing.Point(6, 86)
+        Me.LblDescripcion.Location = New System.Drawing.Point(8, 106)
+        Me.LblDescripcion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDescripcion.Name = "LblDescripcion"
-        Me.LblDescripcion.Size = New System.Drawing.Size(69, 13)
+        Me.LblDescripcion.Size = New System.Drawing.Size(90, 17)
         Me.LblDescripcion.TabIndex = 377
         Me.LblDescripcion.Text = "Descripcion :"
         '
@@ -286,17 +309,19 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         Me.CboDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboDocumento.FormattingEnabled = True
-        Me.CboDocumento.Location = New System.Drawing.Point(664, 52)
+        Me.CboDocumento.Location = New System.Drawing.Point(885, 64)
+        Me.CboDocumento.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboDocumento.Name = "CboDocumento"
-        Me.CboDocumento.Size = New System.Drawing.Size(89, 21)
+        Me.CboDocumento.Size = New System.Drawing.Size(117, 24)
         Me.CboDocumento.TabIndex = 8
         '
         'LblDocumento
         '
         Me.LblDocumento.AutoSize = True
-        Me.LblDocumento.Location = New System.Drawing.Point(588, 54)
+        Me.LblDocumento.Location = New System.Drawing.Point(784, 66)
+        Me.LblDocumento.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDocumento.Name = "LblDocumento"
-        Me.LblDocumento.Size = New System.Drawing.Size(68, 13)
+        Me.LblDocumento.Size = New System.Drawing.Size(88, 17)
         Me.LblDocumento.TabIndex = 373
         Me.LblDocumento.Text = "Documento :"
         '
@@ -304,51 +329,57 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         Me.CboZona.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboZona.FormattingEnabled = True
-        Me.CboZona.Location = New System.Drawing.Point(73, 34)
+        Me.CboZona.Location = New System.Drawing.Point(97, 42)
+        Me.CboZona.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CboZona.Name = "CboZona"
-        Me.CboZona.Size = New System.Drawing.Size(110, 21)
+        Me.CboZona.Size = New System.Drawing.Size(145, 24)
         Me.CboZona.TabIndex = 1
         '
         'lblDisplayZona
         '
         Me.lblDisplayZona.AutoSize = True
-        Me.lblDisplayZona.Location = New System.Drawing.Point(6, 39)
+        Me.lblDisplayZona.Location = New System.Drawing.Point(8, 48)
+        Me.lblDisplayZona.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayZona.Name = "lblDisplayZona"
-        Me.lblDisplayZona.Size = New System.Drawing.Size(38, 13)
+        Me.lblDisplayZona.Size = New System.Drawing.Size(49, 17)
         Me.lblDisplayZona.TabIndex = 372
         Me.lblDisplayZona.Text = "Zona :"
         '
         'lblNombreCliente
         '
-        Me.lblNombreCliente.Location = New System.Drawing.Point(146, 15)
+        Me.lblNombreCliente.Location = New System.Drawing.Point(195, 18)
+        Me.lblNombreCliente.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblNombreCliente.Name = "lblNombreCliente"
-        Me.lblNombreCliente.Size = New System.Drawing.Size(402, 14)
+        Me.lblNombreCliente.Size = New System.Drawing.Size(536, 17)
         Me.lblNombreCliente.TabIndex = 359
         Me.lblNombreCliente.Text = "_"
         '
         'TxtCliente
         '
-        Me.TxtCliente.Location = New System.Drawing.Point(73, 13)
+        Me.TxtCliente.Location = New System.Drawing.Point(97, 16)
+        Me.TxtCliente.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.TxtCliente.MaxLength = 8
         Me.TxtCliente.Name = "TxtCliente"
-        Me.TxtCliente.Size = New System.Drawing.Size(68, 20)
+        Me.TxtCliente.Size = New System.Drawing.Size(89, 22)
         Me.TxtCliente.TabIndex = 0
         '
         'lblDisplayCliente
         '
         Me.lblDisplayCliente.AutoSize = True
-        Me.lblDisplayCliente.Location = New System.Drawing.Point(6, 15)
+        Me.lblDisplayCliente.Location = New System.Drawing.Point(8, 18)
+        Me.lblDisplayCliente.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayCliente.Name = "lblDisplayCliente"
-        Me.lblDisplayCliente.Size = New System.Drawing.Size(45, 13)
+        Me.lblDisplayCliente.Size = New System.Drawing.Size(59, 17)
         Me.lblDisplayCliente.TabIndex = 358
         Me.lblDisplayCliente.Text = "Cliente :"
         '
         'lblDisplayFechaHasta
         '
         Me.lblDisplayFechaHasta.AutoSize = True
-        Me.lblDisplayFechaHasta.Location = New System.Drawing.Point(768, 54)
+        Me.lblDisplayFechaHasta.Location = New System.Drawing.Point(1024, 66)
+        Me.lblDisplayFechaHasta.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayFechaHasta.Name = "lblDisplayFechaHasta"
-        Me.lblDisplayFechaHasta.Size = New System.Drawing.Size(85, 13)
+        Me.lblDisplayFechaHasta.Size = New System.Drawing.Size(111, 17)
         Me.lblDisplayFechaHasta.TabIndex = 212
         Me.lblDisplayFechaHasta.Text = "Hasta la Fecha :"
         '
@@ -356,19 +387,21 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         Me.DtFechaHasta.CustomFormat = "dd/MMM/yy"
         Me.DtFechaHasta.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.DtFechaHasta.Location = New System.Drawing.Point(859, 50)
+        Me.DtFechaHasta.Location = New System.Drawing.Point(1145, 62)
+        Me.DtFechaHasta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.DtFechaHasta.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtFechaHasta.Name = "DtFechaHasta"
-        Me.DtFechaHasta.Size = New System.Drawing.Size(103, 20)
+        Me.DtFechaHasta.Size = New System.Drawing.Size(136, 22)
         Me.DtFechaHasta.TabIndex = 11
         Me.DtFechaHasta.Value = New Date(2009, 9, 26, 0, 0, 0, 0)
         '
         'LblDisplayFecha
         '
         Me.LblDisplayFecha.AutoSize = True
-        Me.LblDisplayFecha.Location = New System.Drawing.Point(782, 28)
+        Me.LblDisplayFecha.Location = New System.Drawing.Point(1043, 34)
+        Me.LblDisplayFecha.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDisplayFecha.Name = "LblDisplayFecha"
-        Me.LblDisplayFecha.Size = New System.Drawing.Size(71, 13)
+        Me.LblDisplayFecha.Size = New System.Drawing.Size(92, 17)
         Me.LblDisplayFecha.TabIndex = 211
         Me.LblDisplayFecha.Text = "De la Fecha :"
         '
@@ -376,10 +409,11 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         Me.DtFechaDesde.CustomFormat = "dd/MMM/yy"
         Me.DtFechaDesde.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.DtFechaDesde.Location = New System.Drawing.Point(859, 24)
+        Me.DtFechaDesde.Location = New System.Drawing.Point(1145, 30)
+        Me.DtFechaDesde.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.DtFechaDesde.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.DtFechaDesde.Name = "DtFechaDesde"
-        Me.DtFechaDesde.Size = New System.Drawing.Size(103, 20)
+        Me.DtFechaDesde.Size = New System.Drawing.Size(136, 22)
         Me.DtFechaDesde.TabIndex = 10
         Me.DtFechaDesde.Value = New Date(2009, 9, 26, 0, 0, 0, 0)
         '
@@ -393,13 +427,14 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.Grid.DefaultRowHeight = CType(24, Short)
         Me.Grid.DisplayRowNumber = True
         Me.Grid.FixedRowColStyle = FlexCell.FixedRowColStyleEnum.VisualStyles
-        Me.Grid.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Grid.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Grid.GridColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Grid.Location = New System.Drawing.Point(9, 19)
+        Me.Grid.Location = New System.Drawing.Point(12, 23)
         Me.Grid.LockButton = True
+        Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Grid.Name = "Grid"
         Me.Grid.Rows = 20
-        Me.Grid.Size = New System.Drawing.Size(1245, 436)
+        Me.Grid.Size = New System.Drawing.Size(1660, 537)
         Me.Grid.TabIndex = 223
         Me.Grid.UncheckedImage = CType(resources.GetObject("Grid.UncheckedImage"), System.Drawing.Bitmap)
         '
@@ -415,9 +450,11 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.gbConsulta.Controls.Add(Me.txtTotalCosto)
         Me.gbConsulta.Controls.Add(Me.lblDisplayTotalPesos)
         Me.gbConsulta.Controls.Add(Me.Grid)
-        Me.gbConsulta.Location = New System.Drawing.Point(12, 150)
+        Me.gbConsulta.Location = New System.Drawing.Point(16, 185)
+        Me.gbConsulta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.gbConsulta.Name = "gbConsulta"
-        Me.gbConsulta.Size = New System.Drawing.Size(1257, 516)
+        Me.gbConsulta.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.gbConsulta.Size = New System.Drawing.Size(1676, 635)
         Me.gbConsulta.TabIndex = 224
         Me.gbConsulta.TabStop = False
         Me.gbConsulta.Text = "Consulta"
@@ -425,9 +462,10 @@ Partial Class Rpt_Ventas_TopTenProductos
         'lblDisplayTotalUtilidad
         '
         Me.lblDisplayTotalUtilidad.AutoSize = True
-        Me.lblDisplayTotalUtilidad.Location = New System.Drawing.Point(782, 483)
+        Me.lblDisplayTotalUtilidad.Location = New System.Drawing.Point(1043, 594)
+        Me.lblDisplayTotalUtilidad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayTotalUtilidad.Name = "lblDisplayTotalUtilidad"
-        Me.lblDisplayTotalUtilidad.Size = New System.Drawing.Size(42, 13)
+        Me.lblDisplayTotalUtilidad.Size = New System.Drawing.Size(55, 17)
         Me.lblDisplayTotalUtilidad.TabIndex = 241
         Me.lblDisplayTotalUtilidad.Text = "Utilidad"
         Me.lblDisplayTotalUtilidad.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -436,18 +474,20 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         Me.txtTotalUtilidad.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.txtTotalUtilidad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtTotalUtilidad.Location = New System.Drawing.Point(731, 462)
+        Me.txtTotalUtilidad.Location = New System.Drawing.Point(975, 569)
+        Me.txtTotalUtilidad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.txtTotalUtilidad.Name = "txtTotalUtilidad"
-        Me.txtTotalUtilidad.Size = New System.Drawing.Size(93, 20)
+        Me.txtTotalUtilidad.Size = New System.Drawing.Size(123, 24)
         Me.txtTotalUtilidad.TabIndex = 240
         Me.txtTotalUtilidad.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'lblDisplayTotalCosto
         '
         Me.lblDisplayTotalCosto.AutoSize = True
-        Me.lblDisplayTotalCosto.Location = New System.Drawing.Point(691, 483)
+        Me.lblDisplayTotalCosto.Location = New System.Drawing.Point(921, 594)
+        Me.lblDisplayTotalCosto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayTotalCosto.Name = "lblDisplayTotalCosto"
-        Me.lblDisplayTotalCosto.Size = New System.Drawing.Size(34, 13)
+        Me.lblDisplayTotalCosto.Size = New System.Drawing.Size(44, 17)
         Me.lblDisplayTotalCosto.TabIndex = 239
         Me.lblDisplayTotalCosto.Text = "Costo"
         Me.lblDisplayTotalCosto.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -455,18 +495,20 @@ Partial Class Rpt_Ventas_TopTenProductos
         'lblDisplayTotalVenta
         '
         Me.lblDisplayTotalVenta.AutoSize = True
-        Me.lblDisplayTotalVenta.Location = New System.Drawing.Point(591, 483)
+        Me.lblDisplayTotalVenta.Location = New System.Drawing.Point(788, 594)
+        Me.lblDisplayTotalVenta.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayTotalVenta.Name = "lblDisplayTotalVenta"
-        Me.lblDisplayTotalVenta.Size = New System.Drawing.Size(35, 13)
+        Me.lblDisplayTotalVenta.Size = New System.Drawing.Size(45, 17)
         Me.lblDisplayTotalVenta.TabIndex = 238
         Me.lblDisplayTotalVenta.Text = "Venta"
         '
         'lblDisplayTotalCantidad
         '
         Me.lblDisplayTotalCantidad.AutoSize = True
-        Me.lblDisplayTotalCantidad.Location = New System.Drawing.Point(471, 482)
+        Me.lblDisplayTotalCantidad.Location = New System.Drawing.Point(628, 593)
+        Me.lblDisplayTotalCantidad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayTotalCantidad.Name = "lblDisplayTotalCantidad"
-        Me.lblDisplayTotalCantidad.Size = New System.Drawing.Size(49, 13)
+        Me.lblDisplayTotalCantidad.Size = New System.Drawing.Size(64, 17)
         Me.lblDisplayTotalCantidad.TabIndex = 237
         Me.lblDisplayTotalCantidad.Text = "Cantidad"
         '
@@ -474,9 +516,10 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         Me.txtTotalCantidad.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.txtTotalCantidad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtTotalCantidad.Location = New System.Drawing.Point(420, 462)
+        Me.txtTotalCantidad.Location = New System.Drawing.Point(560, 569)
+        Me.txtTotalCantidad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.txtTotalCantidad.Name = "txtTotalCantidad"
-        Me.txtTotalCantidad.Size = New System.Drawing.Size(100, 20)
+        Me.txtTotalCantidad.Size = New System.Drawing.Size(133, 24)
         Me.txtTotalCantidad.TabIndex = 236
         Me.txtTotalCantidad.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
@@ -484,9 +527,10 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         Me.txtTotalVenta.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.txtTotalVenta.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtTotalVenta.Location = New System.Drawing.Point(526, 462)
+        Me.txtTotalVenta.Location = New System.Drawing.Point(701, 569)
+        Me.txtTotalVenta.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.txtTotalVenta.Name = "txtTotalVenta"
-        Me.txtTotalVenta.Size = New System.Drawing.Size(100, 20)
+        Me.txtTotalVenta.Size = New System.Drawing.Size(133, 24)
         Me.txtTotalVenta.TabIndex = 235
         Me.txtTotalVenta.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
@@ -494,18 +538,20 @@ Partial Class Rpt_Ventas_TopTenProductos
         '
         Me.txtTotalCosto.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.txtTotalCosto.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtTotalCosto.Location = New System.Drawing.Point(632, 462)
+        Me.txtTotalCosto.Location = New System.Drawing.Point(843, 569)
+        Me.txtTotalCosto.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.txtTotalCosto.Name = "txtTotalCosto"
-        Me.txtTotalCosto.Size = New System.Drawing.Size(93, 20)
+        Me.txtTotalCosto.Size = New System.Drawing.Size(123, 24)
         Me.txtTotalCosto.TabIndex = 233
         Me.txtTotalCosto.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'lblDisplayTotalPesos
         '
         Me.lblDisplayTotalPesos.AutoSize = True
-        Me.lblDisplayTotalPesos.Location = New System.Drawing.Point(282, 466)
+        Me.lblDisplayTotalPesos.Location = New System.Drawing.Point(376, 574)
+        Me.lblDisplayTotalPesos.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDisplayTotalPesos.Name = "lblDisplayTotalPesos"
-        Me.lblDisplayTotalPesos.Size = New System.Drawing.Size(48, 13)
+        Me.lblDisplayTotalPesos.Size = New System.Drawing.Size(63, 17)
         Me.lblDisplayTotalPesos.TabIndex = 230
         Me.lblDisplayTotalPesos.Text = "Totales :"
         '
@@ -515,7 +561,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.ToolStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbConsultar, Me.tsbImprimir, Me.tsbSalir})
         Me.ToolStrip2.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip2.Name = "ToolStrip2"
-        Me.ToolStrip2.Size = New System.Drawing.Size(1274, 27)
+        Me.ToolStrip2.Size = New System.Drawing.Size(1699, 27)
         Me.ToolStrip2.TabIndex = 225
         Me.ToolStrip2.Text = "ToolStrip2"
         '
@@ -524,7 +570,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.tsbConsultar.Image = CType(resources.GetObject("tsbConsultar.Image"), System.Drawing.Image)
         Me.tsbConsultar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbConsultar.Name = "tsbConsultar"
-        Me.tsbConsultar.Size = New System.Drawing.Size(82, 24)
+        Me.tsbConsultar.Size = New System.Drawing.Size(95, 24)
         Me.tsbConsultar.Text = "&Consultar"
         '
         'tsbImprimir
@@ -532,7 +578,7 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.tsbImprimir.Image = CType(resources.GetObject("tsbImprimir.Image"), System.Drawing.Image)
         Me.tsbImprimir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbImprimir.Name = "tsbImprimir"
-        Me.tsbImprimir.Size = New System.Drawing.Size(77, 24)
+        Me.tsbImprimir.Size = New System.Drawing.Size(90, 24)
         Me.tsbImprimir.Text = "&Imprimir"
         '
         'tsbSalir
@@ -540,19 +586,40 @@ Partial Class Rpt_Ventas_TopTenProductos
         Me.tsbSalir.Image = CType(resources.GetObject("tsbSalir.Image"), System.Drawing.Image)
         Me.tsbSalir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSalir.Name = "tsbSalir"
-        Me.tsbSalir.Size = New System.Drawing.Size(53, 24)
+        Me.tsbSalir.Size = New System.Drawing.Size(62, 24)
         Me.tsbSalir.Text = "&Salir"
+        '
+        'cboVendedor
+        '
+        Me.cboVendedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboVendedor.FormattingEnabled = True
+        Me.cboVendedor.Location = New System.Drawing.Point(350, 42)
+        Me.cboVendedor.Margin = New System.Windows.Forms.Padding(4)
+        Me.cboVendedor.Name = "cboVendedor"
+        Me.cboVendedor.Size = New System.Drawing.Size(213, 24)
+        Me.cboVendedor.TabIndex = 399
+        '
+        'lblDisplayVendedor
+        '
+        Me.lblDisplayVendedor.AutoSize = True
+        Me.lblDisplayVendedor.Location = New System.Drawing.Point(264, 45)
+        Me.lblDisplayVendedor.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDisplayVendedor.Name = "lblDisplayVendedor"
+        Me.lblDisplayVendedor.Size = New System.Drawing.Size(78, 17)
+        Me.lblDisplayVendedor.TabIndex = 400
+        Me.lblDisplayVendedor.Text = "Vendedor :"
         '
         'Rpt_Ventas_TopTenProductos
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1274, 678)
+        Me.ClientSize = New System.Drawing.Size(1699, 834)
         Me.Controls.Add(Me.gbConsulta)
         Me.Controls.Add(Me.ToolStrip2)
         Me.Controls.Add(Me.GroupBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.MaximizeBox = False
         Me.Name = "Rpt_Ventas_TopTenProductos"
         Me.Text = "TopTen de productos"
@@ -613,4 +680,6 @@ Partial Class Rpt_Ventas_TopTenProductos
     Friend WithEvents lblDisplayTotalCantidad As Label
     Friend WithEvents lblDisplayTotalUtilidad As Label
     Friend WithEvents txtTotalUtilidad As Label
+    Friend WithEvents cboVendedor As System.Windows.Forms.ComboBox
+    Friend WithEvents lblDisplayVendedor As System.Windows.Forms.Label
 End Class

@@ -357,6 +357,7 @@ Buscar:
             Me.DesplegarDocumentos()
             Me.DesplegarOrden()
             Me.DesplegarTipoPago()
+            Me.DesplegarVendedores()
 
             Me.DtFechaDesde.Value = FechaActualINI()
             Me.DtFechaHasta.Value = Now
@@ -435,6 +436,22 @@ Buscar:
             End With
         Catch ex As Exception
             HandleError(Me.Name, "DesplegarTipoPago", ex)
+        End Try
+    End Sub
+
+    Private Sub DesplegarVendedores()
+        Try
+            Dim oElementos As New Class_CatVendedores
+            With Me.cboVendedor
+                .DisplayMember = "NOMBRE_VENDEDOR"
+                .ValueMember = "CODIGO_VENDEDOR"
+                Dim dView As New Data.DataView(oElementos.ObtenerVendedoresParaReportes)
+                dView.Sort = "NOMBRE_VENDEDOR"
+                .DataSource = dView
+                .SelectedValue = 0
+            End With
+        Catch ex As Exception
+            HandleError(Me.Name, "DesplegarVendedores", ex)
         End Try
     End Sub
 
@@ -737,6 +754,7 @@ Buscar:
                             .Add(New SqlParameter("@TIPO_PAGO", SqlDbType.Char, 1)).Value = Me.cboTipoPago.SelectedValue.ToString
                             .Add(New SqlParameter("@UTILIDAD_MAXIMA", SqlDbType.SmallInt)).Value = CInt(Me.txtUtilidadMaxima.Text)
                             .Add(New SqlParameter("@CODIGOS_PRODUCTOS", SqlDbType.NVarChar, 2000)).Value = Me.TxtCodigosProductos.Text.ToUpper
+                            .Add(New SqlParameter("@CODIGO_VENDEDOR", SqlDbType.SmallInt)).Value = CInt(Me.cboVendedor.SelectedValue)
                             .Add(New SqlParameter("@ORDEN", SqlDbType.NVarChar, 30)).Value = Me.cboOrden.SelectedValue
                         End With
 
@@ -763,6 +781,7 @@ Buscar:
                             .Add(New SqlParameter("@TIPO_PAGO", SqlDbType.Char, 1)).Value = Me.cboTipoPago.SelectedValue.ToString
                             .Add(New SqlParameter("@UTILIDAD_MAXIMA", SqlDbType.SmallInt)).Value = CInt(Me.txtUtilidadMaxima.Text)
                             .Add(New SqlParameter("@CODIGOS_PRODUCTOS", SqlDbType.NVarChar, 2000)).Value = Me.TxtCodigosProductos.Text.ToUpper
+                            .Add(New SqlParameter("@CODIGO_VENDEDOR", SqlDbType.SmallInt)).Value = CInt(Me.cboVendedor.SelectedValue)
                             .Add(New SqlParameter("@ORDEN", SqlDbType.NVarChar, 30)).Value = Me.cboOrden.SelectedValue
                         End With
 
@@ -861,6 +880,7 @@ Buscar:
                     Rpt.SetParameterValue("@TIPO_PAGO", Me.cboTipoPago.SelectedValue.ToString)
                     Rpt.SetParameterValue("@UTILIDAD_MAXIMA", CInt(Me.txtUtilidadMaxima.Text))
                     Rpt.SetParameterValue("@CODIGOS_PRODUCTOS", Me.TxtCodigosProductos.Text.ToUpper)
+                    Rpt.SetParameterValue("@CODIGO_VENDEDOR", CInt(Me.cboVendedor.SelectedValue))
                     Rpt.SetParameterValue("@ORDEN", Me.cboOrden.SelectedValue)
 
                 Case enumModoAgrupado.CLIENTES
@@ -880,6 +900,7 @@ Buscar:
                     Rpt.SetParameterValue("@TIPO_PAGO", Me.cboTipoPago.SelectedValue.ToString)
                     Rpt.SetParameterValue("@UTILIDAD_MAXIMA", CInt(Me.txtUtilidadMaxima.Text))
                     Rpt.SetParameterValue("@CODIGOS_PRODUCTOS", Me.TxtCodigosProductos.Text.ToUpper)
+                    Rpt.SetParameterValue("@CODIGO_VENDEDOR", CInt(Me.cboVendedor.SelectedValue))
                     Rpt.SetParameterValue("@ORDEN", Me.cboOrden.SelectedValue)
             End Select
 
