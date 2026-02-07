@@ -428,11 +428,17 @@ Public Class Ventas_Movimientos
 
             Me.ckbMostrarUtilidad.Checked = False
 
-            If Usuario.VER_COSTOS = False Then
-                Me.ckbMostrarUtilidad.Visible = False
-            Else
-                Me.ckbMostrarUtilidad.Visible = True
+            'Si el usuario tiene codigo de vendedor asignado, solo dejara ver la utilidad de las facturas donde aparezca como vendedor
+            'Si no el permiso se comporta normalmente
+
+            If txtLEN(Usuario.CODIGO_VENDEDOR) = False Then
+                If Usuario.VER_COSTOS = False Then
+                    Me.ckbMostrarUtilidad.Visible = False
+                Else
+                    Me.ckbMostrarUtilidad.Visible = True
+                End If
             End If
+
 
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
@@ -4790,6 +4796,10 @@ salto:
                 End If
             End If
 
+            If txtLEN(Usuario.CODIGO_VENDEDOR) = True Then
+                Me.GestionaMostrarUtilidad(Me.oVenta.CODIGO_VENDEDOR)
+            End If
+
             'Si es una factura que no timbra(es recapturada de otro sistema)
             If Empresa_Sistema.FELECTRONICA_ACTIVA = True AndAlso oDocumento.TIMBRA_DOCUMENTO = False Then
                 If (Me.oDocumento.CODIGO_DOCUMENTO Like "F*") = True Then
@@ -6123,9 +6133,8 @@ busca_serie:
                         Return
                     End If
 
-                    'Se quitó la restricción, biologos ocupa facturar un auto a una aseguradora con PUE-99
                     'Quitamos el "99-Por definir" ya que sólo es para crédito
-                    'dViewFormasPago.RowFilter = "CODIGO_METODO_PAGO<>'99'"
+                    dViewFormasPago.RowFilter = "CODIGO_METODO_PAGO<>'99'"
 
                     If txtLEN(Me.TxtCliente.Text) = True Then
                         If bCargandoVenta = False Then
@@ -6133,9 +6142,9 @@ busca_serie:
                                 Me.EstableceFormaPagoCliente()
                             End If
                         End If
-                        If Me.cboFormaPago.SelectedValue.ToString = "99" Then
-                            Me.cboFormaPago.SelectedIndex = -1
-                        End If
+                        'If Me.cboFormaPago.SelectedValue.ToString = "99" Then
+                        Me.cboFormaPago.SelectedIndex = -1
+                        'End If
                     Else
                         Me.lblCliente.Text = ""
                         Me.cboFormaPago.SelectedIndex = -1 'Si no hay cliente no se selecciona ninguna forma de pago.
@@ -7256,6 +7265,15 @@ dRow("RETENCION_ISR_PORCENTAJE").ToString & Chr(9) & dRow("RETENCION_ISR_BASE").
         Catch ex As Exception
             HandleError(Me.Name, sProcedure, ex)
         End Try
+    End Sub
+
+    Private Sub GestionaMostrarUtilidad(ByVal iCodigoVendedor As Integer)
+        If Usuario.CODIGO_VENDEDOR = iCodigoVendedor.ToString Then
+            Me.ckbMostrarUtilidad.Visible = True
+        Else
+            Me.ckbMostrarUtilidad.Checked = False
+            Me.ckbMostrarUtilidad.Visible = False
+        End If
     End Sub
 
     Private Sub DesplegarProcesos()
