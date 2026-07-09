@@ -808,12 +808,17 @@ Public Class Class_CXC_Pago_CFDI_Global
             'MyMailMsg.IsBodyHtml = False
             'MyMailMsg.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
 
+            'Usa TLS 1.2 enviando el codigo de protocolo
+            If Empresa_Sistema.CORREO_USAR_TLS_12 = True Then
+                ServicePointManager.SecurityProtocol = CType(3072, SecurityProtocolType)
+            End If
+
             Dim SMTP As New SmtpClient()
             SMTP.Host = Usuario.SERVIDOR_CORREO_REMITENTE
             SMTP.EnableSsl = Usuario.USAR_SSL_REMITENTE
-            SMTP.Port = CInt(Usuario.PUERTO_REMITENTE)
-
+            'Para que funcione el truco del TSL 1.2 se debe primero pasar las credenciales y luego el puerto o da error
             SMTP.Credentials = New System.Net.NetworkCredential(Usuario.CORREO_USUARIO.ToString, Usuario.CLAVE_CORREO.ToString)
+            SMTP.Port = CInt(Usuario.PUERTO_REMITENTE)
 
             Dim sRutaXML As String = "", sNombreXmlTimbrado As String = ""
             Dim sRutaPDF As String = ""

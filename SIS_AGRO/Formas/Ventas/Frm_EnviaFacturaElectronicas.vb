@@ -496,9 +496,15 @@ Buscar:
                 'MyMailMsg.IsBodyHtml = False
                 'MyMailMsg.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
 
+                'Usa TLS 1.2 enviando el codigo de protocolo
+                If Empresa_Sistema.CORREO_USAR_TLS_12 = True Then
+                    ServicePointManager.SecurityProtocol = CType(3072, SecurityProtocolType)
+                End If
+
                 Dim SMTP As New SmtpClient()
                 SMTP.Host = oUsuario.SERVIDOR_CORREO_REMITENTE '"mail.passa.com.mx"
                 SMTP.EnableSsl = oUsuario.USAR_SSL_REMITENTE ' True
+                'Para que funcione el truco del TSL 1.2 se debe primero pasar las credenciales y luego el puerto o da error
                 SMTP.Credentials = New System.Net.NetworkCredential(oUsuario.CORREO_USUARIO.ToString, oUsuario.CLAVE_CORREO.ToString)
                 SMTP.Port = CInt(oUsuario.PUERTO_REMITENTE) '587
 

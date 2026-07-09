@@ -102,6 +102,7 @@ Public NotInheritable Class Class_sisEmpresa
     Private _PRECIOS_VENTA_POR_ALMACEN As Boolean
     Private _PRECIOS_VENTA_POR_PLAZA As Boolean
     Private _CODIGO_PLAZA_PRINCIPAL As Integer
+    Private _CORREO_USAR_TLS_12 As Boolean
 #End Region
 
 #Region "Campos ligados a la tabla"
@@ -771,6 +772,12 @@ Public NotInheritable Class Class_sisEmpresa
         End Get
     End Property
 
+    Public ReadOnly Property CORREO_USAR_TLS_12 As Boolean
+        Get
+            Return Me._CORREO_USAR_TLS_12
+        End Get
+    End Property
+
 #End Region
 
 #Region "Propiedades de campos ligados a la tabla"
@@ -1139,7 +1146,7 @@ Public NotInheritable Class Class_sisEmpresa
                     Me._PRECIOS_VENTA_POR_ALMACEN = CBool(dReader("PRECIOS_VENTA_POR_ALMACEN"))
                     Me._PRECIOS_VENTA_POR_PLAZA = CBool(dReader("PRECIOS_VENTA_POR_PLAZA"))
                     Me._CODIGO_PLAZA_PRINCIPAL = CInt(dReader("CODIGO_PLAZA_PRINCIPAL"))
-
+                    Me._CORREO_USAR_TLS_12 = CBool(dReader("CORREO_USAR_TLS_12"))
                     dReader.Close()
                     bResultado = True
                 End If
